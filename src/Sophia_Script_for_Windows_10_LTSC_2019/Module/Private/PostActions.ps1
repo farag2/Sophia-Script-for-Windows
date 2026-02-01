@@ -79,7 +79,6 @@ public static void PostMessage()
 	#endregion Refresh Environment
 
 	#region Other actions
-
 	# Kill all explorer instances in case "launch folder windows in a separate process" enabled
 	Get-Process -Name explorer | Stop-Process -Force
 	Start-Sleep -Seconds 3
@@ -98,21 +97,6 @@ public static void PostMessage()
 
 	# Open Startup page
 	Start-Process -FilePath "ms-settings:startupapps"
-
-	# Checking whether BitLocker drive encryption is off, despite drive is encrypted
-	if (Get-BitLockerVolume | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
-		Write-Error -Message $Localization.BitLockerAutomaticEncryption -ErrorAction SilentlyContinue
-		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
-		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
-
-		Get-BitLockerVolume
-
-		# Open BitLocker settings
-		& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
-	}
 
 	# Checking whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Global:ScheduledTasks)

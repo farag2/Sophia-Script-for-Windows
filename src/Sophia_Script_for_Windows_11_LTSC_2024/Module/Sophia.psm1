@@ -3273,10 +3273,10 @@ function NavigationPaneExpand
 
 <#
 	.SYNOPSIS
-	Recently Added Apps
+	Recently added apps on Start
 
 	.PARAMETER Hide
-	Hide recently added apps in Start
+	Hide recently added apps on Start
 
 	.PARAMETER Show
 	Show recently added apps in Start (default value)
@@ -5323,179 +5323,104 @@ function Set-UserShellFolderLocation
 		$Default
 	)
 
-	<#
-		.SYNOPSIS
-		Change the location of the each user folder using SHSetKnownFolderPath function
+	# Localized user folder name IDs for "WinAPI.GetStrings" function
+	$LocalizedUserFolderNameIDs = @{
+		"Desktop"   = "21769"
+		"Documents" = "21770"
+		"Downloads" = "21798"
+		"Music"     = "21790"
+		"Pictures"  = "21779"
+		"Videos"    = "21791"
+	}
 
-		.EXAMPLE
-		Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:SystemDrive:\Desktop"
+	# Registry user folder names
+	$UserFolderRegistry = @{
+		"Desktop"   = "Desktop"
+		"Documents" = "Personal"
+		"Downloads" = "{374DE290-123F-4565-9164-39C4925E467B}"
+		"Music"     = "My Music"
+		"Pictures"  = "My Pictures"
+		"Videos"    = "My Video"
+	}
 
-		.LINK
-		https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shgetknownfolderpath
+	$UserFolderGUIDs = @{
+		"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
+		"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
+		"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5404642AF1E4}"
+		"Music"     = "{A0C69A99-21C8-4671-8703-7934162FCF1D}"
+		"Pictures"  = "{0DDD015D-B06C-45D5-8C4C-F59713854639}"
+		"Videos"    = "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
+	}
 
-		.NOTES
-		User files or folders won't be moved to a new location
-	#>
-	function Set-UserShellFolder
-	{
-		[CmdletBinding()]
-		param
-		(
-			[Parameter(Mandatory = $true)]
-			[ValidateSet("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos")]
-			[string]
-			$UserFolder,
-
-			[Parameter(Mandatory = $true)]
-			[string]
-			$FolderPath
-		)
-
-		<#
-			.SYNOPSIS
-			Redirect user folders to a new location
-
-			.EXAMPLE
-			Set-KnownFolderPath -KnownFolder Desktop -Path "$env:SystemDrive:\Desktop"
-		#>
-		function Set-KnownFolderPath
-		{
-			[CmdletBinding()]
-			param
-			(
-				[Parameter(Mandatory = $true)]
-				[ValidateSet("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos")]
-				[string]
-				$KnownFolder,
-
-				[Parameter(Mandatory = $true)]
-				[string]
-				$Path
-			)
-
-			$KnownFolders = @{
-				"Desktop"   = @("B4BFCC3A-DB2C-424C-B029-7FE99A87C641")
-				"Documents" = @("FDD39AD0-238F-46AF-ADB4-6C85480369C7", "f42ee2d3-909f-4907-8871-4c22fc0bf756")
-				"Downloads" = @("374DE290-123F-4565-9164-39C4925E467B", "7d83ee9b-2244-4e70-b1f5-5404642af1e4")
-				"Music"     = @("4BD8D571-6D19-48D3-BE97-422220080E43", "a0c69a99-21c8-4671-8703-7934162fcf1d")
-				"Pictures"  = @("33E28130-4E1E-4676-835A-98395C3BC3BB", "0ddd015d-b06c-45d5-8c4c-f59713854639")
-				"Videos"    = @("18989B1D-99B5-455B-841C-AB7C74E4DDFC", "35286a68-3c57-41a1-bbb1-0eae73d76c95")
-			}
-
-			$Signature = @{
-				Namespace          = "WinAPI"
-				Name               = "KnownFolders"
-				Language           = "CSharp"
-				CompilerParameters = $CompilerParameters
-				MemberDefinition   = @"
-[DllImport("shell32.dll")]
-public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);
+	# Contents of the hidden desktop.ini file for each type of user folders
+	$Desktop = @"
+"",
+"[.ShellClassInfo]",
+"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21769",
+"IconResource=%SystemRoot%\System32\imageres.dll,-183"
 "@
-			}
-			if (-not ("WinAPI.KnownFolders" -as [type]))
-			{
-				Add-Type @Signature
-			}
 
-			foreach ($GUID in $KnownFolders[$KnownFolder])
-			{
-				[WinAPI.KnownFolders]::SHSetKnownFolderPath([ref]$GUID, 0, 0, $Path)
-			}
-			(Get-Item -Path $Path -Force).Attributes = "ReadOnly"
-		}
+	$Documents = @"
+"",
+"[.ShellClassInfo]",
+"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21770",
+ "IconResource=%SystemRoot%\System32\imageres.dll,-112",
+"IconFile=%SystemRoot%\System32\shell32.dll",
+"IconIndex=-235"
+"@
 
-		$UserShellFoldersRegistryNames = @{
-			"Desktop"   = "Desktop"
-			"Documents" = "Personal"
-			"Downloads" = "{374DE290-123F-4565-9164-39C4925E467B}"
-			"Music"     = "My Music"
-			"Pictures"  = "My Pictures"
-			"Videos"    = "My Video"
-		}
+	$Downloads = @"
+"",
+"[.ShellClassInfo]",
+"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21798",
+"IconResource=%SystemRoot%\System32\imageres.dll,-184"
+"@
 
-		$UserShellFoldersGUIDs = @{
-			"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
-			"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
-			"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5404642AF1E4}"
-			"Music"     = "{A0C69A99-21C8-4671-8703-7934162FCF1D}"
-			"Pictures"  = "{0DDD015D-B06C-45D5-8C4C-F59713854639}"
-			"Videos"    = "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
-		}
+	$Music = @"
+"",
+"[.ShellClassInfo]",
+"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21790",
+"InfoTip=@%SystemRoot%\System32\shell32.dll,-12689",
+"IconResource=%SystemRoot%\System32\imageres.dll,-108",
+"IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-237"
+"@
 
-		# Contents of the hidden desktop.ini file for each type of user folders
-		$DesktopINI = @{
-			"Desktop"   = "",
-                          "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21769",
-                          "IconResource=%SystemRoot%\System32\imageres.dll,-183"
-			"Documents" = "",
-                          "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21770",
-                          "IconResource=%SystemRoot%\System32\imageres.dll,-112",
-                          "IconFile=%SystemRoot%\System32\shell32.dll",
-                          "IconIndex=-235"
-			"Downloads" = "",
-                          "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21798",
-                          "IconResource=%SystemRoot%\System32\imageres.dll,-184"
-			"Music"     = "",
-                          "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21790",
-                          "InfoTip=@%SystemRoot%\System32\shell32.dll,-12689",
-                          "IconResource=%SystemRoot%\System32\imageres.dll,-108",
-                          "IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-237"
-			"Pictures"  = "",
-                          "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21779",
-                          "InfoTip=@%SystemRoot%\System32\shell32.dll,-12688",
-                          "IconResource=%SystemRoot%\System32\imageres.dll,-113",
-                          "IconFile=%SystemRoot%\System32\shell32.dll",
-                          "IconIndex=-236"
-			"Videos"    = "",
-                          "[.ShellClassInfo]",
-                          "LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21791",
-                          "InfoTip=@%SystemRoot%\System32\shell32.dll,-12690",
-                          "IconResource=%SystemRoot%\System32\imageres.dll,-189",
-                          "IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-238"
-		}
+	$Pictures = @"
+"",
+"[.ShellClassInfo]",
+"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21779",
+"InfoTip=@%SystemRoot%\System32\shell32.dll,-12688",
+"IconResource=%SystemRoot%\System32\imageres.dll,-113",
+"IconFile=%SystemRoot%\System32\shell32.dll",
+"IconIndex=-236"
+"@
 
-		# Determining the current user folder path
-		$CurrentUserFolderPath = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersRegistryNames[$UserFolder]
-		if ($CurrentUserFolder -ne $FolderPath)
-		{
-			# Creating a new folder if there is no one
-			if (-not (Test-Path -Path $FolderPath))
-			{
-				New-Item -Path $FolderPath -ItemType Directory -Force
-			}
+	$Videos = @"
+"",
+"[.ShellClassInfo]",
+"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21791",
+"InfoTip=@%SystemRoot%\System32\shell32.dll,-12690",
+"IconResource=%SystemRoot%\System32\imageres.dll,-189",
+"IconFile=%SystemRoot%\System32\shell32.dll",
+"IconIndex=-238"
+"@
 
-			# Removing old desktop.ini
-			Remove-Item -Path "$CurrentUserFolderPath\desktop.ini" -Force -ErrorAction Ignore
-
-			Set-KnownFolderPath -KnownFolder $UserFolder -Path $FolderPath
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserShellFoldersGUIDs[$UserFolder] -PropertyType ExpandString -Value $FolderPath -Force
-
-			# Save desktop.ini in the UTF-16 LE encoding
-			Set-Content -Path "$FolderPath\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
-			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-			(Get-Item -Path "$FolderPath\desktop.ini" -Force).Refresh()
-
-			if ((Get-ChildItem -Path $CurrentUserFolderPath -ErrorAction Ignore | Measure-Object).Count -ne 0)
-			{
-				Write-Warning -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath)
-				Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath) -ErrorAction SilentlyContinue
-			}
-		}
+	$DesktopINI = @{
+		"Desktop"   = $Desktop
+		"Documents" = $Documents
+		"Downloads" = $Downloads
+		"Music"     = $Music
+		"Pictures"  = $Pictures
+		"Videos"    = $Videos
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Root"
 		{
-			# Store all fixed disks' letters except C (system drive) to use them within Show-Menu function
+			# Store all fixed disks' letters except C drive to call with Show-Menu function
 			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype
 			$DriveLetters = @((Get-CimInstance -ClassName CIM_LogicalDisk | Where-Object -FilterScript {($_.DriveType -eq 3) -and ($_.Name -ne $env:SystemDrive)}).DeviceID | Sort-Object)
-
 			if (-not $DriveLetters)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -5505,681 +5430,127 @@ public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, Int
 				return
 			}
 
-			# Desktop
-			# Extract the localized "Desktop" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString(21769)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21769), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
+			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+				# Extract the localized user folders strings from shell32.dll
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
-				switch ($Choice)
+				$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserFolderRegistry[$UserFolder]
+				Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder]), $CurrentUserFolderLocation) -Verbose
+				Write-Warning -Message $Localization.FilesWontBeMoved
+
+				do
 				{
-					{$DriveLetters -contains $Choice}
+					$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
+
+					switch ($Choice)
 					{
-						Set-UserShellFolder -UserFolder Desktop -FolderPath "$($Choice)\Desktop"
+						{$DriveLetters -contains $Choice}
+						{
+							Set-UserShellFolder -UserFolder $UserFolder -Path "$($Choice)\$UserFolder"
+						}
+						$Skip
+						{
+							Write-Information -MessageData "" -InformationAction Continue
+							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+						}
+						$KeyboardArrows {}
 					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
 				}
+				until ($Choice -ne $KeyboardArrows)
 			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Documents
-			# Extract the localized "Documents" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString(21770)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21770), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
-
-				switch ($Choice)
-				{
-					{$DriveLetters -contains $Choice}
-					{
-						Set-UserShellFolder -UserFolder Documents -FolderPath "$($Choice)\Documents"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Downloads
-			# Extract the localized "Downloads" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString(21798)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21798), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
-
-				switch ($Choice)
-				{
-					{$DriveLetters -contains $Choice}
-					{
-						Set-UserShellFolder -UserFolder Downloads -FolderPath "$($Choice)\Downloads"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Music
-			# Extract the localized "Music" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString(21790)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21790), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
-
-				switch ($Choice)
-				{
-					{$DriveLetters -contains $Choice}
-					{
-						Set-UserShellFolder -UserFolder Music -FolderPath "$($Choice)\Music"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Pictures
-			# Extract the localized "Pictures" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString(21779)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21779), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
-
-				switch ($Choice)
-				{
-					{$DriveLetters -contains $Choice}
-					{
-						Set-UserShellFolder -UserFolder Pictures -FolderPath "$($Choice)\Pictures"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Videos
-			# Extract the localized "Videos" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString(21791)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21791), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $DriveLetters -Default $DriveLetters.Count[-1] -AddSkip
-
-				switch ($Choice)
-				{
-					{$DriveLetters -contains $Choice}
-					{
-						Set-UserShellFolder -UserFolder Videos -FolderPath "$($Choice)\Videos"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
 		}
 		"Custom"
 		{
-			# Desktop
-			# Extract the localized "Desktop" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString(21769)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21769), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
+			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
+				# Extract the localized user folders strings from shell32.dll
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
-				switch ($Choice)
+				$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserFolderRegistry[$UserFolder]
+				Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder]), $CurrentUserFolderLocation) -Verbose
+				Write-Warning -Message $Localization.FilesWontBeMoved
+
+				do
 				{
-					$Browse
+					$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
+
+					switch ($Choice)
 					{
-						Add-Type -AssemblyName System.Windows.Forms
-						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-						$FolderBrowserDialog.Description = $Localization.FolderSelect
-						$FolderBrowserDialog.RootFolder = "MyComputer"
-
-						# Force move the open file dialog to the foreground
-						$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-						$FolderBrowserDialog.ShowDialog($Focus)
-
-						if ($FolderBrowserDialog.SelectedPath)
+						$Browse
 						{
-							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+							Add-Type -AssemblyName System.Windows.Forms
+							$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
+							$FolderBrowserDialog.Description = $Localization.FolderSelect
+							$FolderBrowserDialog.RootFolder = "MyComputer"
 
-								continue
-							}
-							else
+							# Force move the open file dialog to the foreground
+							$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
+							$FolderBrowserDialog.ShowDialog($Focus)
+
+							if ($FolderBrowserDialog.SelectedPath)
 							{
-								Set-UserShellFolder -UserFolder Desktop -FolderPath $FolderBrowserDialog.SelectedPath
+								if ($FolderBrowserDialog.SelectedPath -eq "C:\")
+								{
+									Write-Information -MessageData "" -InformationAction Continue
+									Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
+
+									continue
+								}
+								else
+								{
+									Set-UserShellFolder -UserFolder $UserFolder -Path $FolderBrowserDialog.SelectedPath
+								}
 							}
 						}
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Documents
-			# Extract the localized "Documents" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString(21770)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21770), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Browse
-					{
-						Add-Type -AssemblyName System.Windows.Forms
-						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-						$FolderBrowserDialog.Description = $Localization.FolderSelect
-						$FolderBrowserDialog.RootFolder = "MyComputer"
-
-						# Force move the open file dialog to the foreground
-						$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-						$FolderBrowserDialog.ShowDialog($Focus)
-
-						if ($FolderBrowserDialog.SelectedPath)
+						$Skip
 						{
-							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
-
-								continue
-							}
-							else
-							{
-								Set-UserShellFolder -UserFolder Documents -FolderPath $FolderBrowserDialog.SelectedPath
-							}
+							Write-Information -MessageData "" -InformationAction Continue
+							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 						}
+						$KeyboardArrows {}
 					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
 				}
+				until ($Choice -ne $KeyboardArrows)
 			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Downloads
-			# Extract the localized "Downloads" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString(21798)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21798), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Browse
-					{
-						Add-Type -AssemblyName System.Windows.Forms
-						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-						$FolderBrowserDialog.Description = $Localization.FolderSelect
-						$FolderBrowserDialog.RootFolder = "MyComputer"
-
-						# Force move the open file dialog to the foreground
-						$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-						$FolderBrowserDialog.ShowDialog($Focus)
-
-						if ($FolderBrowserDialog.SelectedPath)
-						{
-							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
-
-								continue
-							}
-							else
-							{
-								Set-UserShellFolder -UserFolder Downloads -FolderPath $FolderBrowserDialog.SelectedPath
-							}
-						}
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Music
-			# Extract the localized "Music" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString(21790)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21790), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Browse
-					{
-						Add-Type -AssemblyName System.Windows.Forms
-						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-						$FolderBrowserDialog.Description = $Localization.FolderSelect
-						$FolderBrowserDialog.RootFolder = "MyComputer"
-
-						# Force move the open file dialog to the foreground
-						$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-						$FolderBrowserDialog.ShowDialog($Focus)
-
-						if ($FolderBrowserDialog.SelectedPath)
-						{
-							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
-
-								continue
-							}
-							else
-							{
-								Set-UserShellFolder -UserFolder Music -FolderPath $FolderBrowserDialog.SelectedPath
-							}
-						}
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Pictures
-			# Extract the localized "Pictures" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString(21779)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21779), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Browse
-					{
-						Add-Type -AssemblyName System.Windows.Forms
-						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-						$FolderBrowserDialog.Description = $Localization.FolderSelect
-						$FolderBrowserDialog.RootFolder = "MyComputer"
-
-						# Force move the open file dialog to the foreground
-						$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-						$FolderBrowserDialog.ShowDialog($Focus)
-
-						if ($FolderBrowserDialog.SelectedPath)
-						{
-							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
-
-								continue
-							}
-							else
-							{
-								Set-UserShellFolder -UserFolder Pictures -FolderPath $FolderBrowserDialog.SelectedPath
-							}
-						}
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Videos
-			# Extract the localized "Videos" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString(21791)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21791), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Browse -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Browse
-					{
-						Add-Type -AssemblyName System.Windows.Forms
-						$FolderBrowserDialog = New-Object -TypeName System.Windows.Forms.FolderBrowserDialog
-						$FolderBrowserDialog.Description = $Localization.FolderSelect
-						$FolderBrowserDialog.RootFolder = "MyComputer"
-
-						# Force move the open file dialog to the foreground
-						$Focus = New-Object -TypeName System.Windows.Forms.Form -Property @{TopMost = $true}
-						$FolderBrowserDialog.ShowDialog($Focus)
-
-						if ($FolderBrowserDialog.SelectedPath)
-						{
-							if ($FolderBrowserDialog.SelectedPath -eq "C:\")
-							{
-								Write-Information -MessageData "" -InformationAction Continue
-								Write-Verbose -Message $Localization.UserFolderLocationMove -Verbose
-
-								continue
-							}
-							else
-							{
-								Set-UserShellFolder -UserFolder Videos -FolderPath $FolderBrowserDialog.SelectedPath
-							}
-						}
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
 		}
 		"Default"
 		{
-			# Desktop
-			# Extract the localized "Desktop" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString(21769)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21769), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
+			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
+				# Extract the localized user folders strings from shell32.dll
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
-				switch ($Choice)
+				$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Desktop
+				Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder]), $CurrentUserFolderLocation) -Verbose
+				Write-Warning -Message $Localization.FilesWontBeMoved
+
+				do
 				{
-					$Yes
+					$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
+
+					switch ($Choice)
 					{
-						Set-UserShellFolder -UserFolder Desktop -FolderPath "$env:USERPROFILE\Desktop"
+						$Yes
+						{
+							Set-UserShellFolder -UserFolder $UserFolder -Path "$env:USERPROFILE\$UserFolder"
+						}
+						$Skip
+						{
+							Write-Information -MessageData "" -InformationAction Continue
+							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
+							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+						}
+						$KeyboardArrows {}
 					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
 				}
+				until ($Choice -ne $KeyboardArrows)
 			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Documents
-			# Extract the localized "Documents" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString(21770)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name Personal
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21770), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Yes
-					{
-						Set-UserShellFolder -UserFolder Documents -FolderPath "$env:USERPROFILE\Documents"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Downloads
-			# Extract the localized "Downloads" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString(21798)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21798), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Yes
-					{
-						Set-UserShellFolder -UserFolder Downloads -FolderPath "$env:USERPROFILE\Downloads"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Music
-			# Extract the localized "Music" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString(21790)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Music"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21790), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Yes
-					{
-						Set-UserShellFolder -UserFolder Music -FolderPath "$env:USERPROFILE\Music"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Pictures
-			# Extract the localized "Pictures" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString(21779)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Pictures"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21779), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Yes
-					{
-						Set-UserShellFolder -UserFolder Pictures -FolderPath "$env:USERPROFILE\Pictures"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-
-			# Videos
-			# Extract the localized "Pictures" string from shell32.dll
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString(21791)) -Verbose
-
-			$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "My Video"
-			Write-Verbose -Message ($Localization.CurrentUserFolderLocation -f [WinAPI.GetStrings]::GetString(21791), $CurrentUserFolderLocation) -Verbose
-			Write-Warning -Message $Localization.FilesWontBeMoved
-
-			do
-			{
-				$Choice = Show-Menu -Menu $Yes -Default 1 -AddSkip
-
-				switch ($Choice)
-				{
-					$Yes
-					{
-						Set-UserShellFolder -UserFolder Videos -FolderPath "$env:USERPROFILE\Videos"
-					}
-					$Skip
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-						Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
 		}
 	}
 }

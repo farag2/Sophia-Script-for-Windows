@@ -623,6 +623,38 @@ UpdateMicrosoftProducts -Enable
 # При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
+# Notify me when a restart is required to finish updating
+# Уведомлять меня о необходимости перезагрузки для завершения обновления
+RestartNotification -Show
+
+# Do not notify me when a restart is required to finish updating (default value)
+# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
+# RestartNotification -Hide
+
+# Restart as soon as possible to finish updating
+# Перезапустить устройство как можно быстрее, чтобы завершить обновление
+RestartDeviceAfterUpdate -Enable
+
+# Don't restart as soon as possible to finish updating (default value)
+# Не перезапускать устройство как можно быстрее, чтобы завершить обновление (значение по умолчанию)
+# RestartDeviceAfterUpdate -Disable
+
+# Automatically adjust active hours for me based on daily usage
+# Автоматически изменять период активности для этого устройства на основе действий
+ActiveHours -Automatically
+
+# Manually adjust active hours for me based on daily usage (default value)
+# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# ActiveHours -Manually
+
+# Do not get the latest updates as soon as they're available (default value)
+# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
+WindowsLatestUpdate -Disable
+
+# Get the latest updates as soon as they're available
+# Получайте последние обновления, как только они будут доступны
+# WindowsLatestUpdate -Enable
+
 # Set power plan on "High performance". Not recommended for laptops
 # Установить схему управления питанием на "Высокая производительность". Не рекомендуется для ноутбуков
 PowerPlan -High
@@ -793,38 +825,6 @@ NetworkDiscovery -Enable
 # Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks (default value)
 # Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
 # NetworkDiscovery -Disable
-
-# Notify me when a restart is required to finish updating
-# Уведомлять меня о необходимости перезагрузки для завершения обновления
-RestartNotification -Show
-
-# Do not notify me when a restart is required to finish updating (default value)
-# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
-# RestartNotification -Hide
-
-# Restart as soon as possible to finish updating
-# Перезапустить устройство как можно быстрее, чтобы завершить обновление
-RestartDeviceAfterUpdate -Enable
-
-# Don't restart as soon as possible to finish updating (default value)
-# Не перезапускать устройство как можно быстрее, чтобы завершить обновление (значение по умолчанию)
-# RestartDeviceAfterUpdate -Disable
-
-# Automatically adjust active hours for me based on daily usage
-# Автоматически изменять период активности для этого устройства на основе действий
-ActiveHours -Automatically
-
-# Manually adjust active hours for me based on daily usage (default value)
-# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
-# ActiveHours -Manually
-
-# Do not get the latest updates as soon as they're available (default value)
-# Не получать последние обновления, как только они будут доступны (значение по умолчанию)
-WindowsLatestUpdate -Disable
-
-# Get the latest updates as soon as they're available
-# Получайте последние обновления, как только они будут доступны
-# WindowsLatestUpdate -Enable
 
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden

@@ -549,6 +549,7 @@ RestartNotification -Show
 # Do not notify me when a restart is required to finish updating (default value)
 # Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
 # RestartNotification -Hide
+
 # Automatically adjust active hours for me based on daily usage
 # Автоматически изменять период активности для этого устройства на основе действий
 ActiveHours -Automatically

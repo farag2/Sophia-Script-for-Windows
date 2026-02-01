@@ -6,7 +6,7 @@
 
 # Sophia Script for Windows
 
-Найпотужніший PowerShell-модуль на `GitHub` для тонкого налаштування `Windows`
+Найпотужніший PowerShell-модуль на GitHub для тонкого налаштування Windows
 
 Зроблено з <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/heart.svg" height="17px"/> до Windows
 

@@ -57,7 +57,9 @@ function InitialActions
 		"$PSScriptRoot\..\..\Module\Private\Get-Hash.ps1",
 		"$PSScriptRoot\..\..\Module\Private\InitialActions.ps1",
 		"$PSScriptRoot\..\..\Module\Private\PostActions.ps1",
+		"$PSScriptRoot\..\..\Module\Private\Set-KnownFolderPath.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Set-Policy.ps1",
+		"$PSScriptRoot\..\..\Module\Private\Set-UserShellFolder.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Show-Menu.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Write-AdditionalKeys.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Write-ExtensionKeys.ps1",
@@ -173,6 +175,7 @@ function InitialActions
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.MicroSoftStorePowerShellWarning
+		Write-Verbose -Message "https://github.com/powershell/powershell/releases/latest" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -703,13 +706,20 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Checking whether BitLocker encryption or decryption in process
-	if (Get-BitLockerVolume | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")})
+	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")})
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.BitLockerInOperation
-		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
 
-		Get-BitLockerVolume
+		Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")}
+
+		# Open if Windows edition is not Home
+		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID -ne "Core")
+		{
+			# Open BitLocker settings
+			& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
+		}
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -717,6 +727,34 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		$Global:Failed = $true
 
 		exit
+	}
+
+	# Checking whether BitLocker drive encryption is off, despite drive is encrypted
+	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
+	{
+		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
+		Write-Error -Message $Localization.BitLockerAutomaticEncryption -ErrorAction SilentlyContinue
+		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
+		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
+
+		do
+		{
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+			switch ($Choice)
+			{
+				$Yes
+				{
+					Disable-BitLocker -MountPoint $env:SystemDrive
+				}
+				$No
+				{
+					continue
+				}
+				$KeyboardArrows {}
+			}
+		}
+		until ($Choice -ne $KeyboardArrows)
 	}
 
 	# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
@@ -861,8 +899,8 @@ public extern static string BrandingFormatString(string sFormat);
 			{
 				$LatestSupportedBuild = 0
 
-				Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-				Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+				Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
+				Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 			}
 
 			# We may use Test-Path -Path variable:LatestSupportedBuild
@@ -921,6 +959,8 @@ public extern static string BrandingFormatString(string sFormat);
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Global:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()
+
+	Clear-Host
 
 	Write-Information -MessageData "┏┓    ┓ •    ┏┓   •     ┏      ┓ ┏•   ┓ " -InformationAction Continue
 	Write-Information -MessageData "┗┓┏┓┏┓┣┓┓┏┓  ┗┓┏┏┓┓┏┓╋  ╋┏┓┏┓  ┃┃┃┓┏┓┏┫┏┓┓┏┏┏" -InformationAction Continue
