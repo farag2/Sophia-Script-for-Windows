@@ -551,25 +551,6 @@
   },
   {
     "Region": "UI & Personalization",
-    "Function": "UnpinTaskbarShortcuts -Shortcuts",
-    "ToolTip": "Die Verknüpfungen Microsoft Edge, Microsoft Store oder Outlook von der Taskleiste lösen.",
-    "Arg": {
-      "Zero": {
-        "Tag": "Edge",
-        "ToolTip": "Die Verknüpfung Microsoft Edge von der Taskleiste lösen."
-      },
-      "One": {
-        "Tag": "Store",
-        "ToolTip": "Die Verknüpfung Microsoft Store von der Taskleiste lösen."
-      },
-      "Two": {
-        "Tag": "Outlook",
-        "ToolTip": "Die Verknüpfung Outlook von der Taskleiste lösen."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
     "Function": "TaskbarEndTask",
     "Arg": {
       "Zero": {
@@ -1430,6 +1411,20 @@
       "One": {
         "Tag": "Disable",
         "ToolTip": "Sichern Sie die Systemregistrierung nicht im Ordner %SystemRoot%\\System32\\config\\RegBack (Standardwert)."
+      }
+    }
+  },
+  {
+    "Region": "System",
+    "Function": "WindowsAI",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Windows-KI-Funktionen deaktivieren."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Windows-KI-Funktionen aktivieren (Standardwert)."
       }
     }
   },

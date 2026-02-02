@@ -812,6 +812,34 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "MostUsedStartApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Показывать наиболее часто используемые приложения на начальном экране."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "StartAccountNotifications",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Не отображать на начальном экране уведомления, касающиеся учетной записи Microsoft."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Отображать на начальном экране уведомления, касающиеся учетной записи Microsoft (значение по умолчанию)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "AppSuggestions",
     "Arg": {
       "Zero": {
@@ -846,20 +874,6 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Открепить все ярлыки от начального экрана."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "StartAccountNotifications",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide Microsoft account-related notifications in Start."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show Microsoft account-related notifications on Start (default value)."
       }
     }
   },
@@ -1380,7 +1394,7 @@
   },
   {
     "Region": "System",
-    "Function": "UninstallPCHealthCheck",
+    "Function": "Uninstall-PCHealthCheck",
     "Arg": {
       "Zero": {
         "Tag": "",

@@ -1688,7 +1688,7 @@
         "Region": "System",
         "Control": "chk",
         "Required": "false",
-        "Function": "UninstallPCHealthCheck",
+        "Function": "Uninstall-PCHealthCheck",
         "Arg": {
             "Zero": {
                 "Tag": ""

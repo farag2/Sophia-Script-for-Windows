@@ -937,7 +937,7 @@ NetworkDiscovery -Enable
 
 	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
 #>
-UninstallPCHealthCheck
+Uninstall-PCHealthCheck
 
 # Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). Internet connection required
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом

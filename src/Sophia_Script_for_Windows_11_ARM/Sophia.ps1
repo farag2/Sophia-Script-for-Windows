@@ -946,7 +946,7 @@ WindowsAI -Disable
 
 # Enable Windows AI functions (default value)
 # Включить функции, связанные с ИИ Windows (значение по умолчанию)
-# RegistryBackup -Enable
+# WindowsAI -Enable
 #endregion System
 
 #region WSL
@@ -1165,11 +1165,11 @@ CABInstallContext -Show
 # CABInstallContext -Hide
 
 # Hide the "Edit with Clipchamp" item from the media files context menu
-# Скрыть пункт "Редактировать в Climpchamp" из контекстного меню
+# Скрыть пункт "Редактировать в Clipchamp" из контекстного меню
 EditWithClipchampContext -Hide
 
 # Show the "Edit with Clipchamp" item in the media files context menu (default value)
-# Отобразить пункт "Редактировать в Climpchamp" в контекстном меню (значение по умолчанию)
+# Отобразить пункт "Редактировать в Clipchamp" в контекстном меню (значение по умолчанию)
 # EditWithClipchampContext -Show
 
 # Hide the "Edit with Photos" item from the media files context menu

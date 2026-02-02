@@ -24,7 +24,7 @@
         "startLineRegionSystem": "#region System",
         "endLineRegionSystem": "#endregion System",
         "startLineRegionWSL": "#region WSL",
-        "endLineRegionWSL": "#endregion WSL",        
+        "endLineRegionWSL": "#endregion WSL",
         "startLineRegionUWPApps": "#region UWP apps",
         "endLineRegionUWPApps": "#endregion UWP apps",
         "startLineRegionGaming": "#region Gaming",

@@ -1420,11 +1420,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Windows-KI-Funktionen deaktivieren."
+        "ToolTip": "Выключить функции, связанные с ИИ Windows."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Windows-KI-Funktionen aktivieren (Standardwert)."
+        "ToolTip": "Включить функции, связанные с ИИ Windows (значение по умолчанию)."
       }
     }
   },
@@ -1734,11 +1734,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Скрыть пункт \"Редактировать в Climpchamp\" из контекстного меню медиа-файлов."
+        "ToolTip": "Скрыть пункт \"Редактировать в Clipchamp\" из контекстного меню медиа-файлов."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Редактировать в Climpchamp\" в контекстном меню медиа-файлов (значение по умолчанию)."
+        "ToolTip": "Отобразить пункт \"Редактировать в Clipchamp\" в контекстном меню медиа-файлов (значение по умолчанию)."
       }
     }
   },

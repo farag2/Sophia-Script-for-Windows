@@ -7898,7 +7898,7 @@ function Import-Associations
 	Uninstall the "PC Health Check" app and prevent it from installing in the future
 
 	.EXAMPLE
-	UninstallPCHealthCheck
+	Uninstall-PCHealthCheck
 
 	.LINK
 	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
@@ -7912,7 +7912,7 @@ function Import-Associations
 	.NOTES
 	Machine-wide
 #>
-function UninstallPCHealthCheck
+function Uninstall-PCHealthCheck
 {
 	$Folder = (New-Object -ComObject Shell.Application).NameSpace("$env:SystemRoot\Installer")
 	$Files = @{}

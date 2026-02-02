@@ -997,25 +997,6 @@
         "LTSC2024": "true"
     },
     {
-        "Region": "OneDrive",
-        "Control": "cmbchkalter",
-        "Required": "false",
-        "Function": "OneDrive",
-        "Function2": "OneDrive -AllUsers",
-        "Function2Selects": "1",
-        "Arg": {
-            "Zero": {
-                "Tag": "Uninstall"
-            },
-            "One": {
-                "Tag": "Install"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "",
-        "LTSC2024": "true"
-    },
-    {
         "Region": "System",
         "Control": "cmb",
         "Required": "false",

@@ -812,6 +812,34 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "MostUsedStartApps",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Hide most used apps in Start (default value)."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Show most used Apps in Start."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
+    "Function": "StartAccountNotifications",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Hide Microsoft account-related notifications in Start."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Show Microsoft account-related notifications on Start (default value)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "AppSuggestions",
     "Arg": {
       "Zero": {
@@ -846,20 +874,6 @@
       "Zero": {
         "Tag": "",
         "ToolTip": "Unpin all the Start tiles."
-      }
-    }
-  },
-  {
-    "Region": "UI & Personalization",
-    "Function": "StartAccountNotifications",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Hide Microsoft account-related notifications on Start."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Show Microsoft account-related notifications on Start (default value)."
       }
     }
   },
@@ -1380,7 +1394,7 @@
   },
   {
     "Region": "System",
-    "Function": "UninstallPCHealthCheck",
+    "Function": "Uninstall-PCHealthCheck",
     "Arg": {
       "Zero": {
         "Tag": "Block",

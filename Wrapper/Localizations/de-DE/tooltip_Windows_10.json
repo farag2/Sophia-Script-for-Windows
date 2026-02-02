@@ -788,11 +788,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Den Navigatiosbereich des Explorers (Linker Abschnitt) nicht auf den aktuellen Ordner erweitern (Standardwert)."
+        "ToolTip": "Nicht erweitern, um Ordner im Navigationsbereich zu öffnen (Standardwert)."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Der Navigationsbereich des Explorers (Linker Abschnitt) wird auf den aktuellen Ordner erweitert."
+        "ToolTip": "Erweitern, um Ordner im Navigationsbereich zu öffnen."
       }
     }
   },
@@ -816,11 +816,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide most used apps in Start (default value)."
+        "ToolTip": "Die am häufigsten verwendeten Apps im Startmenü ausblenden (Standardwert)."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show most used Apps in Start."
+        "ToolTip": "Die am häufigsten verwendeten Apps in Start anzeigen."
       }
     }
   },
@@ -1394,7 +1394,7 @@
   },
   {
     "Region": "System",
-    "Function": "UninstallPCHealthCheck",
+    "Function": "Uninstall-PCHealthCheck",
     "Arg": {
       "Zero": {
         "Tag": "Block",
