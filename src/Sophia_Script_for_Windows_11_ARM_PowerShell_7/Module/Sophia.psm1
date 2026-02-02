@@ -3246,7 +3246,7 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 	Do not group files and folder in the Downloads folder
 
 	.PARAMETER Default
-	Group files and folder by date modified in the Downloads folder (default value)
+	Group files and folder by date modified in the Downloads folder
 
 	.EXAMPLE
 	FolderGroupBy -None
@@ -3308,7 +3308,7 @@ function FolderGroupBy
 	Expand to current folder in navigation pane
 
 	.PARAMETER Disable
-	Do not expand to open folder on navigation pane (default value)
+	Do not expand to open folder on navigation pane
 
 	.PARAMETER Enable
 	Expand to open folder on navigation pane
@@ -3362,7 +3362,7 @@ function NavigationPaneExpand
 	Hide recently added apps on Start
 
 	.PARAMETER Show
-	Show recently added apps in Start (default value)
+	Show recently added apps in Start
 
 	.EXAMPLE
 	RecentlyAddedStartApps -Hide
@@ -3427,7 +3427,7 @@ function RecentlyAddedStartApps
 	Hide most used Apps in Start
 
 	.PARAMETER Show
-	Show most used Apps in Start (default value)
+	Show most used Apps in Start
 
 	.EXAMPLE
 	MostUsedStartApps -Hide
@@ -3498,7 +3498,7 @@ function MostUsedStartApps
 	Hide recommended section in Start
 
 	.PARAMETER Show
-	Show remove recommended section in Start (default value)
+	Show remove recommended section in Start
 
 	.EXAMPLE
 	StartRecommendedSection -Hide
@@ -5667,14 +5667,14 @@ function Set-UserShellFolderLocation
 		"Videos"    = "My Video"
 	}
 
-		$UserShellFoldersGUIDs = @{
-			"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
-			"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
-			"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5404642AF1E4}"
-			"Music"     = "{A0C69A99-21C8-4671-8703-7934162FCF1D}"
-			"Pictures"  = "{0DDD015D-B06C-45D5-8C4C-F59713854639}"
-			"Videos"    = "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
-		}
+	$UserFolderGUIDs = @{
+		"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
+		"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
+		"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5404642AF1E4}"
+		"Music"     = "{A0C69A99-21C8-4671-8703-7934162FCF1D}"
+		"Pictures"  = "{0DDD015D-B06C-45D5-8C4C-F59713854639}"
+		"Videos"    = "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
+	}
 
 	# Contents of the hidden desktop.ini file for each type of user folders
 	$Desktop = @"
@@ -5777,8 +5777,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5833,8 +5833,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5867,8 +5867,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -7946,6 +7946,77 @@ function RegistryBackup
 		"Disable"
 		{
 			Remove-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Control\Session Manager\Configuration Manager" -Name EnablePeriodicBackup -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Configure Windows AI
+
+	.PARAMETER Disable
+	Disable Windows AI functions
+
+	.PARAMETER Enable
+	Enable Windows AI functions
+
+	.EXAMPLE
+	WindowsAI -Disable
+
+	.EXAMPLE
+	WindowsAI -Enable
+
+	.NOTES
+	Machine-wide
+#>
+function WindowsAI
+{
+	param
+	(
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	Remove-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI, HKCU:\Software\Policies\Microsoft\Windows\WindowsAI -Force -ErrorAction Ignore
+	Remove-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot, HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WindowsAI\DisableAIDataAnalysis -Name value -Force -ErrorAction Ignore
+
+	if (-not (Get-CimInstance -ClassName Win32_PnPEntity | Where-Object -FilterScript {($null -ne $_.ClassGuid) -and ($_.PNPClass -eq "ComputeAccelerator")}))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CopilotPCSupport, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CopilotPCSupport, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			# Disable Recall
+			Disable-WindowsOptionalFeature -Online -FeatureName Recall
+			# Remove Copilot application
+			Get-AppxPackage -Name Microsoft.Copilot | Remove-AppxPackage
+		}
+		"Enable"
+		{
+			# Enable Recall
+			Enable-WindowsOptionalFeature -Online -FeatureName Recall
+			# Open Copilot page in Microsoft Store
+			Start-Process -FilePath  "ms-windows-store://pdp/?ProductId=9NHT9RB2F4HD"
 		}
 	}
 }

@@ -2889,7 +2889,7 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 	Do not group files and folder in the Downloads folder
 
 	.PARAMETER Default
-	Group files and folder by date modified in the Downloads folder (default value)
+	Group files and folder by date modified in the Downloads folder
 
 	.EXAMPLE
 	FolderGroupBy -None
@@ -2951,7 +2951,7 @@ function FolderGroupBy
 	Expand to current folder in navigation pane
 
 	.PARAMETER Disable
-	Do not expand to open folder on navigation pane (default value)
+	Do not expand to open folder on navigation pane
 
 	.PARAMETER Enable
 	Expand to open folder on navigation pane
@@ -3005,7 +3005,7 @@ function NavigationPaneExpand
 	Hide recently added apps on Start
 
 	.PARAMETER Show
-	Show recently added apps on Start (default value)
+	Show recently added apps on Start
 
 	.EXAMPLE
 	RecentlyAddedStartApps -Hide
@@ -3077,7 +3077,7 @@ function RecentlyAddedStartApps
 	Hide most used Apps in Start
 
 	.PARAMETER Show
-	Show most used Apps in Start (default value)
+	Show most used Apps in Start
 
 	.EXAMPLE
 	MostUsedStartApps -Hide
@@ -3129,7 +3129,7 @@ function MostUsedStartApps
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path HKCU:\NoStartMenuMFUprogramsList -Name Start_TrackProgs -Force -ErrorAction Ignore
+			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Force -ErrorAction Ignore
 			Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList-Type DELETE
 			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList-Type DELETE
 			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation-Type DELETE
@@ -4818,8 +4818,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -4874,8 +4874,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -4908,8 +4908,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}

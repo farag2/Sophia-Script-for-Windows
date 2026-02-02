@@ -398,6 +398,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		CrystalCry           = "HKLM:\SOFTWARE\CrystalCry"
 		# https://github.com/es3n1n/defendnot
 		defendnot            = "$env:SystemRoot\System32\Tasks\defendnot"
+		# https://github.com/zoicware/RemoveWindowsAI
+		RemoveWindowsAI      = "$env:SystemRoot\System32\CatRoot\*\ZoicwareRemoveWindowsAI*"
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -629,32 +631,13 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Check whether Microsoft Defender is a default AV
-	try
+	$Global:DefenderDefaultAV = $false
+	$productState = (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
+	$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
+	if ($DefenderState -notmatch "00|01")
 	{
-		$Global:DefenderDefaultAV = $false
-
-		$productState = (Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
-		$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
-
-		if ($DefenderState -notmatch "00|01")
-		{
-			# Defender is a default AV
-			$Global:DefenderDefaultAV = $true
-		}
-	}
-	catch
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
+		# Defender is a default AV
+		$Global:DefenderDefaultAV = $true
 	}
 
 	# Check whether Controlled Folder Access is enabled

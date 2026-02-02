@@ -3163,7 +3163,7 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint
 	Do not group files and folder in the Downloads folder
 
 	.PARAMETER Default
-	Group files and folder by date modified in the Downloads folder (default value)
+	Group files and folder by date modified in the Downloads folder
 
 	.EXAMPLE
 	FolderGroupBy -None
@@ -3225,7 +3225,7 @@ function FolderGroupBy
 	Expand to current folder in navigation pane
 
 	.PARAMETER Disable
-	Do not expand to open folder on navigation pane (default value)
+	Do not expand to open folder on navigation pane
 
 	.PARAMETER Enable
 	Expand to open folder on navigation pane
@@ -3279,7 +3279,7 @@ function NavigationPaneExpand
 	Hide recently added apps on Start
 
 	.PARAMETER Show
-	Show recently added apps in Start (default value)
+	Show recently added apps in Start
 
 	.EXAMPLE
 	RecentlyAddedStartApps -Hide
@@ -3344,7 +3344,7 @@ function RecentlyAddedStartApps
 	Hide most used Apps in Start
 
 	.PARAMETER Show
-	Show most used Apps in Start (default value)
+	Show most used Apps in Start
 
 	.EXAMPLE
 	MostUsedStartApps -Hide
@@ -3415,7 +3415,7 @@ function MostUsedStartApps
 	Hide recommended section in Start
 
 	.PARAMETER Show
-	Show remove recommended section in Start (default value)
+	Show remove recommended section in Start
 
 	.EXAMPLE
 	StartRecommendedSection -Hide
@@ -5453,8 +5453,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5509,8 +5509,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5543,8 +5543,8 @@ function Set-UserShellFolderLocation
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -Verbose
-							Write-Error -Message ($Localization.Skipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f $UserFolder), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}

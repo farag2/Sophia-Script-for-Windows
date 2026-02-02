@@ -1650,6 +1650,22 @@
         "WindowsDefault": "One"
     },
     {
+        "Region": "System",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "WindowsAI",
+        "Arg": {
+            "Zero": {
+                "Tag": "Disable"
+            },
+            "One": {
+                "Tag": "Enable"
+            }
+        },
+        "Preset": "Zero",
+        "WindowsDefault": "One"
+    },
+    {
         "Region": "WSL",
         "Control": "chk",
         "Required": "false",

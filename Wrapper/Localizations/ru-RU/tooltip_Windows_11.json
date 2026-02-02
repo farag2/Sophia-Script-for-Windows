@@ -1438,6 +1438,20 @@
     }
   },
   {
+    "Region": "System",
+    "Function": "WindowsAI",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Выключить функции, связанные с ИИ Windows."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Включить функции, связанные с ИИ Windows (значение по умолчанию)."
+      }
+    }
+  },
+  {
     "Region": "WSL",
     "Function": "Install-WSL",
     "Arg": {

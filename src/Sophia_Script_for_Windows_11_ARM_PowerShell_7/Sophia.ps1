@@ -939,6 +939,14 @@ RegistryBackup -Enable
 # Do not back up the system registry to %SystemRoot%\System32\config\RegBack folder (default value)
 # Не создавать копии реестра при перезагрузке ПК (значение по умолчанию)
 # RegistryBackup -Disable
+
+# Disable Windows AI functions
+# Выключить функции, связанные с ИИ Windows
+WindowsAI -Disable
+
+# Enable Windows AI functions (default value)
+# Включить функции, связанные с ИИ Windows (значение по умолчанию)
+# RegistryBackup -Enable
 #endregion System
 
 #region WSL

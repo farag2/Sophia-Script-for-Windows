@@ -1438,6 +1438,20 @@
     }
   },
   {
+    "Region": "System",
+    "Function": "WindowsAI",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Windows-KI-Funktionen deaktivieren."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Windows-KI-Funktionen aktivieren (Standardwert)."
+      }
+    }
+  },
+  {
     "Region": "WSL",
     "Function": "Install-WSL",
     "Arg": {

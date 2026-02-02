@@ -967,15 +967,11 @@ MultipleInvokeContext -Enable
 #endregion Context menu
 
 #region Update Policies
-# Scan the Windows registry and display all policies (even created manually) in the Local Group Policy Editor snap-in (gpedit.msc)
-# Просканировать реестр и отобразить все политики (даже созданные вручную) в оснастке Редактора локальной групповой политики (gpedit.msc)
+# Scan the Windows registry and display applied registry policies in the Local Group Policy Editor snap-in (gpedit.msc)
+# Просканировать реестр и отобразить примененные политики реестра в оснастке редактирования групповых политик (gpedit.msc)
 # ScanRegistryPolicies
 #endregion Update Policies
 
-# Environment refresh and other neccessary post actions
-# Обновление окружения и прочие необходимые действия после выполнения основных функций
+# Post actions
+# Завершающие действия
 PostActions
-
-# Errors output
-# Вывод ошибок
-Errors

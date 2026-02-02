@@ -1415,6 +1415,20 @@
     }
   },
   {
+    "Region": "System",
+    "Function": "WindowsAI",
+    "Arg": {
+      "Zero": {
+        "Tag": "Disable",
+        "ToolTip": "Disable Windows AI functions."
+      },
+      "One": {
+        "Tag": "Enable",
+        "ToolTip": "Enable Windows AI functions (default value)."
+      }
+    }
+  },
+  {
     "Region": "WSL",
     "Function": "Install-WSL",
     "Arg": {
