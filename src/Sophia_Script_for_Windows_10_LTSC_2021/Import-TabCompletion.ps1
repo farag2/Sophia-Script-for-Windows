@@ -128,30 +128,6 @@ $Parameters = @{
 				}
 			}
 
-			# If a module command is Install-VCRedist
-			if ($Command -eq "Install-VCRedist")
-			{
-				# Get all command arguments, excluding defaults
-				foreach ($ParameterSet in $ParameterSets.Name)
-				{
-					# If an argument is Redistributables
-					if ($ParameterSet -eq "Redistributables")
-					{
-						$ValidValues = ((Get-Command -Name Install-VCRedist).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues
-						foreach ($ValidValue in $ValidValues)
-						{
-							# The "Install-VCRedist -Redistributables <function>" construction
-							"Install-VCRedist" + " " + "-" + $ParameterSet + " " + $ValidValue | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
-						}
-
-						# The "Install-VCRedist -Redistributables <functions>" construction
-						"Install-VCRedist" + " " + "-" + $ParameterSet + " " + ($ValidValues -join ", ") | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
-					}
-
-					continue
-				}
-			}
-
 			# If a module command is Install-DotNetRuntimes
 			if ($Command -eq "Install-DotNetRuntimes")
 			{

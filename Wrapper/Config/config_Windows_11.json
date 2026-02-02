@@ -1569,13 +1569,10 @@
         "Region": "System",
         "Control": "chk",
         "Required": "false",
-        "Function": "Install-VCRedist -Redistributables",
+        "Function": "Install-VCRedist",
         "Arg": {
             "Zero": {
-                "Tag": "2015_2026_x86"
-            },
-            "One": {
-                "Tag": "2015_2026_x64"
+                "Tag": ""
             }
         },
         "Preset": "",

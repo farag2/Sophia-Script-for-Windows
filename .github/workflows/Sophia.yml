@@ -21,6 +21,15 @@ jobs:
           if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")})
           {
             Write-Verbose -Message "Found script issues" -Verbose
+
+            $Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")} | ForEach-Object -Process {
+              [PSCustomObject]@{
+                Line    = $_.Line
+                Message = $_.Message
+                Path    = $_.ScriptPath
+              }
+            }
+
             exit 1  # Exit with a non-zero status to fail the job
           }
 

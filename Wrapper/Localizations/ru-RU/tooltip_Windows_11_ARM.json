@@ -1345,7 +1345,7 @@
   {
     "Region": "System",
     "Function": "Install-VCRedist",
-    "ToolTip": "Установить последнюю версию Microsoft Visual C++ Redistributable Packages 2015–2026 (ARM64)",
+    "ToolTip": "Установить последнюю версию Microsoft Visual C++ Redistributable Packages 2017–2026 (ARM64)",
     "Arg": {
       "Zero": {
         "Tag": "",

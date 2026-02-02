@@ -1404,16 +1404,12 @@
   },
   {
     "Region": "System",
-    "Function": "Install-VCRedist -Redistributables",
-    "ToolTip": "Installieren Sie die neueste Microsoft Visual C++ Redistributable Packages x86, x64",
+    "Function": "Install-VCRedist",
+    "ToolTip": "Installieren Sie die neueste Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)",
     "Arg": {
       "Zero": {
-        "Tag": "2015_2026_x86",
-        "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2026 x86. Internetverbindung erforderlich."
-      },
-      "One": {
-        "Tag": "2015_2026_x64",
-        "ToolTip": "Installieren Sie die neueste unterstützte Microsoft Visual C++ Redistributable 2015–2026 x64. Internetverbindung erforderlich."
+        "Tag": "",
+        "ToolTip": "Internetverbindung erforderlich."
       }
     }
   },

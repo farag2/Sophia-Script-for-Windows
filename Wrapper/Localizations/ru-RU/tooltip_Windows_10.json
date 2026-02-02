@@ -1390,16 +1390,12 @@
   },
   {
     "Region": "System",
-    "Function": "Install-VCRedist -Redistributables",
-    "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026. Требуется соединение с интернетом.",
+    "Function": "Install-VCRedist",
+    "ToolTip": "Установить последнюю версию Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)",
     "Arg": {
       "Zero": {
-        "Tag": "2015_2026_x86",
-        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026 x86. Требуется соединение с интернетом."
-      },
-      "One": {
-        "Tag": "2015_2026_x64",
-        "ToolTip": "Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026 x64. Требуется соединение с интернетом."
+        "Tag": "",
+        "ToolTip": "Требуется соединение с интернетом."
       }
     }
   },

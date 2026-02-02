@@ -906,8 +906,8 @@ DefaultTerminalApp -WindowsTerminal
 # Установить Windows Console Host как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки (значение по умолчанию)
 # DefaultTerminalApp -ConsoleHost
 
-# Install the latest Microsoft Visual C++ Redistributable Packages 2015–2026 (ARM64). Internet connection required
-# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2015–2026 (ARM64). Требуется соединение с интернетом
+# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (ARM64). Internet connection required
+# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (ARM64). Требуется соединение с интернетом
 Install-VCRedist
 
 # Install the latest .NET Desktop Runtime 8, 9, 10 x64. Internet connection required
