@@ -5537,6 +5537,17 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
+	# Turn On Desktop Apps Access to Location
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Allow -Force
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Allow -Force
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location\NonPackaged -Name Value -PropertyType String -Value Allow -Force
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors -Name DisableLocation -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\AppPrivacy -Name LetAppsAccessLocation -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors -Name DisableLocation -Type DELETE
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\AppPrivacy -Name LetAppsAccessLocation -Type DELETE
+
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract the localized "Please wait..." string from shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
@@ -8109,8 +8120,8 @@ function WindowsAI
 	if (-not (Get-CimInstance -ClassName Win32_PnPEntity | Where-Object -FilterScript {($null -ne $_.ClassGuid) -and ($_.PNPClass -eq "ComputeAccelerator")}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CopilotPCSupport, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CopilotPCSupport, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message $Localization.CopilotPCSupport -Verbose
+		Write-Error -Message $Localization.CopilotPCSupport -ErrorAction SilentlyContinue
 
 		return
 	}

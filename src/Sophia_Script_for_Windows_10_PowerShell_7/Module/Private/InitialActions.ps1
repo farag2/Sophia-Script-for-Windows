@@ -713,9 +713,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
 		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
-		Write-Error -Message $Localization.BitLockerAutomaticEncryption -ErrorAction SilentlyContinue
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
-		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
 
 		do
 		{
