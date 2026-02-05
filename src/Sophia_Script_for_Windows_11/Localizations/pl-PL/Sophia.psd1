@@ -33,6 +33,7 @@ NoWindowsFeatures                         = Nincs letiltandó Windows-funkció.
 WindowsFeaturesTitle                      = Funkcje Windows
 NoOptionalFeatures                        = Nincs letiltható opcionális funkció.
 NoSupportedNetworkAdapters                = Brak kart sieciowych obsługujących funkcję "Zezwól komputerowi na wyłączenie tego urządzenia w celu oszczędzania energii".
+LocationServicesDisabled                  = Polecenia powłoki sieciowej wymagają uprawnień lokalizacyjnych, aby uzyskać dostęp do informacji o sieci WLAN. Włącz usługi lokalizacyjne na stronie Lokalizacja w ustawieniach prywatności i bezpieczeństwa.
 OptionalFeaturesTitle                     = Funkcje opcjonalne
 UserShellFolderNotEmpty                   = Niektóre pliki pozostały w folderze "{0}". Przenieś je ręcznie w nowe miejsce.
 UserFolderLocationMove                    = Nie należy zmieniać lokalizacji folderu użytkownika na katalog główny dysku C.

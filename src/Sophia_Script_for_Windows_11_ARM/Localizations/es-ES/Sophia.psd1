@@ -33,6 +33,7 @@ NoWindowsFeatures                         = No hay funciones de Windows que desa
 WindowsFeaturesTitle                      = Características de Windows
 NoOptionalFeatures                        = No hay funciones opcionales que desactivar.
 NoSupportedNetworkAdapters                = No hay adaptadores de red que admitan la función "Permitir que el equipo apague este dispositivo para ahorrar energía".
+LocationServicesDisabled                  = Los comandos de shell de red necesitan permiso de ubicación para acceder a la información de la red WLAN. Active los servicios de ubicación en la página Ubicación de la configuración de Privacidad y seguridad.
 OptionalFeaturesTitle                     = Características opcionales
 UserShellFolderNotEmpty                   = Algunos archivos quedan en la carpeta "{0}". Moverlos manualmente a una nueva ubicación.
 UserFolderLocationMove                    = No deberías cambiar la ubicación de la carpeta de usuario a la raíz de la unidad C.

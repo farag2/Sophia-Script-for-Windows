@@ -95,28 +95,6 @@ public static void PostMessage()
 		}
 	}
 
-	# Open Startup page
-	Start-Process -FilePath "ms-settings:startupapps"
-
-	# Checking whether BitLocker drive encryption is off, despite drive is encrypted
-	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
-		Write-Error -Message $Localization.BitLockerAutomaticEncryption -ErrorAction SilentlyContinue
-		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
-		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
-
-		Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")}
-
-		# Open if Windows edition is not Home
-		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID -ne "Core")
-		{
-			# Open BitLocker settings
-			& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
-		}
-	}
-
 	# Checking whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Global:ScheduledTasks)
 	{
@@ -135,6 +113,19 @@ public static void PostMessage()
 
 		$Global:ScheduledTasks = $false
 	}
+
+	Write-Error -Message "ms-settings:startupapps"
+
+	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
+	if (Test-Path -Path "$env:TEMP\LGPO.txt")
+	{
+		& "$PSScriptRoot\..\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
+		& "$env:SystemRoot\System32\gpupdate.exe" /force
+	}
+
+	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# https://github.com/PowerShell/PowerShell/issues/21070
+	Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 	#endregion Other actions
 
 	#region Toast notifications
@@ -183,18 +174,6 @@ public static void PostMessage()
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 	#endregion Toast notifications
-
-	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
-	if (Test-Path -Path "$env:TEMP\LGPO.txt")
-	{
-		& "$PSScriptRoot\..\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
-
-		& "$env:SystemRoot\System32\gpupdate.exe" /force
-	}
-
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose

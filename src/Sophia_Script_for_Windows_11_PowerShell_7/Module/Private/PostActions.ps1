@@ -95,9 +95,6 @@ public static void PostMessage()
 		}
 	}
 
-	# Open Startup page
-	Start-Process -FilePath "ms-settings:startupapps"
-
 	# Checking whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Global:ScheduledTasks)
 	{
@@ -116,6 +113,19 @@ public static void PostMessage()
 
 		$Global:ScheduledTasks = $false
 	}
+
+	Write-Error -Message "ms-settings:startupapps"
+
+	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
+	if (Test-Path -Path "$env:TEMP\LGPO.txt")
+	{
+		& "$PSScriptRoot\..\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
+		& "$env:SystemRoot\System32\gpupdate.exe" /force
+	}
+
+	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# https://github.com/PowerShell/PowerShell/issues/21070
+	Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 	#endregion Other actions
 
 	#region Toast notifications
@@ -164,18 +174,6 @@ public static void PostMessage()
 	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 	#endregion Toast notifications
-
-	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
-	if (Test-Path -Path "$env:TEMP\LGPO.txt")
-	{
-		& "$PSScriptRoot\..\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
-
-		& "$env:SystemRoot\System32\gpupdate.exe" /force
-	}
-
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose

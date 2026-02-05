@@ -35,6 +35,7 @@ NoWindowsFeatures                         = 没有可禁用的Windows功能。
 WindowsFeaturesTitle                      = Windows 功能
 NoOptionalFeatures                        = 没有可禁用的可选功能。
 NoSupportedNetworkAdapters                = 没有支持"允许计算机为节省电力关闭此设备"功能的网卡适配器。
+LocationServicesDisabled                  = 网络外壳命令需要位置权限才能访问无线局域网信息。请在隐私与安全设置的“位置”页面开启位置服务。
 OptionalFeaturesTitle                     = 可选功能
 UserShellFolderNotEmpty                   = 一些文件留在了"{0}"文件夹。请手动将它们移到一个新位置。
 UserFolderLocationMove                    = 不应将用户文件夹位置更改为 C 盘根目录。

@@ -27,6 +27,7 @@ NoWindowsFeatures                         = Aucune fonctionnalité Windows à d�
 WindowsFeaturesTitle                      = Fonctionnalités
 NoOptionalFeatures                        = Aucune fonctionnalité optionnelle à désactiver.
 NoSupportedNetworkAdapters                = Aucun adaptateur réseau ne prend en charge la fonction "Autoriser l'ordinateur à éteindre ce périphérique pour économiser l'énergie ".
+LocationServicesDisabled                  = Los comandos de shell de red necesitan permiso de ubicación para acceder a la información de la red WLAN. Active los servicios de ubicación en la página Ubicación de la configuración de Privacidad y seguridad.
 OptionalFeaturesTitle                     = Fonctionnalités optionnelles
 UserShellFolderNotEmpty                   = Certains fichiers laissés dans le dossier "{0}". Déplacer les manuellement vers un nouvel emplacement.
 UserFolderLocationMove                    = Vous ne devez pas changer l'emplacement du dossier de l'utilisateur pour la racine du lecteur C.

@@ -1,28 +1,82 @@
 [
-    {
-        "70": {
-            "HeightAdjustInPixels": "30"
-        },
-        "80": {
-            "HeightAdjustInPixels": "30"
-        },
-        "90": {
-            "HeightAdjustInPixels": "20"
-        },
-        "100": {
-            "HeightAdjustInPixels": "18"
-        },
-        "125": {
-            "HeightAdjustInPixels": "12"
-        },
-        "150": {
-            "HeightAdjustInPixels": "10"
-        },
-        "175": {
-            "HeightAdjustInPixels": "10"
-        },
-        "200": {
-            "HeightAdjustInPixels": "1"
-        }
+  {
+    "en": {
+      "70": {
+        "HeightAdjustInPixels": "30"
+      },
+      "80": {
+        "HeightAdjustInPixels": "30"
+      },
+      "90": {
+        "HeightAdjustInPixels": "20"
+      },
+      "100": {
+        "HeightAdjustInPixels": "18"
+      },
+      "125": {
+        "HeightAdjustInPixels": "12"
+      },
+      "150": {
+        "HeightAdjustInPixels": "10"
+      },
+      "175": {
+        "HeightAdjustInPixels": "10"
+      },
+      "200": {
+        "HeightAdjustInPixels": "1"
+      }
+    },
+    "de": {
+      "70": {
+        "HeightAdjustInPixels": "36"
+      },
+      "80": {
+        "HeightAdjustInPixels": "31"
+      },
+      "90": {
+        "HeightAdjustInPixels": "29"
+      },
+      "100": {
+        "HeightAdjustInPixels": "27"
+      },
+      "125": {
+        "HeightAdjustInPixels": "18"
+      },
+      "150": {
+        "HeightAdjustInPixels": "14"
+      },
+      "175": {
+        "HeightAdjustInPixels": "10"
+      },
+      "200": {
+        "HeightAdjustInPixels": "10"
+      }
+    },
+    "ru": {
+      "70": {
+        "HeightAdjustInPixels": "38"
+      },
+      "80": {
+        "HeightAdjustInPixels": "32"
+      },
+      "90": {
+        "HeightAdjustInPixels": "29"
+      },
+      "100": {
+        "HeightAdjustInPixels": "26"
+      },
+      "125": {
+        "HeightAdjustInPixels": "21"
+      },
+      "150": {
+        "HeightAdjustInPixels": "17"
+      },
+      "175": {
+        "HeightAdjustInPixels": "11"
+      },
+      "200": {
+        "HeightAdjustInPixels": "8"
+      }
     }
+  }
 ]

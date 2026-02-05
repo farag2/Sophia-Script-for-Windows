@@ -27,6 +27,7 @@ NoWindowsFeatures                         = Devre dışı bırakılacak Windows 
 WindowsFeaturesTitle                      = Windows özellikleri
 NoOptionalFeatures                        = Devre dışı bırakılacak isteğe bağlı özellik yok.
 NoSupportedNetworkAdapters                = "Bilgisayarın güç tasarrufu için bu aygıtı kapatmasına izin ver" işlevini destekleyen ağ bağdaştırıcısı yok.
+LocationServicesDisabled                  = Ağ kabuğu komutları, WLAN bilgilerine erişmek için konum iznine ihtiyaç duyar. Gizlilik ve güvenlik ayarlarının Konum sayfasında Konum hizmetlerini açın.
 OptionalFeaturesTitle                     = Opsiyonel özellikler
 UserShellFolderNotEmpty                   = "{0}" klasöründe bazı dosyalar kaldı. Kendiniz yeni konuma taşıyın.
 UserFolderLocationMove                    = Kullanıcı klasörü konumunu C sürücüsü kökü olarak değiştirmemelisiniz.

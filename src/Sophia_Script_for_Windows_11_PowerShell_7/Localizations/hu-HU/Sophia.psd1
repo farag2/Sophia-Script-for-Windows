@@ -35,6 +35,7 @@ NoWindowsFeatures                         = Nincs letiltandó Windows-funkció.
 WindowsFeaturesTitle                      = Windows szolgáltatások
 NoOptionalFeatures                        = Nincs letiltható opcionális funkció.
 NoSupportedNetworkAdapters                = Nincs olyan hálózati adapter, amely támogatná az "Engedélyezze a számítógépnek, hogy energiatakarékossági okokból kikapcsolja ezt az eszközt" funkciót.
+LocationServicesDisabled                  = A hálózati shell parancsokhoz helymeghatározási engedély szükséges a WLAN-adatok eléréséhez. Kapcsolja be a Helymeghatározás szolgáltatásokat a Adatvédelem és biztonság beállítások Helymeghatározás oldalon.
 OptionalFeaturesTitle                     = Opcionális szolgáltatások
 UserShellFolderNotEmpty                   = Néhány fájl maradt a "{0}" könyvtárban. Kérem helyezze át ezeket egy új helyre.
 UserFolderLocationMove                    = Nem szabad megváltoztatni a felhasználói mappa helyét a C meghajtó gyökerére.

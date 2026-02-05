@@ -5477,13 +5477,10 @@ function NetworkAdaptersSavePower
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors -Name DisableLocation -Type DELETE
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\AppPrivacy -Name LetAppsAccessLocation -Type DELETE
 
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
 	# Checking whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
 	# We need also check for adapter status per some laptops have many equal adapters records in adapters list
-	$Adapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
+	$Adapters = $PhysicalAdaptersStatusUp | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -5493,8 +5490,6 @@ function NetworkAdaptersSavePower
 		return
 	}
 
-	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
-
 	# Checking whether PC is currently connected to a Wi-Fi network
 	# NetConnectionStatus 2 is Wi-Fi
 	$InterfaceIndex = (Get-CimInstance -ClassName Win32_NetworkAdapter -Namespace root/CIMV2 | Where-Object -FilterScript {$_.NetConnectionStatus -eq 2}).InterfaceIndex
@@ -5502,6 +5497,47 @@ function NetworkAdaptersSavePower
 	{
 		# Get currently connected Wi-Fi network SSID
 		$SSID = (Get-NetConnectionProfile).Name
+	}
+
+	if ($PhysicalAdaptersStatusUp)
+	{
+		# If Wi-Fi network was used
+		if ($SSID)
+		{
+			Write-Verbose -Message $SSID -Verbose
+
+			# Check whether network shell commands were granted location permission to access WLAN information
+			# https://learn.microsoft.com/en-us/windows/win32/nativewifi/wi-fi-access-location-changes
+			try
+			{
+				# Connect to it
+				Start-Process -FilePath "$env:SystemRoot\System32\netsh.exe" -ArgumentList "wlan connect name=$SSID" -Wait -ErrorAction Stop
+			}
+			catch
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.LocationServicesDisabled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.LocationServicesDisabled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				Start-Process -FilePath ms-settings:privacy-location
+
+				return
+			}
+		}
+
+		# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
+		# Otherwise functions below will indicate that there is no the Internet connection
+		while
+		(
+			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp.Name | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
+		)
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			# Extract the localized "Please wait..." string from shell32.dll
+			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+
+			Start-Sleep -Seconds 2
+		}
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -5524,18 +5560,19 @@ function NetworkAdaptersSavePower
 		}
 	}
 
-	# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
-	# Otherwise functions below will indicate that there is no the Internet connection
 	if ($PhysicalAdaptersStatusUp)
 	{
 		# If Wi-Fi network was used
 		if ($SSID)
 		{
 			Write-Verbose -Message $SSID -Verbose
+
 			# Connect to it
-			netsh wlan connect name=$SSID
+			Start-Process -FilePath "$env:SystemRoot\System32\netsh.exe" -ArgumentList "wlan connect name=$SSID" -Wait
 		}
 
+		# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
+		# Otherwise functions below will indicate that there is no the Internet connection
 		while
 		(
 			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp.Name | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
@@ -11797,6 +11834,4 @@ function ScanRegistryPolicies
 			}
 		}
 	}
-
-	& "$env:SystemRoot\System32\gpupdate.exe" /force
 }

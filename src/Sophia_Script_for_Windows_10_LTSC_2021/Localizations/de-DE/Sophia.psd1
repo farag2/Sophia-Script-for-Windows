@@ -27,6 +27,7 @@ NoWindowsFeatures                         = Keine Windows-Funktionen zum Deaktiv
 WindowsFeaturesTitle                      = Windows-Features
 NoOptionalFeatures                        = Keine optionalen Funktionen zum Deaktivieren.
 NoSupportedNetworkAdapters                = Keine Netzwerkadapter, die die Funktion "Computer kann dieses Gerät ausschalten, um Energie zu sparen" unterstützen.
+LocationServicesDisabled                  = Netzwerkshellbefehle benötigen die Berechtigung für den Standortzugriff, um WLAN-Informationen abzurufen. Aktivieren Sie die Ortungsdienste auf der Seite Standort in den Einstellungen unter Datenschutz & Sicherheit.
 OptionalFeaturesTitle                     = Optionale Features
 UserShellFolderNotEmpty                   = Im Ordner "{0}" befinden sich noch Dateien. Verschieben Sie sie manuell an einen neuen Ort.
 UserFolderLocationMove                    = Sie sollten den Speicherort des Benutzerordners nicht in das Stammverzeichnis des Laufwerks C ändern.

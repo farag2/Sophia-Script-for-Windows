@@ -28,6 +28,7 @@ NoWindowsFeatures                         = No Windows Features to disable.
 WindowsFeaturesTitle                      = Windows features
 NoOptionalFeatures                        = No Optional Features to disable.
 NoSupportedNetworkAdapters                = No network adapters which support function "Allow the computer to turn off this device to save power".
+LocationServicesDisabled                  = Network shell commands need location permission to access WLAN information. Turn on Location services on the Location page in Privacy & security settings.
 OptionalFeaturesTitle                     = Optional features
 UserShellFolderNotEmpty                   = Some files left in the "{0}" folder. Move them manually to a new location.
 UserFolderLocationMove                    = You shouldn't change user folder location to C drive root.

@@ -28,6 +28,7 @@ NoWindowsFeatures                         = Nessuna funzionalità di Windows da 
 WindowsFeaturesTitle                      = Funzionalità di Windows
 NoOptionalFeatures                        = Nessuna funzione opzionale da disattivare.
 NoSupportedNetworkAdapters                = Nessuna scheda di rete che supporti la funzione "Consenti al computer di spegnere questo dispositivo per risparmiare energia".
+LocationServicesDisabled                  = I comandi della shell di rete richiedono l'autorizzazione alla localizzazione per accedere alle informazioni WLAN. Attiva i servizi di localizzazione nella pagina Localizzazione delle impostazioni Privacy e sicurezza.
 OptionalFeaturesTitle                     = Caratteristiche opzionali
 UserShellFolderNotEmpty                   = Alcuni file rimasti nella cartella "{0}". Spostali manualmente in una nuova posizione.
 UserFolderLocationMove                    = Non si dovrebbe modificare la posizione della cartella utente nella radice dell'unità C.

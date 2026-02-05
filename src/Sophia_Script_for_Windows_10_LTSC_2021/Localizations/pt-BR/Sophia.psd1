@@ -27,6 +27,7 @@ NoWindowsFeatures                         = Não há recursos do Windows para de
 WindowsFeaturesTitle                      = Recursos do Windows
 NoOptionalFeatures                        = Não há recursos opcionais para desativar.
 NoSupportedNetworkAdapters                = Nenhum adaptador de rede que suporte a função "Permitir que o computador desligue este dispositivo para economizar energia".
+LocationServicesDisabled                  = Os comandos do shell de rede precisam de permissão de localização para acessar as informações da WLAN. Ative os serviços de localização na página Localização nas configurações de Privacidade e segurança.
 OptionalFeaturesTitle                     = Recursos opcionais
 UserShellFolderNotEmpty                   = Alguns arquivos deixados na pasta "{0}". Movê-los manualmente para um novo local.
 UserFolderLocationMove                    = Você não deve alterar o local da pasta do usuário para a raiz da unidade C.
