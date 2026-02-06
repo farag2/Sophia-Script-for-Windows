@@ -1692,16 +1692,24 @@
     "Function": "DNSoverHTTPS",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить DNS-over-HTTPS для IPv4. Действительные IPv4-адреса: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9."
+        "Tag": "Cloudflare",
+        "ToolTip": "Установить Cloudflare DNS, используя DNS-over-HTTPS."
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)."
+        "Tag": "Google",
+        "ToolTip": "Установить Google Public DNS, используя DNS-over-HTTPS."
       },
       "Two": {
-        "Tag": "ComssOneDNS",
-        "ToolTip": "Включить DNS-over-HTTPS через DNS-сервер Comss.one."
+        "Tag": "Quad9",
+        "ToolTip": "Установить Google DNS, используя DNS-over-HTTPS."
+      },
+      "Three": {
+        "Tag": "ComssOne",
+        "ToolTip": "Установить Google DNS, используя DNS-over-HTTPS."
+      },
+      "Four": {
+        "Tag": "Disable",
+        "ToolTip": "становить DNS-записи вашего провайдера (значение по умолчанию)."
       }
     }
   },

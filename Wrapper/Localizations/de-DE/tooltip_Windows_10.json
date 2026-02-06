@@ -1753,20 +1753,6 @@
     }
   },
   {
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert DNS-over-HTTPS für IPv4. Gültige IPv4-Adressen: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.91."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 (Standardwert)."
-      }
-    }
-  },
-  {
     "Region": "Context menu",
     "Function": "MSIExtractContext",
     "Arg": {

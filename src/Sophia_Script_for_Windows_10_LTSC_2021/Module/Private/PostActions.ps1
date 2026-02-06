@@ -124,8 +124,6 @@ public static void PostMessage()
 		$Global:ScheduledTasks = $false
 	}
 
-	Write-Error -Message "ms-settings:startupapps" -ErrorAction SilentlyContinue
-
 	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
 	if (Test-Path -Path "$env:TEMP\LGPO.txt")
 	{

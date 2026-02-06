@@ -10846,31 +10846,40 @@ function WindowsSandbox
 
 <#
 	.SYNOPSIS
-	DNS-over-HTTPS for IPv4
+	Configure DNS using DNS-over-HTTPS
 
-	.PARAMETER Enable
-	Enable DNS-over-HTTPS for IPv4
+	.PARAMETER Cloudflare
+	Enable DNS-over-HTTPS using Cloudflare DNS
+
+	.PARAMETER Google
+	Enable DNS-over-HTTPS using Google Public DNS
+
+	.PARAMETER Quad9
+	Enable DNS-over-HTTPS using Quad9 DNS
+
+	.PARAMETER ComssOne
+	Enable DNS-over-HTTPS using Comss.one DNS
 
 	.PARAMETER Disable
-	Disable DNS-over-HTTPS for IPv4
+	Set default ISP's DNS records
 
 	.EXAMPLE
-	DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
+	DNSoverHTTPS -Cloudflare
 
-	.EXAMPLE Enable DNS-over-HTTPS via Comss.one DNS server
-	DNSoverHTTPS -ComssOneDNS
+	.EXAMPLE
+	DNSoverHTTPS -Google
+
+	.EXAMPLE
+	DNSoverHTTPS -Quad9
+
+	.EXAMPLE
+	DNSoverHTTPS -ComssOne
 
 	.EXAMPLE
 	DNSoverHTTPS -Disable
 
-	.NOTES
-	The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
-
 	.LINK
 	https://learn.microsoft.com/en-us/windows-server/networking/dns/doh-client-support
-
-	.LINK
-	https://www.comss.ru/page.php?id=7315
 
 	.NOTES
 	Machine-wide
@@ -10882,38 +10891,31 @@ function DNSoverHTTPS
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Enable"
+			ParameterSetName = "Cloudflare"
 		)]
 		[switch]
-		$Enable,
+		$Cloudflare,
 
-		[Parameter(Mandatory = $false)]
-		[ValidateScript({
-			# Isolate IPv4 IP addresses and check whether $PrimaryDNS is not equal to $SecondaryDNS
-			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {
-				($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"
-			}) -contains $_) -and ($_ -ne $SecondaryDNS)
-		})]
-		[string]
-		$PrimaryDNS,
-
-		[Parameter(Mandatory = $false)]
-		[ValidateScript({
-			# Isolate IPv4 IP addresses and check whether $PrimaryDNS is not equal to $SecondaryDNS
-			((@((Get-ChildItem -Path HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\Parameters\DohWellKnownServers).PSChildName) | Where-Object -FilterScript {
-				($_ -as [IPAddress]).AddressFamily -ne "InterNetworkV6"
-			}) -contains $_) -and ($_ -ne $PrimaryDNS)
-		})]
-		[string]
-		$SecondaryDNS,
-
-		# https://www.comss.ru/page.php?id=7315
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "ComssOneDNS"
+			ParameterSetName = "Google"
 		)]
 		[switch]
-		$ComssOneDNS,
+		$Google,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Quad9"
+		)]
+		[switch]
+		$Quad9,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "ComssOne"
+		)]
+		[switch]
+		$ComssOne,
 
 		[Parameter(
 			Mandatory = $true,
@@ -10934,125 +10936,88 @@ function DNSoverHTTPS
 		$InterfaceGuids = @((Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}).InterfaceGuid)
 	}
 
+	if ($Disable)
+	{
+		# Determining whether Hyper-V is enabled
+		if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+		{
+			# Configure DNS servers automatically
+			Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ResetServerAddresses
+		}
+		else
+		{
+			# Configure DNS servers automatically
+			Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
+		}
+
+		foreach ($InterfaceGuid in $InterfaceGuids)
+		{
+			Remove-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
+		}
+
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Enable"
+		# https://developers.cloudflare.com/1.1.1.1/setup/windows/
+		"Cloudflare"
 		{
-			# Set a primary and secondary DNS servers
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-			{
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-			}
-			else
-			{
-				Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
-			}
-
-			foreach ($InterfaceGuid in $InterfaceGuids)
-			{
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
-				}
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
-				}
-				# Encrypted preffered, unencrypted allowed
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-			}
+			$PrimaryDNS   = "1.1.1.1"
+			$SecondaryDNS = "1.0.0.1"
 		}
-		"ComssOneDNS"
+		# https://developers.google.com/speed/public-dns/docs/using
+		"Google"
 		{
-			# Resolve dns.comss.one to get its IP address to use
-			try
-			{
-				$ResolveComss = Resolve-DnsName -Name dns.comss.one -NoHostsFile -Verbose
-			}
-			catch [System.Net.WebException]
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoResponse -f "https://dns.comss.one"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoResponse -f "https://dns.comss.one"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-				return
-			}
-
-			# Some ISPs block IP address resolving, and user get only one IP address
-			if ($ResolveComss.IPAddress.Count -eq 1)
-			{
-				$FirstIPAddress = $ResolveComss.IPAddress | Select-Object -First 1
-			}
-			else
-			{
-				$FirstIPAddress = $ResolveComss.IPAddress | Select-Object -First 1
-				$SecondIPAddress = $ResolveComss.IPAddress | Select-Object -Last 1
-			}
-
-			# Set a primary and secondary DNS servers
-			# https://www.comss.ru/page.php?id=7315
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-			{
-				if ($SecondIPAddress)
-				{
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
-				}
-				else
-				{
-					Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
-				}
-			}
-			else
-			{
-				if ($SecondIPAddress)
-				{
-					Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress, $SecondIPAddress
-				}
-				else
-				{
-					Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $FirstIPAddress
-				}
-			}
-
-			foreach ($InterfaceGuid in $InterfaceGuids)
-			{
-				if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress"))
-				{
-					New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress" -Force
-				}
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress" -Name DohFlags -PropertyType QWord -Value 2 -Force
-				New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$FirstIPAddress" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
-
-				if ($SecondIPAddress)
-				{
-					if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress"))
-					{
-						New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress" -Name DohFlags -PropertyType QWord -Value 2 -Force
-					New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondIPAddress" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
-				}
-			}
+			$PrimaryDNS   = "8.8.8.8"
+			$SecondaryDNS = "8.8.4.4"
 		}
-		"Disable"
+		# https://quad9.net/service/service-addresses-and-features/
+		"Quad9"
 		{
-			# Determining whether Hyper-V is enabled
-			if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-			{
-				# Configure DNS servers automatically
-				Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ResetServerAddresses
-			}
-			else
-			{
-				# Configure DNS servers automatically
-				Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ResetServerAddresses
-			}
+			$PrimaryDNS   = "9.9.9.9"
+			$SecondaryDNS = "149.112.112.112"
+		}
+		# https://www.comss.ru/page.php?id=7315
+		"ComssOne"
+		{
+			$PrimaryDNS   = "83.220.169.155"
+			$SecondaryDNS = "212.109.195.93"
+		}
+	}
 
-			foreach ($InterfaceGuid in $InterfaceGuids)
-			{
-				Remove-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh" -Recurse -Force -ErrorAction Ignore
-			}
+	# Set primary and secondary DNS servers
+	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+	{
+		Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+	}
+	else
+	{
+		Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
+	}
+
+	foreach ($InterfaceGuid in $InterfaceGuids)
+	{
+		if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
+		{
+			New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
+		}
+		if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
+		{
+			New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
+		}
+
+		# Encrypted preffered, unencrypted allowed
+		if ($ComssOne)
+		{
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 2 -Force
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
+		}
+		else
+		{
+
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
 		}
 	}
 

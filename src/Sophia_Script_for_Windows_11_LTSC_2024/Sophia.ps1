@@ -1061,23 +1061,25 @@ SaveZoneInformation -Disable
 # Выключить Windows Sandbox (значение по умолчанию). Применимо только к редакциям Professional, Enterprise и Education
 # WindowsSandbox -Disable
 
-<#
-	Enable DNS-over-HTTPS for IPv4
-	The valid IPv4 addresses: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
+# Enable DNS-over-HTTPS using Cloudflare DNS
+# Установить Cloudflare DNS, используя DNS-over-HTTPS
+DNSoverHTTPS -Cloudflare
 
-	Включить DNS-over-HTTPS для IPv4
-	Действительные IPv4-адреса: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9
-#>
-DNSoverHTTPS -Enable -PrimaryDNS 1.0.0.1 -SecondaryDNS 1.1.1.1
+# Enable DNS-over-HTTPS using Google Public DNS
+# Установить Google Public DNS, используя DNS-over-HTTPS
+# DNSoverHTTPS -Google
 
-# Disable DNS-over-HTTPS for IPv4 (default value)
-# Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)
+# Enable DNS-over-HTTPS using Quad9
+# Установить Google DNS, используя DNS-over-HTTPS
+# DNSoverHTTPS -Quad9
+
+# Enable DNS-over-HTTPS using Comss.one
+# Установить Google DNS, используя DNS-over-HTTPS
+# DNSoverHTTPS -ComssOne
+
+# Set default ISP's DNS records (default value)
+# Установить DNS-записи вашего провайдера (значение по умолчанию)
 # DNSoverHTTPS -Disable
-
-# Enable DNS-over-HTTPS via Comss.one DNS server
-# Включить DNS-over-HTTPS через DNS-сервер Comss.one
-# https://www.comss.ru/page.php?id=7315
-# DNSoverHTTPS -ComssOneDNS
 
 # Enable Local Security Authority protection to prevent code injection
 # Включить защиту локальной системы безопасности, чтобы предотвратить внедрение кода

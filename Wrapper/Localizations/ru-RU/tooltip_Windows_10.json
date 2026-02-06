@@ -1753,20 +1753,6 @@
     }
   },
   {
-    "Region": "Microsoft Defender & Security",
-    "Function": "DNSoverHTTPS",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить DNS-over-HTTPS для IPv4. Действительные IPv4-адреса: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.9."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)."
-      }
-    }
-  },
-  {
     "Region": "Context menu",
     "Function": "MSIExtractContext",
     "Arg": {

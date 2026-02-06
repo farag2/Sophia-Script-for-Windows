@@ -1692,16 +1692,24 @@
     "Function": "DNSoverHTTPS",
     "Arg": {
       "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert DNS-over-HTTPS für IPv4. Gültige IPv4-Adressen: 1.0.0.1, 1.1.1.1, 149.112.112.112, 8.8.4.4, 8.8.8.8, 9.9.9.91."
+        "Tag": "Cloudflare",
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Cloudflare DNS."
       },
       "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert DNS-over-HTTPS für IPv4 (Standardwert)."
+        "Tag": "Google",
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Google DNS."
       },
       "Two": {
-        "Tag": "ComssOneDNS",
-        "ToolTip": "DNS-over-HTTPS über den Comss.one-DNS-Server aktivieren."
+        "Tag": "Quad9",
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Quad9 DNS."
+      },
+      "Three": {
+        "Tag": "ComssOne",
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit ComssOne DNS."
+      },
+      "Four": {
+        "Tag": "Disable",
+        "ToolTip": "Standard-DNS-Einträge des Internetdienstanbieters festlegen (Standardwert)."
       }
     }
   },
