@@ -574,7 +574,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	if ((Get-Service -Name SecurityHealthService).Status -ne "running")
+	# Check SecurityHealthService service
+	try
+	{
+		Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service
+	}
+	catch
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
@@ -608,7 +613,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 		Start-Process -FilePath "windowsdefender://RansomwareProtection"
 
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
