@@ -69,7 +69,11 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * Uninstall UWP apps displaying their localized packages names
   * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
 * Display applied registry policies in the Local Group Policy Editor snap-in (gpedit.msc)
-* Enable DNS-over-HTTPS
+* Enable DNS-over-HTTPS using
+  * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
+  * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
+  * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
+  * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
 * Uninstall OneDrive
 * Interactive [prompts and popups](#screenshots)
 * <kbd>TAB</kbd> [completion](#how-to-run-the-specific-functions) for functions and their arguments (using Import-TabCompletion.ps1)

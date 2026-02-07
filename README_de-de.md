@@ -69,7 +69,11 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 * Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen
   * Skript generiert Liste der installierten UWP-Apps [dynamisch](#lokalisierte-namen-von-uwp-paketen)
 * Zeigen Sie die angewendeten Registrierungsrichtlinien im Snap-Ins Editor für lokale Gruppenrichtlinien (gpedit.msc) an
-* DNS-über-HTTPS aktivieren
+* Aktivieren Sie DNS-over-HTTPS mit
+  * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
+  * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
+  * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
+  * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
 * OneDrive entfernen
 * Interaktive [Eingabeaufforderungen und Popups](#screenshots)
 * Die <kbd>TAB</kbd> [Autovervollständigung](#verwendung-von-spezifischen-funktionen) für Funktionen und ihre Argumente (mit Import-TabCompletion.ps1)

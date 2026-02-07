@@ -69,7 +69,11 @@
 * Видалення UWP-додатків, що відображають назви пакетів
   * Скрипт генерує список встановлених UWP-додатків [динамічно](#локалізовані-назви-uwp-пакетів)
 * Відобразити застосовані політики реєстру в оснащенні редагування групових політик (gpedit.msc)
-* Активація DNS-over-HTTPS
+* Встановити на вибір наступні DNS-провайдери, використовуючи DNS-over-HTTPS
+  * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
+  * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
+  * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
+  * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
 * Видалення OneDrive
 * Інтерактивні [підказки та спливаючі вікна](#скріншоти)
 * <kbd>TAB</kbd> [доповнення](#як-виконати-конкретну-функцію(ї)) для функцій та їх аргументів (Використовуючи Import-TabCompletion.ps1)
