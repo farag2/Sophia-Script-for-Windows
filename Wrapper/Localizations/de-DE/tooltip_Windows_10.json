@@ -1173,20 +1173,6 @@
   },
   {
     "Region": "System",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Verwenden Sie die neueste installierte .NET-Laufzeitumgebung für alle Anwendungen."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Die zuletzt installierte .NET-Laufzeitumgebung nicht für alle Anwendungen verwenden (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "WinPrtScrFolder",
     "Arg": {
       "Zero": {

@@ -15,7 +15,7 @@
   },
   {
     "Region": "Protection",
-    "Function": "Logging",
+    "Function": "Logging"
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1123,20 +1123,6 @@
       "Two": {
         "Tag": "Default",
         "ToolTip": "Change user folders location to the default values. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Use .NET Framework 4.8.1 for old apps."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use .NET Framework 4.8.1 for old apps (default value)."
       }
     }
   },

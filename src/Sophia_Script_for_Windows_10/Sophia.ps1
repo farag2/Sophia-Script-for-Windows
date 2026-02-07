@@ -767,7 +767,7 @@ InputMethod -English
 	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
 	По умолчанию они располагаются в папке %USERPROFILE%
 #>
-Set-UserShellFolderLocation -Root
+Set-UserShellFolderLocation -Root ###
 
 <#
 	Select folders for user folders location manually using a folder browser dialog
@@ -790,14 +790,6 @@ Set-UserShellFolderLocation -Root
 	По умолчанию они располагаются в папке %USERPROFILE%
 #>
 # Set-UserShellFolderLocation -Default
-
-# Use .NET Framework 4.8.1 for old apps
-# Использовать .NET Framework 4.8.1 для устаревших программ
-# LatestInstalled.NET -Enable
-
-# Do not use .NET Framework 4.8.1 for old apps (default value)
-# Не использовать .NET Framework 4.8.1 для устаревших программ (значение по умолчанию)
-# LatestInstalled.NET -Disable
 
 # Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S
 # Сохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S на рабочий стол

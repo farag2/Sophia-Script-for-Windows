@@ -5996,58 +5996,6 @@ function Set-UserShellFolderLocation
 
 <#
 	.SYNOPSIS
-	The the latest installed .NET Desktop Runtime for all apps usage
-
-	.PARAMETER Enable
-	Use .NET Framework 4.8.1 for old apps
-
-	.PARAMETER Disable
-	Do not use .NET Framework 4.8.1 for old apps
-
-	.EXAMPLE
-	LatestInstalled.NET -Enable
-
-	.EXAMPLE
-	LatestInstalled.NET -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function LatestInstalled.NET
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -PropertyType DWord -Value 1 -Force
-		}
-		"Disable"
-		{
-			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework, HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	The location to save screenshots when pressing Windows+PrtScr or using Windows+Shift+S
 
 	.PARAMETER Desktop

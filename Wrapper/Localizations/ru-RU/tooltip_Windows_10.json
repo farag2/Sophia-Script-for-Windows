@@ -1173,20 +1173,6 @@
   },
   {
     "Region": "System",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Использовать .NET Framework 4.8.1 для устаревших программ."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Не использовать .NET Framework 4.8.1 для устаревших программ (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "WinPrtScrFolder",
     "Arg": {
       "Zero": {

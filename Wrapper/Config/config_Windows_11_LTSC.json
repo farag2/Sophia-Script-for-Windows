@@ -1312,23 +1312,6 @@
         "Region": "System",
         "Control": "cmb",
         "Required": "false",
-        "Function": "LatestInstalled.NET",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "System",
-        "Control": "cmb",
-        "Required": "false",
         "Function": "WinPrtScrFolder",
         "Arg": {
             "Zero": {

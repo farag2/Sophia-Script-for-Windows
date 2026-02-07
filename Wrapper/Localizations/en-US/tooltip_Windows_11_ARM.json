@@ -1109,20 +1109,6 @@
   },
   {
     "Region": "System",
-    "Function": "LatestInstalled.NET",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Use .NET Framework 4.8.1 for old apps."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Do not use .NET Framework 4.8.1 for old apps (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "WinPrtScrFolder",
     "Arg": {
       "Zero": {

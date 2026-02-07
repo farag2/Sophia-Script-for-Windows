@@ -17,10 +17,11 @@ jobs:
 
       - name: Run PSScriptAnalyzer
         run: |
+          # Check module for errors
           $Results = @(Get-ChildItem -Path src -File -Recurse -Include *.ps1, *.psm1, *.psd1 | Invoke-ScriptAnalyzer)
           if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")})
           {
-            Write-Verbose -Message "Found script issues" -Verbose
+            Write-Verbose -Message "Found script issue" -Verbose
 
             $Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")} | ForEach-Object -Process {
               [PSCustomObject]@{
@@ -30,6 +31,21 @@ jobs:
               }
             }
 
+            exit 1  # Exit with a non-zero status to fail the job
+          }
+
+      - name: Check JSONs validity
+        run: |
+          # Check JSONs for errors
+          $JSONs = [Array]::TrueForAll((@(Get-ChildItem -Path Wrapper -File -Recurse -Filter *.json).FullName),
+          [Predicate[string]]{
+            param($JSON)
+
+            Test-Json -Path $JSON -ErrorAction Ignore
+          })
+          if (-not $JSONs)
+          {
+            Write-Verbose -Message "Found JSON issue" -Verbose
             exit 1  # Exit with a non-zero status to fail the job
           }
 
