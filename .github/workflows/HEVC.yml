@@ -1,0 +1,29 @@
+name: Download HEVC
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  download-and-save:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Download HEVC package
+        run: |
+          . "Scripts\HEVC.ps1"
+
+      - name: Commit and push changes
+        run: |
+          # Save Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx to HEVC folder
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+          git add HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx
+          git commit -m "Update Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
+          git push
