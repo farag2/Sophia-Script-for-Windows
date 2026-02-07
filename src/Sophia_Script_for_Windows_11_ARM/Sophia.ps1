@@ -728,37 +728,16 @@ InputMethod -English
 # Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)
 # InputMethod -Default
 
-<#
-	Change user folders location to the root of any drive using an interactive menu
-	User files or folders won't be moved to a new location. Move them manually
-	They're located in the %USERPROFILE% folder by default
-
-	Переместить пользовательские папки в корень любого диска на выбор с помощью интерактивного меню
-	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %USERPROFILE%
-#>
+# Change location of user folders to the root of any drive using the interactive menu. User files or folders won't be moved to a new location
+# Изменить расположение пользовательских папки в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение
 Set-UserShellFolderLocation -Root
 
-<#
-	Select folders for user folders location manually using a folder browser dialog
-	User files or folders won't be moved to a new location. Move them manually
-	They're located in the %USERPROFILE% folder by default
-
-	Выбрать папки для расположения пользовательских папок вручную, используя диалог "Обзор папок"
-	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %USERPROFILE%
-#>
+# Select location of user folders manually using a folder browser dialog. User files or folders won't be moved to a new location
+# Выбрать папки для расположения пользовательских папок вручную, используя диалог "Обзор папок". Пользовательские файлы и папки не будут перемещены в новое расположение
 # Set-UserShellFolderLocation -Custom
 
-<#
-	Change user folders location to the default values
-	User files or folders won't be moved to the new location. Move them manually
-	They're located in the %USERPROFILE% folder by default
-
-	Изменить расположение пользовательских папок на значения по умолчанию
-	Пользовательские файлы и папки не будут перемещены в новое расположение. Переместите их вручную
-	По умолчанию они располагаются в папке %USERPROFILE%
-#>
+# Change user folders location to default values. User files or folders won't be moved to the new location
+# Изменить расположение пользовательских папок на значения по умолчанию. Пользовательские файлы и папки не будут перемещены в новое расположение
 # Set-UserShellFolderLocation -Default
 
 # Save screenshots on the Desktop when pressing Windows+PrtScr or using Windows+Shift+S

@@ -1159,15 +1159,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Root",
-        "ToolTip": "Verschieben Sie Benutzerordner über das interaktive Menü in das Stammverzeichnis eines beliebigen Laufwerks. Benutzerdateien oder -ordner können nicht an einen neuen Speicherort verschoben werden. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
+        "ToolTip": "Ändern Sie den Speicherort von Benutzerordnern über das interaktive Menü in das Stammverzeichnis eines beliebigen Laufwerks. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben."
       },
       "One": {
         "Tag": "Custom",
-        "ToolTip": "Wählen Sie  den Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
+        "ToolTip": "Wählen Sie den Speicherort der Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben."
       },
       "Two": {
         "Tag": "Default",
-        "ToolTip": "Ändern Sie den Speicherort von Benutzerordnern auf die Standardwerten. Benutzerdateien oder -ordner lassen sich nicht an einen neuen Speicherort verschieben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig im Ordner %USERPROFILE% (Standardwert)."
+        "ToolTip": "Ändern Sie den Speicherort der Benutzerordner auf die Standardwerte. Benutzerdateien oder -ordner werden nicht an den neuen Speicherort verschoben (Standardwert)."
       }
     }
   },
