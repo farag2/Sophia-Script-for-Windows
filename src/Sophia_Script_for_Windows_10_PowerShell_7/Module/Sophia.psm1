@@ -9334,84 +9334,33 @@ function Install-HEVC
 		return
 	}
 
-	try
-	{
-		$Body = @{
-			type = "url"
-			url  = "https://apps.microsoft.com/detail/9N4WGH0Z6VHQ"
-			ring = "Retail"
-			lang = "en-US"
-		}
-		$Parameters = @{
-			Uri             = "https://ru.store.rg-adguard.net/api/GetFiles"
-			Method          = "Post"
-			ContentType     = "application/x-www-form-urlencoded"
-			Body            = $Body
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		$Raw = Invoke-WebRequest @Parameters
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoResponse -f "https://ru.store.rg-adguard.net"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoResponse -f "https://ru.store.rg-adguard.net"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	# Get a temp URL
-	$TempURL = $Raw.Links.href | Sort-Object -Property Length -Descending | Select-Object -First 1
-	# Get package build version
-	$HEVCPackageName = ($Raw.Links.outerHTML | Where-Object -FilterScript {$_ -match "appxbundle"}).Split("_") | Select-Object -Index 1
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract the localized "Please wait..." string from shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	try
 	{
-		$Parameters = @{
-			Uri             = $TempURL
-			UseBasicParsing = $true
-			Verbose         = $true
-		}
-		(Invoke-WebRequest @Parameters).StatusCode
-	}
-	catch [System.Net.WebException]
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	# Installing "HEVC Video Extensions from Device Manufacturer"
-	if ([System.Version]$HEVCPackageName -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
 		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 		$Parameters = @{
-			Uri             = $TempURL
+			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/master/HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
 			OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
 			UseBasicParsing = $true
 			Verbose         = $true
 		}
 		Invoke-WebRequest @Parameters
-
-		Write-Verbose -Message $Localization.HEVCInstallNotification -Verbose
-
-		Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
-
-		Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
 	}
-	else
+	catch [System.Net.WebException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.HEVCInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.HEVCInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
 	}
+
+	Write-Verbose -Message $Localization.HEVCInstallNotification -Verbose
+	Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
+	Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
 }
 
 <#
