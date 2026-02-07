@@ -3124,6 +3124,10 @@ function MostUsedStartApps
 	{
 		"Hide"
 		{
+			if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer))
+			{
+				New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -ItemType Directory -Force
+			}
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -PropertyType DWord -Value 1 -Force
 			Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Type DWORD -Value 1
 		}
