@@ -618,7 +618,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Check SecurityHealthService service
 	try
 	{
-		Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service
+		Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service -ErrorAction Stop
 	}
 	catch
 	{
