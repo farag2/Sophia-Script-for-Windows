@@ -3874,6 +3874,7 @@ function OneDrive
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.UninstallNotification -f "OneDrive") -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
 
 			Stop-Process -Name OneDrive, OneDriveSetup, FileCoAuth -Force -ErrorAction Ignore
 
@@ -3956,6 +3957,7 @@ function OneDrive
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.InstallNotification -f "OneDrive") -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
 
 			if (Test-Path -Path $env:SystemRoot\System32\OneDriveSetup.exe)
 			{
@@ -7393,6 +7395,7 @@ function Install-VCRedist
 
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.InstallNotification -f "Visual C++ Redistributable ARM64 $LatestVCRedistVersion") -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Start-Process -FilePath "$DownloadsFolder\vc_redist.arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
 
@@ -7514,6 +7517,7 @@ function Install-DotNetRuntimes
 
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 8 $LatestNET8Version") -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 
 					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
 				}
@@ -7584,6 +7588,7 @@ function Install-DotNetRuntimes
 
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 9 $LatestNET9Version") -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 
 					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
 				}
@@ -7654,6 +7659,7 @@ function Install-DotNetRuntimes
 
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 10 $LatestNET10Version") -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 
 					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET10Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
 				}
@@ -7731,8 +7737,8 @@ function RKNBypass
 			else
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.GeoIdNotSupported, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.GeoIdNotSupported, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.GeoIdNotSupported -f $MyInvocation.Line.Trim()), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.GeoIdNotSupported -f $MyInvocation.Line.Trim()), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 			}
 		}
 		"Disable"

@@ -1159,15 +1159,15 @@
     "Arg": {
       "Zero": {
         "Tag": "Root",
-        "ToolTip": "Change user folders location to the root of any drive using the interactive menu. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
+        "ToolTip": "Change location of user folders to the root of any drive using the interactive menu. User files or folders won't be moved to a new location."
       },
       "One": {
         "Tag": "Custom",
-        "ToolTip": "Select folders for user folders location manually using a folder browser dialog. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default."
+        "ToolTip": "Select location of user folders manually using a folder browser dialog. User files or folders won't be moved to a new location."
       },
       "Two": {
         "Tag": "Default",
-        "ToolTip": "Change user folders location to the default values. User files or folders won't be moved to a new location. Move them manually. They're located in the %USERPROFILE% folder by default (default value)."
+        "ToolTip": "Change user folders location to default values. User files or folders won't be moved to the new location (default value)."
       }
     }
   },

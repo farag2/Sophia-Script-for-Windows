@@ -7163,6 +7163,7 @@ function Install-VCRedist
 
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message ($Localization.InstallNotification -f "Visual C++ Redistributable x86 $LatestVCRedistVersion") -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
 
 			Start-Process -FilePath "$DownloadsFolder\vc_redist.x86.exe" -ArgumentList "/install /passive /norestart" -Wait
 		}
@@ -7205,6 +7206,7 @@ function Install-VCRedist
 
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.InstallNotification -f "Visual C++ Redistributable x64 $LatestVCRedistVersion") -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Start-Process -FilePath "$DownloadsFolder\vc_redist.x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 	}
@@ -7328,6 +7330,7 @@ function Install-DotNetRuntimes
 
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 8 $LatestNET8Version") -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 
 					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 				}
@@ -7398,6 +7401,7 @@ function Install-DotNetRuntimes
 
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 9 $LatestNET9Version") -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 
 					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 				}
@@ -7468,6 +7472,7 @@ function Install-DotNetRuntimes
 
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 10 $LatestNET10Version") -Verbose
+					Write-Information -MessageData "" -InformationAction Continue
 
 					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET10Version-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
 				}
@@ -7545,8 +7550,8 @@ function RKNBypass
 			else
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.GeoIdNotSupported, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.GeoIdNotSupported, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.GeoIdNotSupported -f $MyInvocation.Line.Trim()), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.GeoIdNotSupported -f $MyInvocation.Line.Trim()), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 			}
 		}
 		"Disable"
