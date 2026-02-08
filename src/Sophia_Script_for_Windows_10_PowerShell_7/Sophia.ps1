@@ -921,12 +921,12 @@ Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
 # Enable proxying only blocked sites from the unified registry of Roskomnadzor. Applicable for Russia only
 # Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России
 # https://antizapret.prostovpn.org
-RKNBypass -Enable
+AntizapretProxy -Enable
 
 # Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)
 # Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)
 # https://antizapret.prostovpn.org
-# RKNBypass -Disable
+# AntizapretProxy -Disable
 
 # List Microsoft Edge channels to prevent desktop shortcut creation upon its update
 # Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления

@@ -14,7 +14,7 @@ HostsWarning                              = Harmadik féltől származó bejegyz
 RebootPending                             = A számítógép újraindításra vár.
 BitLockerInOperation                      = A BitLocker működik. A C meghajtó {0}%-a titkosítva van. Végezze el a BitLocker meghajtó konfigurálását, majd próbálkozzon újra.
 BitLockerAutomaticEncryption              = A C meghajtó titkosítva van, bár a BitLocker ki van kapcsolva. Szeretné dekódolni a meghajtót?
-UnsupportedRelease                        = Újabb Sophia Script verzió található: {0}. Kérjük, töltse le a legújabb verziót.
+UnsupportedRelease                        = Újabb Sophia Script for Windows verzió található: {0}. Kérjük, töltse le a legújabb verziót.
 KeyboardArrows                            = Kérjük, használja a billentyűzet {0} és {1} nyílbillentyűit a válasz kiválasztásához
 CustomizationWarning                      = Személyre szabott minden opciót a {0} preset fájlban, mielőtt futtatni kívánja a Sophia szkriptet?
 WindowsComponentBroken                    = A {0} elromlott vagy eltávolították az operációs rendszerből. Ponovno instalirajte Windows koristeći samo originalnu ISO sliku.
@@ -84,7 +84,7 @@ RestartFunction                           = Ponovo pokrenite funkciju "{0}".
 NoResponse                                = Nem hozható létre kapcsolat a {0} weboldallal.
 Run                                       = Futtatás
 Skipped                                   = Az "{0}" funkció kihagyva.
-ThankfulToastTitle                        = Köszönjük, hogy használta a Sophia Script ❤️
+ThankfulToastTitle                        = Köszönjük, hogy használta a Sophia Script for Windows ❤️
 DonateToastTitle                          = Az alábbi linken keresztül adományozhat 🕊
 DotSourcedWarning                         = Kérjük, "dot-source"-olja a függvényt (egy ponttal az elején):\n. .\\Import-TabCompletion.ps1
 '@

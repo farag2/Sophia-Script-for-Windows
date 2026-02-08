@@ -17,7 +17,7 @@ BitLockerInOperation                      = BitLocker działa. Dysk C jest zaszy
 BitLockerAutomaticEncryption              = Dysk C jest zaszyfrowany, mimo że funkcja BitLocker jest wyłączona. Czy chcesz odszyfrować dysk?
 UnsupportedRelease                        = Znaleziono nowszą wersję skryptu Sophia: {0}. Proszę pobrać najnowszą wersję.
 KeyboardArrows                            = Użyj klawiszy strzałek {0} i {1} na klawiaturze, aby wybrać odpowiedź
-CustomizationWarning                      = Czy dostosowałeś funkcje w predefiniowanym pliku {0} przed uruchomieniem Sophia Script?
+CustomizationWarning                      = Czy dostosowałeś funkcje w predefiniowanym pliku {0} przed uruchomieniem Sophia Script for Windows?
 WindowsComponentBroken                    = {0} jest uszkodzony lub usunięty z systemu operacyjnego. Zainstaluj ponownie system Windows, używając tylko oryginalnego obrazu ISO.
 MicroSoftStorePowerShellWarning           = PowerShell pobrany ze sklepu Microsoft Store nie jest obsługiwany. Należy uruchomić wersję MSI.
 ControlledFolderAccessEnabledWarning      = Włączono kontrolę dostępu do folderów. Proszę ją wyłączyć i ponownie uruchomić skrypt.
@@ -86,7 +86,7 @@ RestartFunction                           = Uruchom ponownie funkcję "{0}".
 NoResponse                                = Nie można nawiązać połączenia z {0}.
 Run                                       = Uruchom
 Skipped                                   = Pominięto.
-ThankfulToastTitle                        = Dziękujemy za korzystanie z Sophia Script ❤️
+ThankfulToastTitle                        = Dziękujemy za korzystanie z Sophia Script for Windows ❤️
 DonateToastTitle                          = Możesz przekazać darowiznę poniżej 🕊
 DotSourcedWarning                         = Prosimy o "dot-source" funkcji (z kropką na początku):\n. .\\Import-TabCompletion.ps1
 '@

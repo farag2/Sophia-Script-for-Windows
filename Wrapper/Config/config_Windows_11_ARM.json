@@ -1569,7 +1569,7 @@
         "Region": "System",
         "Control": "cmb",
         "Required": "false",
-        "Function": "RKNBypass",
+        "Function": "AntizapretProxy",
         "Arg": {
             "Zero": {
                 "Tag": "Enable"
