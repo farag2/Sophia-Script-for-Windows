@@ -3,10 +3,10 @@
 	Sophia Script is a PowerShell module for fine-tuning Windows and automating routine tasks
 
 	.VERSION
-	6.0.4
+	6.1.0
 
 	.DATE
-	05.01.2026
+	08.02.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
