@@ -11037,7 +11037,11 @@ function CABInstallContext
 	{
 		"Show"
 		{
-			if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice", "ProgId", $null) -eq "CABFolder")
+			if
+			(
+				([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice", "ProgId", $null) -eq "CABFolder") -or
+				(-not (Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice -ErrorAction Ignore))
+			)
 			{
 				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command))
 				{
