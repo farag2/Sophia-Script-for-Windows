@@ -5,6 +5,42 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 6.1.0 | 7.1.0 — 08.02.2026
+
+* Code refactoring
+  * Initial checks simplified
+  * [RemoveWindowsAI](https://github.com/zoicware/RemoveWindowsAI) is now marked as a harmful utility which makes Windows instable
+  * `DNSoverHTTPS` function re-written
+    * Now function allow to set DNS records using DNS-over-HTTPS for these providers
+      * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
+      * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
+      * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
+      * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
+
+```powershel
+DNSoverHTTPS -Cloudflare
+DNSoverHTTPS -Google
+DNSoverHTTPS -Quad9
+DNSoverHTTPS -ComssOne
+```
+
+  * `NetworkAdaptersSavePower` function improved
+  * `Set-UserShellFolderLocation` function re-written
+  * Updated localizations
+* Added `WindowsAI` function to configure Windows AI correctly compared with [RemoveWindowsAI](https://github.com/zoicware/RemoveWindowsAI)
+* `RKNBypass` function renamed into `AntizapretProxy`
+* Fixed CABInstallContext
+* `HEVC` function for windows 10 now downloads appx installer via CI/CD [config](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/HEVC.yml)
+* `LatestInstalled.NET`, `DismissMSAccount`, and `DismissSmartScreenFilter` functions removed as an unnecessary ones
+* Added `PSSCriptAnalyzer` check for CI/CD[config](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/PSSCriptAnalyzer.yml)
+* `Install-VCRedist` now installs x86 and x64 latest supported Visual C++ Redistributable
+* `Errors` functions merged with `PostAction`
+* Updated Readme
+* Minor changes and improvements
+
+## Wrapper 2.8.18
+Accessibility Scales separate for Russian, German and English for sharper Scale UI
+
 ## 6.0.4 | 7.0.4 — 05.01.2026
 
 * Added `RecentlyAddedStartApps` and `MostUsedStartApps` for Windows 11
