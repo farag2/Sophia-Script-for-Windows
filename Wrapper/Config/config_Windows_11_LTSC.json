@@ -1933,17 +1933,26 @@
         "Function": "DNSoverHTTPS",
         "Arg": {
             "Zero": {
-                "Tag": "Cloudflare"
+                "Tag": "Cloudflare",
+                "Opposite": "Four"
             },
             "One": {
-                "Tag": "Google"
+                "Tag": "Google",
+                "Opposite": "Four"
             },
             "Two": {
-                "Tag": "Quad9"
+                "Tag": "Quad9",
+                "Opposite": "Four"
             },
             "Three": {
-                "Tag": "ComssOne"
+                "Tag": "ComssOne",
+                "Opposite": "Four"
+            },
+            "Four": {
+                "Tag": "Disable",
+                "Opposite": "Four"
             }
+
         },
         "Preset": "Zero",
         "WindowsDefault": "One"
