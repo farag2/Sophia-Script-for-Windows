@@ -64,10 +64,11 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * Fully open-source project
   * All archives are being built and uploaded using [GitHub Actions](https://github.com/farag2/Sophia-Script-for-Windows/actions)
 * Available via Scoop, Chocolatey, and WinGet
-* Supports ARM64 and PowerShell 7
+* ARM64 support
+* PowerShell 7 support
 * Has no conflict with [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
 * Uninstall UWP apps displaying their localized packages names
-  * Script generates installed UWP apps list [dynamically](#localized-uwp-packages-names)
+  * Script generates installed UWP apps list [dynamically](#screenshots)
 * Display applied registry policies in the Local Group Policy Editor snap-in (gpedit.msc)
 * Enable DNS-over-HTTPS using
   * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
@@ -86,10 +87,10 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
   * Videos
 * Install free (light and dark) `Windows 11 Cursors Concept v2` cursors from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly
   * Archive was downloaded to [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/master/Cursors) folder using [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/master/.github/workflows/Cursors.yml)
-* Set an app as default one for specific extension without "How do you want to open this" pop-up
+* Set an app as default one for specific extension without `How do you want to open this` pop-up
 * Export and import all Windows associations. You need to install all apps according to exported JSON file to restore all associations
 * Install WSL Linux distribution with [pop-up](#screenshots) using friendly distro names
-* Create scheduled tasks with a native toast notification, where you will be able to run or [dismiss](#native-interactive-toasts-for-the-scheduled-tasks) tasks
+* Create scheduled tasks with a [native toast notification](#screenshots)
   * Create scheduled tasks `Windows Cleanup` and `Windows Cleanup Notification` for cleaning up Windows of unused files and Windows updates files
   * Create a scheduled task `SoftwareDistribution` for cleaning up `%SystemRoot%\SoftwareDistribution\Download`
   * Create a scheduled task `Temp` for cleaning up `%TEMP%`
@@ -109,8 +110,6 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * [How to use](#how-to-use)
   * [How to run the specific function(s)](#how-to-run-the-specific-functions)
   * [Wrapper](#wrapper)
-  * [How to revert changes](#how-to-revert-changes)
-* [Donations](#donations)
 * [System Requirements](#system-requirements)
 * [Screenshots](#screenshots)
 * [Videos](#videos)
@@ -226,16 +225,14 @@ scoop uninstall sophia-script --purge
 
 ## How to use
 
-* Download archive and expand it
+<https://github.com/user-attachments/assets/5af5c234-5fb5-4e7e-a3d0-ae496a89e6ba>
+
+* Download archive for your system and expand it
 * Look through the `Sophia.ps1` file to configure functions that you want to be run
-  * Place the `#` char before function if you don't want it to be run.
-  * Remove the `#` char before function if you want it to be run.
-* Copy the whole path to `Sophia.ps1`
-  * On `Windows 10` press and hold the <kbd>Shift</kbd> key, right click on `Sophia.ps1`, and click on `Copy as path`
-  * On `Windows 11` right click on `Sophia.ps1` and click on `Copy as path`.
-* Open `Windows PowerShell`
-  * On `Windows 10` click `File` in the File Explorer, hover over `Open Windows PowerShell`, and select `Open Windows PowerShell as Administrator` [(how-to with screenshots)](https://www.howtogeek.com/662611/9-ways-to-open-powershell-in-windows-10/)
-  * On `Windows 11` right-click on the <kbd>Windows</kbd> icon and open `Windows Terminal (Admin)`
+  * Place the `#` char before function if you don't want it to be run
+  * Remove the `#` char before function if you want it to be run
+* Copy path of downloaded `Sophia Script for Windows` folder
+* Right click on `Windows` button and open Terminal (PowerShell) as admin
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
 ```powershell
@@ -248,15 +245,9 @@ scoop uninstall sophia-script --purge
   .\Sophia.ps1
 ```
 
-### Windows 11
-
-<https://github.com/user-attachments/assets/2654b005-9577-4e56-ac9e-501d3e8a18bd>
-
-### Windows 10
-
-<https://github.com/user-attachments/assets/f5bda68f-9509-41dc-b3b1-1518aeaee36f>
-
 ### How to run the specific function(s)
+
+<https://github.com/user-attachments/assets/d70150d6-af8c-4933-9ec5-b2cf3bb1dd34>
 
 * Do all steps from [How to use](#how-to-use) section and stop at setting execution policy in `PowerShell`
 * [Dot source](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Import-TabCompletion.ps1` file first:
@@ -278,8 +269,6 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
 
-<https://github.com/user-attachments/assets/b7ba9ff5-fa3f-481c-a91f-d8bac5631a56>
-
 ## Wrapper
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
@@ -295,26 +284,6 @@ Read more [here](./Wrapper/README.md)
   * The Wrapper has a real time UI rendering
 * Configure every function
 * Open the `Console Output` tab and press `Run PowerShell`.
-
-## How to revert changes
-
-* Do all steps from [How to use](#how-to-use) section and stop at setting execution policy in `PowerShell`
-* [Dot source](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) the `Import-TabCompletion.ps1` file first:
-
-```powershell
-# With a dot at the beginning
-. .\Import-TabCompletion.ps1
-```
-
-* Call functions from `Sophia.ps1` you want to revert like this.
-
-```powershell
-Sophia -Functions "DiagTrackService -Enable", Uninstall-UWPApps
-```
-
-## Donations
-
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag) <a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
 
 ## System Requirements
 
@@ -334,15 +303,9 @@ Sophia -Functions "DiagTrackService -Enable", Uninstall-UWPApps
 
 ## Screenshots
 
-### Localized UWP packages names
-
 ![Image](./img/uwpapps.png)
 
-### Download and install any supported Linux distribution in automatic mode
-
 ![Image](./img/WSL.png)
-
-### Native interactive toasts for the scheduled tasks
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
 
