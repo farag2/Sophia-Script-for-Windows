@@ -11,8 +11,6 @@
 <br>
 <br>
 
-[![ko-fi](https://www.ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/farag)⠀<a href="https://boosty.to/teamsophia"><img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/master/img/boosty.png" width='40'></a>
-
 Diff from vOldVersion
 [OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
 
