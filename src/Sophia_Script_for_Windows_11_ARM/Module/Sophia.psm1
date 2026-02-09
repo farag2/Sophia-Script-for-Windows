@@ -543,7 +543,7 @@ function ScheduledTasks
 	function DisableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
+		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -555,7 +555,7 @@ function ScheduledTasks
 	function EnableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
+		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -608,7 +608,7 @@ function ScheduledTasks
 		"Enable"
 		{
 			$State           = "Disabled"
-			# Extract the localized "Enable" string from shell32.dll
+			# Extract the localized "Enable" string from %SystemRoot%\System32\shell32.dll
 			$ButtonContent   = [WinAPI.GetStrings]::GetString(51472)
 			$ButtonAdd_Click = {EnableButton}
 		}
@@ -621,7 +621,7 @@ function ScheduledTasks
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all scheduled tasks according to the conditions
@@ -3902,7 +3902,7 @@ function OneDrive
 			Get-Process -Name explorer | Stop-Process -Force
 
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from shell32.dll
+			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 3
@@ -3924,7 +3924,7 @@ function OneDrive
 			Start-Process -FilePath "$env:SystemRoot\explorer.exe"
 
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from shell32.dll
+			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 3
@@ -4609,7 +4609,7 @@ function WindowsFeatures
 	function DisableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
+		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -4621,7 +4621,7 @@ function WindowsFeatures
 	function EnableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
+		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -4691,7 +4691,7 @@ function WindowsFeatures
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all optional features according to the conditions
@@ -4932,7 +4932,7 @@ function WindowsCapabilities
 	function UninstallButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
+		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -4946,7 +4946,7 @@ function WindowsCapabilities
 		try
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from shell32.dll
+			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			[void]$Window.Close()
@@ -5032,7 +5032,7 @@ function WindowsCapabilities
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all capabilities according to the conditions
@@ -5535,7 +5535,7 @@ function NetworkAdaptersSavePower
 		)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from shell32.dll
+			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 2
@@ -5581,7 +5581,7 @@ function NetworkAdaptersSavePower
 		)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from shell32.dll
+			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 2
@@ -5728,14 +5728,14 @@ function Set-UserShellFolderLocation
 	$Desktop = @"
 "",
 "[.ShellClassInfo]",
-"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21769",
+"LocalizedResourceName=@shell32.dll,-21769",
 "IconResource=%SystemRoot%\System32\imageres.dll,-183"
 "@
 
 	$Documents = @"
 "",
 "[.ShellClassInfo]",
-"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21770",
+"LocalizedResourceName=@shell32.dll,-21770",
  "IconResource=%SystemRoot%\System32\imageres.dll,-112",
 "IconFile=%SystemRoot%\System32\shell32.dll",
 "IconIndex=-235"
@@ -5744,15 +5744,15 @@ function Set-UserShellFolderLocation
 	$Downloads = @"
 "",
 "[.ShellClassInfo]",
-"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21798",
+"LocalizedResourceName=@shell32.dll,-21798",
 "IconResource=%SystemRoot%\System32\imageres.dll,-184"
 "@
 
 	$Music = @"
 "",
 "[.ShellClassInfo]",
-"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21790",
-"InfoTip=@%SystemRoot%\System32\shell32.dll,-12689",
+"LocalizedResourceName=@shell32.dll,-21790",
+"InfoTip=@shell32.dll,-12689",
 "IconResource=%SystemRoot%\System32\imageres.dll,-108",
 "IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-237"
 "@
@@ -5760,8 +5760,8 @@ function Set-UserShellFolderLocation
 	$Pictures = @"
 "",
 "[.ShellClassInfo]",
-"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21779",
-"InfoTip=@%SystemRoot%\System32\shell32.dll,-12688",
+"LocalizedResourceName=@shell32.dll,-21779",
+"InfoTip=@shell32.dll,-12688",
 "IconResource=%SystemRoot%\System32\imageres.dll,-113",
 "IconFile=%SystemRoot%\System32\shell32.dll",
 "IconIndex=-236"
@@ -5770,8 +5770,8 @@ function Set-UserShellFolderLocation
 	$Videos = @"
 "",
 "[.ShellClassInfo]",
-"LocalizedResourceName=@%SystemRoot%\System32\shell32.dll,-21791",
-"InfoTip=@%SystemRoot%\System32\shell32.dll,-12690",
+"LocalizedResourceName=@shell32.dll,-21791",
+"InfoTip=@shell32.dll,-12690",
 "IconResource=%SystemRoot%\System32\imageres.dll,-189",
 "IconFile=%SystemRoot%\System32\shell32.dll",
 "IconIndex=-238"
@@ -5804,7 +5804,7 @@ function Set-UserShellFolderLocation
 
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				# Extract the localized user folders strings from shell32.dll
+				# Extract the localized user folders strings from %SystemRoot%\System32\shell32.dll
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
@@ -5838,7 +5838,7 @@ function Set-UserShellFolderLocation
 		{
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				# Extract the localized user folders strings from shell32.dll
+				# Extract the localized user folders strings from %SystemRoot%\System32\shell32.dll
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
@@ -5894,7 +5894,7 @@ function Set-UserShellFolderLocation
 		{
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				# Extract the localized user folders strings from shell32.dll
+				# Extract the localized user folders strings from %SystemRoot%\System32\shell32.dll
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
@@ -6627,7 +6627,7 @@ function NetworkDiscovery
 	Path to an icon
 
 	.EXAMPLE
-	Set-Association -ProgramPath 'C:\SumatraPDF.exe' -Extension .pdf -Icon 'shell32.dll,100'
+	Set-Association -ProgramPath 'C:\SumatraPDF.exe' -Extension .pdf -Icon '%SystemRoot%\System32\shell32.dll,100'
 
 	.EXAMPLE
 	Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'
@@ -6908,7 +6908,7 @@ public static int UnloadHive(RegistryHives hive, string subKey)
 	[array]$Global:RegisteredProgIDs = @()
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Register %1 argument if ProgId exists as an executable file
@@ -8441,7 +8441,7 @@ function Uninstall-UWPApps
 	$Window.Title               = $Localization.UWPAppsTitle
 	$ButtonUninstall.Content    = $Localization.Uninstall
 	$TextBlockRemoveForAll.Text = $Localization.UninstallUWPForAll
-	# Extract the localized "Select all" string from shell32.dll
+	# Extract the localized "Select all" string from %SystemRoot%\System32\shell32.dll
 	$TextBlockSelectAll.Text    = [WinAPI.GetStrings]::GetString(31276)
 
 	$ButtonUninstall.Add_Click({ButtonUninstallClick})
@@ -8463,7 +8463,7 @@ function Uninstall-UWPApps
 		)
 
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
+		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		$AppxPackages = @(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages})
@@ -8571,7 +8571,7 @@ function Uninstall-UWPApps
 	function ButtonUninstallClick
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from shell32.dll
+		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		$Window.Close() | Out-Null
@@ -10986,7 +10986,7 @@ function MSIExtractContext
 			$Value = "msiexec.exe /a `"%1`" /qb TARGETDIR=`"%1 extracted`""
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract\Command -Name "(default)" -PropertyType String -Value $Value -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name MUIVerb -PropertyType String -Value "@shell32.dll,-37514" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "shell32.dll,-16817" -Force
+			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\Msi.Package\shell\Extract -Name Icon -PropertyType String -Value "%SystemRoot%\System32\shell32.dll,-16817" -Force
 		}
 		"Hide"
 		{
@@ -11684,7 +11684,7 @@ function ScanRegistryPolicies
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 

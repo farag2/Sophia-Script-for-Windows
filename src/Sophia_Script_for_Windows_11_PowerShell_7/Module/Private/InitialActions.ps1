@@ -318,14 +318,14 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Extract the localized "Browse" string from shell32.dll
+	# Extract the localized "Browse" string from %SystemRoot%\System32\shell32.dll
 	$Global:Browse = [WinAPI.GetStrings]::GetString(9015)
-	# Extract the localized "&No" string from shell32.dll
+	# Extract the localized "&No" string from %SystemRoot%\System32\shell32.dll
 	$Global:No = [WinAPI.GetStrings]::GetString(33232).Replace("&", "")
-	# Extract the localized "&Yes" string from shell32.dll
+	# Extract the localized "&Yes" string from %SystemRoot%\System32\shell32.dll
 	$Global:Yes = [WinAPI.GetStrings]::GetString(33224).Replace("&", "")
 	$Global:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
-	# Extract the localized "Skip" string from shell32.dll
+	# Extract the localized "Skip" string from %SystemRoot%\System32\shell32.dll
 	$Global:Skip = [WinAPI.GetStrings]::GetString(16956)
 
 	# Check the language mode
@@ -462,7 +462,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from shell32.dll
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
@@ -509,7 +509,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	if ((Get-Service -Name EventLog).Status -eq "Stopped")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Event Viewer" string from shell32.dll
+		# Extract the localized "Event Viewer" string from %SystemRoot%\System32\shell32.dll
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStrings]::GetString(22029)))
 		Write-Information -MessageData "" -InformationAction Continue
 

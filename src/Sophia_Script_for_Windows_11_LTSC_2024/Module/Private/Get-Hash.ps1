@@ -181,7 +181,7 @@ public static long MakeLong(uint left, uint right)
 	{
 		[OutputType([array])]
 
-		# Secret static string stored in %SystemRoot%\SysWOW64\shell32.dll
+		# Secret static string stored in %SystemRoot%\SysWOW64\%SystemRoot%\System32\shell32.dll
 		$userExperience        = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
 		# Get user SID
 		$userSID               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID

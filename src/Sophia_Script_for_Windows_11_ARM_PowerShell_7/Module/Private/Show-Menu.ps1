@@ -9,7 +9,7 @@
 	Default selected item in array
 
 	.PARAMETER AddSkip
-	Add localized extracted "Skip" string from shell32.dll
+	Add localized extracted "Skip" string from %SystemRoot%\System32\shell32.dll
 
 	.EXAMPLE
 	Show-Menu -Menu @($Item1, $Item2) -Default 1
@@ -43,7 +43,7 @@ function Global:Show-Menu
 
 	if ($AddSkip)
 	{
-		# Extract the localized "Skip" string from shell32.dll
+		# Extract the localized "Skip" string from %SystemRoot%\System32\shell32.dll
 		$Menu += [WinAPI.GetStrings]::GetString(16956)
 	}
 

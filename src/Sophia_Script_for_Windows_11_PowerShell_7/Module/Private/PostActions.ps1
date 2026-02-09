@@ -192,7 +192,7 @@ public static void PostMessage()
 
 			[PSCustomObject]@{
 				$Localization.ErrorsLine                  = $_.InvocationInfo.ScriptLineNumber
-				# Extract the localized "File" string from shell32.dll
+				# Extract the localized "File" string from %SystemRoot%\System32\shell32.dll
 				"$([WinAPI.GetStrings]::GetString(4130))" = $ErrorInFile
 				$Localization.ErrorsMessage               = $_.Exception.Message
 			}
