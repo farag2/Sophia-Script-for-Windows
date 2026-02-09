@@ -28,11 +28,12 @@ catch [System.Net.WebException]
 {
 	Write-Verbose -Message "Connection could not be established with https://store.rg-adguard.net" -Verbose
 
-	exit 1  # Exit with a non-zero status to fail the job
+	exit 1 # Exit with a non-zero status to fail the job
 }
 
 # Get a temp URL
-$TempURL = $Raw.Links.href | Sort-Object -Property Length -Descending | Select-Object -First 1
+# Replace &, unless it fails to be parsed
+[xml]$TempURL = ($Raw.Links.outerHTML | Where-Object -FilterScript {$_ -match "appxbundle"}).Replace("&", "&amp;")
 if (-not $TempURL)
 {
 	Write-Verbose -Message "https://store.rg-adguard.net does not output correct URL" -Verbose
@@ -40,9 +41,12 @@ if (-not $TempURL)
 	exit 1 # Exit with a non-zero status to fail the job
 }
 
+# Get package build version and save to HEVC\HEVC_version.txt
+$TempURL.a."#text".Split("_") | Select-Object -Index 1 | Set-Content -Path HEVC\HEVC_version.txt -Encoding utf8 -Force
+
 # Download archive
 $Parameters = @{
-	Uri             = $TempURL
+	Uri             = $TempURL.a.href
 	OutFile         = "HEVC\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
 	Verbose         = $true
 	UseBasicParsing = $true

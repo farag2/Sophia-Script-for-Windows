@@ -10,16 +10,18 @@ $Headers = @{
 	Authorization = "Bearer $Token"
 }
 $Parameters = @{
-	Uri             = "https://api.github.com/repos/microsoft/winget-cli/contents/schemas/JSON/manifests"
+	Uri             = "https://api.github.com/repos/microsoft/winget-pkgs/contents/doc/manifest/schema"
 	Headers         = $Headers
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-$LatestManifest = ((Invoke-RestMethod @Parameters).name | Where-Object {($_ -ne "preview") -and ($_ -ne "latest")}) -replace ("v", "") | Sort-Object -Property {[System.Version]$_} | Select-Object -Last 1
+$LatestManifest = (Invoke-RestMethod @Parameters).name | Sort-Object -Property {[System.Version]$_} | Select-Object -Last 1
 
 if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
 {
 	Write-Warning -Message "A new manifest $($LatestManifest) available. Edit manifests in Scripts\WinGet_Manifests."
+
+	exit 1 # Exit with a non-zero status to fail the job
 }
 
 # Get latest version tag for Windows 11
