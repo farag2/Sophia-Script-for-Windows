@@ -9,6 +9,7 @@ This program creates a PowerShell script file that you can run to customize Wind
 * `Sophia Script Wrapper.exe`: The GUI program.
 * `wrapper_config.json`: JSON that contains the configuration settings for the GUI program.
 * `wrapper_localizations.json`: JSON that contains the configuration settings for the all the language settings.
+* `wrapper_accessibility_scales` : JSON that contains the configuration settings for the all the accessibilty scale settings in different languages.
 * `Set-ConsoleFont.ps1`: PS1 that is run to set PS console to correct font when running PS version 5.x. 
 * `config_Windows_1x.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset, LTSC version.
 * `before_after.json`: JSON that contains the options (function names) for before and after the user selections for PowerShell script output.
@@ -21,3 +22,4 @@ This program creates a PowerShell script file that you can run to customize Wind
 * Copy and translate the `en-US` folder files in `Localizations` to your language
 * You also need to translate the `tag.json` from either the `ru-RU` or `de-DE` folders in `Localizations` to your language
 * Edit the `wrapper_localizations.json` file to add the language entry with control sizing
+
