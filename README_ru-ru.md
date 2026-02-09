@@ -232,7 +232,12 @@ scoop uninstall sophia-script --purge
   * Поставьте символ `#` перед функцией, если не хотите, чтобы она не запускалась
   * Удалите символ `#` перед функцией, если хотите, чтобы она запускалась
 * Скопируйте путь до папки `Sophia Script for Windows`
-* Нажмите правой кнопкой по кнопке Windows и откройте Терминал (PowerShell) от имени администратора
+* Нажмите правой кнопкой по кнопке Windows и откройте Терминал (PowerShell) от имени администратора и вставьте скопированный путь
+
+```batch
+  cd путь\до\папки
+```
+
 * Установите политику выполнения, чтобы можно было выполнять скрипты в текущей сессии PowerShell
 
 ```powershell
@@ -273,7 +278,7 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ## Wrapper
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
+<img src="./img/Wrapper.png" width='600'>
 
 Подробнее [здесь](./Wrapper/README.md)
 
@@ -305,11 +310,12 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ## Скриншоты
 
-![Image](./img/uwpapps.png)
+<div class="row">
+  <img src="./img/uwpapps.png" width='314'>
+  <img src="./img/WSL.png" width='350'>
+</div>
 
-![Image](./img/WSL.png)
-
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
+<img src="./img/Toasts.png" width='400'>
 
 ## Видео
 
@@ -336,7 +342,6 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 * [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
 * [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
-  * PM [me](https://www.reddit.com/user/farag2/)
 * [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)

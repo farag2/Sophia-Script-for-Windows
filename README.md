@@ -232,7 +232,12 @@ scoop uninstall sophia-script --purge
   * Place the `#` char before function if you don't want it to be run
   * Remove the `#` char before function if you want it to be run
 * Copy path of downloaded `Sophia Script for Windows` folder
-* Right click on `Windows` button and open Terminal (PowerShell) as admin
+* Right click on `Windows` button, open Terminal (PowerShell) as admin, and paste copied path to folder
+
+```batch
+  cd path\to\folder
+```
+
 * Set execution policy to be able to run scripts only in the current PowerShell session
 
 ```powershell
@@ -271,7 +276,7 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ## Wrapper
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
+<img src="./img/Wrapper.png" width='600'>
 
 Read more [here](./Wrapper/README.md)
 
@@ -303,11 +308,12 @@ Read more [here](./Wrapper/README.md)
 
 ## Screenshots
 
-![Image](./img/uwpapps.png)
+<div class="row">
+  <img src="./img/uwpapps.png" width='314'>
+  <img src="./img/WSL.png" width='350'>
+</div>
 
-![Image](./img/WSL.png)
-
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
+<img src="./img/Toasts.png" width='400'>
 
 ## Videos
 
@@ -334,7 +340,6 @@ Read more [here](./Wrapper/README.md)
 * [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
 * [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
-  * PM [me](https://www.reddit.com/user/farag2/)
 * [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)

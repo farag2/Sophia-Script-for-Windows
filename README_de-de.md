@@ -14,7 +14,7 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
 </kbd>
 <kbd>
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
 </kbd>
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Human%20Coded%20100%25-green?labelColor=151B23&color=151B23&style=for-the-badge" href="#"></a>
@@ -231,7 +231,12 @@ scoop uninstall sophia-script --purge
 * Schauen Sie sich die Datei `Sophia.ps1` an, um die Funktionen zu konfigurieren, die Sie ausführen möchten
   * Setzen Sie das `#`-Zeichen vor die Funktion, wenn Sie nicht möchten, dass sie ausgeführt wird
   * Entfernen Sie das `#`-Zeichen vor der Funktion, wenn sie ausgeführt werden soll
-* Klicken Sie mit der rechten Maustaste auf die Schaltfläche `Windows` und öffnen Sie das Terminal (PowerShell) als Administrator
+* Klicken Sie mit der rechten Maustaste auf die Schaltfläche `Windows`, öffnen Sie das Terminal (PowerShell) als Administrator und fügen Sie den kopierten Pfad zum Ordner ein
+
+```batch
+  cd pfad\zum\ordner
+```
+
 * Legen Sie die Ausführungsrichtlinie so fest, dass Skripte nur in der aktuellen PowerShell-Sitzung ausgeführt werden können
 
 ```powershell
@@ -270,7 +275,7 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ## Wrapper
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
+<img src="./img/Wrapper.png" width='600'>
 
 Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
@@ -302,11 +307,12 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
 ## Screenshots
 
-![Image](./img/uwpapps.png)
+<div class="row">
+  <img src="./img/uwpapps.png" width='314'>
+  <img src="./img/WSL.png" width='350'>
+</div>
 
-![Image](./img/WSL.png)
-
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
+<img src="./img/Toasts.png" width='400'>
 
 ## Videos
 
@@ -333,7 +339,6 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 * [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
 * [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
 * [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
-  * PM [me](https://www.reddit.com/user/farag2/)
 * [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)

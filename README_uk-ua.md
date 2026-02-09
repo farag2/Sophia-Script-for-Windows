@@ -14,7 +14,7 @@
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
 </kbd>
 <kbd>
-  <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Arm-support-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=Arm&logoColor=white" href="#"></a>
 </kbd>
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Human%20Coded%20100%25-green?labelColor=151B23&color=151B23&style=for-the-badge" href="#"></a>
@@ -232,7 +232,12 @@ scoop uninstall sophia-script --purge
   * Помістіть символ `#` перед функцією, якщо ви не бажаєте, щоб вона виконувалась
   * Приберіть символ `#` перед функцією, якщо ви бажаєте, щоб вона виконувалась
 * Скопіюйте шлях до папки `Sophia Script for Windows`
-* Клацніть правою кнопкою миші на кнопці Windows і відкрийте Термінал (PowerShell) від імені адміністратора.
+* Клацніть правою кнопкою миші на кнопці `Windows` і відкрийте Термінал (PowerShell) від імені адміністратора та вставте скопійований шлях
+
+```batch
+  cd путь\до\папки
+```
+
 * Встановіть політику виконання, щоб можна було виконувати скрипти в поточній сесії PowerShell
 
 ```powershell
@@ -271,7 +276,7 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ## Wrapper
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Wrapper.png)
+<img src="./img/Wrapper.png" width='600'>
 
 Детальніше [тут](./Wrapper/README.md)
 
@@ -303,17 +308,12 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ## Скріншоти
 
-### Локалізовані назви UWP-пакетів
+<div class="row">
+  <img src="./img/uwpapps.png" width='314'>
+  <img src="./img/WSL.png" width='350'>
+</div>
 
-![Image](./img/uwpapps.png)
-
-### Завантажте та встановіть будь-який підтримуваний дистрибутив Linux в автоматичному режимі
-
-![Image](./img/WSL.png)
-
-### Інтерактивні тости для запланованих завдань
-
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/master/img/Toasts.png)
+<img src="./img/Toasts.png" width='400'>
 
 ## Відео
 
@@ -340,7 +340,6 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 * [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
 * [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
 * [Reddit (архівовано)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
-  * Написати в [особисті](https://www.reddit.com/user/farag2/)
 * [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
 * [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
