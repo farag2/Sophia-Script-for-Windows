@@ -1040,13 +1040,17 @@ DNSoverHTTPS -Cloudflare
 # Установить Google Public DNS, используя DNS-over-HTTPS
 # DNSoverHTTPS -Google
 
-# Enable DNS-over-HTTPS using Quad9
+# Enable DNS-over-HTTPS using Quad9 DNS
 # Установить Google DNS, используя DNS-over-HTTPS
 # DNSoverHTTPS -Quad9
 
-# Enable DNS-over-HTTPS using Comss.one
+# Enable DNS-over-HTTPS using Comss.one DNS
 # Установить Google DNS, используя DNS-over-HTTPS
 # DNSoverHTTPS -ComssOne
+
+# Enable DNS-over-HTTPS using AdGuard DNS
+# Установить AdGuard DNS, используя DNS-over-HTTPS
+# DNSoverHTTPS -AdGuard
 
 # Set default ISP's DNS records (default value)
 # Установить DNS-записи вашего провайдера (значение по умолчанию)

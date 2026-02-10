@@ -1694,6 +1694,10 @@
         "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit ComssOne DNS."
       },
       "Four": {
+        "Tag": "AdGuard",
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit AdGuard DNS."
+      },
+      "Five": {
         "Tag": "Disable",
         "ToolTip": "Standard-DNS-Einträge des Internetdienstanbieters festlegen (Standardwert)."
       }

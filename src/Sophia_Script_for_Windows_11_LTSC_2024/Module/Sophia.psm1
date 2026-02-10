@@ -10119,6 +10119,9 @@ function WindowsSandbox
 	.PARAMETER ComssOne
 	Enable DNS-over-HTTPS using Comss.one DNS
 
+	.PARAMETER 
+	Enable DNS-over-HTTPS using AdGuard DNS
+
 	.PARAMETER Disable
 	Set default ISP's DNS records
 
@@ -10133,6 +10136,9 @@ function WindowsSandbox
 
 	.EXAMPLE
 	DNSoverHTTPS -ComssOne
+
+	.EXAMPLE
+	DNSoverHTTPS -AdGuard
 
 	.EXAMPLE
 	DNSoverHTTPS -Disable
@@ -10175,6 +10181,13 @@ function DNSoverHTTPS
 		)]
 		[switch]
 		$ComssOne,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "AdGuard"
+		)]
+		[switch]
+		$AdGuard,
 
 		[Parameter(
 			Mandatory = $true,
@@ -10242,6 +10255,14 @@ function DNSoverHTTPS
 		{
 			$PrimaryDNS   = "83.220.169.155"
 			$SecondaryDNS = "212.109.195.93"
+			$Query        = "https://dns.comss.one/dns-query"
+		}
+		# https://adguard-dns.io/public-dns.html
+		"AdGuard"
+		{
+			$PrimaryDNS   = "94.140.14.140"
+			$SecondaryDNS = "94.140.15.16"
+			$Query        = "https://unfiltered.adguard-dns.com/dns-query"
 		}
 	}
 
@@ -10267,10 +10288,12 @@ function DNSoverHTTPS
 		}
 
 		# Encrypted preffered, unencrypted allowed
-		if ($ComssOne)
+		if ($Query)
 		{
 			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 2 -Force
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohTemplate -PropertyType String -Value https://dns.comss.one/dns-query -Force
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohTemplate -PropertyType String -Value $Query -Force
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 2 -Force
+			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohTemplate -PropertyType String -Value $Query -Force
 		}
 		else
 		{

@@ -1668,15 +1668,19 @@
       },
       "Two": {
         "Tag": "Quad9",
-        "ToolTip": "Установить Google DNS, используя DNS-over-HTTPS."
+        "ToolTip": "Установить Quad9 DNS, используя DNS-over-HTTPS."
       },
       "Three": {
         "Tag": "ComssOne",
-        "ToolTip": "Установить Google DNS, используя DNS-over-HTTPS."
+        "ToolTip": "Установить ComssOne DNS, используя DNS-over-HTTPS."
       },
       "Four": {
+        "Tag": "AdGuard",
+        "ToolTip": "Установить AdGuard DNS, используя DNS-over-HTTPS."
+      },
+      "Five": {
         "Tag": "Disable",
-        "ToolTip": "становить DNS-записи вашего провайдера (значение по умолчанию)."
+        "ToolTip": "Установить DNS-записи вашего провайдера (значение по умолчанию)."
       }
     }
   },

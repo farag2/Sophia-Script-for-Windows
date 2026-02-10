@@ -1949,10 +1949,13 @@
                 "Opposite": "Four"
             },
             "Four": {
+                "Tag": "AdGuard",
+                "Opposite": "Four"
+            },
+            "Five": {
                 "Tag": "Disable",
                 "Opposite": "Four"
             }
-
         },
         "Preset": "Zero",
         "WindowsDefault": "One"

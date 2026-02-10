@@ -1092,22 +1092,27 @@ SaveZoneInformation -Disable
 # WindowsSandbox -Disable
 
 # Enable DNS-over-HTTPS using Cloudflare DNS
+# Установить Cloudflare DNS, используя DNS-over-HTTPS
 DNSoverHTTPS -Cloudflare
 
 # Enable DNS-over-HTTPS using Google Public DNS
 # Установить Google Public DNS, используя DNS-over-HTTPS
 # DNSoverHTTPS -Google
 
-# Enable DNS-over-HTTPS using Quad9
+# Enable DNS-over-HTTPS using Quad9 DNS
 # Установить Google DNS, используя DNS-over-HTTPS
 # DNSoverHTTPS -Quad9
 
-# Enable DNS-over-HTTPS using Comss.one
+# Enable DNS-over-HTTPS using Comss.one DNS
 # Установить Google DNS, используя DNS-over-HTTPS
 # DNSoverHTTPS -ComssOne
 
-# Disable DNS-over-HTTPS for IPv4 (default value)
-# Выключить DNS-over-HTTPS для IPv4 (значение по умолчанию)
+# Enable DNS-over-HTTPS using AdGuard DNS
+# Установить AdGuard DNS, используя DNS-over-HTTPS
+# DNSoverHTTPS -AdGuard
+
+# Set default ISP's DNS records (default value)
+# Установить DNS-записи вашего провайдера (значение по умолчанию)
 # DNSoverHTTPS -Disable
 
 # Enable Local Security Authority protection to prevent code injection

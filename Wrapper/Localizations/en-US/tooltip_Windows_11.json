@@ -1694,6 +1694,10 @@
         "ToolTip": "Enable DNS-over-HTTPS using Comss.one DNS."
       },
       "Four": {
+        "Tag": "AdGuard",
+        "ToolTip": "Enable DNS-over-HTTPS using AdGuard DNS."
+      },
+      "Five": {
         "Tag": "Disable",
         "ToolTip": "Set default ISP's DNS records (default value)."
       }
