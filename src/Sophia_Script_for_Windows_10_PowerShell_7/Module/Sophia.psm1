@@ -396,7 +396,6 @@ function ScheduledTasks
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	#region Variables
 	# Initialize an array list to store the selected scheduled tasks
 	$SelectedTasks = New-Object -TypeName System.Collections.ArrayList($null)
 
@@ -421,18 +420,8 @@ function ScheduledTasks
 		"MapsToastTask",
 
 		# This task checks for updates to maps which you have downloaded for offline use
-		"MapsUpdateTask",
-
-		# Initializes Family Safety monitoring and enforcement
-		"FamilySafetyMonitor",
-
-		# Synchronizes the latest settings with the Microsoft family features service
-		"FamilySafetyRefreshTask",
-
-		# XblGameSave Standby Task
-		"XblGameSaveTask"
+		"MapsUpdateTask"
 	)
-	#endregion Variables
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
@@ -9324,7 +9313,7 @@ function Uninstall-UWPApps
 function Install-HEVC
 function Install-HEVC
 {
-	if (-not (Get-AppxPackage -Name Microsoft.Windows.Photos)) ### вытащить фотографии
+	if (-not (Get-AppxPackage -Name Microsoft.Windows.Photos))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.PhotosNotInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -9333,7 +9322,7 @@ function Install-HEVC
 		return
 	}
 
-	if (Get-AppxPackage -Name Microsoft.HEVCVideoExtension) ### вытащить HEVC
+	if (Get-AppxPackage -Name Microsoft.HEVCVideoExtension)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.HEVCInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose

@@ -386,19 +386,21 @@ function ScheduledTasks
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	#region Variables
 	# Initialize an array list to store the selected scheduled tasks
 	$SelectedTasks = New-Object -TypeName System.Collections.ArrayList($null)
 
 	# The following tasks will have their checkboxes checked
 	[string[]]$CheckedScheduledTasks = @(
-		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
+		# Gathers Win32 application data for App Backup scenario
 		"MareBackup",
 
 		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
 		"Microsoft Compatibility Appraiser",
 
-		# Updates compatibility database
+		# Collects program telemetry information if opted-in to the Microsoft Customer Experience Improvement Program
+		"Microsoft Compatibility Appraiser Exp",
+
+		# Scans startup entries and raises notification to the user if there are too many startup entries.
 		"StartupAppTask",
 
 		# This task collects and uploads autochk SQM data if opted-in to the Microsoft Customer Experience Improvement Program
@@ -408,6 +410,8 @@ function ScheduledTasks
 		"Consolidator",
 
 		# The USB CEIP (Customer Experience Improvement Program) task collects Universal Serial Bus related statistics and information about your machine and sends it to the Windows Device Connectivity engineering group at Microsoft
+		# The information received is used to help improve the reliability, stability, and overall functionality of USB in Windows
+		# If the user has not consented to participate in Windows CEIP, this task does not do anything
 		"UsbCeip",
 
 		# The Windows Disk Diagnostic reports general disk and system information to Microsoft for users participating in the Customer Experience Program
@@ -417,18 +421,9 @@ function ScheduledTasks
 		"MapsToastTask",
 
 		# This task checks for updates to maps which you have downloaded for offline use
-		"MapsUpdateTask",
-
-		# Initializes Family Safety monitoring and enforcement
-		"FamilySafetyMonitor",
-
-		# Synchronizes the latest settings with the Microsoft family features service
-		"FamilySafetyRefreshTask",
-
-		# XblGameSave Standby Task
-		"XblGameSaveTask"
+		# Disabling this task will prevent Windows from notifying you of updated maps
+		"MapsUpdateTask"
 	)
-	#endregion Variables
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box

@@ -382,7 +382,6 @@ function ScheduledTasks
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	#region Variables
 	# Initialize an array list to store the selected scheduled tasks
 	$SelectedTasks = New-Object -TypeName System.Collections.ArrayList($null)
 
@@ -407,18 +406,8 @@ function ScheduledTasks
 		"MapsToastTask",
 
 		# This task checks for updates to maps which you have downloaded for offline use
-		"MapsUpdateTask",
-
-		# Initializes Family Safety monitoring and enforcement
-		"FamilySafetyMonitor",
-
-		# Synchronizes the latest settings with the Microsoft family features service
-		"FamilySafetyRefreshTask",
-
-		# XblGameSave Standby Task
-		"XblGameSaveTask"
+		"MapsUpdateTask"
 	)
-	#endregion Variables
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
