@@ -23,6 +23,8 @@ DNSoverHTTPS -ComssOne
 DNSoverHTTPS -AdGuard
 ```
 
+* Fix for `Set-UserShellFolderLocation` function
+* Changed `DELETE` argument in `Set-Policy` function to `CLEAR` in order set `Not configured` in gpedit.msc snap-in
 * Updated Readme
 * Minor changes and improvements
 
