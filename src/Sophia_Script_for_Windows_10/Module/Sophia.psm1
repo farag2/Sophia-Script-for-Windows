@@ -9342,7 +9342,7 @@ function Install-HEVC
 		return
 	}
 
-	if ([System.Version]$HEVC_version.Content -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version
+	if ([System.Version]$HEVC_version.Content -gt [System.Version](Get-AppxPackage -Name Microsoft.HEVCVideoExtension).Version)
 	{
 		# Download HEVC
 		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
