@@ -57,7 +57,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 
 ## Key features
 
-* Sophia Script for Windows cares about
+* `Sophia Script for Windows` cares about your Windows stability and informs in case of finding a problem
 * More than 150 unique functions to configure Windows using Microsoft's officially documented ways without making any harm to it
   * Every tweak has its corresponding function to restore default settings
 * Configure Windows AI
@@ -70,12 +70,13 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * Has no conflict with [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
 * Uninstall UWP apps displaying their localized packages names
   * Script generates installed UWP apps list [dynamically](#screenshots)
-* Display applied registry policies in the Local Group Policy Editor snap-in (gpedit.msc)
+* Applied registry policies will be displayed in the Local Group Policy Editor snap-in (gpedit.msc)
 * Enable DNS-over-HTTPS using
   * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
   * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
   * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
+  * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
 * Uninstall OneDrive
 * Interactive [prompts and popups](#screenshots)
 * <kbd>TAB</kbd> [completion](#how-to-run-the-specific-functions) for functions and their arguments (using Import-TabCompletion.ps1)

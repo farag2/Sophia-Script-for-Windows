@@ -57,6 +57,7 @@
 
 ## Ключевые возможности
 
+* `Sophia Script for Windows` заботится о стабильности вашей Windows и уведомит вас в случае обнаружения проблемы
 * Более 150 уникальных функций для настройки Windows с использованием официально задокументированных методов Microsoft без вреда системе
   * Каждая настройка имеет соответствующую функцию для восстановления значений по умолчанию
 * Настройка Windows AI
@@ -69,12 +70,13 @@
 * Не конфликтует с [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
 * Удаление UWP-приложений с отображением локализованных имен пакетов
   * Скрипт генерирует список установленных UWP-приложений [динамически](#скриншоты)
-* Отобразить примененные политики реестра в оснастке редактирования групповых политик (gpedit.msc)
+* Примененные политики реестра будут отображаться в оснастке редактирования групповых политик (gpedit.msc)
 * Установить на выбор следующие DNS-провайдеры, используя DNS-over-HTTPS
   * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
   * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
   * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
+  * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
 * Удаление OneDrive
 * Интерактивные [подсказки и всплывающие окна](#скриншоты)
 * [Автопродление](#как-выполнить-конкретную-функциюи) функций и их аргументов с помощью <kbd>TAB</kbd> (используя Import-TabCompletion.ps1)

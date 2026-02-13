@@ -57,6 +57,7 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 
 ## Haupt-Features
 
+* `Sophia Script for Windows` achtet auf die Stabilität Ihres Windows-Systems und informiert Sie, wenn ein Problem festgestellt wird
 * Mehr als 150 einzigartige Funktionen zur Konfiguration von Windows unter Verwendung der offiziell von Microsoft dokumentierten Methoden, ohne das System zu beschädigen.
   * Für jede Änderung in der Voreinstellungsdatei gibt es eine entsprechende Funktion zum Wiederherstellen der Standardeinstellungen
 * Konfigurieren Sie Windows AI
@@ -69,12 +70,13 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 * Es besteht kein Konflikt mit [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
 * Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen
   * Skript generiert Liste der installierten UWP-Apps [dynamisch](#screenshots)
-* Zeigen Sie die angewendeten Registrierungsrichtlinien im Snap-Ins Editor für lokale Gruppenrichtlinien (gpedit.msc) an
+* Angewandte Registrierungsrichtlinien werden im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) angezeigt
 * Aktivieren Sie DNS-over-HTTPS mit
   * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
   * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
   * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
+  * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
 * OneDrive entfernen
 * Interaktive [Eingabeaufforderungen und Popups](#screenshots)
 * Die <kbd>TAB</kbd> [Autovervollständigung](#screenshots) für Funktionen und ihre Argumente (mit Import-TabCompletion.ps1)
