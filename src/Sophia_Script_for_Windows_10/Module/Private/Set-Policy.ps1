@@ -15,10 +15,10 @@
 	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 
 	.VERSION
-	7.1.0
+	7.1.1
 
 	.DATE
-	08.02.2026
+	13.02.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
