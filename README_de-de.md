@@ -63,7 +63,7 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 * Konfigurieren Sie Windows AI
 * Konfigurieren Sie die Privatsphäre, Sicherheit und Personalisierung von Windows
 * Vollständig quelloffenes Projekt
-  * Alle Archive werden [automatisch](https://github.com/farag2/Sophia-Script-for-Windows/actions) mit GitHub Actions erstellt und hochgeladen
+  * Alle Archive werden mit [GitHub Actions](https://github.com/farag2/Sophia-Script-for-Windows/actions) erstellt und hochgeladen
 * Verfügbar über Scoop, Chocolatey und WinGet
 * ARM64-Unterstützung
 * PowerShell 7-Unterstützung

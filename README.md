@@ -60,10 +60,10 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * `Sophia Script for Windows` cares about your Windows stability and informs in case of finding a problem
 * More than 150 unique functions to configure Windows using Microsoft's officially documented ways without making any harm to it
   * Every tweak has its corresponding function to restore default settings
-* Configure Windows AI
-* Configure Windows privacy, security, personalization
 * Fully open-source project
   * All archives are being built and uploaded using [GitHub Actions](https://github.com/farag2/Sophia-Script-for-Windows/actions)
+* Configure Windows AI
+* Configure Windows privacy, security, personalization
 * Available via Scoop, Chocolatey, and WinGet
 * ARM64 support
 * PowerShell 7 support
