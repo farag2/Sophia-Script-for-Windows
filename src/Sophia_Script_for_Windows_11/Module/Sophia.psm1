@@ -5770,7 +5770,7 @@ function Set-UserShellFolderLocation
 	}
 
 	# Registry user folder names
-	$UserFolderRegistry = @{
+	$Global:UserFolderRegistry = @{
 		"Desktop"   = "Desktop"
 		"Documents" = "Personal"
 		"Downloads" = "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -5779,7 +5779,7 @@ function Set-UserShellFolderLocation
 		"Videos"    = "My Video"
 	}
 
-	$UserFolderGUIDs = @{
+	$Global:UserFolderGUIDs = @{
 		"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
 		"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
 		"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5404642AF1E4}"
@@ -5841,7 +5841,7 @@ function Set-UserShellFolderLocation
 "IconIndex=-238"
 "@
 
-	$DesktopINI = @{
+	$Global:DesktopINI = @{
 		"Desktop"   = $Desktop
 		"Documents" = $Documents
 		"Downloads" = $Downloads
