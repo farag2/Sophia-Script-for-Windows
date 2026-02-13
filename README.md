@@ -57,6 +57,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 
 ## Key features
 
+* Sophia Script for Windows cares about
 * More than 150 unique functions to configure Windows using Microsoft's officially documented ways without making any harm to it
   * Every tweak has its corresponding function to restore default settings
 * Configure Windows AI

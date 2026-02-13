@@ -10696,7 +10696,7 @@ function WindowsSandbox
 	.PARAMETER ComssOne
 	Enable DNS-over-HTTPS using Comss.one DNS
 
-	.PARAMETER 
+	.PARAMETER AdGuard
 	Enable DNS-over-HTTPS using AdGuard DNS
 
 	.PARAMETER Disable
@@ -10837,9 +10837,9 @@ function DNSoverHTTPS
 		# https://adguard-dns.io/public-dns.html
 		"AdGuard"
 		{
-			$PrimaryDNS   = "94.140.14.140"
-			$SecondaryDNS = "94.140.15.16"
-			$Query        = "https://unfiltered.adguard-dns.com/dns-query"
+			$PrimaryDNS   = "94.140.14.14"
+			$SecondaryDNS = "94.140.14.15"
+			$Query        = "https://dns.adguard-dns.com/dns-query"
 		}
 	}
 

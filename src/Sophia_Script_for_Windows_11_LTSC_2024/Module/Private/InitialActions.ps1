@@ -655,13 +655,14 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	}
 
 	# Checking whether BitLocker encryption or decryption in process
-	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")})
+	$BitLocker = Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")}
+	if ($BitLocker)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.BitLockerInOperation
+		Write-Warning -Message ($Localization.BitLockerInOperation -f $BitLocker.EncryptionPercentage)
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
 
-		Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")}
+		$BitLocker
 
 		# Open if Windows edition is not Home
 		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID -ne "Core")
@@ -692,7 +693,21 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			{
 				$Yes
 				{
-					Disable-BitLocker -MountPoint $env:SystemDrive
+					try
+					{
+						Disable-BitLocker -MountPoint $env:SystemDrive -ErrorAction Stop
+					}
+					catch
+					{
+						Write-Warning -Message $Localization.RebootPending
+
+						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+						$Global:Failed = $true
+
+						exit
+					}
 				}
 				$No
 				{
@@ -759,6 +774,9 @@ public extern static string BrandingFormatString(string sFormat);
 		# Check for updates
 		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
 		$Global:Failed = $true
 
 		exit
@@ -788,6 +806,9 @@ public extern static string BrandingFormatString(string sFormat);
 
 			# Check for UWP apps updates
 			Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
+
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
 
@@ -822,6 +843,9 @@ public extern static string BrandingFormatString(string sFormat);
 
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
+
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
 
@@ -872,6 +896,9 @@ public extern static string BrandingFormatString(string sFormat);
 
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
+
+				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 				$Global:Failed = $true
 

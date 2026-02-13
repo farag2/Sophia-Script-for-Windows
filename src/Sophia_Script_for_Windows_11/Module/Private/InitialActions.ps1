@@ -659,8 +659,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	if ($BitLocker)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		$EncryptionPercentage = $BitLocker.EncryptionPercentage
-		Write-Warning -Message ($Localization.BitLockerInOperation -f $EncryptionPercentage)
+		Write-Warning -Message ($Localization.BitLockerInOperation -f $BitLocker.EncryptionPercentage)
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
 
 		$BitLocker
@@ -694,7 +693,21 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			{
 				$Yes
 				{
-					Disable-BitLocker -MountPoint $env:SystemDrive
+					try
+					{
+						Disable-BitLocker -MountPoint $env:SystemDrive -ErrorAction Stop
+					}
+					catch
+					{
+						Write-Warning -Message $Localization.RebootPending
+
+						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+						$Global:Failed = $true
+
+						exit
+					}
 				}
 				$No
 				{
@@ -760,6 +773,9 @@ public extern static string BrandingFormatString(string sFormat);
 		# Check for updates
 		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
 		$Global:Failed = $true
 
 		exit
@@ -789,6 +805,9 @@ public extern static string BrandingFormatString(string sFormat);
 
 			# Check for UWP apps updates
 			Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
+
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
 
@@ -826,6 +845,9 @@ public extern static string BrandingFormatString(string sFormat);
 
 			# Open the "Windows Update" page
 			Start-Process -FilePath "ms-settings:windowsupdate"
+
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
 
@@ -879,6 +901,9 @@ public extern static string BrandingFormatString(string sFormat);
 
 				# Open the "Windows Update" page
 				Start-Process -FilePath "ms-settings:windowsupdate"
+
+				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 				$Global:Failed = $true
 
