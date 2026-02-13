@@ -5,6 +5,30 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 6.1.1 | 7.1.1 — 13.02.2026
+
+* Code refactoring
+* Added a new argument `AdGuard` for `DNSoverHTTPS` function to enable DNS-over-HTTPS using AdGuard DNS. Now function allow to set DNS records using DNS-over-HTTPS for these providers
+  * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
+  * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
+  * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
+  * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
+  * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
+
+```powershel
+DNSoverHTTPS -Cloudflare
+DNSoverHTTPS -Google
+DNSoverHTTPS -Quad9
+DNSoverHTTPS -ComssOne
+DNSoverHTTPS -AdGuard
+```
+
+* Updated Readme
+* Minor changes and improvements
+
+## Wrapper 2.8.20
+Fix for #706
+
 ## 6.1.0 | 7.1.0 — 08.02.2026
 
 * Code refactoring
