@@ -7932,6 +7932,9 @@ function RegistryBackup
 		$Disable
 	)
 
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\Maintenance" -Name MaintenanceDisabled -Force -ErrorAction Ignore
+	Get-ScheduledTask -TaskName RegIdleBackup -ErrorAction Ignore | Enable-ScheduledTask -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Enable"
