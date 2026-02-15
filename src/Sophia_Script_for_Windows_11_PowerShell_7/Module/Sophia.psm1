@@ -8103,8 +8103,13 @@ function WindowsAI
 		$Enable
 	)
 
-	Remove-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI, HKCU:\Software\Policies\Microsoft\Windows\WindowsAI -Force -ErrorAction Ignore
-	Remove-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot, HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot -Force -ErrorAction Ignore
+	$Paths = @(
+		"HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI",
+		"HKCU:\Software\Policies\Microsoft\Windows\WindowsAI",
+		"HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot",
+		"HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot"
+	)
+	Remove-Item -Path $Paths -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WindowsAI\DisableAIDataAnalysis -Name value -Force -ErrorAction Ignore
 
 	if (-not (Get-CimInstance -ClassName Win32_PnPEntity | Where-Object -FilterScript {($null -ne $_.ClassGuid) -and ($_.PNPClass -eq "ComputeAccelerator")}))
@@ -8130,7 +8135,7 @@ function WindowsAI
 			# Enable Recall
 			Enable-WindowsOptionalFeature -Online -FeatureName Recall
 			# Open Copilot page in Microsoft Store
-			Start-Process -FilePath  "ms-windows-store://pdp/?ProductId=9NHT9RB2F4HD"
+			Start-Process -FilePath "ms-windows-store://pdp/?ProductId=9NHT9RB2F4HD"
 		}
 	}
 }
