@@ -100,24 +100,16 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 * Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10
 * Viele weitere Optimierungen für den Datei-Explorer und das Kontextmenü
 
-## Table of Contents
+## Inhaltsverzeichnis
 
 * [Haupt-Features](#haupt-features)
 * [Wie kann man herunterladen](#wie-kann-man-herunterladen)
-  * [Von der GitHub-Versionsseite](#von-der-github-versionsseite)
-  * [Herunterladen über PowerShell](#herunterladen-über-powershell)
-  * [Herunterladen über Chocolatey](#herunterladen-über-chocolatey)
-  * [Herunterladen über WinGet](#herunterladen-über-winget)
-  * [Herunterladen über Scoop](#herunterladen-über-Scoop)
 * [Wie zu verwenden](#wie-zu-verwenden)
   * [Verwendung von spezifischen Funktionen](#verwendung-von-spezifischen-funktionen)
-  * [Wrapper](#wrapper)
 * [System-Voraussetzungen](#system-voraussetzungen)
 * [Screenshots](#screenshots)
-* [Videos](#videos)
 * [Wie man übersetzt](#wie-man-übersetzt)
-* [Media](#media)
-* [SophiApp 2](#sophiapp-20-c--winui-3)
+* [SophiApp 2.0](#sophiapp-20-c--winui-3)
 
 ## Wie kann man herunterladen
 
@@ -169,9 +161,7 @@ Laden Sie die neueste Version von `Sophia Script for Windows` aus dem letzten [C
 iwr sl.sophia.team -useb | iex
 ```
 
-### Herunterladen über Chocolatey
-
-<https://chocolatey.org>
+### Chocolatey
 
 Laden Sie die neueste Version von `Sophia Script for Windows` entsprechend Ihrer Windows-Version herunter und entpacken Sie sie in den Ordner Downloads.
 
@@ -190,9 +180,7 @@ choco install sophia --params "/PS7" --force -y
 choco uninstall sophia --force -y
 ```
 
-### Herunterladen über WinGet
-
-<https://github.com/microsoft/winget-cli>
+### WinGet
 
 Laden Sie die neueste Version von `Sophia Script for Windows` für Windows 11 und PowerShell 5.1 (SFX-Archiv `sophiascript.exe`) herunter und entpacken Sie sie in den Ordner Downloads.
 
@@ -208,9 +196,7 @@ winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept
 winget uninstall --id TeamSophia.SophiaScript --force
 ```
 
-### Herunterladen über Scoop
-
-<https://scoop.sh>
+### Scoop
 
 Laden Sie die neueste Version von `Sophia Script for Windows` für Windows 11 für PowerShell 5.1 herunter und entpacken Sie sie in den Ordner Downloads.
 
@@ -247,10 +233,6 @@ scoop uninstall sophia-script --purge
 
 * Geben Sie `.\Sophia.ps1` ein und drücken Sie <kbd>Enter</kbd>
 
-```powershell
-  .\Sophia.ps1
-```
-
 ### Verwendung von spezifischen Funktionen
 
 <https://github.com/user-attachments/assets/d70150d6-af8c-4933-9ec5-b2cf3bb1dd34>
@@ -279,17 +261,9 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 <img src="./img/Wrapper.png" width='600'>
 
+Wrapper ist ein Closed-Source-Wrapper eines Drittanbieters für `Sophia Script for Windows”. Er wird vollständig von [@BenchTweakGaming](https://github.com/BenchTweakGaming) gepflegt.
+
 Lesen Sie [hier mehr dazu](./Wrapper/README.md)
-
-[@BenchTweakGaming](https://github.com/BenchTweakGaming)
-
-* Laden Sie die [neueste](<https://github.com/farag2/Sophia-Script-for-Windows/releases/latest>) Wrapper-Version herunter.
-* Das Archiv extrahieren
-* Führe `SophiaScriptWrapper.exe` aus und importiere `Sophia.ps1`
-  * `Sophia.ps1`muss im `Sophia Script` Ordner enthalten sein
-  * Der Wrapper hat ein Echtzeit-UI-Rendering
-* Konfiguriere jede Funktion
-* Öffne das `Console Output` Tab und drücke `Run PowerShell`.
 
 ## System-Voraussetzungen
 
@@ -316,14 +290,6 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
 <img src="./img/Toasts.png" width='400'>
 
-## Videos
-
-[Video Tutorial](https://www.youtube.com/watch?v=q_weQifFM58)
-
-[Chris Titus Tech' Review](https://youtu.be/8E6OT_QcHaU?t=370)
-
-[Znorux' Review](https://youtu.be/091SOihvx0k?t=490)
-
 ## Wie man übersetzt
 
 * Holen Sie sich die Sprache der Benutzeroberfläche Ihres Betriebssystems, indem Sie "$PSUICulture" in PowerShell aufrufen
@@ -332,18 +298,27 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
 ## Media
 
-* [XDA](https://www.xda-developers.com/sophia-script-returns-control-windows-11)
-* [4sysops](https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/)
-* [gHacks](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
-* [Neowin](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
-* [Comss.ru](https://www.comss.ru/page.php?id=8019)
-* [Habr](https://habr.com/company/skillfactory/blog/553800)
-* [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
-* [PCsoleil Informatique](https://www.pcsoleil.fr/successeur-de-win10-initial-setup-script-sophia-script-comment-lutiliser/)
-* [Reddit (archived)](https://www.reddit.com/r/PowerShell/comments/go2n5v/powershell_script_setup_windows_10/)
-* [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
-* [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
-* [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
+<details>
+<a href="https://www.xda-developers.com/sophia-script-returns-control-windows-11">XDA</a>
+
+<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">4sysops</a>
+
+<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/">gHacks</a>
+
+<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs">Neowin</a>
+
+<a href="https://www.comss.ru/page.php?id=8019">Comss.ru</a>
+
+<a href="https://habr.com/company/skillfactory/blog/553800">Habr</a>
+
+<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)">Deskmodder.de</a>
+
+<a href="https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15">Ru-Board</a>
+
+<a href="https://rutracker.org/forum/viewtopic.php?t=5996011">rutracker</a>
+
+<a href="https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/">My Digital Life</a>
+</details>
 
 ***
 

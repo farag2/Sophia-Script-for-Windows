@@ -5884,7 +5884,7 @@ function Set-UserShellFolderLocation
 					{
 						{$DriveLetters -contains $Choice}
 						{
-							Set-UserShellFolder -UserFolder $UserFolder -Path "$($Choice)\$UserFolder"
+							Set-UserShellFolder -UserFolder $UserFolder -Path "$($Choice)\$UserFolder" ###
 						}
 						$Skip
 						{
