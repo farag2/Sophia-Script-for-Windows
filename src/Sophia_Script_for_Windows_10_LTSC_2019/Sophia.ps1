@@ -707,14 +707,6 @@ AntizapretProxy -Enable
 # https://antizapret.prostovpn.org
 # AntizapretProxy -Disable
 
-# List Microsoft Edge channels to prevent desktop shortcut creation upon its update
-# Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления
-PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
-
-# Do not prevent desktop shortcut creation upon Microsoft Edge update (default value)
-# Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
-# PreventEdgeShortcutCreation -Disable
-
 # Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
 # Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
 RegistryBackup -Enable

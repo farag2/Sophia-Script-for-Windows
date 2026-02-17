@@ -630,7 +630,8 @@
             }
         },
         "Preset": "Zero",
-        "WindowsDefault": "One"
+        "WindowsDefault": "One",
+        "LTSC2024": "true"
     },
     {
         "Region": "UI & Personalization",
@@ -1492,7 +1493,8 @@
             }
         },
         "Preset": "Zero",
-        "WindowsDefault": "One"
+        "WindowsDefault": "One",
+        "LTSC2024": "true"
     },
     {
         "Region": "System",
@@ -1582,7 +1584,8 @@
             }
         },
         "Preset": "",
-        "WindowsDefault": ""
+        "WindowsDefault": "",
+        "LTSC2024": "true"
     },
     {
         "Region": "System",
@@ -1686,22 +1689,6 @@
             }
         },
         "Preset": "",
-        "WindowsDefault": "",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "UWP apps",
-        "Control": "chkchkalter",
-        "Required": "false",
-        "Separate": "true",
-        "Function": "Uninstall-UWPApps",
-        "Function2": "Uninstall-UWPApps -ForAllUsers",
-        "Arg": {
-            "Zero": {
-                "Tag": ""
-            }
-        },
-        "Preset": "Zero",
         "WindowsDefault": "",
         "LTSC2024": "true"
     },
@@ -1958,7 +1945,8 @@
             }
         },
         "Preset": "Zero",
-        "WindowsDefault": "One"
+        "WindowsDefault": "One",
+        "LTSC2024": "true"
     },
     {
         "Region": "Microsoft Defender & Security",

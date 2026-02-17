@@ -888,21 +888,6 @@ RegistryBackup -Enable
 # Install-WSL
 #endregion WSL
 
-#region UWP apps
-# Uninstall UWP apps using the pop-up dialog box
-# Удалить UWP-приложения, используя всплывающее диалоговое окно
-Uninstall-UWPApps
-
-<#
-	Uninstall UWP apps for all users using the pop-up dialog box
-	If the "For All Users" is checked apps packages will not be installed for new users
-
-	Удалить UWP-приложения для всех пользователей, используя всплывающее диалоговое окно
-	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
-#>
-# Uninstall-UWPApps -ForAllUsers
-#endregion UWP apps
-
 #region Gaming
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed

@@ -816,40 +816,6 @@ public extern static string BrandingFormatString(string sFormat);
 		exit
 	}
 
-	# Checking whether current terminal is Windows Terminal
-	if ($env:WT_SESSION)
-	{
-		# Checking whether Windows Terminal version is higher than 1.23
-		# Get Windows Terminal process PID
-		$ParentProcessID = (Get-CimInstance -ClassName Win32_Process -Filter ProcessID=$PID).ParentProcessID
-		$WindowsTerminalVersion = (Get-Process -Id $ParentProcessID).FileVersion
-		# FileVersion has four properties while $WindowsTerminalVersion has only three, unless the [System.Version] accelerator fails
-		$WindowsTerminalVersion = "{0}.{1}.{2}" -f $WindowsTerminalVersion.Split(".")
-
-		if ([System.Version]$WindowsTerminalVersion -lt [System.Version]"1.23.0")
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.UnsupportedWindowsTerminal
-			Write-Information -MessageData "" -InformationAction Continue
-
-			Start-Process -FilePath "ms-windows-store://pdp/?productid=9N0DX20HK701"
-
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements" -Verbose
-
-			# Check for UWP apps updates
-			Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
-
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = $true
-
-			exit
-		}
-	}
-
 	# Detect Windows build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{

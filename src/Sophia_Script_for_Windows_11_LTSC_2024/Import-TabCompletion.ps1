@@ -18,7 +18,7 @@
 	.EXAMPLE
 	Sophia -Functions <tab>
 	Sophia -Functions temp<tab>
-	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
+	Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal"
 
 	.NOTES
 	Use commas to separate funtions
@@ -123,25 +123,6 @@ $Parameters = @{
 				}
 			}
 
-			# If a module command is Uninstall-UWPApps
-			if ($Command -eq "Uninstall-UWPApps")
-			{
-				(Get-Command -Name $Command).Name | Where-Object -FilterScript {$_ -like "*$wordToComplete*"}
-
-				# Get all command arguments, excluding defaults
-				foreach ($ParameterSet in $ParameterSets.Name)
-				{
-					# If an argument is ForAllUsers
-					if ($ParameterSet -eq "ForAllUsers")
-					{
-						# The "Uninstall-UWPApps -ForAllUsers" construction
-						"Uninstall-UWPApps" + " " + "-" + $ParameterSet | Where-Object -FilterScript {$_ -like "*$wordToComplete*"} | ForEach-Object -Process {"`"$_`""}
-					}
-
-					continue
-				}
-			}
-
 			# If a module command is Install-DotNetRuntimes
 			if ($Command -eq "Install-DotNetRuntimes")
 			{
@@ -192,7 +173,7 @@ Register-ArgumentCompleter @Parameters
 Write-Information -MessageData "" -InformationAction Continue
 Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
-Write-Verbose -Message "Sophia -Functions 'DiagTrackService -Disable', 'DiagnosticDataLevel -Minimal', Uninstall-UWPApps" -Verbose
+Write-Verbose -Message "Sophia -Functions 'DiagTrackService -Disable', 'DiagnosticDataLevel -Minimal'" -Verbose
 Write-Information -MessageData "" -InformationAction Continue
-Write-Verbose -Message "Sophia -Functions 'Uninstall-UWPApps, 'PinToStart -UnpinAll' -Verbose"
+Write-Verbose -Message "Sophia -Functions 'PinToStart -UnpinAll'" -Verbose
 Write-Verbose -Message "Sophia -Functions `"Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'`"" -Verbose
