@@ -84,7 +84,8 @@
             "messageBoxPresetNotComp": "Пресет несовместим!",
             "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",
             "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вышему выбору.",
-            "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена."
+            "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена.",
+			"messageBoxPresetDoesNotMatchOS": "Предварительно заданные параметры не соответствуют текущей версии ОС."
         }
     },
     {
