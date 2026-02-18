@@ -8117,8 +8117,6 @@ function WindowsAI
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.CopilotPCSupport -Verbose
 		Write-Error -Message $Localization.CopilotPCSupport -ErrorAction SilentlyContinue
-
-		return
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -9087,7 +9085,7 @@ function CleanupTask
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -9559,7 +9557,7 @@ function SoftwareDistributionTask
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -9903,7 +9901,7 @@ function TempTask
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 

@@ -4476,7 +4476,6 @@ function WindowsFeatures
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	#region Variables
 	# Initialize an array list to store the selected Windows features
 	$SelectedFeatures = New-Object -TypeName System.Collections.ArrayList($null)
 
@@ -4493,19 +4492,14 @@ function WindowsFeatures
 		"Printing-XPSServices-Features",
 
 		# Recall
-		"Recall"
+		"Recall",
 
-		# Work Folders Client
-		"WorkFolders-Client"
-	)
-
-	# The following Windows features will have their checkboxes unchecked
-	[string[]]$UncheckedFeatures = @(
 		# Media Features
 		# If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
 		"MediaPlayback"
 	)
-	#endregion Variables
+
+	$WindowsOptionalFeature = Get-WindowsOptionalFeature -Online
 
 	#region XAML Markup
 	# The section defines the design of the upcoming dialog box
@@ -4658,14 +4652,6 @@ function WindowsFeatures
 			$CheckBox.IsChecked = $true
 
 			# If feature checked add to the array list
-			if ($UnCheckedFeatures | Where-Object -FilterScript {$Feature.FeatureName -like $_})
-			{
-				$CheckBox.IsChecked = $false
-				# Exit function if item is not checked
-				return
-			}
-
-			# If feature checked add to the array list
 			[void]$SelectedFeatures.Add($Feature)
 		}
 	}
@@ -4693,9 +4679,9 @@ function WindowsFeatures
 
 	# Getting list of all optional features according to the conditions
 	$OFS = "|"
-	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {
-		($_.State -in $State) -and (($_.FeatureName -match $UncheckedFeatures) -or ($_.FeatureName -match $CheckedFeatures))
-	} | ForEach-Object -Process {Get-WindowsOptionalFeature -FeatureName $_.FeatureName -Online}
+	$Features = $WindowsOptionalFeature | Where-Object -FilterScript {($_.State -in $State) -and ($_.FeatureName -match $CheckedFeatures)} | ForEach-Object -Process {
+		Get-WindowsOptionalFeature -Online -FeatureName $_.FeatureName
+	}
 	$OFS = " "
 
 	if (-not $Features)
@@ -4791,11 +4777,8 @@ function WindowsCapabilities
 	# The following optional features will have their checkboxes checked
 	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
-		"App.StepsRecorder*"
-	)
+		"App.StepsRecorder*",
 
-	# The following optional features will have their checkboxes unchecked
-	[string[]]$UncheckedCapabilities = @(
 		# Internet Explorer mode
 		"Browser.InternetExplorer*",
 
@@ -4804,29 +4787,7 @@ function WindowsCapabilities
 		"Media.WindowsMediaPlayer*"
 	)
 
-	# The following optional features will be excluded from the display
-	[string[]]$ExcludedCapabilities = @(
-		# The DirectX Database to configure and optimize apps when multiple Graphics Adapters are present
-		"DirectX.Configuration.Database*",
-
-		# Language components
-		"Language.*",
-
-		# Notepad
-		"Microsoft.Windows.Notepad*",
-
-		# Mail, contacts, and calendar sync component
-		"OneCoreUAP.OneSync*",
-
-		# Windows PowerShell Intergrated Scripting Enviroment
-		"Microsoft.Windows.PowerShell.ISE*",
-
-		# Management of printers, printer drivers, and printer servers
-		"Print.Management.Console*",
-
-		# Features critical to Windows functionality
-		"Windows.Client.ShellComponents*"
-	)
+	$WindowsCapability = Get-WindowsCapability -Online
 	#endregion Variables
 
 	#region XAML Markup
@@ -4935,7 +4896,7 @@ function WindowsCapabilities
 		[void]$Window.Close()
 
 		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
-		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in (Get-WindowsCapability -Online).Name} | Remove-WindowsCapability -Online
+		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in $WindowsCapability.Name} | Remove-WindowsCapability -Online
 	}
 
 	function InstallButton
@@ -4949,7 +4910,7 @@ function WindowsCapabilities
 			[void]$Window.Close()
 
 			$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
-			$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in ((Get-WindowsCapability -Online).Name)} | Add-WindowsCapability -Online
+			$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in $WindowsCapability.Name} | Add-WindowsCapability -Online
 		}
 		catch [System.Runtime.InteropServices.COMException]
 		{
@@ -4986,14 +4947,6 @@ function WindowsCapabilities
 			[void]$StackPanel.Children.Add($CheckBox)
 			[void]$StackPanel.Children.Add($TextBlock)
 			[void]$PanelContainer.Children.Add($StackPanel)
-
-			# If capability checked add to the array list
-			if ($UnCheckedCapabilities | Where-Object -FilterScript {$Capability.Name -like $_})
-			{
-				$CheckBox.IsChecked = $false
-				# Exit function if item is not checked
-				return
-			}
 
 			# If capability checked add to the array list
 			[void]$SelectedCapabilities.Add($Capability)
@@ -5034,9 +4987,9 @@ function WindowsCapabilities
 
 	# Getting list of all capabilities according to the conditions
 	$OFS = "|"
-	$Capabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {
-		($_.State -eq $State) -and (($_.Name -match $UncheckedCapabilities) -or ($_.Name -match $CheckedCapabilities) -and ($_.Name -notmatch $ExcludedCapabilities))
-	} | ForEach-Object -Process {Get-WindowsCapability -Name $_.Name -Online}
+	$Capabilities = $WindowsCapability | Where-Object -FilterScript {
+		($_.State -eq $State) -and ($_.Name -match $CheckedCapabilities)
+	} | ForEach-Object -Process {Get-WindowsCapability -Online -Name $_.Name}
 	$OFS = " "
 
 	if (-not $Capabilities)
@@ -7454,231 +7407,97 @@ function Install-DotNetRuntimes
 	{
 		switch ($Runtime)
 		{
-			NET8
+			"NET8"
 			{
-				try
-				{
-					# Get latest build version
-					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-					$Parameters = @{
-						Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/8.0/releases.json"
-						Verbose         = $true
-						UseBasicParsing = $true
-					}
-					$LatestNET8Version = (Invoke-RestMethod @Parameters)."latest-release"
-				}
-				catch [System.Net.WebException]
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-					return
-				}
-
-				# Checking whether .NET 8 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET8Version-win-arm64.exe")
-				{
-					# Choose the first item if user has more than one package installed
-					# FileVersion has four properties while $LatestNET8Version has only three, unless the [System.Version] accelerator fails
-					$CurrentNET8Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET8Version-win-arm64.exe" | Select-Object -First 1).VersionInfo.FileVersion
-					$CurrentNET8Version = "{0}.{1}.{2}" -f $CurrentNET8Version.Split(".")
-				}
-				else
-				{
-					$CurrentNET8Version = "0.0"
-				}
-
-				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET 8 is not installed at all
-				if (([System.Version]$LatestNET8Version -gt [System.Version]$CurrentNET8Version) -or ($CurrentNET8Version -eq "0.0"))
-				{
-					try
-					{
-						# .NET Desktop Runtime 8
-						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET8Version/windowsdesktop-runtime-$LatestNET8Version-win-arm64.exe"
-							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-arm64.exe"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-					}
-					catch [System.Net.WebException]
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-						Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-						return
-					}
-
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 8 $LatestNET8Version") -Verbose
-					Write-Information -MessageData "" -InformationAction Continue
-
-					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
-				}
-				else
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET 8"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -join " ") -Verbose
-					Write-Error -Message (($Localization.PackageIsInstalled -f ".NET 8"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -join " ") -ErrorAction SilentlyContinue
-				}
+				$NET = "8.0"
 			}
-			NET9
+			"NET9"
 			{
-				try
-				{
-					# Get latest build version
-					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-					$Parameters = @{
-						Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/9.0/releases.json"
-						Verbose         = $true
-						UseBasicParsing = $true
-					}
-					$LatestNET9Version = (Invoke-RestMethod @Parameters)."latest-release"
-				}
-				catch [System.Net.WebException]
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-					return
-				}
-
-				# Checking whether .NET 9 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET9Version-win-arm64.exe")
-				{
-					# Choose the first item if user has more than one package installed
-					# FileVersion has four properties while $LatestNET9Version has only three, unless the [System.Version] accelerator fails
-					$CurrentNET9Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET9Version-win-arm64.exe" | Select-Object -First 1).VersionInfo.FileVersion
-					$CurrentNET9Version = "{0}.{1}.{2}" -f $CurrentNET9Version.Split(".")
-				}
-				else
-				{
-					$CurrentNET9Version = "0.0"
-				}
-
-				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET 9 is not installed at all
-				if (([System.Version]$LatestNET9Version -gt [System.Version]$CurrentNET9Version) -or ($CurrentNET9Version -eq "0.0"))
-				{
-					try
-					{
-						# .NET Desktop Runtime 9
-						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET9Version/windowsdesktop-runtime-$LatestNET9Version-win-arm64.exe"
-							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-arm64.exe"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-					}
-					catch [System.Net.WebException]
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-						Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-						return
-					}
-
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 9 $LatestNET9Version") -Verbose
-					Write-Information -MessageData "" -InformationAction Continue
-
-					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
-				}
-				else
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET 9"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -join " ") -Verbose
-					Write-Error -Message (($Localization.PackageIsInstalled -f ".NET 9"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -join " ") -ErrorAction SilentlyContinue
-				}
+				$NET = "9.0"
 			}
-			NET10
+			"NET10"
 			{
-				try
-				{
-					# Get latest build version
-					# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-					$Parameters = @{
-						Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/10.0/releases.json"
-						Verbose         = $true
-						UseBasicParsing = $true
-					}
-					$LatestNET10Version = (Invoke-RestMethod @Parameters)."latest-release"
-				}
-				catch [System.Net.WebException]
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-					return
-				}
-
-				# Checking whether .NET 10 installed
-				if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET10Version-win-arm64.exe")
-				{
-					# Choose the first item if user has more than one package installed
-					# FileVersion has four properties while $LatestNET10Version has only three, unless the [System.Version] accelerator fails
-					$CurrentNET10Version = (Get-Item -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNET10Version-win-arm64.exe" | Select-Object -First 1).VersionInfo.FileVersion
-					$CurrentNET10Version = "{0}.{1}.{2}" -f $CurrentNET10Version.Split(".")
-				}
-				else
-				{
-					$CurrentNET10Version = "0.0"
-				}
-
-				# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET 10 is not installed at all
-				if (([System.Version]$LatestNET10Version -gt [System.Version]$CurrentNET10Version) -or ($CurrentNET10Version -eq "0.0"))
-				{
-					try
-					{
-						# .NET Desktop Runtime 10
-						$Parameters = @{
-							Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNET10Version/windowsdesktop-runtime-$LatestNET10Version-win-arm64.exe"
-							OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNET10Version-win-arm64.exe"
-							UseBasicParsing = $true
-							Verbose         = $true
-						}
-						Invoke-WebRequest @Parameters
-					}
-					catch [System.Net.WebException]
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-						Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-						return
-					}
-
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.InstallNotification -f ".NET 10 $LatestNET10Version") -Verbose
-					Write-Information -MessageData "" -InformationAction Continue
-
-					Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNET10Version-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
-				}
-				else
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET 10"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -join " ") -Verbose
-					Write-Error -Message (($Localization.PackageIsInstalled -f ".NET 10"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $_)) -join " ") -ErrorAction SilentlyContinue
-				}
+				$NET = "10.0"
 			}
 		}
-	}
 
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	$Paths = @(
-		"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log",
-		"$DownloadsFolder\windowsdesktop-runtime-$LatestNET8Version-win-arm64.exe",
-		"$DownloadsFolder\windowsdesktop-runtime-$LatestNET9Version-win-arm64.exe",
-		"$DownloadsFolder\windowsdesktop-runtime-$LatestNET10Version-win-arm64.exe"
-	)
-	Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+		try
+		{
+			# Get latest build version
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"
+				Verbose         = $true
+				UseBasicParsing = $true
+			}
+			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
+		}
+		catch [System.Net.WebException]
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+			return
+		}
+
+		# Checking whether .NET installed
+		if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe")
+		{
+			# Choose the first item if user has more than one package installed
+			# FileVersion has four properties while $LatestNETVersion has only three, unless the [System.Version] accelerator fails
+			$CurrentNETVersion = (Get-Item -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe" | Select-Object -First 1).VersionInfo.FileVersion
+			$CurrentNETVersion = "{0}.{1}.{2}" -f $CurrentNETVersion.Split(".")
+		}
+		else
+		{
+			$CurrentNETVersion = "0.0"
+		}
+
+		# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET is not installed at all
+		if (([System.Version]$LatestNETVersion -gt [System.Version]$CurrentNETVersion) -or ($CurrentNETVersion -eq "0.0"))
+		{
+			try
+			{
+				# Downloading .NET Desktop Runtime
+				$Parameters = @{
+					Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"
+					OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"
+					UseBasicParsing = $true
+					Verbose         = $true
+				}
+				Invoke-WebRequest @Parameters
+			}
+			catch [System.Net.WebException]
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.InstallNotification -f ".NET $LatestNETVersion") -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
+		}
+		else
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -Verbose
+			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -ErrorAction SilentlyContinue
+		}
+
+		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# https://github.com/PowerShell/PowerShell/issues/21070
+		$Paths = @(
+			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log",
+			"$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"
+		)
+		Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+	}
 }
 
 <#
@@ -8003,8 +7822,6 @@ function WindowsAI
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.CopilotPCSupport -Verbose
 		Write-Error -Message $Localization.CopilotPCSupport -ErrorAction SilentlyContinue
-
-		return
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -8973,7 +8790,7 @@ function CleanupTask
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -9445,7 +9262,7 @@ function SoftwareDistributionTask
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -9789,7 +9606,7 @@ function TempTask
 					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
 					Write-Information -MessageData "" -InformationAction Continue
 
-					Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 

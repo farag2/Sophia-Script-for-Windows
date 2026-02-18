@@ -372,7 +372,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 				Write-Verbose -Message "https://youtu.be/na93MS-1EkM" -Verbose
 				Write-Verbose -Message "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558" -Verbose
-				Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -385,7 +385,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -410,7 +410,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -472,7 +472,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStrings]::GetString(22029)))
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -488,7 +488,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Windows Feature Experience Pack")
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11" -Verbose
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -515,7 +515,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -531,7 +531,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -556,7 +556,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -576,7 +576,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
