@@ -65,7 +65,7 @@ jobs:
 
       - name: Create SFX Archive
         run: |
-          . "Scripts\SFX.ps1"
+          . "Scripts\WinGet_SFX.ps1"
 
       - name: Defender Scan
         run: |
