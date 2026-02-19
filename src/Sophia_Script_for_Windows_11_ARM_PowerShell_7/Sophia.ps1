@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows 11 (Arm | PowerShell 7)"
 
 	.VERSION
-	7.1.1
+	7.1.2
 
 	.DATE
-	13.02.2026
+	19.02.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
