@@ -373,9 +373,6 @@ function FeedbackFrequency
 	ScheduledTasks -Enable
 
 	.NOTES
-	A pop-up dialog box lets a user select tasks
-
-	.NOTES
 	Current user
 #>
 function ScheduledTasks
@@ -4450,9 +4447,6 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
-	A pop-up dialog box lets a user select features
-
-	.NOTES
 	Current user
 #>
 function WindowsFeatures
@@ -4742,9 +4736,6 @@ function WindowsFeatures
 
 	.EXAMPLE
 	WindowsCapabilities -Install
-
-	.NOTES
-	A pop-up dialog box lets a user select features
 
 	.NOTES
 	Current user

@@ -360,9 +360,6 @@ function FeedbackFrequency
 	ScheduledTasks -Enable
 
 	.NOTES
-	A pop-up dialog box lets a user select tasks
-
-	.NOTES
 	Current user
 #>
 function ScheduledTasks
@@ -4124,9 +4121,6 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
-	A pop-up dialog box lets a user select features
-
-	.NOTES
 	Current user
 #>
 function WindowsFeatures
@@ -4413,9 +4407,6 @@ function WindowsFeatures
 
 	.EXAMPLE
 	WindowsCapabilities -Install
-
-	.NOTES
-	A pop-up dialog box lets a user select features
 
 	.NOTES
 	Current user
@@ -7355,10 +7346,7 @@ function RegistryBackup
 	.SYNOPSIS
 	Windows Subsystem for Linux (WSL)
 
-	.PARAMETER
-	Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form
-
-	.EXAMPLE
+	.EXAMPLE Enable Windows Subsystem for Linux (WSL) and install the latest WSL Linux kernel version
 	Install-WSL
 
 	.NOTES

@@ -430,7 +430,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		if (-not ([string]::IsNullOrEmpty($Item) -or $Item.StartsWith("#")))
 		{
-			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message $Localization.HostsWarning -Verbose
 
 			do
@@ -888,6 +887,7 @@ public extern static string BrandingFormatString(string sFormat);
 
 	Clear-Host
 
+	# https://patorjk.com/software/taag/#p=display&f=Tmplr
 	Write-Information -MessageData "┏┓    ┓ •    ┏┓   •     ┏      ┓ ┏•   ┓ " -InformationAction Continue
 	Write-Information -MessageData "┗┓┏┓┏┓┣┓┓┏┓  ┗┓┏┏┓┓┏┓╋  ╋┏┓┏┓  ┃┃┃┓┏┓┏┫┏┓┓┏┏┏" -InformationAction Continue
 	Write-Information -MessageData "┗┛┗┛┣┛┛┗┗┗┻  ┗┛┗┛ ┗┣┛┗  ┛┗┛┛   ┗┻┛┗┛┗┗┻┗┛┗┻┛┛" -InformationAction Continue

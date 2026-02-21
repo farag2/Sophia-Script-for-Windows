@@ -674,7 +674,7 @@ WindowsManageDefaultPrinter -Disable
 # WindowsManageDefaultPrinter -Enable
 
 <#
-	Disable the Windows features using the pop-up dialog box
+	Disable the Windows features using pop-up dialog box
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
 
 	Отключить компоненты Windows, используя всплывающее диалоговое окно
@@ -682,15 +682,15 @@ WindowsManageDefaultPrinter -Disable
 #>
 WindowsFeatures -Disable
 
-# Enable the Windows features using the pop-up dialog box
+# Enable the Windows features using pop-up dialog box
 # Включить компоненты Windows, используя всплывающее диалоговое окно
 # WindowsFeatures -Enable
 
-# Uninstall optional features using the pop-up dialog box
+# Uninstall optional features using pop-up dialog box
 # Удалить дополнительные компоненты, используя всплывающее диалоговое окно
 WindowsCapabilities -Uninstall
 
-# Install optional features using the pop-up dialog box
+# Install optional features using pop-up dialog box
 # Установить дополнительные компоненты, используя всплывающее диалоговое окно
 # WindowsCapabilities -Install
 
@@ -952,12 +952,12 @@ RegistryBackup -Enable
 #endregion WSL
 
 #region UWP apps
-# Uninstall UWP apps using the pop-up dialog box
+# Uninstall UWP apps using pop-up dialog box
 # Удалить UWP-приложения, используя всплывающее диалоговое окно
 Uninstall-UWPApps
 
 <#
-	Uninstall UWP apps for all users using the pop-up dialog box
+	Uninstall UWP apps for all users using pop-up dialog box
 	If the "For All Users" is checked apps packages will not be installed for new users
 
 	Удалить UWP-приложения для всех пользователей, используя всплывающее диалоговое окно

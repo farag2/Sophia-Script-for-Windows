@@ -18,8 +18,8 @@ $Sophia_Script_Windows_10_PowerShell_7       = ($assets | Where-Object -FilterSc
 $Sophia_Script_Windows_10_LTSC2019           = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.10.LTSC.2019.v$($Latest_Release.Sophia_Script_Windows_10_LTSC2019).zip"}).digest.Replace("sha256:", "")
 $Sophia_Script_Windows_10_LTSC2021           = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.10.LTSC.2021.v$($Latest_Release.Sophia_Script_Windows_10_LTSC2021).zip"}).digest.Replace("sha256:", "")
 $Sophia_Script_Windows_11_PowerShell_5_1     = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.11.v$($Latest_Release.Sophia_Script_Windows_11_PowerShell_5_1).zip"}).digest.Replace("sha256:", "")
-$Sophia_Script_Windows_11_Arm_PowerShell_5_1 = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.11.v$($Latest_Release.Sophia_Script_Windows_11_Arm_PowerShell_5_1).zip"}).digest.Replace("sha256:", "")
-$Sophia_Script_Windows_11_Arm_PowerShell_7   = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.11.v$($Latest_Release.Sophia_Script_Windows_11_Arm_PowerShell_7).zip"}).digest.Replace("sha256:", "")
+$Sophia_Script_Windows_11_Arm_PowerShell_5_1 = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.11.Arm.v$($Latest_Release.Sophia_Script_Windows_11_Arm_PowerShell_5_1).zip"}).digest.Replace("sha256:", "")
+$Sophia_Script_Windows_11_Arm_PowerShell_7   = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.11.Arm.PowerShell.7.v$($Latest_Release.Sophia_Script_Windows_11_Arm_PowerShell_7).zip"}).digest.Replace("sha256:", "")
 $Sophia_Script_Windows_11_PowerShell_7       = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.11.PowerShell.7.v$($Latest_Release.Sophia_Script_Windows_11_PowerShell_7).zip"}).digest.Replace("sha256:", "")
 $Sophia_Script_Windows_11_LTSC2024           = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.11.LTSC.2024.v$($Latest_Release.Sophia_Script_Windows_11_LTSC2024).zip"}).digest.Replace("sha256:", "")
 

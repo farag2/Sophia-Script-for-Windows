@@ -595,7 +595,7 @@ WindowsManageDefaultPrinter -Disable
 # WindowsManageDefaultPrinter -Enable
 
 <#
-	Disable the Windows features using the pop-up dialog box
+	Disable the Windows features using pop-up dialog box
 	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
 
 	Отключить компоненты Windows, используя всплывающее диалоговое окно
@@ -603,15 +603,15 @@ WindowsManageDefaultPrinter -Disable
 #>
 WindowsFeatures -Disable
 
-# Enable the Windows features using the pop-up dialog box
+# Enable the Windows features using pop-up dialog box
 # Включить компоненты Windows, используя всплывающее диалоговое окно
 # WindowsFeatures -Enable
 
-# Uninstall optional features using the pop-up dialog box
+# Uninstall optional features using pop-up dialog box
 # Удалить дополнительные компоненты, используя всплывающее диалоговое окно
 WindowsCapabilities -Uninstall
 
-# Install optional features using the pop-up dialog box
+# Install optional features using pop-up dialog box
 # Установить дополнительные компоненты, используя всплывающее диалоговое окно
 # WindowsCapabilities -Install
 
