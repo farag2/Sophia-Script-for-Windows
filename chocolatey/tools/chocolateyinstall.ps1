@@ -35,6 +35,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Check for Windows 10 LTSC 2019
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2019")
 		{
+			Write-Verbose -Message "LTSC 2019" -Verbose
 			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2019
 			$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
 			$Hash = "Hash_Sophia_Script_Windows_10_LTSC2019"
@@ -45,6 +46,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Check for Windows 10 LTSC 2021
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2021")
 		{
+			Write-Verbose -Message "LTSC 2021" -Verbose
 			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2021
 			$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
 			$Hash = "Hash_Sophia_Script_Windows_10_LTSC2021"
@@ -56,6 +58,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		{
 			if ($packageParameters.Contains('PS7'))
 			{
+				Write-Verbose -Message "19045 PS7" -Verbose
 				$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_PowerShell_7
 				$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip"
 				$Hash = "Hash_Sophia_Script_Windows_10_PowerShell_7"
@@ -63,6 +66,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
+			Write-Verbose -Message "19045" -Verbose
 			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_PowerShell_5_1
 			$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
 			$Hash = "Hash_Sophia_Script_Windows_10_PowerShell_5_1"
@@ -73,6 +77,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Check for Windows 11 LTSC 2024
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2024")
 		{
+			Write-Verbose -Message "LTSC 2024" -Verbose
 			$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_LTSC2024
 			$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.v$LatestRelease.zip"
 			$Hash = "Hash_Sophia_Script_Windows_11_LTSC2024"
@@ -85,12 +90,14 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 				{
 					if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
 					{
+						Write-Verbose -Message "26100 ARM PS7" -Verbose
 						$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_Arm_PowerShell_7
 						$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.Arm.PowerShell.7.v$LatestRelease.zip"
 						$Hash = "Hash_Sophia_Script_Windows_11_Arm_PowerShell_7"
 					}
 					else
 					{
+						Write-Verbose -Message "26100 PS7" -Verbose
 						$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_7
 						$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
 						$Hash = "Hash_Sophia_Script_Windows_11_PowerShell_7"
@@ -101,12 +108,14 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			{
 				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
 				{
+					Write-Verbose -Message "26100 ARM" -Verbose
 					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_Arm_PowerShell_5_1
 					$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.Arm.v$LatestRelease.zip"
 					$Hash = "Hash_Sophia_Script_Windows_11_Arm_PowerShell_5_1"
 				}
 				else
 				{
+					Write-Verbose -Message "26100" -Verbose
 					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_5_1
 					$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
 					$Hash = "Hash_Sophia_Script_Windows_11_PowerShell_5_1"
