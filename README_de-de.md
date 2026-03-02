@@ -299,6 +299,8 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 ## Media
 
 <details>
+<a href="https://www.windowscentral.com/microsoft/windows-11/how-to-fine-tune-your-pc-with-the-sophia-script-for-windows-11">Windows Central</a>
+
 <a href="https://www.xda-developers.com/sophia-script-returns-control-windows-11">XDA</a>
 
 <a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">4sysops</a>
