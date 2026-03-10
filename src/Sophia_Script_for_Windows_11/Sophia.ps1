@@ -1115,7 +1115,7 @@ DNSoverHTTPS -Cloudflare
 # Установить DNS от AdGuard, используя DNS-over-HTTPS
 # DNSoverHTTPS -AdGuard
 
-# Set up DNS fromOpenDNS DNS using DNS-over-HTTPS
+# Set up DNS from OpenDNS DNS using DNS-over-HTTPS
 # Установить DNS от OpenDNS, используя DNS-over-HTTPS
 # DNSoverHTTPS -OpenDNS
 

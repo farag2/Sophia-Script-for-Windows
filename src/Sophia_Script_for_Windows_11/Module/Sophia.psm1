@@ -10647,6 +10647,13 @@ function DNSoverHTTPS
 
 		[Parameter(
 			Mandatory = $true,
+			ParameterSetName = "AdGuard"
+		)]
+		[switch]
+		$OpenDNS,
+
+		[Parameter(
+			Mandatory = $true,
 			ParameterSetName = "Disable"
 		)]
 		[switch]

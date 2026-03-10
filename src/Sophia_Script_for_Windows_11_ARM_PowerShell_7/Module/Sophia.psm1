@@ -10588,6 +10588,13 @@ function DNSoverHTTPS
 
 		[Parameter(
 			Mandatory = $true,
+			ParameterSetName = "AdGuard"
+		)]
+		[switch]
+		$OpenDNS,
+
+		[Parameter(
+			Mandatory = $true,
 			ParameterSetName = "Disable"
 		)]
 		[switch]
@@ -10660,6 +10667,13 @@ function DNSoverHTTPS
 			$PrimaryDNS   = "94.140.14.14"
 			$SecondaryDNS = "94.140.14.15"
 			$Query        = "https://dns.adguard-dns.com/dns-query"
+		}
+		# https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html
+		"OpenDNS"
+		{
+			$PrimaryDNS   = "208.67.222.222"
+			$SecondaryDNS = "208.67.220.220"
+			$Query        = "https://doh.umbrella.com/dns-query"
 		}
 	}
 
