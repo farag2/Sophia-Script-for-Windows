@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = 从 PowerShell 5.1 导入模块失败。请关闭 PowerShell 7 控制台并重新运行脚本。
 UnsupportedOSBitness                      = 该脚本仅支持64位Windows。
-UnsupportedOSBuild                        = 腳本僅支援 Windows 10 22H2。您正在使用 {0} {1}。升级 Windows，然后再试一次。
+UnsupportedOSBuild                        = 腳本僅支援 Windows 10 22H2。您正在使用 {0} {1}。根据 Windows 版本运行相应的脚本。
 UnsupportedWindowsTerminal                = Windows Terminal版本低於1.23。請在Microsoft商店更新後再試。
 UpdateWarning                             = 您当前使用的是 Windows 10 {0}.{1} 版本。支持的版本为 Windows 10 {0}.{2} 及更高版本。请运行 Windows 更新并重新尝试。
 UnsupportedLanguageMode                   = PowerShell会话在有限的语言模式下运行。

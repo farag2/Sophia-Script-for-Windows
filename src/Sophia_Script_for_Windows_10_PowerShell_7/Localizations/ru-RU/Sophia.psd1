@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Импорт моделей из PowerShell 5.1 завершился ошибкой. Пожалуйста, закройте PowerShell 7 и запустите скрипт заново.
 UnsupportedOSBitness                      = Скрипт поддерживает только 64-битную версию Windows.
-UnsupportedOSBuild                        = Скрипт поддерживает только Windows 10 22H2. Вы используете {0} {1}. Обновите Windows и повторите попытку.
+UnsupportedOSBuild                        = Скрипт поддерживает только Windows 10 22H2. Вы используете {0} {1}. Запустите скрипт в зависимости от вашей версии Windows.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.23. Пожалуйста, обновите его в Microsoft Store и повторите попытку.
 UpdateWarning                             = Вы используете Windows 10 {0}.{1}. Поддерживаемые сборки: Windows 10 {0}.{2} и выше. Запустите обновление Windows и повторите попытку.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.

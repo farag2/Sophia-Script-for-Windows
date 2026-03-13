@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Impossibile importare i moduli da PowerShell 5.1. Chiudere la console PowerShell 7 e rieseguire lo script.
 UnsupportedArchitecture                   = Stai utilizzando una CPU con architettura basata su "{0}". Questo script supporta solo CPU con architettura x64. Scarica ed esegui la versione dello script adatta alla tua architettura.
-UnsupportedOSBuild                        = Lo script supporta Windows 11 24H2 e versioni successive. Stai utilizzando {0} {1}. Aggiornare Windows e riprovare.
+UnsupportedOSBuild                        = Lo script supporta Windows 11 24H2 e versioni successive. Stai utilizzando {0} {1}. Esegui lo script corretto in base alla versione di Windows.
 UnsupportedWindowsTerminal                = La versione di Windows Terminal è inferiore a 1.23. Aggiornarla nel Microsoft Store e riprovare.
 UpdateWarning                             = Windows 11 {0}.{1} rendszert használ. A támogatott verzió Windows 11 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = La sessione PowerShell è in esecuzione in modalità lingua limitata.

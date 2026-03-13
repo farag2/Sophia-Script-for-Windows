@@ -772,9 +772,6 @@ public extern static string BrandingFormatString(string sFormat);
 		# Check for updates
 		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
 
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
 		$Global:Failed = $true
 
 		exit

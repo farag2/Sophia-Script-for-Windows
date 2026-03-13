@@ -1,7 +1,7 @@
 ﻿ConvertFrom-StringData -StringData @'
 PowerShellImportFailed                    = Импорт моделей из PowerShell 5.1 завершился ошибкой. Пожалуйста, закройте PowerShell 7 и запустите скрипт заново.
 UnsupportedArchitecture                   = Вы используете процессор с архитектурой "{0}". Скрипт поддерживает процессор с архитектурой x64. Скачайте и запустите версию скрипта для вашей архитектуры.
-UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 24H2 и выше. Вы используете {0} {1}. Обновите Windows и повторите попытку.
+UnsupportedOSBuild                        = Скрипт поддерживает Windows 11 24H2 и выше. Вы используете {0} {1}. Запустите скрипт в зависимости от вашей версии Windows.
 UnsupportedWindowsTerminal                = Версия Windows Terminal ниже 1.23. Пожалуйста, обновите его в Microsoft Store и повторите попытку.
 UpdateWarning                             = Вы используете Windows 11 {0}.{1}. Поддерживаемые сборки: Windows 11 {0}.{2} и выше. Запустите обновление Windows и повторите попытку.
 UnsupportedLanguageMode                   = Сессия PowerShell работает в ограниченном режиме.

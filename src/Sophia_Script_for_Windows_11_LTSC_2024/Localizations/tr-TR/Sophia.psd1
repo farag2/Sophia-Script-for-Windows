@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedArchitecture                   = "{0}" tabanlı mimari CPU kullanıyorsunuz. Bu komut dosyası yalnızca x64 mimari tabanlı CPU'ları destekler. Mimariniz için komut dosyası sürümünü indirin ve çalıştırın.
-UnsupportedOSBuild                        = Komut dosyası yalnızca Windows 11 Enterprise LTSC 2024'yi destekler. {0} {1} kullanıyorsunuz. Windows'unuzu yükseltin ve tekrar deneyin.
+UnsupportedOSBuild                        = Komut dosyası yalnızca Windows 11 Enterprise LTSC 2024'yi destekler. {0} {1} kullanıyorsunuz. Windows sürümüne göre doğru komut dosyasını çalıştırın.
 UnsupportedWindowsTerminal                = Windows Terminal sürümü 1.23'den daha düşük. Lütfen Microsoft Store'da güncelleyin ve tekrar deneyin.
 UpdateWarning                             = Windows 11 {0}.{1} rendszert használ. A támogatott verzió Windows 11 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = Sınırlı bir dil modunda çalışan PowerShell oturumu.

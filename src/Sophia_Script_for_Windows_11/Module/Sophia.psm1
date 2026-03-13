@@ -7289,22 +7289,19 @@ function DefaultTerminalApp
 		$ConsoleHost
 	)
 
-	if ($WindowsTerminal)
-	{
-		if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageNotInstalled -f "Windows Terminal"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageNotInstalled -f "Windows Terminal"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-			return
-		}
-	}
-
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"WindowsTerminal"
 		{
+			if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message (($Localization.PackageNotInstalled -f "Windows Terminal"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.PackageNotInstalled -f "Windows Terminal"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
+			}
+
 			# Find the current GUID of Windows Terminal
 			$PackageFullName = (Get-AppxPackage -Name Microsoft.WindowsTerminal).PackageFullName
 

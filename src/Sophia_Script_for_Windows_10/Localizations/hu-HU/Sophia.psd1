@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedOSBitness                      = A szkript csak a 64 bites Windows-t támogatja.
-UnsupportedOSBuild                        = A szkript csak a Windows 10 22H2 rendszert támogatja. {0} {1}-et használsz. Frissítse a Windows-t, és próbálja meg újra.
+UnsupportedOSBuild                        = A szkript csak a Windows 10 22H2 rendszert támogatja. {0} {1}-et használsz. A Windows-verziónak megfelelő szkriptet futtassa.
 UnsupportedWindowsTerminal                = A Windows Terminal verziója alacsonyabb, mint 1.23. Kérjük, frissítse azt a Microsoft Store-ban, és próbálja meg újra.
 UpdateWarning                             = Vous utilisez Windows 10 {0}.{1}. La version prise en charge est Windows 10 {0}.{2} et supérieure. Exécutez Windows Update et réessayez.
 UnsupportedLanguageMode                   = A PowerShell munkamenet korlátozott nyelvi üzemmódban fut.

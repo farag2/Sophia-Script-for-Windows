@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedArchitecture                   = Your're using "{0}" based architecture CPU. This script supports Arm architecture based CPU only. Download and run script version for your archicture.
-UnsupportedOSBuild                        = Script supports Windows 11 24H2 and higher. You're using {0} {1}. Upgrade your Windows and try again.
+UnsupportedArchitecture                   = Your're using "{0}" based CPU architecture. This script supports Arm architecture based CPU only. Download and run script version for your archicture.
+UnsupportedOSBuild                        = Script supports Windows 11 24H2 and higher. You're using {0} {1}. Run correct script based on Windows edition.
 UnsupportedWindowsTerminal                = Windows Terminal version is lower than 1.23. Please update it in the Microsoft Store and try again.
 UpdateWarning                             = You're using Windows 11 {0}.{1}. Supported builds are Windows 11 {0}.{2} and higher. Run Windows Update and try again.
 UnsupportedLanguageMode                   = The PowerShell session is running in a limited language mode.

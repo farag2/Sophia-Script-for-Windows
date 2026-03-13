@@ -1,6 +1,6 @@
 ﻿ConvertFrom-StringData -StringData @'
 UnsupportedArchitecture                   = Korzystasz z procesora opartego na architekturze "{0}". Ten skrypt obsługuje wyłącznie procesory oparte na architekturze x64. Pobierz i uruchom wersję skryptu odpowiednią dla swojej architektury.
-UnsupportedOSBuild                        = Skrypt obsługuje tylko system Windows 10 Enterprise LTSC 2021. Używasz systemu {0} {1}. Zaktualizuj system Windows i spróbuj ponownie.
+UnsupportedOSBuild                        = Skrypt obsługuje tylko system Windows 10 Enterprise LTSC 2021. Używasz systemu {0} {1}. Uruchom odpowiedni skrypt w zależności od wersji systemu Windows.
 UnsupportedWindowsTerminal                = Wersja Windows Terminal jest niższa niż 1.23. Zaktualizuj ją w Microsoft Store i spróbuj ponownie.
 UpdateWarning                             = Windows 11 {0}.{1} rendszert használ. A támogatott verzió Windows 11 {0}.{2} vagy újabb. Futtassa a Windows Update programot, majd próbálja meg újra.
 UnsupportedLanguageMode                   = Sesja PowerShell działa w trybie ograniczonego języka.
