@@ -299,17 +299,22 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 ## Media
 
 <details>
+
+<a href="https://www.comss.ru/page.php?id=19917">Comss.ru</a>
+
 <a href="https://www.windowscentral.com/microsoft/windows-11/how-to-fine-tune-your-pc-with-the-sophia-script-for-windows-11">Windows Central</a>
 
 <a href="https://www.xda-developers.com/sophia-script-returns-control-windows-11">XDA</a>
+
+<a href="https://www.neowin.net/news/this-script-is-the-ultimate-tool-to-control-and-customize-windows-11">Neowin</a>
+
+<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs">Neowin 2</a>
 
 <a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">4sysops</a>
 
 <a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/">gHacks</a>
 
-<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs">Neowin</a>
-
-<a href="https://www.comss.ru/page.php?id=8019">Comss.ru</a>
+<a href="https://www.comss.ru/page.php?id=8019">Comss.ru 2</a>
 
 <a href="https://habr.com/company/skillfactory/blog/553800">Habr</a>
 
