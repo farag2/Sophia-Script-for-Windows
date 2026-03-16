@@ -1567,22 +1567,6 @@
     },
     {
         "Region": "System",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "AntizapretProxy",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "System",
         "Control": "cmbchk",
         "Required": "false",
         "Function": "PreventEdgeShortcutCreation",

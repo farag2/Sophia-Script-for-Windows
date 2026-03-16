@@ -697,16 +697,6 @@ Install-VCRedist
 # Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64. Требуется соединение с интернетом
 Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
 
-# Enable proxying only blocked sites from the unified registry of Roskomnadzor. Applicable for Russia only
-# Включить проксирование только заблокированных сайтов из единого реестра Роскомнадзора. Функция применима только для России
-# https://antizapret.prostovpn.org
-AntizapretProxy -Enable
-
-# Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)
-# Выключить проксирование только заблокированных сайтов из единого реестра Роскомнадзора (значение по умолчанию)
-# https://antizapret.prostovpn.org
-# AntizapretProxy -Disable
-
 # Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
 # Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
 RegistryBackup -Enable

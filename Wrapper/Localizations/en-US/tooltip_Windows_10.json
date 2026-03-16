@@ -1420,20 +1420,6 @@
   },
   {
     "Region": "System",
-    "Function": "AntizapretProxy",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable proxying only blocked sites from the unified registry of Roskomnadzor. Applicable for Russia only."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable proxying only blocked sites from the unified registry of Roskomnadzor (default value)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {

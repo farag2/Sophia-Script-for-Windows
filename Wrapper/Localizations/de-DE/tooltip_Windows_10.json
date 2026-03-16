@@ -1420,20 +1420,6 @@
   },
   {
     "Region": "System",
-    "Function": "AntizapretProxy",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie das Proxying nur für gesperrte Websites aus der einheitlichen Registrierung von Roskomnadzor. Die Funktion ist nur für Russland anwendbar."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie das Proxying nur für gesperrte Websites aus dem einheitlichen Register von Roskomnadzor (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
