@@ -32,12 +32,37 @@ jobs:
           echo "CODE_LINES=$Summary" >> $env:GITHUB_ENV
 
       - name: Writing to Gist
-        uses: schneegans/dynamic-badges-action@master
-        with:
-          auth: ${{ secrets.GIST_SophiaScript }}
-          gistID: 9852d6b9569a91bf69ceba8a94cc97f4
-          filename: SophiaScript.json
-          label: Lines of Code
-          message: ${{ env.CODE_LINES }}
-          namedLogo: PowerShell
-          color: brightgreen
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_SophiaScript_Lines }}
+        shell: pwsh
+        run: |
+          # https://gist.github.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4
+
+          $GistContent = @{
+            schemaVersion = 1
+            label         = "Lines of Code"
+            message       = $env:CODE_LINES
+            color         = "brightgreen"
+            namedLogo     = "PowerShell"
+          } | ConvertTo-Json
+
+          $Body = @{
+            files = @{
+              "SophiaScript.json" = @{
+                content = $GistContent
+              }
+            }
+          } | ConvertTo-Json
+          $Headers = @{
+            Authorization = "Bearer $env:GIST_TOKEN"
+            Accept        = "application/vnd.github+json"
+          }
+          $Parameters = @{
+              Uri             = "https://api.github.com/gists/9852d6b9569a91bf69ceba8a94cc97f4"
+              Method          = "Patch"
+              Body            = $Body
+              Headers         = $Headers
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          Invoke-RestMethod @Parameters
