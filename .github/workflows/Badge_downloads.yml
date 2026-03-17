@@ -17,29 +17,33 @@ jobs:
 
       - name: Get download counts
         run: |
-          # Count downloads for the first page of the repo
-          # By default, GitHub parses only first page
           $Token = "${{ secrets.GITHUB_TOKEN }}"
           $Headers = @{
-              Accept        = "application/vnd.github+json"
-              Authorization = "Bearer $Token"
+            Accept        = "application/vnd.github+json"
+            Authorization = "Bearer $Token"
           }
-          $Parameters = @{
-              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=1"
-              Headers         = $Headers
-              UseBasicParsing = $true
-              Verbose         = $true
-          }
-          $page1 = ((Invoke-RestMethod @Parameters).assets.download_count | Measure-Object -Sum).Sum
 
-          # Count downloads for the second page of the repo
-          $Parameters = @{
-              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=2"
+          # Count downloads for the first page of the repo
+          # By default, GitHub parses only first page
+          $Releases = @()
+          $Page = 1
+
+          do
+          {
+            $Parameters = @{
+              Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases?per_page=100&page=$page"
               Headers         = $Headers
               UseBasicParsing = $true
               Verbose         = $true
+            }
+            $Pages = Invoke-RestMethod @Parameters
+
+            $Releases += $Pages
+            $Page++
           }
-          $page2 = ((Invoke-RestMethod @Parameters).assets.download_count | Measure-Object -Sum).Sum
+          while ($Pages.Count -gt 0)
+
+          $Allpages = ($Releases.assets.download_count | Measure-Object -Sum).Sum
 
           # https://community.chocolatey.org/packages/sophia
           $Parameters = @{
@@ -51,24 +55,49 @@ jobs:
 
           # https://sourceforge.net/projects/sophia-script-windows.mirror/
           $Parameters = @{
-              Uri             = "https://sourceforge.net/projects/sophia-script-windows.mirror/files/stats/json?start_date=2025-09-11&end_date=$(Get-Date -Format "yyyy-MM-dd")"
+              Uri             = "https://sourceforge.net/projects/sophia-script-windows.mirror/files/stats/json?start_date=2025-09-11&end_date=$(Get-Date -Format 'yyyy-MM-dd')"
               UseBasicParsing = $true
               Verbose         = $true
           }
-          $sourceforge = (Invoke-RestMethod @Parameters).total
+          $SourceForge = (Invoke-RestMethod @Parameters).total
 
-          $Summary = "{0:N3} Million" -f (($page1 + $page2 + $choco + $sourceforge)/1000000)
+          $Summary = "{0:N3} Million" -f (($Allpages + $SourceForge)/1000000)
           Write-Verbose -Message $Summary -Verbose
 
           echo "DOWNLOADS_COUNT=$Summary" >> $env:GITHUB_ENV
 
       - name: Writing to Gist
-        uses: schneegans/dynamic-badges-action@master
-        with:
-          auth: ${{ secrets.GIST_SOPHIASCRIPT_DOWNLOADS_COUNT }}
-          gistID: 25ddc72387f298503b752ad5b8d16eed
-          filename: SophiaScriptDownloadsCount.json 
-          label: downloads
-          message: ${{ env.DOWNLOADS_COUNT }}
-          namedLogo: GitHub
-          color: brightgreen
+        env:
+          GIST_TOKEN: ${{ secrets.GIST_SOPHIASCRIPT_DOWNLOADS_COUNT }}
+        shell: pwsh
+        run: |
+          # https://gist.github.com/farag2/25ddc72387f298503b752ad5b8d16eed
+
+          $fileContent = @{
+            schemaVersion = 1
+            label         = "downloads"
+            message       = $env:DOWNLOADS_COUNT
+            color         = "brightgreen"
+            namedLogo     = "GitHub"
+          } | ConvertTo-Json
+
+          $Body = @{
+            files = @{
+              "SophiaScriptDownloadsCount.json" = @{
+                content = $fileContent
+              }
+            }
+          } | ConvertTo-Json -Depth 5
+          $Headers = @{
+            Authorization = "Bearer $env:GIST_TOKEN"
+            Accept        = "application/vnd.github+json"
+          }
+          $Parameters = @{
+              Uri             = "https://api.github.com/gists/25ddc72387f298503b752ad5b8d16eed"
+              Method          = "Patch"
+              Body            = $Body
+              Headers         = $Headers
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          Invoke-RestMethod @Parameters
