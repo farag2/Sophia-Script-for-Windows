@@ -61,6 +61,8 @@ jobs:
           }
           $SourceForge = (Invoke-RestMethod @Parameters).total
 
+          Write-Verbose -Message ($Allpages + $SourceForge) -Verbose
+
           $Summary = "{0:N3} Million" -f (($Allpages + $SourceForge)/1000000)
           Write-Verbose -Message $Summary -Verbose
 
