@@ -11,6 +11,8 @@
         "urlLatestSophiaScriptDownloads": "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest",
         "autosaveFilename": "autosave.ps1",
         "autosaveIntervalInSeconds": "300",
+        "lineToFindInPS1ToGetTopOfScriptTopLine": "Get-ChildItem -Path $PSScriptRoot\\Module\\private | Foreach-Object -Process {. $_.FullName}",
+        "lineToFindInPS1ToGetTopOfScriptBottomLine": "# Global variable if checks failed",
         "startLineRegionInitialActions": "#region Initial Actions",
         "endLineRegionInitialActions": "#endregion Initial Actions",
         "startLineRegionSystemProtection": "#region Protection",
