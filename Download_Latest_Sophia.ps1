@@ -26,13 +26,11 @@ $Script:CompilerParameters                  = [System.CodeDom.Compiler.CompilerP
 $Script:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 $Script:CompilerParameters.GenerateInMemory = $true
 
-$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
 try
 {
 	$Parameters = @{
 		Uri             = "https://codeload.github.com/farag2/Sophia-Script-for-Windows/zip/refs/heads/main"
-		OutFile         = "$DownloadsFolder\main.zip"
+		OutFile         = "$env:SystemDrive\main.zip"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
@@ -49,7 +47,7 @@ catch [System.Net.WebException]
 	}
 	else
 	{
-		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses ### 
+		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
 	}
 	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
@@ -64,7 +62,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 {
 	"17763"
 	{
-		# Check for Windows 10 LTSC 2019
+		# Windows 10 LTSC 2019
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2019")
 		{
 			$Version = "Sophia_Script_for_Windows_10_LTSC_2019"
@@ -91,14 +89,14 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 	"19044"
 	{
-		# Check for Windows 10 LTSC 2021
+		# Windows 10 LTSC 2021
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2021")
 		{
 			$Version = "Sophia_Script_for_Windows_10_LTSC_2021"
 		}
 		else
 		{
-			Write-Verbose -Message "Windows version is not supported. Update your Windows and try again." -Verbose
+			Write-Verbose -Message "Your Windows version is not supported. Update your Windows and try again." -Verbose
 
 			# Receive updates for other Microsoft products when you update Windows
 			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -127,9 +125,9 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			$Version = "Sophia_Script_for_Windows_10_PowerShell_7"
 		}
 	}
-	{$_ -eq 26100}
+	{$_ -gt 19045}
 	{
-		# Check for Windows 11 LTSC 2024
+		# Windows 11 LTSC 2024
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2024")
 		{
 			if ($Host.Version.Major -eq 5)
@@ -143,74 +141,36 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
-			Write-Verbose -Message "Windows version is not supported. Update your Windows and try again." -Verbose
-
-			# Receive updates for other Microsoft products when you update Windows
-			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-			# Check for updates
-			& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-			# Open the "Windows Update" page
-			Start-Process -FilePath "ms-settings:windowsupdate"
-
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			pause
-			exit
-		}
-	}
-	{$_ -ge 26200}
-	{
-		if ($Host.Version.Major -eq 5)
-		{
-			if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+			if ($Host.Version.Major -eq 5)
 			{
-				$Version = "Sophia_Script_for_Windows_11_ARM"
+				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+				{
+					$Version = "Sophia_Script_for_Windows_11_ARM"
+				}
+				else
+				{
+					$Version = "Sophia_Script_for_Windows_11"
+				}
 			}
 			else
 			{
-				$Version = "Sophia_Script_for_Windows_11"
+				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+				{
+					$Version = "Sophia_Script_for_Windows_11_ARM_PowerShell_7"
+				}
+				else
+				{
+					$Version = "Sophia_Script_for_Windows_11_PowerShell_7"
+				}
 			}
 		}
-		else
-		{
-			if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
-			{
-				$Version = "Sophia_Script_for_Windows_11_ARM_PowerShell_7"
-			}
-			else
-			{
-				$Version = "Sophia_Script_for_Windows_11_PowerShell_7"
-			}
-		}
-	}
-	default
-	{
-		Write-Verbose -Message "Windows version is not supported. Update your Windows and try again." -Verbose
-
-		# Receive updates for other Microsoft products when you update Windows
-		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-		# Check for updates
-		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-		# Open the "Windows Update" page
-		Start-Process -FilePath "ms-settings:windowsupdate"
-
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		pause
-		exit
 	}
 }
 
-if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
+if (Test-Path -Path "$env:SystemDrive\$($Version)_Latest")
 {
-	Write-Verbose -Message "Please remove `"$DownloadsFolder\$($Version)_Latest`" manually and try to download again." -Verbose
-	Remove-Item -Path "$DownloadsFolder\main.zip" -Force
+	Write-Verbose -Message "Please remove `"$env:SystemDrive\$($Version)_Latest`" manually and try to download again." -Verbose
+	Remove-Item -Path "$env:SystemDrive\main.zip" -Force
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -219,15 +179,21 @@ if (Test-Path -Path "$DownloadsFolder\$($Version)_Latest")
 	exit
 }
 
-New-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries" -ItemType Directory -Force
-
 try
 {
-	& "$env:SystemRoot\System32\tar.exe" -C "$DownloadsFolder\SophiaScriptTemp" -xf "$DownloadsFolder\main.zip" "Sophia-Script-for-Windows-main/src/$Version"
+	# tar.exe cannot expand archive if username contains unicode characters, so we download archive to the system drive root
+	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\main.zip" -C "$env:SystemDrive\" --strip-components=2 "Sophia-Script-for-Windows-main/src/$Version"
 }
 catch
 {
 	Write-Verbose -Message "Archive cannot be expanded. Probably, this was caused by your antivirus. Please update its definitions and try again." -Verbose
+
+	# Try to display available AVs
+	try
+	{
+		Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2
+	}
+	catch {}
 
 	# Check for updates
 	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
@@ -242,30 +208,19 @@ catch
 	exit
 }
 
+New-Item -Path "$env:SystemDrive\$Version\Binaries" -ItemType Directory -Force
+
 # Download LGPO
 # https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 $Parameters = @{
 	Uri             = "https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip"
-	OutFile         = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\LGPO.zip"
+	OutFile         = "$env:SystemDrive\LGPO.zip"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-$Parameters = @{
-	Path            = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\LGPO.zip"
-	DestinationPath = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries"
-	Force           = $true
-	Verbose         = $true
-}
-Expand-Archive @Parameters
-
-$Parameters = @{
-	Path        = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\LGPO_30\LGPO.exe"
-	Destination = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\LGPO.exe"
-	Force       = $true
-}
-Move-Item @Parameters
+& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\LGPO.zip" -C "$env:SystemDrive\$Version\Binaries" --strip-components=1 "LGPO_30/LGPO.exe"
 
 if ($Version -match "PowerShell_7")
 {
@@ -273,42 +228,36 @@ if ($Version -match "PowerShell_7")
 	# https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
 	$Parameters = @{
 		Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
-		OutFile         = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\microsoft.windows.sdk.net.ref.zip"
+		OutFile         = "$env:SystemDrive\microsoft.windows.sdk.net.ref.zip"
 		UseBasicParsing = $true
 	}
 	Invoke-RestMethod @Parameters
 
 	# Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
-	Add-Type -Assembly System.IO.Compression.FileSystem
-	$ZIP = [IO.Compression.ZipFile]::OpenRead("$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\microsoft.windows.sdk.net.ref.zip")
-	$Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/net8.0/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/net8.0/WinRT.Runtime.dll")}
-	$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\$($_.Name)", $true)}
-	$ZIP.Dispose()
-
-	Remove-Item -Path "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version\Binaries\microsoft.windows.sdk.net.ref.zip" -Force
+	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\microsoft.windows.sdk.net.ref.zip" -C "$env:SystemDrive\$Version\Binaries" --strip-components=2 "lib/net8.0/WinRT.Runtime.dll" "lib/net8.0/Microsoft.Windows.SDK.NET.dll"
 }
 
 $Parameters = @{
-	Path    = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$Version"
+	Path    = "$env:SystemDrive\$Version"
 	NewName = "$($Version)_Latest"
 	Force   = $true
 }
 Rename-Item @Parameters
 
+$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Parameters = @{
-	Path        = "$DownloadsFolder\SophiaScriptTemp\Sophia-Script-for-Windows-main\src\$($Version)_Latest"
+	Path        = "$env:SystemDrive\$($Version)_Latest"
 	Destination = "$DownloadsFolder"
 	Force       = $true
 }
 Move-Item @Parameters
 
 $Path = @(
-	"$DownloadsFolder\SophiaScriptTemp",
-	"$DownloadsFolder\$($Version)_Latest\Binaries\LGPO_30",
-	"$DownloadsFolder\$($Version)_Latest\Binaries\LGPO.zip",
-	"$DownloadsFolder\main.zip"
+	"$env:SystemDrive\LGPO.zip",
+	"$env:SystemDrive\main.zip",
+	"$env:SystemDrive\microsoft.windows.sdk.net.ref.zip"
 )
-Remove-Item -Path $Path -Recurse -Force
+Remove-Item -Path $Path -Recurse -Force -ErrorAction Ignore
 
 switch ($Version)
 {
