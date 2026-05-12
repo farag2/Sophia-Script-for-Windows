@@ -48,7 +48,7 @@
     {
         "Id": "Button",
         "Options": {
-            "btnRefreshConsole": "Refresh Console",
+            "btnRefreshConsoleOutputPowerShell": "Refresh Console",
             "btnRunPowerShell": "Run PowerShell",
             "btnOpen": "Open",
             "btnSave": "Save",
