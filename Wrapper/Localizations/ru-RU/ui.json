@@ -48,7 +48,7 @@
     {
         "Id": "Button",
         "Options": {
-            "btnRefreshConsole": "Обновить консоль",
+            "btnRefreshConsoleOutputPowerShell": "Обновить консоль",
             "btnRunPowerShell": "Запустить PowerShell",
             "btnOpen": "Обзор",
             "btnSave": "Сохранить",
