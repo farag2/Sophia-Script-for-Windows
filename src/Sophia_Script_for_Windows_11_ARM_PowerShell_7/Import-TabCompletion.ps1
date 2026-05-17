@@ -33,23 +33,6 @@
 #region Initial Actions
 $Global:Failed = $false
 
-# Checking if function wasn't dot-sourced, but called explicitly
-# ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
-if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
-{
-	Write-Information -MessageData "" -InformationAction Continue
-	Write-Warning -Message $Localization.DotSourcedWarning
-	Write-Information -MessageData "" -InformationAction Continue
-
-	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions" -Verbose
-	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-	exit
-}
-
-$Global:Failed = $false
-
 # Unload and import private functions and module
 Get-ChildItem function: | Where-Object {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
@@ -58,6 +41,22 @@ Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_
 
 # Dot-source script with checks
 InitialActions
+
+# Checking if function wasn't dot-sourced, but called explicitly
+# ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
+if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
+{
+	Write-Warning -Message $Localization.DotSourcedWarning
+	Write-Information -MessageData "" -InformationAction Continue
+
+	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions" -Verbose
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+	$Global:Failed = $false
+
+	exit
+}
 
 # Global variable if checks failed
 if ($Global:Failed)

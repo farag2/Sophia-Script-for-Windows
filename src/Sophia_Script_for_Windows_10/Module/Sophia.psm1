@@ -69,7 +69,7 @@ function CreateRestorePoint
 	# Never skip creating a restore point
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
 
-	Checkpoint-Computer -Description "Sophia Script for Windows 10" -RestorePointType MODIFY_SETTINGS
+	Checkpoint-Computer -Description "Sophia Script for Windows" -RestorePointType MODIFY_SETTINGS
 
 	# Revert the System Restore checkpoint creation frequency to 1440 minutes
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
@@ -268,24 +268,23 @@ function ErrorReporting
 
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Type CLEAR
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
 			Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Disable-ScheduledTask
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -PropertyType DWord -Value 1 -Force
-
 			Get-Service -Name WerSvc | Stop-Service -Force
 			Get-Service -Name WerSvc | Set-Service -StartupType Disabled
 		}
 		"Enable"
 		{
 			Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Enable-ScheduledTask
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
-
 			Get-Service -Name WerSvc | Set-Service -StartupType Manual
 			Get-Service -Name WerSvc | Start-Service
 		}
@@ -621,7 +620,7 @@ function ScheduledTasks
 	Add-Type -AssemblyName System.Windows.Forms
 
 	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
-	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows"} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -699,7 +698,7 @@ function SigninInfo
 			{
 				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 0 -Force
 		}
 		"Enable"
 		{
@@ -3612,17 +3611,16 @@ function Install-Cursors
 
 	if (-not $Default)
 	{
-		$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
 		try
 		{
 			# Download cursors
+			# tar.exe cannot expand archive if username contains unicode characters, so we download archive to the system drive root
 			# The archive was saved in the "Cursors" folder using DeviantArt API via GitHub CI/CD
 			# https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors
 			# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml
 			$Parameters = @{
 				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/Windows11Cursors.zip"
-				OutFile         = "$DownloadsFolder\Windows11Cursors.zip"
+				OutFile         = "$env:SystemDrive\Windows11Cursors.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
@@ -3648,7 +3646,7 @@ function Install-Cursors
 			}
 
 			# Extract archive from "dark" folder only
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free" --strip-components=1 dark/
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free" --strip-components=1 dark/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
@@ -3697,7 +3695,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force -ErrorAction Ignore
+			Remove-Item -Path "$env:SystemDrive\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force -ErrorAction Ignore
 		}
 		"Light"
 		{
@@ -3707,7 +3705,7 @@ function Install-Cursors
 			}
 
 			# Extract archive from "light" folder only
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free" --strip-components=1 light/
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free" --strip-components=1 light/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
@@ -3756,7 +3754,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$DownloadsFolder\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
+			Remove-Item -Path "$env:SystemDrive\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
 		}
 		"Default"
 		{
@@ -5330,7 +5328,7 @@ function WindowsFeatures
 	Add-Type -AssemblyName System.Windows.Forms
 
 	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
-	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows"} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -5635,7 +5633,7 @@ function WindowsCapabilities
 	Add-Type -AssemblyName System.Windows.Forms
 
 	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
-	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows"} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -6305,56 +6303,63 @@ function Set-UserShellFolderLocation
 	}
 
 	# Contents of the hidden desktop.ini file for each type of user folders
+	# An empty string at the beginning
 	$Desktop = @"
-"",
-"[.ShellClassInfo]",
-"LocalizedResourceName=@shell32.dll,-21769",
-"IconResource=%SystemRoot%\System32\imageres.dll,-183"
+
+[.ShellClassInfo]
+LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769
+IconResource=%SystemRoot%\System32\imageres.dll,-183
 "@
 
+	# An empty string at the beginning
 	$Documents = @"
-"",
-"[.ShellClassInfo]",
-"LocalizedResourceName=@shell32.dll,-21770",
- "IconResource=%SystemRoot%\System32\imageres.dll,-112",
-"IconFile=%SystemRoot%\System32\shell32.dll",
-"IconIndex=-235"
+
+[.ShellClassInfo]
+LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21770
+IconResource=%SystemRoot%\System32\imageres.dll,-112
+IconFile=%SystemRoot%\System32\shell32.dll
+IconIndex=-235
 "@
 
+	# An empty string at the beginning
 	$Downloads = @"
-"",
-"[.ShellClassInfo]",
-"LocalizedResourceName=@shell32.dll,-21798",
-"IconResource=%SystemRoot%\System32\imageres.dll,-184"
+
+[.ShellClassInfo]
+LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21798
+IconResource=%SystemRoot%\System32\imageres.dll,-184
 "@
 
+	# An empty string at the beginning
 	$Music = @"
-"",
-"[.ShellClassInfo]",
-"LocalizedResourceName=@shell32.dll,-21790",
-"InfoTip=@shell32.dll,-12689",
-"IconResource=%SystemRoot%\System32\imageres.dll,-108",
-"IconFile=%SystemRoot%\System32\shell32.dll","IconIndex=-237"
+
+[.ShellClassInfo]
+LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21790
+InfoTip=@%SystemRoot%\system32\shell32.dll,-12689
+IconResource=%SystemRoot%\System32\imageres.dll,-108
+IconFile=%SystemRoot%\System32\shell32.dll
+IconIndex=-237
 "@
 
+	# An empty string at the beginning
 	$Pictures = @"
-"",
-"[.ShellClassInfo]",
-"LocalizedResourceName=@shell32.dll,-21779",
-"InfoTip=@shell32.dll,-12688",
-"IconResource=%SystemRoot%\System32\imageres.dll,-113",
-"IconFile=%SystemRoot%\System32\shell32.dll",
-"IconIndex=-236"
+
+[.ShellClassInfo]
+LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21779
+InfoTip=@%SystemRoot%\system32\shell32.dll,-12688
+IconResource=%SystemRoot%\System32\imageres.dll,-113
+IconFile=%SystemRoot%\System32\shell32.dll
+IconIndex=-236
 "@
 
+	# An empty string at the beginning
 	$Videos = @"
-"",
-"[.ShellClassInfo]",
-"LocalizedResourceName=@shell32.dll,-21791",
-"InfoTip=@shell32.dll,-12690",
-"IconResource=%SystemRoot%\System32\imageres.dll,-189",
-"IconFile=%SystemRoot%\System32\shell32.dll",
-"IconIndex=-238"
+
+[.ShellClassInfo]
+LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21791
+InfoTip=@%SystemRoot%\system32\shell32.dll,-12690
+IconResource=%SystemRoot%\System32\imageres.dll,-189
+IconFile=%SystemRoot%\System32\shell32.dll
+IconIndex=-238
 "@
 
 	$Global:DesktopINI = @{
@@ -6619,11 +6624,14 @@ function RecommendedTroubleshooting
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Type CLEAR
 
 	# Turn on Windows Error Reporting
-	Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Enable-ScheduledTask
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Type CLEAR
 
+	Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Enable-ScheduledTask
 	Get-Service -Name WerSvc | Set-Service -StartupType Manual
 	Get-Service -Name WerSvc | Start-Service
 
@@ -7835,7 +7843,7 @@ function Import-Associations
 	https://support.microsoft.com/en-us/windows/how-to-use-the-pc-health-check-app-9c8abd9b-03ba-4e67-81ef-36f37caa7844
 
 	.NOTES
-	This application is installed with the KB5005463 update to сheck whether PC meets the system requirements of Windows 11
+	This application is installed with the KB5005463 update to check whether PC meets the system requirements of Windows 11
 
 	.NOTES
 	Machine-wide
@@ -8403,7 +8411,7 @@ function Install-WSL
 	{
 		Write-Warning -Message $Global:CommandTag
 
-		Start-Process -FilePath wsl.exe -ArgumentList "--install --distribution $Global:CommandTag" -Wait
+		Start-Process -FilePath $env:systemRoot\System32\wsl.exe -ArgumentList "--install --distribution $Global:CommandTag" -Wait
 
 		$Form.Close()
 
@@ -8439,7 +8447,7 @@ function Install-WSL
 	Add-Type -AssemblyName System.Windows.Forms
 
 	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
-	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows"} | ForEach-Object -Process {
 		# Show window, if minimized
 		[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -8932,7 +8940,7 @@ function Uninstall-UWPApps
 		Add-Type -AssemblyName System.Windows.Forms
 
 		# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
-		Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows 10"} | ForEach-Object -Process {
+		Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows"} | ForEach-Object -Process {
 			# Show window, if minimized
 			[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
 
@@ -9425,7 +9433,7 @@ function CleanupTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
 			{
-				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to сheck whether the task was created
+				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Windows Cleanup"} | Foreach-Object {
@@ -9581,7 +9589,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				TaskPath    = "Sophia"
 				Principal   = $Principal
 				Action      = $Action
-				Description = $Localization.CleanupTaskDescription -f $env:USERNAME
+				Description = $Localization.CleanupTaskDescription, ($Localization.ScheduledTaskLoggedInUserNotification -f $env:USERNAME) -join " "
 				Settings    = $Settings
 			}
 			Register-ScheduledTask @Parameters -Force
@@ -9749,7 +9757,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				Settings    = $Settings
 				Principal   = $Principal
 				Trigger     = $Trigger
-				Description = $Localization.CleanupNotificationTaskDescription -f $env:USERNAME
+				Description = $Localization.CleanupNotificationTaskDescription, ($Localization.ScheduledTaskLoggedInUserNotification -f $env:USERNAME) -join " "
 			}
 			Register-ScheduledTask @Parameters -Force
 
@@ -9760,6 +9768,9 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 
 			# Start Task Scheduler in the end if any scheduled task was created
 			$Global:ScheduledTasks = $true
+
+			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Windows Cleanup"), $Localization.CleanupTaskCLIDescription -join " ")
+			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Windows Cleanup"), $Localization.CleanupTaskCLIDescription -join " ") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -9874,7 +9885,7 @@ function SoftwareDistributionTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
 			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to сheck whether the task was created
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "SoftwareDistribution"} | Foreach-Object {
@@ -10082,7 +10093,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				Settings    = $Settings
 				Principal   = $Principal
 				Trigger     = $Trigger
-				Description = $Localization.FolderTaskDescription -f "%SystemRoot%\SoftwareDistribution\Download", $env:USERNAME
+				Description = ($Localization.SoftwareDistributionTaskDescription -f "$env:SystemRoot\SoftwareDistribution\Download"), ($Localization.ScheduledTaskLoggedInUserNotification -f $env:USERNAME) -join " "
 			}
 			Register-ScheduledTask @Parameters -Force
 
@@ -10092,6 +10103,9 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			$Task | Set-ScheduledTask
 
 			$Global:ScheduledTasks = $true
+
+			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "SoftwareDistribution"), ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -join " ")
+			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "SoftwareDistribution"), ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -join " ") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -10195,7 +10209,7 @@ function TempTask
 			# Checking if we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
 			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to сheck whether the task was created
+				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to check whether the task was created
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Temp"} | Foreach-Object {
@@ -10417,7 +10431,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 				Settings    = $Settings
 				Principal   = $Principal
 				Trigger     = $Trigger
-				Description = $Localization.FolderTaskDescription -f "%TEMP%", $env:USERNAME
+				Description = $Localization.TempTaskDescription -f "$env:TEMP"
 			}
 			Register-ScheduledTask @Parameters -Force
 
@@ -10427,6 +10441,9 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			$Task | Set-ScheduledTask
 
 			$Global:ScheduledTasks = $true
+
+			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$env:TEMP") -join " ")
+			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$env:TEMP") -join " ") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -10653,7 +10670,7 @@ function DefenderSandbox
 	The "Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
+	Create the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments
 
 	.PARAMETER Disable
 	Remove the "Process Creation" custom view in the Event Viewer

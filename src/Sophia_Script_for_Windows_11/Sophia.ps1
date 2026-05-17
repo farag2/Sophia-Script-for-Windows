@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Default preset file for "Sophia Script for Windows 11"
+	Default preset file for "Sophia Script for Windows"
 
 	.VERSION
 	7.1.5

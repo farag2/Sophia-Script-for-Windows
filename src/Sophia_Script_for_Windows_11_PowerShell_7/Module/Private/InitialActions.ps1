@@ -186,6 +186,11 @@ function InitialActions
 		exit
 	}
 
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
+
 	# Import PowerShell 5.1 modules
 	try
 	{
@@ -735,6 +740,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	# Checking whether BitLocker drive encryption is off, despite drive is encrypted
 	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
 
@@ -752,8 +758,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 					}
 					catch
 					{
-						Write-Warning -Message $Localization.RebootPending
-
 						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 

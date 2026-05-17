@@ -164,7 +164,6 @@ public static void PostMessage()
 <toast duration="Long" scenario="reminder">
 	<visual>
 		<binding template="ToastGeneric">
-			<text>$($Localization.ThankfulToastTitle)</text>
 			<text>$($Localization.DonateToastTitle)</text>
 		</binding>
 	</visual>
@@ -186,6 +185,10 @@ public static void PostMessage()
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+	Write-Information -MessageData "" -InformationAction Continue
+
+	Write-Verbose -Message $Localization.DonateToastTitle -Verbose
+
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
 	Write-Verbose -Message "https://boosty.to/teamsophia" -Verbose
