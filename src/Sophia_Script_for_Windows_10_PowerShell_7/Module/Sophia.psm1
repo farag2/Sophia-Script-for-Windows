@@ -269,7 +269,6 @@ function ErrorReporting
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Type CLEAR
@@ -927,7 +926,7 @@ function WindowsTips
 
 <#
 	.SYNOPSIS
-	Suggested me content in the Settings app
+	Suggested content in the Settings app
 
 	.PARAMETER Hide
 	Hide from me suggested content in the Settings app
@@ -3782,11 +3781,11 @@ function Install-Cursors
 
 	# Reload cursor on-the-fly
 	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "Cursor"
-		Language           = "CSharp"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
+		Namespace        = "WinAPI"
+		Name             = "Cursor"
+		Language         = "CSharp"
+		CompilerOptions  = $CompilerOptions
+		MemberDefinition = @"
 [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
 public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
 "@
@@ -5086,6 +5085,9 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
+	A pop-up dialog box lets a user select features
+
+	.NOTES
 	Current user
 #>
 function WindowsFeatures
@@ -5372,6 +5374,9 @@ function WindowsFeatures
 
 	.EXAMPLE
 	WindowsCapabilities -Install
+
+	.NOTES
+	A pop-up dialog box lets a user select features
 
 	.NOTES
 	Current user
@@ -6628,7 +6633,6 @@ function RecommendedTroubleshooting
 	# Turn on Windows Error Reporting
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Type CLEAR
 	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Type CLEAR
