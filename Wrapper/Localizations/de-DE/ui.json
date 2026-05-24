@@ -18,6 +18,8 @@
             "menuThemeLight": "Hell",
             "menuLanguage": "Sprache",
             "menuAccessibility": "Zugänglichkeit",
+            "menuWindowScale": "Fensterskalierung",
+            "menuFontScale": "Schriftgröße",
             "menuScaleUp": "Vergrößern",
             "menuScale": "Skala",
             "menuScaleDown": "Verkleinern",

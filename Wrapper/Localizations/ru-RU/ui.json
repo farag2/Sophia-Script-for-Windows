@@ -18,6 +18,8 @@
             "menuThemeLight": "Светлая",
             "menuLanguage": "Язык",            
             "menuAccessibility": "Доступность",
+            "menuWindowScale": "Масштаб окна",
+            "menuFontScale": "Масштаб шрифта",
             "menuScaleUp": "Масштабирование",
             "menuScale": "Масштаб",
             "menuScaleDown": "Уменьшить масштаб",

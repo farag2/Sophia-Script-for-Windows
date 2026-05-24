@@ -18,6 +18,8 @@
             "menuThemeLight": "Light",
             "menuLanguage": "Language",
             "menuAccessibility": "Accessibility",
+            "menuWindowScale": "Window Scale",
+            "menuFontScale": "Font Scale",
             "menuScaleUp": "Scale Up",
             "menuScale": "Scale",
             "menuScaleDown": "Scale Down",
