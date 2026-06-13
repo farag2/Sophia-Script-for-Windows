@@ -45,7 +45,6 @@
 
 	.DONATE
 	https://ko-fi.com/farag
-	https://boosty.to/teamsophia
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -60,7 +59,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.5
+#Requires -Version 7.6
 
 #region Initial Actions
 $Global:Failed = $false
@@ -597,7 +596,7 @@ PinToStart -Tiles ControlPanel, DevicesPrinters
 # Открепить все ярлыки и закрепить необходимые
 # PinToStart -UnpinAll -Tiles ControlPanel, DevicesPrinters
 
-# Unpin all the Start tiles
+# Unpin all Start tiles
 # Открепить все ярлыки от начального экрана
 # PinToStart -UnpinAll
 #endregion UI & Personalization

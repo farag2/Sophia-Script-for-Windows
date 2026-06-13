@@ -951,7 +951,6 @@ public extern static string BrandingFormatString(string sFormat);
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
-	Write-Verbose -Message "https://boosty.to/teamsophia" -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
 	# Display a warning message about whether a user has customized the preset file

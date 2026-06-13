@@ -26,7 +26,6 @@
 
 	.DONATE
 	https://ko-fi.com/farag
-	https://boosty.to/teamsophia
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -4186,7 +4185,7 @@ function AppSuggestions
 	Pin the "Devices & Printers" shortcut to Start
 
 	.PARAMETER UnpinAll
-	Unpin all the Start tiles
+	Unpin all Start tiles
 
 	.EXAMPLE
 	PinToStart -Tiles ControlPanel, DevicesPrinters
@@ -4243,7 +4242,7 @@ function PinToStart
 
 		$Global:StartLayout = "$PSScriptRoot\..\..\StartLayout.xml"
 
-		# Unpin all the Start tiles
+		# Unpin all Start tiles
 		if ($UnpinAll)
 		{
 			# Export the current Start layout

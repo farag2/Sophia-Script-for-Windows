@@ -29,7 +29,6 @@
 
 	.DONATE
 	https://ko-fi.com/farag
-	https://boosty.to/teamsophia
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -3407,6 +3406,49 @@ function RecentlyAddedStartApps
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -Force -ErrorAction Ignore
 		}
 	}
+}
+
+<#
+	.SYNOPSIS
+	Unpin all Start tiles
+
+	.EXAMPLE
+	UnPinsAllStartTiles
+
+	.NOTES
+	Current user
+#>
+function UnpinAllStartTiles
+{
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMorePrograms -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMorePrograms -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMorePrograms -Type CLEAR
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	# https://learn.microsoft.com/en-us/windows/configuration/start/layout
+	# Save in UTF8 without BOM
+	Set-Content -Path "$env:TEMP\Nopins.json" -Value '{"pinnedList":[]}' -Encoding Default -NoNewline -Force
+
+	if (-not (Test-Path -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer))
+	{
+		New-Item -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Force
+	}
+	New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ConfigureStartPins -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ConfigureStartPinsJSON -PropertyType ExpandString -Value "$env:TEMP\Nopins.json" -Force
+
+	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
+	Start-Sleep -Seconds 3
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ConfigureStartPins, ConfigureStartPinsJSON -Force -ErrorAction Ignore
+	Remove-Item -Path "$env:TEMP\Nopins.json" -Force -ErrorAction Ignore
 }
 
 <#

@@ -170,7 +170,6 @@ public static void PostMessage()
 	<audio src="ms-winsoundevent:notification.default" />
 	<actions>
 		<action content="Ko-fi" arguments="https://ko-fi.com/farag" activationType="protocol"/>
-		<action content="Boosty" arguments="https://boosty.to/teamsophia" activationType="protocol"/>
 	</actions>
 </toast>
 "@
@@ -191,7 +190,6 @@ public static void PostMessage()
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
-	Write-Verbose -Message "https://boosty.to/teamsophia" -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
 	if ($Global:Error)

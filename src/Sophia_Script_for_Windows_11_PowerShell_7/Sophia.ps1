@@ -45,7 +45,6 @@
 
 	.DONATE
 	https://ko-fi.com/farag
-	https://boosty.to/teamsophia
 
 	.NOTES
 	https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15
@@ -60,7 +59,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.5
+#Requires -Version 7.6
 
 #region Initial Actions
 $Global:Failed = $false
@@ -530,6 +529,10 @@ RecentlyAddedStartApps -Hide
 # Show recently added apps in Start (default value)
 # Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)
 # RecentlyAddedStartApps -Show
+
+# Unpin all Start tiles
+# Открепить все ярлыки от начального экрана
+# UnpinAllStartTiles
 
 # Hide most used apps in Start (default value)
 # Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
