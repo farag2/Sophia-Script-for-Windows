@@ -21,6 +21,7 @@ This program creates a PowerShell script file that you can run to customize Wind
 * `wrapper_localizations.json`: JSON that contains the configuration settings for the all the language settings
 * `wrapper_accessibility_scales.json` : JSON that contains the configuration settings for the all the accessibilty scale settings in different languages
 * `wrapper_tooltip_scales.json` : JSON that contains the configuration settings for the all the ToolTip font size settings
+* `wrapper_font_scales.json` : JSON that contains the configuration settings for the all the font scale settings for controls font size and label width
 * `Set-ConsoleFont.ps1`: PS1 that is run to set PS console to correct font when running PS version 5.x
 * `config_Windows_1x.json`: JSON that contains the options (function names), Sophia preset and Windows Default preset, LTSC version
 * `before_after.json`: JSON that contains the options (function names) for before and after the user selections for PowerShell script output
