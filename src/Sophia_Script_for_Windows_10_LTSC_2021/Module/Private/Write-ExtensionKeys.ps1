@@ -3,10 +3,10 @@
 	Write registry keys for extensions for Set-Association function
 
 	.VERSION
-	7.1.5
+	7.1.6
 
 	.DATE
-	15.04.2026
+	16.06.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
