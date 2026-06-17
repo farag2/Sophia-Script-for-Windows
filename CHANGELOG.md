@@ -5,6 +5,34 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 6.1.6 | 7.1.6 — 16.06.2026
+
+* Added `UnpinAllStartTiles` function to unpin all Start tiles for `Windows 11` only.
+  * Commented by default.
+* Fixed `Install-Cursors`
+  * Now it expands archive to system drive, because `tar.exe` cannot expand archives if username contains non-Latin chars
+* Small fix for `Set-UserShellFolderLocation`
+* Updated localizations
+* Minor changes
+
+## 6.1.5 | 7.1.5 — 14.04.2026
+
+* Added support for `Windows 11 Enterprise LTSC PowerShell 7`
+  * Closes #720
+* Added notification for Windows 10 to enroll in Consumer Extended Security Updates (ESU) program to receive updates until 2028 using TSforge from Microsoft Activation Scripts (MAS)
+  * https://support.microsoft.com/windows/windows-10-support-has-ended-on-october-14-2025-2ca8b313-1946-43d3-b55c-2b95b107f281
+  * https://learn.microsoft.com/lifecycle/faq/extended-security-updates
+* Updated CI/CD scripts
+* Removed `StartLayout` function for `Windows 11` only and `AntizapretProxy`
+* Updated localizations
+* Added `DNSoverHTTPS -OpenDNS` to setup `OpenDNS` DNS-over-HTTPS from Cisco
+  * <https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html>
+* Minor changes and fixes
+* Several news sites published small articles about `Sophia Script for Windows`
+  * https://www.windowscentral.com/microsoft/windows-11/how-to-fine-tune-your-pc-with-the-sophia-script-for-windows-11
+  * https://www.neowin.net/news/this-script-is-the-ultimate-tool-to-control-and-customize-windows-11/
+  * https://www.comss.ru/page.php?id=19917
+
 ## 6.1.4 | 7.1.4 — 24.02.2026
 
 Fixed Set-Association function. Thanks to @gtumanyan
