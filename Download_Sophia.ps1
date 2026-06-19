@@ -56,11 +56,38 @@ catch [System.Net.WebException]
 	exit
 }
 
-$Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
-	UseBasicParsing = $true
+try
+{
+	$Parameters = @{
+		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
+		UseBasicParsing = $true
+	}
+	$JSONVersions = Invoke-RestMethod @Parameters
 }
-$JSONVersions = Invoke-RestMethod @Parameters
+catch [System.Net.WebException]
+{
+	Write-Warning -Message "https://raw.githubusercontent.com is unreachable. Please check Internet connection or change your DNS records."
+	Write-Information -MessageData "" -InformationAction Continue
+
+	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
+	{
+		$DNS = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+	}
+	else
+	{
+		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+	}
+	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
+
+	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+	pause
+	exit
+}
+
+Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Force -Recurse -ErrorAction Ignore
+New-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -ItemType Directory -Force
 
 switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 {
@@ -72,7 +99,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2019
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
-				OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
@@ -108,7 +135,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2021
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
-				OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
@@ -143,7 +170,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_PowerShell_5_1
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
-				OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
@@ -156,7 +183,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip"
-				OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
@@ -176,13 +203,11 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_LTSC2024_PowerShell_5_1
 				$Parameters = @{
 					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.v$LatestRelease.zip"
-					OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+					OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
 				Invoke-WebRequest @Parameters
-
-				$Version = "Windows_11_LTSC2024_PowerShell_5_1"
 			}
 			else
 			{
@@ -190,13 +215,11 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_LTSC2024_PowerShell_7
 				$Parameters = @{
 					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7.v$LatestRelease.zip"
-					OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+					OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 					UseBasicParsing = $true
 					Verbose         = $true
 				}
 				Invoke-WebRequest @Parameters
-
-				$Version = "Windows_11_LTSC2024_PowerShell_7"
 			}
 		}
 		else
@@ -210,26 +233,22 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_Arm_PowerShell_5_1
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.ARM.v$LatestRelease.zip"
-						OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 						UseBasicParsing = $true
 						Verbose         = $true
 					}
 					Invoke-WebRequest @Parameters
-
-					$Version = "Windows_11_Arm_PowerShell_5_1"
 				}
 				else
 				{
 					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_5_1
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
-						OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 						UseBasicParsing = $true
 						Verbose         = $true
 					}
 					Invoke-WebRequest @Parameters
-
-					$Version = "Windows_11_PowerShell_5_1"
 				}
 			}
 			else
@@ -241,26 +260,22 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_Arm_PowerShell_7
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.ARM.PowerShell.7.v$LatestRelease.zip"
-						OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 						UseBasicParsing = $true
 						Verbose         = $true
 					}
 					Invoke-WebRequest @Parameters
-
-					$Version = "Windows_11_Arm_PowerShell_7"
 				}
 				else
 				{
 					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_7
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
-						OutFile         = "$env:SystemDrive\Sophia.Script.zip"
+						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
 						UseBasicParsing = $true
 						Verbose         = $true
 					}
 					Invoke-WebRequest @Parameters
-
-					$Version = "Windows_11_PowerShell_7"
 				}
 			}
 		}
@@ -269,8 +284,8 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 try
 {
-	# tar.exe cannot expand archive if username contains unicode characters, so we download archive to the system drive root
-	& "$env:SystemRoot\System32\tar.exe" -xvf "$DownloadsFolder\Sophia.Script.zip" -C "$env:SystemDrive\"
+	# tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemDrive\Sophia_Script_Temp folder
+	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip" -C "$env:SystemDrive\Sophia_Script_Temp"
 }
 catch
 {
@@ -281,7 +296,10 @@ catch
 	{
 		Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2
 	}
-	catch {}
+	catch
+	{
+		Write-Verbose -Message "Failed to obtain installed antivirus." -Verbose
+	}
 
 	# Check for updates
 	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
@@ -292,20 +310,22 @@ catch
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
+	Remove-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -Force -Recurse
+
 	pause
 	exit
 }
 
-Remove-Item -Path "$env:SystemDrive\Sophia.Script.zip" -Force
-
-
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Parameters = @{
-	Path        = "$env:SystemDrive\$($Version)_Latest"
-	Destination = "$DownloadsFolder"
+	Path        = "$((Get-ChildItem -Path $env:SystemDrive\Sophia_Script_Temp\Sophia_Script_for_Windows*).FullName)"
+	Destination = $DownloadsFolder
+	Recurse     = $true
 	Force       = $true
 }
-Move-Item @Parameters
+Copy-Item @Parameters
+
+Remove-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -Force -Recurse
 
 switch ($Version)
 {

@@ -26,11 +26,14 @@ $Script:CompilerParameters                  = [System.CodeDom.Compiler.CompilerP
 $Script:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 $Script:CompilerParameters.GenerateInMemory = $true
 
+Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Force -Recurse -ErrorAction Ignore
+New-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -ItemType Directory -Force
+
 try
 {
 	$Parameters = @{
 		Uri             = "https://codeload.github.com/farag2/Sophia-Script-for-Windows/zip/refs/heads/main"
-		OutFile         = "$env:SystemDrive\main.zip"
+		OutFile         = "$env:SystemDrive\Sophia_Script_Temp\main.zip"
 		UseBasicParsing = $true
 		Verbose         = $true
 	}
@@ -167,22 +170,10 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 }
 
-if (Test-Path -Path "$env:SystemDrive\$($Version)_Latest")
-{
-	Write-Verbose -Message "Please remove `"$env:SystemDrive\$($Version)_Latest`" manually and try to download again." -Verbose
-	Remove-Item -Path "$env:SystemDrive\main.zip" -Force
-
-	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-	pause
-	exit
-}
-
 try
 {
 	# tar.exe cannot expand archive if username contains unicode characters, so we download archive to the system drive root
-	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\main.zip" -C "$env:SystemDrive\" --strip-components=2 "Sophia-Script-for-Windows-main/src/$Version"
+	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\main.zip" -C "$env:SystemDrive\Sophia_Script_Temp" --strip-components=2 "Sophia-Script-for-Windows-main/src/$Version"
 }
 catch
 {
@@ -193,7 +184,10 @@ catch
 	{
 		Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2
 	}
-	catch {}
+	catch
+	{
+		Write-Verbose -Message "Failed to obtain installed antivirus." -Verbose
+	}
 
 	# Check for updates
 	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
@@ -208,37 +202,50 @@ catch
 	exit
 }
 
-New-Item -Path "$env:SystemDrive\$Version\Binaries" -ItemType Directory -Force
+New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version\Binaries" -ItemType Directory -Force
 
 # Download LGPO
 # https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 $Parameters = @{
 	Uri             = "https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip"
-	OutFile         = "$env:SystemDrive\LGPO.zip"
+	OutFile         = "$env:SystemDrive\Sophia_Script_Temp\LGPO.zip"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
 
-& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\LGPO.zip" -C "$env:SystemDrive\$Version\Binaries" --strip-components=1 "LGPO_30/LGPO.exe"
+& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\LGPO.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Binaries" --strip-components=1 "LGPO_30/LGPO.exe"
 
 if ($Version -match "PowerShell_7")
 {
-	# Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
-	# https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
-	$Parameters = @{
-		Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
-		OutFile         = "$env:SystemDrive\microsoft.windows.sdk.net.ref.zip"
-		UseBasicParsing = $true
+	try
+	{
+		# Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
+		# https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
+		$Parameters = @{
+			Uri             = "https://www.nuget.org/api/v2/package/Microsoft.Windows.SDK.NET.Ref"
+			OutFile         = "$env:SystemDrive\Sophia_Script_Temp\microsoft.windows.sdk.net.ref.zip"
+			UseBasicParsing = $true
+		}
+		Invoke-RestMethod @Parameters
 	}
-	Invoke-RestMethod @Parameters
+	catch
+	{
+		Write-Warning -Message "https://www.nuget.org is unreachable. Please fix connection or change your DNS records."
+
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		pause
+		exit
+	}
 
 	# Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
-	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\microsoft.windows.sdk.net.ref.zip" -C "$env:SystemDrive\$Version\Binaries" --strip-components=2 "lib/net8.0/WinRT.Runtime.dll" "lib/net8.0/Microsoft.Windows.SDK.NET.dll"
+	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\microsoft.windows.sdk.net.ref.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Binaries" --strip-components=2 "lib/net8.0/WinRT.Runtime.dll" "lib/net8.0/Microsoft.Windows.SDK.NET.dll"
 }
 
 $Parameters = @{
-	Path    = "$env:SystemDrive\$Version"
+	Path    = "$env:SystemDrive\Sophia_Script_Temp\$Version"
 	NewName = "$($Version)_Latest"
 	Force   = $true
 }
@@ -246,18 +253,14 @@ Rename-Item @Parameters
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Parameters = @{
-	Path        = "$env:SystemDrive\$($Version)_Latest"
-	Destination = "$DownloadsFolder"
+	Path        = "$env:SystemDrive\Sophia_Script_Temp\$($Version)_Latest"
+	Destination = $DownloadsFolder
+	Recurse     = $true
 	Force       = $true
 }
-Move-Item @Parameters
+Copy-Item @Parameters
 
-$Path = @(
-	"$env:SystemDrive\LGPO.zip",
-	"$env:SystemDrive\main.zip",
-	"$env:SystemDrive\microsoft.windows.sdk.net.ref.zip"
-)
-Remove-Item -Path $Path -Recurse -Force -ErrorAction Ignore
+Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
 switch ($Version)
 {
