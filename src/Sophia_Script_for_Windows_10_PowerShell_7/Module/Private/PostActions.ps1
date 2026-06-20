@@ -190,7 +190,9 @@ public static void PostMessage()
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
+
 	Write-Information -MessageData "" -InformationAction Continue
+	Write-Warning -Message $Localization.RestartWarning
 
 	if ($Global:Error)
 	{
@@ -209,6 +211,4 @@ public static void PostMessage()
 			}
 		} | Sort-Object -Property $Localization.ErrorsLine | Format-Table -AutoSize -Wrap | Out-String).Trim()
 	}
-
-	Write-Warning -Message $Localization.RestartWarning
 }
