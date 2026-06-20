@@ -35,8 +35,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 6.1.4 | 7.1.4 — 24.02.2026
 
-Fixed Set-Association function. Thanks to @gtumanyan
-Updated localizations 🕊️🕊️🕊️
+* Fixed Set-Association function. Thanks to @gtumanyan
+* Updated localizations 🕊️🕊️🕊️
 
 ## 6.1.3 | 7.1.3 — 21.02.2026
 

@@ -171,13 +171,13 @@ iwr sl.sophia.team -useb | iex
 Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` в зависимости от вашей версии Windows.
 
 ```powershell
-choco install sophia --version=7.1.5 --force --yes
+choco install sophia --version=7.1.6 --force --yes
 ```
 
 Скачать и распаковать в папку Загрузки последнюю версию `Sophia Script for Windows` для PowerShell 7 в зависимости от вашей версии Windows.
 
 ```powershell
-choco install sophia --version=7.1.5 --params "/PS7" --force --yes
+choco install sophia --version=7.1.6 --params "/PS7" --force --yes
 ```
 
 ```powershell
