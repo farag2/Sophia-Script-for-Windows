@@ -3117,13 +3117,13 @@ function Install-Cursors
 		try
 		{
 			# Download cursors
-			# tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemDrive\Sophia_Script_Temp folder
-			# The archive was saved to the "Cursors" folder using DeviantArt API via GitHub CI/CD
+			# tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemRoot\Cursors folder
+			# The archive was saved to "Cursors" folder using Selenium to download archive from https://jepricreations.com/products/w11-cursor-concept-free via GitHub CI/CD
 			# https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors
 			# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml
 			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/Windows11Cursors.zip"
-				OutFile         = "$env:SystemRoot\Cursors\Windows11Cursors.zip"
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"
+				OutFile         = "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip"
 				UseBasicParsing = $true
 				Verbose         = $true
 			}
@@ -3151,7 +3151,7 @@ function Install-Cursors
 			}
 
 			# Extract archive from "dark" folder only
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemRoot\Cursors\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free" --strip-components=1 dark/
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free" --strip-components=1 dark/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
@@ -3200,7 +3200,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$env:SystemRoot\Cursors\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force -ErrorAction Ignore
+			Remove-Item -Path "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force -ErrorAction Ignore
 		}
 		"Light"
 		{
@@ -3210,7 +3210,7 @@ function Install-Cursors
 			}
 
 			# Extract archive from "light" folder only
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemRoot\Cursors\Windows11Cursors.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free" --strip-components=1 light/
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free" --strip-components=1 light/
 
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
@@ -3259,7 +3259,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$env:SystemDrive\Windows11Cursors.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
+			Remove-Item -Path "$env:SystemDrive\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
 		}
 		"Default"
 		{

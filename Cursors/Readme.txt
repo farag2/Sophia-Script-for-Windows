@@ -8,7 +8,8 @@ I hope you enjoy them!
 
 You can find a more complete version with HDPi resolution and some cool alternatives in the next link:
 
-https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-HD-v2-890672103
+https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
+https://jepricreations.com/products/w11-cursor-concept-free
 
 AGREEMENT
 By Getting this Cursor Pack you're allowed to...
@@ -25,5 +26,3 @@ Claim (and rename) my cursor pack as your own.
 Use monetized URL shorteners to my site or files.
 
 *My cursor and myself (the author) should be credited clearly, add link to my DeviantArt Page. 
-https://www.deviantart.com/jepricreations
-https://jepricreations.com

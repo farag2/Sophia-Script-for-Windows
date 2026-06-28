@@ -332,92 +332,52 @@ switch ($Version)
 	"Windows_10_LTSC2019"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_v$LatestRelease"
 	}
 	"Windows_10_LTSC2021"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
 	}
 	"Windows_11_LTSC2024_PowerShell_5_1"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_v$LatestRelease"
 	}
 	"Windows_11_LTSC2024_PowerShell_7"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7_v$LatestRelease"
 	}
 	"Windows_10_PowerShell_5_1"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_v$LatestRelease"
 	}
 	"Windows_10_PowerShell_7"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease"
 	}
 	"Windows_11_PowerShell_5_1"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_v$LatestRelease"
 	}
 	"Windows_11_PowerShell_7"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease"
 	}
 	"Windows_11_Arm_PowerShell_5_1"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_v$LatestRelease"
 	}
 	"Windows_11_Arm_PowerShell_7"
 	{
 		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_v$LatestRelease"
-
-		if ((([System.Security.Principal.WindowsIdentity]::GetCurrent()).Owner -eq "S-1-5-32-544"))
-		{
-			Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_v$LatestRelease"
-		}
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_v$LatestRelease"
 	}
 }
 
