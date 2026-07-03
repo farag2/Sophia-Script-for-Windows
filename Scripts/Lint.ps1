@@ -9,9 +9,9 @@ if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Sev
 
 	$Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")} | ForEach-Object -Process {
 	[PSCustomObject]@{
-		Line	= $_.Line
+		Line    = $_.Line
 		Message = $_.Message
-		Path	= $_.ScriptPath
+		Path    = $_.ScriptPath
 	}
 	} | Format-Table -AutoSize -Wrap
 
@@ -53,6 +53,7 @@ function Parse-PSD1
 }
 
 Get-ChildItem -Path src -File -Filter *.psd1 -Recurse | ForEach-Object -Process {
+	# try/catch expects for $Error variable
 	$File = $_.FullName
 
 	try

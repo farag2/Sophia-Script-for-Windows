@@ -77,6 +77,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
   * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
   * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
+  * [OpenDNS](https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html)
 * Uninstall OneDrive
 * Interactive [prompts and popups](#screenshots)
 * <kbd>TAB</kbd> [completion](#how-to-run-the-specific-functions) for functions and their arguments (using Import-TabCompletion.ps1)
@@ -142,10 +143,10 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
   </tr>
   <tr>
     <td></td>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.Arm.PowerShell.7.vSophia_Script_Windows_11_Arm_PowerShell_7.zip"><img src="https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.Wrapper.vSophia_Script_Wrapper.zip"><img src="https://img.shields.io/badge/Sophia%20Script%20Wrapper-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="center" colspan="2"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Sophia%20Script%20Wrapper-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
   </tr>
 </table>
 
@@ -281,7 +282,7 @@ Read more [here](./Wrapper/README.md)
 | Windows 11 25H2+                         | [Latest stable][Windows-11-25h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Latest stable][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Latest stable][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 x64 21H2 Enterprise LTSC 2021 | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 21H2 Enterprise LTSC 2021     | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | [Latest stable][Windows-10-LTSC-2019] | Enterprise          |
 
 ## Screenshots
