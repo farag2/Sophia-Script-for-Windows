@@ -51,33 +51,27 @@ function Logging
 # Create a restore point for the system drive
 function CreateRestorePoint
 {
-	# Check if system protection is turned on
+	# Check whether system protection is turned on
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
 	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
-
-	$Global:ComputerRestorePoint = $false
 
 	# System protection is turned off
 	if (-not $SystemProtection)
 	{
-		# Turn it on for a while
-		$Global:ComputerRestorePoint = $true
+		# Turn System protection on
 		Enable-ComputerRestore -Drive $env:SystemDrive
 	}
 
 	# Never skip creating a restore point
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
 
+	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	Write-Verbose -Message ($Localization.CreatingRestorePoint, ([WinAPI.GetStrings]::GetString(12612)) -join " ") -Verbose
+
 	Checkpoint-Computer -Description "Sophia Script for Windows" -RestorePointType MODIFY_SETTINGS
 
 	# Revert the System Restore checkpoint creation frequency to 1440 minutes
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
-
-	# Turn off System Protection for the system drive if it was turned off before without deleting the existing restore points
-	if ($Global:ComputerRestorePoint)
-	{
-		Disable-ComputerRestore -Drive $env:SystemDrive
-	}
 }
 #endregion Protection
 
@@ -123,14 +117,23 @@ function DiagTrackService
 		$Enable
 	)
 
+	if (-not (Get-Service -Name DiagTrack -ErrorAction Ignore))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.DiagTrackServiceNotFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.DiagTrackServiceNotFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
 		{
 			# Connected User Experiences and Telemetry
 			# Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub
-			Get-Service -Name DiagTrack -ErrorAction Ignore | Stop-Service -Force
-			Get-Service -Name DiagTrack -ErrorAction Ignore | Set-Service -StartupType Disabled
+			Get-Service -Name DiagTrack | Stop-Service -Force -PassThru
+			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled -PassThru
 
 			# Block connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack -ErrorAction Ignore | Set-NetFirewallRule -Enabled True -Action Block
@@ -138,8 +141,8 @@ function DiagTrackService
 		"Enable"
 		{
 			# Connected User Experiences and Telemetry
-			Get-Service -Name DiagTrack -ErrorAction Ignore | Set-Service -StartupType Automatic
-			Get-Service -Name DiagTrack -ErrorAction Ignore | Start-Service
+			Get-Service -Name DiagTrack | Set-Service -StartupType Automatic
+			Get-Service -Name DiagTrack | Start-Service
 
 			# Allow connection for the Unified Telemetry Client Outbound Traffic
 			Get-NetFirewallRule -Group DiagTrack -ErrorAction Ignore | Set-NetFirewallRule -Enabled True -Action Allow
@@ -211,8 +214,8 @@ function DiagnosticDataLevel
 		{
 			# Optional diagnostic data
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
 		}
 	}
 }
@@ -255,6 +258,25 @@ function ErrorReporting
 		$Enable
 	)
 
+	if (-not (Get-Service -Name WerSvc -ErrorAction Ignore))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $([WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\wersvc.dll,-100"))), $Localization.ReinstallWindows -join " ")
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# https://github.com/PowerShell/PowerShell/issues/21070
+		Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+
+		exit
+	}
+
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Force -ErrorAction Ignore
@@ -267,14 +289,16 @@ function ErrorReporting
 		"Disable"
 		{
 			Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Disable-ScheduledTask
-			Get-Service -Name WerSvc | Stop-Service -Force
-			Get-Service -Name WerSvc | Set-Service -StartupType Disabled
+			Get-Service -Name WerSvc | Stop-Service -Force -PassThru
+			Get-Service -Name WerSvc | Set-Service -StartupType Disabled -PassThru
+			Disable-WindowsErrorReporting
 		}
 		"Enable"
 		{
 			Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Enable-ScheduledTask
-			Get-Service -Name WerSvc | Set-Service -StartupType Manual
-			Get-Service -Name WerSvc | Start-Service
+			Get-Service -Name WerSvc | Set-Service -StartupType Manual -PassThru
+			Get-Service -Name WerSvc | Start-Service -PassThru
+			Enable-WindowsErrorReporting
 		}
 	}
 }
@@ -600,15 +624,12 @@ function ScheduledTasks
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all scheduled tasks according to the conditions
-	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {
-		($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)
-	}
-
+	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)}
 	if (-not $Tasks)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.NoScheduledTasks, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.NoScheduledTasks, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.NoScheduledTasksFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.NoScheduledTasksFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -2080,15 +2101,15 @@ function SearchHighlights
 	{
 		"Hide"
 		{
-			# Checking whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
+			# Check whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
 			# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 			$BingSearchEnabled = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search", "BingSearchEnabled", $null))
 			$DisableSearchBoxSuggestions = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null))
 			if (($BingSearchEnabled -eq 1) -or ($DisableSearchBoxSuggestions -eq 1))
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.SearchHighlightsDisabled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.SearchHighlightsDisabled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message ($Localization.SearchHighlightsDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.SearchHighlightsDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -2982,8 +3003,8 @@ function Install-Cursors
 			Remove-Item -Path "$env:SystemRoot\Cursors" -Recurse -Force -ErrorAction Ignore
 
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -3313,8 +3334,8 @@ function RecentlyAddedStartApps
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -3352,8 +3373,8 @@ function UnpinAllStartTiles
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -3427,8 +3448,8 @@ function MostUsedStartApps
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -3513,8 +3534,8 @@ function StartRecommendedSection
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -3587,8 +3608,8 @@ function StartRecommendationsTips
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -3647,8 +3668,8 @@ function StartAccountNotifications
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -3720,8 +3741,8 @@ function StartLayout
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenu, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -4399,8 +4420,8 @@ function WindowsFeatures
 	if (-not $Features)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.NoWindowsFeatures, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.NoWindowsFeatures, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.NoWindowsFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.NoWindowsFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -4624,8 +4645,8 @@ function WindowsCapabilities
 		catch [System.Runtime.InteropServices.COMException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 		}
 	}
 
@@ -4676,8 +4697,8 @@ function WindowsCapabilities
 			catch [System.ComponentModel.Win32Exception]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoResponse -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -4704,8 +4725,8 @@ function WindowsCapabilities
 	if (-not $Capabilities)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.NoOptionalFeatures, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.NoOptionalFeatures, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.NoOptionalFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.NoOptionalFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -5138,20 +5159,20 @@ function NetworkAdaptersSavePower
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors -Name DisableLocation -Type CLEAR
 	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\AppPrivacy -Name LetAppsAccessLocation -Type CLEAR
 
-	# Checking whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
+	# Check whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
 	# We need also check for adapter status per some laptops have many equal adapters records in adapters list
 	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
 	$Adapters = $PhysicalAdaptersStatusUp | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.NoSupportedNetworkAdapters, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.NoSupportedNetworkAdapters, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.NoSupportedNetworkAdaptersFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.NoSupportedNetworkAdaptersFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
 
-	# Checking whether PC is currently connected to a Wi-Fi network
+	# Check whether PC is currently connected to a Wi-Fi network
 	# NetConnectionStatus 2 is Wi-Fi
 	$InterfaceIndex = (Get-CimInstance -ClassName Win32_NetworkAdapter -Namespace root/CIMV2 | Where-Object -FilterScript {$_.NetConnectionStatus -eq 2}).InterfaceIndex
 	if (Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and ($_.PhysicalMediaType -eq "Native 802.11") -and ($_.InterfaceIndex -eq $InterfaceIndex)})
@@ -5177,8 +5198,8 @@ function NetworkAdaptersSavePower
 			catch
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.LocationServicesDisabled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.LocationServicesDisabled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message ($Localization.LocationServicesDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.LocationServicesDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				Start-Process -FilePath ms-settings:privacy-location
 
@@ -5462,8 +5483,8 @@ IconIndex=-238
 			if (-not $DriveLetters)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.UserFolderLocationMove, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.UserFolderLocationMove, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message ($Localization.UserFolderLocationMove, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.UserFolderLocationMove, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -5491,8 +5512,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5547,8 +5568,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5581,8 +5602,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -6926,8 +6947,8 @@ function Install-VCRedist
 	catch [System.Net.WebException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -6936,7 +6957,7 @@ function Install-VCRedist
 
 	foreach ($Item in @("x64", "x86"))
 	{
-		# Checking whether vc_redist builds installed
+		# Check whether vc_redist builds installed
 		if (Test-Path -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Item).exe")
 		{
 			# Choose the first item if user has more than one package installed
@@ -6961,7 +6982,7 @@ function Install-VCRedist
 				Invoke-WebRequest @Parameters
 
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.InstallNotification -f "Visual C++ Redistributable $($Item) $LatestVCRedistVersion") -Verbose
+				Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Item) $LatestVCRedistVersion") -Verbose
 				Write-Information -MessageData "" -InformationAction Continue
 
 				Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Item).exe" -ArgumentList "/install /passive /norestart" -Wait
@@ -6977,8 +6998,8 @@ function Install-VCRedist
 			catch [System.Net.WebException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoResponse -f "https://download.visualstudio.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoResponse -f "https://download.visualstudio.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://download.visualstudio.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://download.visualstudio.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -6986,8 +7007,8 @@ function Install-VCRedist
 		else
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -7062,13 +7083,13 @@ function Install-DotNetRuntimes
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
 
-		# Checking whether .NET installed
+		# Check whether .NET installed
 		if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe")
 		{
 			# Choose the first item if user has more than one package installed
@@ -7098,14 +7119,14 @@ function Install-DotNetRuntimes
 			catch [System.Net.WebException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoResponse -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
 
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.InstallNotification -f ".NET $LatestNETVersion") -Verbose
+			Write-Verbose -Message ($Localization.InstallingApplication -f ".NET $LatestNETVersion") -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe" -ArgumentList "/install /passive /norestart" -Wait
@@ -7113,8 +7134,8 @@ function Install-DotNetRuntimes
 		else
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.Skipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -Verbose
+			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -ErrorAction SilentlyContinue
 		}
 
 		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
@@ -7170,8 +7191,8 @@ function PreventEdgeShortcutCreation
 	if (-not (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.PackageNotInstalled -f "Microsoft Edge"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.PackageNotInstalled -f "Microsoft Edge"), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.PackageNotInstalled -f "Microsoft Edge"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.PackageNotInstalled -f "Microsoft Edge"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -7346,8 +7367,8 @@ function Install-WSL
 	catch [System.Net.WebException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoResponse -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -7535,7 +7556,7 @@ function GPUScheduling
 			$AdapterDACType = Get-CimInstance -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)}
 			# Determining whether an OS is not installed on a virtual machine
 			$ComputerSystemModel = (Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual"
-			# Checking whether a WDDM verion is 2.7 or higher
+			# Check whether a WDDM verion is 2.7 or higher
 			$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
 
 			if ($AdapterDACType -and ($ComputerSystemModel -notmatch "Virtual") -and ($WddmVersion_Min -ge 2700))
@@ -7613,30 +7634,34 @@ function CleanupTask
 			# Remove registry keys if Windows Script Host is disabled
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
-			# Checking whether VBS engine is enabled
-			if ((Get-WindowsCapability -Online -Name VBSCRIPT*).State -ne "Installed")
+			# Check whether VBS engine is enabled
+			try
 			{
-				try
+				if ((Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop).State -ne "Installed")
 				{
-					Get-WindowsCapability -Online -Name VBSCRIPT* | Add-WindowsCapability -Online
-				}
-				catch
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
-					Write-Information -MessageData "" -InformationAction Continue
-
-					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-					$Global:Failed = $true
-
-					exit
+					Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop | Add-WindowsCapability -Online -ErrorAction Stop
 				}
 			}
+			catch
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "VBScript"), $Localization.ReinstallWindows -join " ")
+				Write-Information -MessageData "" -InformationAction Continue
 
-			# Checking if we're trying to create the task when it was already created as another user
+				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+				$Global:Failed = $true
+
+				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+				# https://github.com/PowerShell/PowerShell/issues/21070
+				Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+
+				exit
+			}
+
+			# Check whether we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
 			{
 				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to check whether the task was created
@@ -7653,8 +7678,8 @@ function CleanupTask
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -8088,30 +8113,34 @@ function SoftwareDistributionTask
 			# Remove registry keys if Windows Script Host is disabled
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
-			# Checking whether VBS engine is enabled
-			if ((Get-WindowsCapability -Online -Name VBSCRIPT*).State -ne "Installed")
+			# Check whether VBS engine is enabled
+			try
 			{
-				try
+				if ((Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop).State -ne "Installed")
 				{
-					Get-WindowsCapability -Online -Name VBSCRIPT* | Add-WindowsCapability -Online
-				}
-				catch
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
-					Write-Information -MessageData "" -InformationAction Continue
-
-					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-					$Global:Failed = $true
-
-					exit
+					Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop | Add-WindowsCapability -Online -ErrorAction Stop
 				}
 			}
+			catch
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "VBScript"), $Localization.ReinstallWindows -join " ")
+				Write-Information -MessageData "" -InformationAction Continue
 
-			# Checking if we're trying to create the task when it was already created as another user
+				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+				$Global:Failed = $true
+
+				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+				# https://github.com/PowerShell/PowerShell/issues/21070
+				Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+
+				exit
+			}
+
+			# Check whether we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
 			{
 				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to check whether the task was created
@@ -8128,8 +8157,8 @@ function SoftwareDistributionTask
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -8435,30 +8464,34 @@ function TempTask
 			# Remove registry keys if Windows Script Host is disabled
 			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
 
-			# Checking whether VBS engine is enabled
-			if ((Get-WindowsCapability -Online -Name VBSCRIPT*).State -ne "Installed")
+			# Check whether VBS engine is enabled
+			try
 			{
-				try
+				if ((Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop).State -ne "Installed")
 				{
-					Get-WindowsCapability -Online -Name VBSCRIPT* | Add-WindowsCapability -Online
-				}
-				catch
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Warning -Message ($Localization.WindowsComponentBroken -f (Get-WindowsCapability -Online -Name VBSCRIPT*).DisplayName)
-					Write-Information -MessageData "" -InformationAction Continue
-
-					Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-					$Global:Failed = $true
-
-					exit
+					Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop | Add-WindowsCapability -Online -ErrorAction Stop
 				}
 			}
+			catch
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "VBScript"), $Localization.ReinstallWindows -join " ")
+				Write-Information -MessageData "" -InformationAction Continue
 
-			# Checking if we're trying to create the task when it was already created as another user
+				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+				$Global:Failed = $true
+
+				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+				# https://github.com/PowerShell/PowerShell/issues/21070
+				Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+
+				exit
+			}
+
+			# Check whether we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
 			{
 				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to check whether the task was created
@@ -8475,8 +8508,8 @@ function TempTask
 				if ($TaskUserAccount -ne $env:USERNAME)
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount), ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -8524,18 +8557,19 @@ function TempTask
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
 	Namespace          = "WinAPI"
-	Name               = "Focus"
+	Name               = "QuietHours"
 	Language           = "CSharp"
 	CompilerParameters = `$CompilerParameters
 	MemberDefinition   = @""
-[DllImport("NtDll.dll", SetLastError = true)]
-private static extern uint NtQueryWnfStateData(IntPtr pStateName, IntPtr pTypeId, IntPtr pExplicitScope, out uint nChangeStamp, out IntPtr pBuffer, ref uint nBufferSize);
-
-[StructLayout(LayoutKind.Sequential)]
-public struct WNF_TYPE_ID
-{
-	public Guid TypeId;
-}
+[DllImport("ntdll.dll")]
+private static extern uint NtQueryWnfStateData(
+	ref ulong StateName,
+	IntPtr TypeId,
+	IntPtr ExplicitScope,
+	out uint ChangeStamp,
+	out int Buffer,
+	ref uint BufferSize
+);
 
 [StructLayout(LayoutKind.Sequential)]
 public struct WNF_STATE_NAME
@@ -8552,49 +8586,26 @@ public struct WNF_STATE_NAME
 	}
 }
 
-public enum FocusAssistState
+// WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED
+public static int GetState()
 {
-	NOT_SUPPORTED = -2,
-	FAILED = -1,
-	OFF = 0,
-	PRIORITY_ONLY = 1,
-	ALARMS_ONLY = 2
-};
-
-// Returns the state of Focus Assist if available on this computer
-public static FocusAssistState GetFocusAssistState()
-{
-	try
-	{
-		WNF_STATE_NAME WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED = new WNF_STATE_NAME(0xA3BF1C75, 0xD83063E);
-		uint nBufferSize = (uint)Marshal.SizeOf(typeof(IntPtr));
-		IntPtr pStateName = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WNF_STATE_NAME)));
-		Marshal.StructureToPtr(WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, pStateName, false);
-
-		uint nChangeStamp = 0;
-		IntPtr pBuffer = IntPtr.Zero;
-		bool success = NtQueryWnfStateData(pStateName, IntPtr.Zero, IntPtr.Zero, out nChangeStamp, out pBuffer, ref nBufferSize) == 0;
-		Marshal.FreeHGlobal(pStateName);
-
-		if (success)
-		{
-			return (FocusAssistState)pBuffer;
-		}
-	}
-	catch {}
-
-	return FocusAssistState.FAILED;
+	ulong stateName = 0x0D83063EA3BF1C75;
+	uint size = sizeof(int);
+	uint stamp;
+	int state;
+	uint status = NtQueryWnfStateData(ref stateName, IntPtr.Zero, IntPtr.Zero, out stamp, out state, ref size);
+	return (status == 0) ? state : -1;
 }
 ""@
 }
 
-if (-not ("WinAPI.Focus" -as [type]))
+if (-not ("WinAPI.QuietHours" -as [type]))
 {
 	Add-Type @Signature
 }
 
-# Wait until it will be "OFF" (0)
-while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
+# Wait until it will be 0
+while ([WinAPI.QuietHours]::GetState() -ne 0)
 {
 	Start-Sleep -Seconds 600
 }
@@ -8612,7 +8623,8 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 	"`$env:SystemDrive\ESD",
 	"`$env:SystemDrive\Intel",
 	"`$env:SystemDrive\PerfLogs",
-	"`$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp"
+	"`$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp",
+	"`$env:LOCALAPPDATA\CrashDumps"
 )
 
 if ((Get-ChildItem -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Name -eq "ReAgentOld.xml"}).FullName)
@@ -8620,6 +8632,10 @@ if ((Get-ChildItem -Path `$env:SystemDrive\Recovery -Force | Where-Object -Filte
 	`$Paths += "$env:SystemDrive\Recovery"
 }
 Remove-Item -Path `$Paths -Recurse -Force
+
+# C:\WINDOWS\System32\config\systemprofile\AppData\Local with garbage tw-*.tmp files
+# https://www.elevenforum.com/t/folder-c-windows-system32-config-systemprofile-app-data-local-running-full-with-empty-folders-after-latest-upgrade-to-25h2.40624/
+Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Local\tw-*.tmp" -Force | Remove-Item -Force
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -8778,8 +8794,8 @@ function NetworkProtection
 	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -8838,8 +8854,8 @@ function PUAppsDetection
 	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -8898,8 +8914,8 @@ function DefenderSandbox
 	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -9166,8 +9182,8 @@ function AppsSmartScreen
 	if (-not $Global:DefenderDefaultAV)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.ThirdPartyAVInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -9289,7 +9305,7 @@ function WindowsSandbox
 	{
 		"Disable"
 		{
-			# Checking whether x86 virtualization is enabled in the firmware
+			# Check whether x86 virtualization is enabled in the firmware
 			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 			{
 				Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart -Verbose
@@ -9307,14 +9323,14 @@ function WindowsSandbox
 				catch [System.Exception]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 				}
 			}
 		}
 		"Enable"
 		{
-			# Checking whether x86 virtualization is enabled in the firmware
+			# Check whether x86 virtualization is enabled in the firmware
 			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 			{
 				Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart -Verbose
@@ -9332,8 +9348,8 @@ function WindowsSandbox
 				catch [System.Exception]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 				}
 			}
 		}
@@ -9613,7 +9629,7 @@ function LocalSecurityAuthority
 	{
 		"Enable"
 		{
-			# Checking whether x86 virtualization is enabled in the firmware
+			# Check whether x86 virtualization is enabled in the firmware
 			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
 			{
 				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL -PropertyType DWord -Value 2 -Force
@@ -9633,8 +9649,8 @@ function LocalSecurityAuthority
 				catch [System.Exception]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 				}
 			}
 		}
@@ -9764,8 +9780,8 @@ function CABInstallContext
 			else
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.ThirdPartyArchiverInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.ThirdPartyArchiverInstalled, ($Localization.Skipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message ($Localization.ThirdPartyArchiverInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.ThirdPartyArchiverInstalled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -9969,7 +9985,7 @@ function ScanRegistryPolicies
 	{
 		foreach ($Item in $Path.Property)
 		{
-			# Checking whether property isn't equal to "(default)" and exists
+			# Check whether property isn't equal to "(default)" and exists
 			if (($null -ne $Item) -and ($Item -ne "(default)"))
 			{
 				# Where all ADMX templates are located to compare with

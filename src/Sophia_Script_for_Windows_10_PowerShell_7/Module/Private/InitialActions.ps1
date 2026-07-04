@@ -39,7 +39,7 @@ function InitialActions
 	# https://github.com/PowerShell/PowerShell/issues/2138
 	$Global:ProgressPreference = "SilentlyContinue"
 
-	# Checking whether all files were expanded before running
+	# Check whether all files were expanded before running
 	$ScriptFiles = [Array]::TrueForAll(@(
 		"$PSScriptRoot\..\..\Localizations\de-DE\Sophia.psd1",
 		"$PSScriptRoot\..\..\Localizations\en-US\Sophia.psd1",
@@ -104,7 +104,7 @@ function InitialActions
 		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\..\Localizations -FileName Sophia
 	}
 
-	# Checking whether the current module version is the latest one
+	# Check whether the current module version is the latest one
 	try
 	{
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/sophia_script_versions.json
@@ -119,7 +119,7 @@ function InitialActions
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.UnsupportedRelease -f $LatestRelease)
+			Write-Warning -Message ($Localization.NewSophiaScriptFound -f $LatestRelease)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
@@ -137,7 +137,7 @@ function InitialActions
 		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
 	}
 
-	# Checking whether the script was run via PowerShell 7
+	# Check whether the script was run via PowerShell 7
 	if ($PSVersionTable.PSVersion.Major -ne 7)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -153,12 +153,12 @@ function InitialActions
 		exit
 	}
 
-	# Checking whether PowerShell 7 was installed from the Microsoft Store
+	# Check whether PowerShell 7 was installed from the Microsoft Store
 	# https://github.com/PowerShell/PowerShell/issues/21295
 	if ((Get-Process -Id $PID).Path -match "C:\\Program Files\\WindowsApps")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.MicroSoftStorePowerShellWarning
+		Write-Warning -Message $Localization.MicrosoftStorePowerShellWarning
 		Write-Verbose -Message "https://github.com/powershell/powershell/releases/latest" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
@@ -194,6 +194,7 @@ function InitialActions
 	$Global:CompilerOptions.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 	$Global:CompilerOptions.GenerateInMemory = $true
 
+	# Get localization from dll
 	$Signature = @{
 		Namespace        = "WinAPI"
 		Name             = "GetStrings"
@@ -254,7 +255,7 @@ public static string GetIndirectString(string indirectString)
 		catch
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.CodeCompilationFailedWarning
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -266,6 +267,7 @@ public static string GetIndirectString(string indirectString)
 		}
 	}
 
+	# Move window to foreground
 	$Signature = @{
 		Namespace        = "WinAPI"
 		Name             = "ForegroundWindow"
@@ -290,7 +292,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		catch
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.CodeCompilationFailedWarning
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -306,7 +308,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	if (-not [System.Environment]::Is64BitOperatingSystem)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.UnsupportedOSBitness
+		Write-Warning -Message $Localization.UnsupportedWindowsBitness
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -343,7 +345,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether the logged-in user is an admin
+	# Check whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
 	$LoginUserName = (Get-CimInstance -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
 	if ($CurrentUserName -ne $LoginUserName)
@@ -360,7 +362,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether the script was run in PowerShell ISE or VS Code
+	# Check whether the script was run in PowerShell ISE or VS Code
 	if (($Host.Name -match "ISE") -or ($env:TERM_PROGRAM -eq "vscode"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -375,7 +377,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
+	# Check whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
 	$Tweakers = @{
 		# https://www.youtube.com/GHOSTSPECTRE
 		"Ghost Toolbox"     = "$env:SystemRoot\System32\migwiz\dlmanifests\run.ghost.cmd"
@@ -402,25 +404,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		if (Test-Path -Path $Tweakers[$Tweaker])
 		{
-			if ($Tweakers[$Tweaker] -eq "HKCU:\Software\Win 10 Tweaker")
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message $Localization.Win10TweakerWarning
-				Write-Information -MessageData "" -InformationAction Continue
-
-				Write-Verbose -Message "https://youtu.be/na93MS-1EkM" -Verbose
-				Write-Verbose -Message "https://pikabu.ru/story/byekdor_v_win_10_tweaker_ili_sovremennyie_metodyi_borbyi_s_piratstvom_8227558" -Verbose
-				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-				$Global:Failed = $true
-
-				exit
-			}
-
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
+			Write-Warning -Message (($Localization.HarmfulTweakerFound -f $Tweaker), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
@@ -433,7 +418,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Checking whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
+	# Check whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
 	$Tweakers = @{
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
 		AutoSettingsPS                   = "$(Get-ItemProperty -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" -Name *AutoSettingsPS*)"
@@ -445,7 +430,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		if ($Tweakers[$Tweaker])
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.TweakerWarning -f $Tweaker)
+			Write-Warning -Message (($Localization.HarmfulTweakerFound -f $Tweaker), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
@@ -468,7 +453,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		if (-not ([string]::IsNullOrEmpty($Item) -or $Item.StartsWith("#")))
 		{
-			Write-Verbose -Message $Localization.HostsWarning -Verbose
+			Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
 
 			do
 			{
@@ -501,12 +486,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Checking whether EventLog service is running in order to be sire that Event Logger is enabled
+	# Check whether EventLog service is running in order to be sire that Event Logger is enabled
 	if ((Get-Service -Name EventLog).Status -eq "Stopped")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		# Extract the localized "Event Viewer" string from %SystemRoot%\System32\shell32.dll
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f $([WinAPI.GetStrings]::GetString(22029)))
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $([WinAPI.GetStrings]::GetString(22029))), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
@@ -518,72 +503,46 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether the Microsoft Store and Windows Feature Experience Pack was removed
-	$UWPComponents = [Array]::TrueForAll(@(
-		"Microsoft.WindowsStore",
-		"MicrosoftWindows.Client.CBS"
-	),
-	[Predicate[string]]{
-		param($UWPComponent)
+	# Check whether the Microsoft Store or Windows Feature Experience Pack was removed
+	@("Microsoft.WindowsStore", "MicrosoftWindows.Client.CBS") | ForEach-Object -Process {
+		if (-not (Get-AppxPackage -Name $_))
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message (($Localization.UWPComponentsMissing -f $_), $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
 
-		Get-AppxPackage -Name $UWPComponent
-	})
-	if (-not $UWPComponents)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "UWP")
-		Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+			$Global:Failed = $true
 
-		$Global:Failed = $true
-
-		exit
+			exit
+		}
 	}
 
 	#region Defender checks
-	# Checking whether necessary Microsoft Defender components exists
-	$Files = [Array]::TrueForAll(@(
+	# Check whether necessary Microsoft Defender components exist
+	$DefenderFiles = @(
 		"$env:SystemRoot\System32\smartscreen.exe",
 		"$env:SystemRoot\System32\SecurityHealthSystray.exe",
 		"$env:SystemRoot\System32\CompatTelRunner.exe"
-	),
-	[Predicate[string]]{
-		param($File)
+	)
+	$DefenderFiles| ForEach-Object -Process {
+		if (-not (Test-Path -Path $_))
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message (($Localization.DefenderComponentsMissing -f $_), $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
 
-		Test-Path -Path $File
-	})
-	if (-not $Files)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-		Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+			$Global:Failed = $true
 
-		$Global:Failed = $true
-
-		exit
-	}
-
-	# Checking whether Windows Security Settings page was hidden from UI
-	if ((Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name SettingsPageVisibility -ErrorAction Ignore) -match "hide:windowsdefender")
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
+			exit
+		}
 	}
 
 	# Checking Microsoft Defender properties
@@ -591,6 +550,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	{
 		$AntiVirusProduct = @(
 			Get-Service -Name Windefend, SecurityHealthService, wscsvc, wdFilter -ErrorAction Stop
+			Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service -ErrorAction Stop
 			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop
 			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
 			Get-MpPreference -ErrorAction Stop
@@ -599,35 +559,18 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	catch
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "Microsoft Defender"), $Localization.ReinstallWindows -join " ")
+
+		# Get the exact string where script failed
+		$_.InvocationInfo.Line.Trim()
 		Write-Information -MessageData "" -InformationAction Continue
 
 		# Try to display available AVs
 		try
 		{
-			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2
+			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
 		}
 		catch {}
-
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
-	# Check SecurityHealthService service
-	try
-	{
-		Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service -ErrorAction Stop
-	}
-	catch
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.WindowsComponentBroken -f "Microsoft Defender")
-		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -661,7 +604,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 	if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.ControlledFolderAccessEnabledWarning
+		Write-Warning -Message $Localization.DisableControlledFolderAccess
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Start-Process -FilePath "windowsdefender://RansomwareProtection"
@@ -704,36 +647,11 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		exit
 	}
 
-	# Checking whether BitLocker encryption or decryption in process
-	$BitLocker = Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {$_.VolumeStatus -notin @("FullyEncrypted", "FullyDecrypted")}
-	if ($BitLocker)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.BitLockerInOperation -f $BitLocker.EncryptionPercentage)
-		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
-
-		$BitLocker
-
-		# Open if Windows edition is not Home
-		if ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID -ne "Core")
-		{
-			# Open BitLocker settings
-			& "$env:SystemRoot\System32\control.exe" /name Microsoft.BitLockerDriveEncryption
-		}
-
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
-	# Checking whether BitLocker drive encryption is off, despite drive is encrypted
+	# Check whether BitLocker drive encryption is off, despite drive is encrypted
 	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.BitLockerAutomaticEncryption
+		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
 
 		do
@@ -750,6 +668,11 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 					}
 					catch
 					{
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "BitLocker"), $Localization.ReinstallWindows -join " ")
+						Write-Information -MessageData "" -InformationAction Continue
+
+						Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -788,7 +711,7 @@ public extern static string BrandingFormatString(string sFormat);
 		catch
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.CodeCompilationFailedWarning
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -809,7 +732,7 @@ public extern static string BrandingFormatString(string sFormat);
 		# e.g. 22H2
 		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
-		Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
+		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $Windows_Long, $DisplayVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -839,7 +762,7 @@ public extern static string BrandingFormatString(string sFormat);
 			# e.g. 22H2
 			$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
-			Write-Warning -Message ($Localization.UnsupportedOSBuild -f $Windows_Long, $DisplayVersion)
+			Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $Windows_Long, $DisplayVersion)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -867,7 +790,7 @@ public extern static string BrandingFormatString(string sFormat);
 		}
 		"19045"
 		{
-			# Checking whether the current module version is the latest one
+			# Check whether the current module version is the latest one
 			try
 			{
 				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
@@ -895,7 +818,7 @@ public extern static string BrandingFormatString(string sFormat);
 				$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
 
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message ($Localization.UpdateWarning -f $CurrentBuild, $UBR, $LatestSupportedBuild)
+				Write-Warning -Message ($Localization.UpdateWindowsBuild -f $CurrentBuild, $UBR, $LatestSupportedBuild)
 				Write-Information -MessageData "" -InformationAction Continue
 
 				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -927,7 +850,8 @@ public extern static string BrandingFormatString(string sFormat);
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message "https://support.microsoft.com/windows/windows-10-support-has-ended-on-october-14-2025-2ca8b313-1946-43d3-b55c-2b95b107f281" -Verbose
 			Write-Verbose -Message "https://learn.microsoft.com/lifecycle/faq/extended-security-updates" -Verbose
-			Write-Verbose -Message "https://massgrave.dev" -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message "https://massgrave.dev/windows10_eol" -Verbose
 			Write-Verbose -Message "https://github.com/abbodi1406/ConsumerESU" -Verbose
 
 			do
@@ -938,7 +862,8 @@ public extern static string BrandingFormatString(string sFormat);
 				{
 					$Yes
 					{
-						Start-Process -FilePath "https://massgrave.dev"
+						Start-Process -FilePath "https://massgrave.dev/windows10_eol"
+						Start-Process -FilePath "https://github.com/abbodi1406/ConsumerESU"
 					}
 					$No
 					{
@@ -996,7 +921,7 @@ public extern static string BrandingFormatString(string sFormat);
 	{
 		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
 		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")}).File
-		Write-Verbose -Message ($Localization.CustomizationWarning -f $PresetName) -Verbose
+		Write-Verbose -Message ($Localization.CheckSophiaScriptPreset -f $PresetName) -Verbose
 
 		do
 		{

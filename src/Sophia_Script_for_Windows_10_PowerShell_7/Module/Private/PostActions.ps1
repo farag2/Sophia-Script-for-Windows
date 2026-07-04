@@ -105,7 +105,7 @@ public static void PostMessage()
 		}
 	}
 
-	# Checking whether any of scheduled tasks were created. Unless open Task Scheduler
+	# Check whether any of scheduled tasks were created. Unless open Task Scheduler
 	if ($Global:ScheduledTasks)
 	{
 		# Find and close taskschd.msc by its argument
@@ -120,6 +120,8 @@ public static void PostMessage()
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
+
+		Get-ScheduledTask -TaskName SoftwareDistribution, Temp, "Windows Cleanup Notification" -ErrorAction Ignore | Start-ScheduledTask
 
 		$Global:ScheduledTasks = $false
 	}
@@ -187,12 +189,23 @@ public static void PostMessage()
 	Write-Information -MessageData "" -InformationAction Continue
 
 	Write-Verbose -Message $Localization.DonateToastTitle -Verbose
-
-	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Warning -Message $Localization.RestartWarning
+
+	Write-Information -MessageData "" -InformationAction Continue
+	# Get how much restore points on C drive take up in GB
+	$Volume = Get-CimInstance -ClassName Win32_Volume | Where-Object -FilterScript {$_.DriveLetter -eq "C:"}
+	$RestorePointVolume = [math]::Round((Get-CimInstance -ClassName Win32_ShadowStorage | Where-Object -FilterScript {$_.Volume.DeviceID -eq $Volume.DeviceID}).UsedSpace/1GB, 2)
+	if ($RestorePointVolume -ge 1)
+	{
+		Write-Warning -Message ($Localization.RestorePointVolume -f $RestorePointVolume)
+		Write-Information -MessageData "" -InformationAction Continue
+
+		# Open System Protection settings
+		& "$env:SystemRoot\System32\SystemPropertiesProtection.exe"
+	}
 
 	if ($Global:Error)
 	{

@@ -30,7 +30,6 @@
 #Requires -RunAsAdministrator
 #Requires -Version 7.5
 
-#region Initial Actions
 $Global:Failed = $false
 
 # Unload and import private functions and module
@@ -42,11 +41,11 @@ Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_
 # Dot-source script with checks
 InitialActions
 
-# Checking if function wasn't dot-sourced, but called explicitly
+# Check whether function wasn't dot-sourced, but called explicitly
 # ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
 if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
 {
-	Write-Warning -Message $Localization.DotSourcedWarning
+	Write-Warning -Message $Localization.DotSourcedFunction
 	Write-Information -MessageData "" -InformationAction Continue
 
 	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions" -Verbose
@@ -63,7 +62,6 @@ if ($Global:Failed)
 {
 	exit
 }
-#endregion Initial Actions
 
 function Sophia
 {
@@ -188,7 +186,6 @@ $Parameters = @{
 }
 Register-ArgumentCompleter @Parameters
 
-Write-Information -MessageData "" -InformationAction Continue
 Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions 'DiagTrackService -Disable', 'DiagnosticDataLevel -Minimal', Uninstall-UWPApps" -Verbose

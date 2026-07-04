@@ -62,7 +62,7 @@ catch [System.Net.WebException]
 
 # Get a temp URL
 # Replace &, unless it fails to be parsed
-[xml]$TempURL = ($Raw.Links.outerHTML | Where-Object -FilterScript {$_ -match "appxbundle"}).Replace("&", "&amp;")
+[xml]$TempURL = ($Raw.Links.outerHTML | Where-Object -FilterScript {$_ -match "appxbundle"}).Replace("&", "&amp;") | Select-Object -Last 1
 if (-not $TempURL)
 {
 	Write-Verbose -Message "https://store.rg-adguard.net/api/GetFiles does not output correct URL" -Verbose
