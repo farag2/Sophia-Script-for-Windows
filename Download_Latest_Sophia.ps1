@@ -264,55 +264,55 @@ Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
 switch ($Version)
 {
-	"Windows_10_LTSC2019"
+	"Sophia_Script_for_Windows_10_LTSC_2019"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2019_Latest"
 	}
-	"Windows_10_LTSC2021"
+	"Sophia_Script_for_Windows_10_LTSC_2021"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_LTSC_2021_Latest"
 	}
-	"Windows_11_LTSC2024_PowerShell_5_1"
+	"Sophia_Script_for_Windows_10"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_Latest"
 	}
-	"Windows_11_LTSC2024_PowerShell_7"
+	"Sophia_Script_for_Windows_10_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_Latest"
 	}
-	"Windows_10_PowerShell_5_1"
+	"Sophia_Script_for_Windows_11"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Latest"
 	}
-	"Windows_10_PowerShell_7"
+	"Sophia_Script_for_Windows_11_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_10_PowerShell_7_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_Latest"
 	}
-	"Windows_11_PowerShell_5_1"
+	"Sophia_Script_for_Windows_11_ARM"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_Latest"
 	}
-	"Windows_11_PowerShell_7"
+	"Sophia_Script_for_Windows_11_ARM_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_PowerShell_7_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_Latest"
 	}
-	"Windows_11_Arm_PowerShell_5_1"
+	"Sophia_Script_for_Windows_11_LTSC_2024"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_Latest"
 	}
-	"Windows_11_Arm_PowerShell_7"
+	"Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7"
 	{
-		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_v$LatestRelease"
-		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_Arm_PowerShell_7_v$LatestRelease"
+		Invoke-Item -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7_Latest"
+		Set-Location -Path "$DownloadsFolder\Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7_Latest"
 	}
 }
 
