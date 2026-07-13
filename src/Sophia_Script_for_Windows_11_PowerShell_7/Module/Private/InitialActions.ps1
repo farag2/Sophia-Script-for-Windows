@@ -164,8 +164,8 @@ function InitialActions
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoResponse -f "https://github.com")
-		Write-Error -Message ($Localization.NoResponse -f "https://github.com") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://github.com")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://github.com") -ErrorAction SilentlyContinue
 	}
 
 	# Check whether the script was run via PowerShell 7
@@ -891,8 +891,8 @@ public extern static string BrandingFormatString(string sFormat);
 			{
 				$LatestSupportedBuild = 0
 
-				Write-Warning -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com")
-				Write-Error -Message ($Localization.NoResponse -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com")
+				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
 			}
 
 			# We may use Test-Path -Path variable:LatestSupportedBuild
