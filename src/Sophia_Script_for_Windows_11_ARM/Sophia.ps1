@@ -518,11 +518,11 @@ NavigationPaneExpand -Disable
 # Развернуть до открытой папки область навигации
 # NavigationPaneExpand -Enable
 
-# Hide recently added apps in Start
+# Hide recently added apps on Start
 # Не показывать недавно добавленные приложения на начальном экране
 RecentlyAddedStartApps -Hide
 
-# Show recently added apps in Start (default value)
+# Show recently added apps on Start (default value)
 # Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)
 # RecentlyAddedStartApps -Show
 
@@ -530,27 +530,39 @@ RecentlyAddedStartApps -Hide
 # Открепить все ярлыки от начального экрана
 # UnpinAllStartTiles
 
-# Hide most used apps in Start (default value)
+# Use Category View for All Apps on Start (default value)
+# Используйте просмотр по категориям для всех приложений на начальном экране (значение по умолчанию)
+# StartAppsView -Category
+
+# Use Grid View for All Apps on Start
+# Используйте просмотр в виде сетки для всех приложений на начальном экране
+# StartAppsView -Grid
+
+# Use List View for All Apps on Start
+# Используйте просмотр в виде списка для всех приложений на начальном экране
+StartAppsView -List
+
+# Hide most used apps on Start (default value)
 # Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
 MostUsedStartApps -Hide
 
-# Show most used Apps in Start
+# Show most used Apps on Start
 # Показывать наиболее часто используемые приложения на начальном экране
 # MostUsedStartApps -Show
 
-# Remove Recommended section in Start
+# Remove Recommended section on Start
 # Удалить раздел "Рекомендуем" на начальном экране
 StartRecommendedSection -Hide
 
-# Show Recommended section in Start (default value)
+# Show Recommended section on Start (default value)
 # Показывать раздел "Рекомендуем" на начальном экране
 # StartRecommendedSection -Show
 
-# Hide recommendations for tips, shortcuts, new apps, and more in Start
+# Hide recommendations for tips, shortcuts, new apps, and more on Start
 # Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране
 StartRecommendationsTips -Hide
 
-# Show recommendations for tips, shortcuts, new apps, and more in Start (default value)
+# Show recommendations for tips, shortcuts, new apps, and more on Start (default value)
 # Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране (значение по умолчанию)
 # StartRecommendationsTips -Show
 

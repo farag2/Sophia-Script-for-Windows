@@ -438,11 +438,11 @@ RecentlyAddedStartApps -Hide
 # Показывать недавно добавленные приложения в меню "Пуск" (значение по умолчанию)
 # RecentlyAddedStartApps -Show
 
-# Hide most used apps in Start (default value)
+# Hide most used apps on Start (default value)
 # Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
 MostUsedStartApps -Hide
 
-# Show most used Apps in Start
+# Show most used Apps on Start
 # Показывать наиболее часто используемые приложения на начальном экране
 # MostUsedStartApps -Show
 

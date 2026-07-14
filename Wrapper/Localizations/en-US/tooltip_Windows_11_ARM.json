@@ -755,6 +755,24 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "StartAppsView",
+    "Arg": {
+      "Zero": {
+        "Tag": "Category",
+        "ToolTip": "Use Category View for All Apps on Start (default value)."
+      },
+      "One": {
+        "Tag": "Grid",
+        "ToolTip": "Use Grid View for All Apps on Start."
+      },
+      "Two": {
+        "Tag": "List",
+        "ToolTip": "Use List View for All Apps on Start."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "MostUsedStartApps",
     "Arg": {
       "Zero": {

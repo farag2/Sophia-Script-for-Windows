@@ -3448,7 +3448,7 @@ function NavigationPaneExpand
 	Hide recently added apps on Start
 
 	.PARAMETER Show
-	Show recently added apps in Start
+	Show recently added apps on Start
 
 	.EXAMPLE
 	RecentlyAddedStartApps -Hide
@@ -3542,7 +3542,6 @@ function UnpinAllStartTiles
 	New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ConfigureStartPins -PropertyType DWord -Value 1 -Force
 	New-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ConfigureStartPinsJSON -PropertyType ExpandString -Value "$env:TEMP\Nopins.json" -Force
 
-	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
 	Start-Sleep -Seconds 3
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ConfigureStartPins, ConfigureStartPinsJSON -Force -ErrorAction Ignore
 	Remove-Item -Path "$env:TEMP\Nopins.json" -Force -ErrorAction Ignore
@@ -3550,13 +3549,95 @@ function UnpinAllStartTiles
 
 <#
 	.SYNOPSIS
-	Most used apps in Start
+	Set Start All Apps View
+
+	.PARAMETER Category
+	Use Category View for All Apps on Start
+
+	.PARAMETER Grid
+	Use Grid View for All Apps on Start
+
+	.PARAMETER List
+	Use List View for All Apps on Start
+
+	.EXAMPLE
+	StartAppsView -Category
+
+	.EXAMPLE
+	StartAppsView -Grid
+
+	.EXAMPLE
+	StartAppsView -List
+
+	.NOTES
+	Current user
+#>
+function StartAppsView
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Category"
+		)]
+		[switch]
+		$Category,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Grid"
+		)]
+		[switch]
+		$Grid,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "List"
+		)]
+		[switch]
+		$List
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideCategoryView -Force -ErrorAction Ignore
+	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideCategoryView -Type CLEAR
+	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideCategoryView -Type CLEAR
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Category"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name AllAppsViewMode -PropertyType DWord -Value 0 -Force
+		}
+		"Grid"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name AllAppsViewMode -PropertyType DWord -Value 1 -Force
+		}
+		"List"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name AllAppsViewMode -PropertyType DWord -Value 2 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Most used apps on Start
 
 	.PARAMETER Hide
-	Hide most used Apps in Start
+	Hide most used Apps on Start
 
 	.PARAMETER Show
-	Show most used Apps in Start
+	Show most used Apps on Start
 
 	.EXAMPLE
 	MostUsedStartApps -Hide
@@ -3621,13 +3702,13 @@ function MostUsedStartApps
 
 <#
 	.SYNOPSIS
-	Recommended section in Start
+	Recommended section on Start
 
 	.PARAMETER Hide
-	Hide recommended section in Start
+	Hide recommended section on Start
 
 	.PARAMETER Show
-	Show remove recommended section in Start
+	Show remove recommended section on Start
 
 	.EXAMPLE
 	StartRecommendedSection -Hide
@@ -3696,24 +3777,24 @@ function StartRecommendedSection
 	{
 		"Hide"
 		{
-			# Hide recently added apps in Start
+			# Hide recently added apps on Start
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -PropertyType DWord -Value 0 -Force
-			# Hide most used Apps in Start
+			# Hide most used Apps on Start
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -PropertyType DWord -Value 0 -Force
-			# Hide recommendations for tips, shortcuts, new apps, and more in Start
+			# Hide recommendations for tips, shortcuts, new apps, and more on Start
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -PropertyType DWord -Value 0 -Force
-			# Hide recommended files in Start, recent files in File Explorer, and items in jump lists
+			# Hide recommended files on Start, recent files in File Explorer, and items in jump lists
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackDocs -PropertyType DWord -Value 0 -Force
 		}
 		"Show"
 		{
-			# Show recently added apps in Start
+			# Show recently added apps on Start
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -Force -ErrorAction Ignore
-			# Show most used Apps in Start
+			# Show most used Apps on Start
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -Force -ErrorAction Ignore
-			# Show recommendations for tips, shortcuts, new apps, and more in Start
+			# Show recommendations for tips, shortcuts, new apps, and more on Start
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -Force -ErrorAction Ignore
-			# Show recommended files in Start, recent files in File Explorer, and items in jump lists
+			# Show recommended files on Start, recent files in File Explorer, and items in jump lists
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_TrackDocs -Force -ErrorAction Ignore
 		}
 	}
@@ -3721,13 +3802,13 @@ function StartRecommendedSection
 
 <#
 	.SYNOPSIS
-	Recommendations for tips, shortcuts, new apps, and more in Start
+	Recommendations for tips, shortcuts, new apps, and more on Start
 
 	.PARAMETER Hide
-	Hide recommendations for tips, shortcuts, new apps, and more in Start
+	Hide recommendations for tips, shortcuts, new apps, and more on Start
 
 	.PARAMETER Show
-	Show recommendations for tips, shortcuts, new apps, and more in Start
+	Show recommendations for tips, shortcuts, new apps, and more on Start
 
 	.EXAMPLE
 	StartRecommendationsTips -Hide
@@ -3781,13 +3862,13 @@ function StartRecommendationsTips
 
 <#
 	.SYNOPSIS
-	Microsoft account-related notifications in Start
+	Microsoft account-related notifications on Start
 
 	.PARAMETER Hide
-	Hide Microsoft account-related notifications in Start
+	Hide Microsoft account-related notifications on Start
 
 	.PARAMETER Show
-	Show Microsoft account-related notifications in Start
+	Show Microsoft account-related notifications on Start
 
 	.EXAMPLE
 	StartAccountNotifications -Hide
@@ -8108,6 +8189,8 @@ function Uninstall-UWPApps
 
 		# Store Experience Host
 		"Microsoft.StorePurchaseApp",
+
+		"MicrosoftWindows.Client.AIX",
 
 		# Cross Device Experience Host
 		"MicrosoftWindows.CrossDevice",

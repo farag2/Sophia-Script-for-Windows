@@ -4012,13 +4012,13 @@ function RecentlyAddedStartApps
 
 <#
 	.SYNOPSIS
-	Most used apps in Start
+	Most used apps on Start
 
 	.PARAMETER Hide
-	Hide most used Apps in Start
+	Hide most used Apps on Start
 
 	.PARAMETER Show
-	Show most used Apps in Start
+	Show most used Apps on Start
 
 	.EXAMPLE
 	MostUsedStartApps -Hide
@@ -4084,13 +4084,13 @@ function MostUsedStartApps
 
 <#
 	.SYNOPSIS
-	Microsoft account-related notifications in Start
+	Microsoft account-related notifications on Start
 
 	.PARAMETER Hide
-	Hide Microsoft account-related notifications in Start
+	Hide Microsoft account-related notifications on Start
 
 	.PARAMETER Show
-	Show Microsoft account-related notifications in Start
+	Show Microsoft account-related notifications on Start
 
 	.EXAMPLE
 	StartAccountNotifications -Hide
@@ -4375,7 +4375,7 @@ function PinToStart
 			$Parameter = $Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}
 			$Group = $XML.LayoutModificationTemplate.DefaultLayoutOverride.StartLayoutCollection.StartLayout.Group | Where-Object -FilterScript {$_.Name -eq "Sophia Script"}
 
-			# If the "Sophia Script" group exists in Start
+			# If the "Sophia Script" group exists on Start
 			if ($Group)
 			{
 				$DesktopApplicationID = ($Parameters | Where-Object -FilterScript {$_.Name -eq $Tile}).AppID

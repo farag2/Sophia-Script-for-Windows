@@ -774,6 +774,24 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "StartAppsView",
+    "Arg": {
+      "Zero": {
+        "Tag": "Category",
+        "ToolTip": "Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)."
+      },
+      "One": {
+        "Tag": "Grid",
+        "ToolTip": "Используйте просмотр в виде сетки для всех приложений на начальном экране."
+      },
+      "Two": {
+        "Tag": "List",
+        "ToolTip": "# Используйте просмотр в виде списка для всех приложений на начальном экране."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "MostUsedStartApps",
     "Arg": {
       "Zero": {

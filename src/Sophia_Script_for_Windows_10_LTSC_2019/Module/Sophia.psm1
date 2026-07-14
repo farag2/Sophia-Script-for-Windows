@@ -3084,13 +3084,13 @@ function RecentlyAddedStartApps
 
 <#
 	.SYNOPSIS
-	Most used apps in Start
+	Most used apps on Start
 
 	.PARAMETER Hide
-	Hide most used Apps in Start
+	Hide most used Apps on Start
 
 	.PARAMETER Show
-	Show most used Apps in Start
+	Show most used Apps on Start
 
 	.EXAMPLE
 	MostUsedStartApps -Hide

@@ -874,6 +874,28 @@
         "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
+        "Function": "StartAppsView",
+        "Arg": {
+            "Zero": {
+                "Tag": "Category",
+                "Opposite": "Two"
+            },
+            "One": {
+                "Tag": "Grid",
+                "Opposite": "Zero"
+            },
+            "Two": {
+                "Tag": "List",
+                "Opposite": "Zero"
+            }
+        },
+        "Preset": "Two",
+        "WindowsDefault": "Zero"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
         "Function": "MostUsedStartApps",
         "Arg": {
             "Zero": {

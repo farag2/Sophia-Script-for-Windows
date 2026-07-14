@@ -774,6 +774,24 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "StartAppsView",
+    "Arg": {
+      "Zero": {
+        "Tag": "Category",
+        "ToolTip": "Verwenden Sie die Kategorieansicht für alle Apps auf dem Startbildschirm (Standardwert)."
+      },
+      "One": {
+        "Tag": "Grid",
+        "ToolTip": "\"Rasteransicht\" für alle Apps im Startmenü verwenden."
+      },
+      "Two": {
+        "Tag": "List",
+        "ToolTip": "Verwenden Sie die Listenansicht für alle Apps auf dem Startbildschirm."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "MostUsedStartApps",
     "Arg": {
       "Zero": {
