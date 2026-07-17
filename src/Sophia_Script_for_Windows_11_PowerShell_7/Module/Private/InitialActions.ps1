@@ -504,23 +504,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Check whether EventLog service is running in order to be sire that Event Logger is enabled
-	if ((Get-Service -Name EventLog).Status -eq "Stopped")
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Event Viewer" string from %SystemRoot%\System32\shell32.dll
-		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $([WinAPI.GetStrings]::GetString(22029))), $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
 	# Check whether the Microsoft Store or Windows Feature Experience Pack was removed
 	@("Microsoft.WindowsStore", "MicrosoftWindows.Client.CBS") | ForEach-Object -Process {
 		if (-not (Get-AppxPackage -Name $_))
@@ -841,14 +824,31 @@ public extern static string BrandingFormatString(string sFormat);
 	{
 		{$_ -lt 26200}
 		{
-			Write-Information -MessageData "" -InformationAction Continue
+			# Check whether the current module version is the latest one
+			try
+			{
+				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
+				$Parameters = @{
+					Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
+					Verbose         = $true
+					UseBasicParsing = $true
+				}
+				$LatestSupportedBuild = (Invoke-RestMethod @Parameters).Windows_11
+			}
+			catch [System.Net.WebException]
+			{
+				$LatestSupportedBuild = 0
 
-			# Windows 11 Pro
-			$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-			# e.g. 25H2
-			$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
+				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com")
+				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+			}
 
-			Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $Windows_Long, $DisplayVersion)
+			# Check Windows minor build version
+			# https://support.microsoft.com/en-us/topic/windows-11-version-25H2-update-history-0929c747-1815-4543-8461-0160d16f15e5
+			$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
+			$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+
+			Write-Warning -Message ($Localization.UpdateWindowsBuild -f $CurrentBuild, $UBR, $LatestSupportedBuild)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -876,7 +876,7 @@ public extern static string BrandingFormatString(string sFormat);
 		}
 		"26200"
 		{
-			# Check whether the current module version is the latest one
+			# Check whether Windows build is the latest one
 			try
 			{
 				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json

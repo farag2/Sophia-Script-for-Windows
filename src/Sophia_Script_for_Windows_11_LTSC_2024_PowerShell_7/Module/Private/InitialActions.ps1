@@ -504,23 +504,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Check whether EventLog service is running in order to be sire that Event Logger is enabled
-	if ((Get-Service -Name EventLog).Status -eq "Stopped")
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Event Viewer" string from %SystemRoot%\System32\shell32.dll
-		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $([WinAPI.GetStrings]::GetString(22029))), $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
 	# Check whether Windows Feature Experience Pack was removed
 	if (-not (Get-AppxPackage -Name MicrosoftWindows.Client.CBS))
 	{
