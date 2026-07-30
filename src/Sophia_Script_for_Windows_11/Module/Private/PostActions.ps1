@@ -119,7 +119,7 @@ public static void PostMessage()
 	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
 	if (Test-Path -Path "$env:TEMP\LGPO.txt")
 	{
-		& "$PSScriptRoot\..\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
+		& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
 		& "$env:SystemRoot\System32\gpupdate.exe" /force
 	}
 

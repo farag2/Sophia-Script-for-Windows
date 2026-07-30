@@ -5841,8 +5841,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5897,8 +5897,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5931,8 +5931,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveFunctionSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}

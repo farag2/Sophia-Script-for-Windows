@@ -39,18 +39,18 @@ function InitialActions
 
 	# Check whether all files were expanded before running
 	$ScriptFiles = [Array]::TrueForAll(@(
-		"$PSScriptRoot\..\..\Localizations\de-DE\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\en-US\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\es-ES\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\fr-FR\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\hu-HU\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\it-IT\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\pl-PL\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\pt-BR\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\ru-RU\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\tr-TR\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\uk-UA\Sophia.psd1",
-		"$PSScriptRoot\..\..\Localizations\zh-CN\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\de-DE\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\en-US\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\es-ES\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\fr-FR\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\hu-HU\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\it-IT\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\pl-PL\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\pt-BR\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\ru-RU\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\tr-TR\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\uk-UA\Sophia.psd1",
+		"$PSScriptRoot\..\Localizations\zh-CN\Sophia.psd1",
 
 		"$PSScriptRoot\..\..\Module\Private\Get-Hash.ps1",
 		"$PSScriptRoot\..\..\Module\Private\InitialActions.ps1",
@@ -63,10 +63,10 @@ function InitialActions
 		"$PSScriptRoot\..\..\Module\Private\Write-ExtensionKeys.ps1",
 
 		"$PSScriptRoot\..\..\Module\Sophia.psm1",
-		"$PSScriptRoot\..\..\Manifest\SophiaScript.psd1",
+		"$PSScriptRoot\..\Manifest\SophiaScript.psd1",
 		"$PSScriptRoot\..\..\Import-TabCompletion.ps1",
 
-		"$PSScriptRoot\..\..\Binaries\LGPO.exe"
+		"$PSScriptRoot\..\Binaries\LGPO.exe"
 	),
 	[Predicate[string]]{
 		param($File)
@@ -77,10 +77,7 @@ function InitialActions
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message "Required files are missing. Please, do not download the whole code from the repository, but download archive from release page for you system."
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Start-Process -FilePath "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"
-
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -92,12 +89,12 @@ function InitialActions
 	# Try to import localizations
 	try
 	{
-		Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\..\..\Localizations -FileName Sophia -ErrorAction Stop
+		Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\..\Localizations -FileName Sophia -ErrorAction Stop
 	}
 	catch
 	{
 		# If there's no folder with current localization ID ($PSUICulture), then import en-US localization
-		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\..\Localizations -FileName Sophia
+		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\Localizations -FileName Sophia
 	}
 
 	# Check CPU architecture
@@ -881,6 +878,7 @@ public extern static string BrandingFormatString(string sFormat);
 	Write-Information -MessageData "    ┛              ┛                   " -InformationAction Continue
 
 	Write-Verbose -Message $Localization.AskQuestion -Verbose
+	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose

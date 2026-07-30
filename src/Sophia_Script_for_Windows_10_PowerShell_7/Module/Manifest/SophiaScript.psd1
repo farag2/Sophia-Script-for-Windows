@@ -1,11 +1,11 @@
 ﻿@{
-	RootModule            = '..\Module\Sophia.psm1'
+	RootModule            = '..\Sophia.psm1'
 	ModuleVersion         = '6.1.6'
-	GUID                  = '109cc881-c42b-45af-a74a-550781989d6a'
+	GUID                  = 'aa0b47a7-1770-4b5d-8c9f-cc6c505bcc7a'
 	Author                = 'Team Sophia'
 	Copyright             = '(c) 2014—2026 Team Sophia'
 	Description           = 'The most powerful PowerShell module for fine-tuning Windows on GitHub'
-	PowerShellVersion     = '5.1'
+	PowerShellVersion     = '7.5'
 	ProcessorArchitecture = 'AMD64'
 	FunctionsToExport     = '*'
 
