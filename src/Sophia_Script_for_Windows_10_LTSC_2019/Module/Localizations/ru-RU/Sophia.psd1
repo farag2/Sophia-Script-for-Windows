@@ -45,7 +45,6 @@ ProgramPathNotExists                      = Путь "{0}" не существу
 ProgIdNotExists                           = ProgId "{0}" не существует.
 AllFilesFilter                            = Все файлы
 JSONNotValid                              = Файл JSON "{0}" невалиден.
-PackageNotInstalled                       = Приложение "{0}" не установлено.
 PackageIsInstalled                        = Последняя версия {0} уже установлена.
 ScheduledTaskCreatedByAnotherUser         = Задание "{0}" в Планировщике заданий уже было создано от имени "{1}".
 CleanupTaskNotificationTitle              = Очистка Windows
@@ -79,5 +78,5 @@ NoConnectionEstablished                   = Невозможно установ�
 Run                                       = Запустить
 FunctionSkipped                           = Функция "{0}" пропущена.
 DonateToastTitle                          = Вы можете пожертвовать!❤
-DotSourcedFunction                        = Пожалуйста, запустите функцию через дот-сорсинг (с точкой в начале):\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = Пожалуйста, запустите функцию через дот-сорсинг (с точкой в начале):\n. .\\Import-TabCompletion.ps1
 '@

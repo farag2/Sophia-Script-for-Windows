@@ -80,5 +80,5 @@ NoConnectionEstablished                   = Nem hozható létre kapcsolat a {0} 
 Run                                       = Futtatás
 FunctionSkipped                           = Az "{0}" funkció kihagyva.
 DonateToastTitle                          = Adományokat szívesen fogadunk!❤
-DotSourcedFunction                        = Kérjük, "dot-source"-olja a függvényt (egy ponttal az elején):\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = Kérjük, "dot-source"-olja a függvényt (egy ponttal az elején):\n. .\\Import-TabCompletion.ps1
 '@

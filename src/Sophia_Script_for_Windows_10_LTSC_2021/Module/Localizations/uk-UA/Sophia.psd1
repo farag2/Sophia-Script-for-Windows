@@ -80,5 +80,5 @@ NoConnectionEstablished                   = Не вдалося встанови
 Run                                       = Запустити
 FunctionSkipped                           = Функцію "{0}" пропущено.
 DonateToastTitle                          = Ви можете зробити пожертву!❤
-DotSourcedFunction                        = Будь ласка, запустіть функцію через дот-сорсинг (з крапкою на початку):\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = Будь ласка, запустіть функцію через дот-сорсинг (з крапкою на початку):\n. .\\Import-TabCompletion.ps1
 '@

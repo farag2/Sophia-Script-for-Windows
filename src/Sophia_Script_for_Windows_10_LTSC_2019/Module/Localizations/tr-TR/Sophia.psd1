@@ -45,7 +45,6 @@ ProgramPathNotExists                      = "{0}" yolu mevcut değil.
 ProgIdNotExists                           = ProgId "{0}" mevcut değildir.
 AllFilesFilter                            = Tüm Dosyalar
 JSONNotValid                              = JSON dosyası "{0}" geçerli değil.
-PackageNotInstalled                       = "{0}" uygulaması yüklü değil.
 PackageIsInstalled                        = {0}'ın en son sürümü zaten yüklü.
 UninstallUWPForAll                        = Bütün kullanıcılar için
 NoUWPAppsFound                            = Kaldırılacak UWP uygulaması yok.
@@ -82,5 +81,5 @@ NoConnectionEstablished                   = {0} ile bağlantı kurulamadı.
 Run                                       = Başlat
 FunctionSkipped                           = "{0}" işlevi atlandı.
 DonateToastTitle                          = Bağışlarınızı bekliyoruz!❤
-DotSourcedFunction                        = Lütfen işlevi "nokta-kaynaklı" (başında nokta olan) olarak yazın:\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = Lütfen işlevi "nokta-kaynaklı" (başında nokta olan) olarak yazın:\n. .\\Import-TabCompletion.ps1
 '@

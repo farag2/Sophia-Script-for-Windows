@@ -45,7 +45,7 @@ InitialActions
 # ".\Import-TabCompletion.ps1" instead of ". .\Import-TabCompletion.ps1"
 if ($MyInvocation.Line -ne ". .\Import-TabCompletion.ps1")
 {
-	Write-Warning -Message $Localization.DotSourcedFunction
+	Write-Warning -Message $Localization.DotSourceFunction
 	Write-Information -MessageData "" -InformationAction Continue
 
 	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions" -Verbose

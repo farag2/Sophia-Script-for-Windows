@@ -5542,7 +5542,7 @@ function Set-UserShellFolderLocation
 	}
 
 	# Contents of the hidden desktop.ini file for each type of user folders
-	# An empty string at the beginning
+	# Empty string at the beginning
 	$Desktop = @"
 
 [.ShellClassInfo]
@@ -5550,7 +5550,7 @@ LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21769
 IconResource=%SystemRoot%\System32\imageres.dll,-183
 "@
 
-	# An empty string at the beginning
+	# Empty string at the beginning
 	$Documents = @"
 
 [.ShellClassInfo]
@@ -5560,7 +5560,7 @@ IconFile=%SystemRoot%\System32\shell32.dll
 IconIndex=-235
 "@
 
-	# An empty string at the beginning
+	# Empty string at the beginning
 	$Downloads = @"
 
 [.ShellClassInfo]
@@ -5568,7 +5568,7 @@ LocalizedResourceName=@%SystemRoot%\system32\shell32.dll,-21798
 IconResource=%SystemRoot%\System32\imageres.dll,-184
 "@
 
-	# An empty string at the beginning
+	# Empty string at the beginning
 	$Music = @"
 
 [.ShellClassInfo]
@@ -5579,7 +5579,7 @@ IconFile=%SystemRoot%\System32\shell32.dll
 IconIndex=-237
 "@
 
-	# An empty string at the beginning
+	# Empty string at the beginning
 	$Pictures = @"
 
 [.ShellClassInfo]
@@ -5590,7 +5590,7 @@ IconFile=%SystemRoot%\System32\shell32.dll
 IconIndex=-236
 "@
 
-	# An empty string at the beginning
+	# Empty string at the beginning
 	$Videos = @"
 
 [.ShellClassInfo]

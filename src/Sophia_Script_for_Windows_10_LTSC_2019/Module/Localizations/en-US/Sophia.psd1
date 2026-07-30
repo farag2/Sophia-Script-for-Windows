@@ -45,7 +45,6 @@ ProgramPathNotExists                      = Path "{0}" does not exist.
 ProgIdNotExists                           = ProgId "{0}" does not exist.
 AllFilesFilter                            = All Files
 JSONNotValid                              = JSON file "{0}" is not valid.
-PackageNotInstalled                       = "{0}" app is not installed.
 PackageIsInstalled                        = The latest version of {0} is already installed.
 ScheduledTaskCreatedByAnotherUser         = Scheduled task "{0}" was already created by "{1}" user.
 CleanupTaskNotificationTitle              = Windows clean up
@@ -79,5 +78,5 @@ NoConnectionEstablished                   = Connection could not be established 
 Run                                       = Run
 FunctionSkipped                           = Function "{0}" skipped.
 DonateToastTitle                          = Donations welcome!❤
-DotSourcedFunction                        = Please dot-source the function (with a dot at the beginning):\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = Please dot-source the function (with a dot at the beginning):\n. .\\Import-TabCompletion.ps1
 '@

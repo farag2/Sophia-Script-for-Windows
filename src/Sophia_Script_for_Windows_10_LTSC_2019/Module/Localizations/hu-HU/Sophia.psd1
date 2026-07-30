@@ -45,7 +45,6 @@ ProgramPathNotExists                      = A "{0}" elérési út nem létezik.
 ProgIdNotExists                           = A ProgId "{0}" nem létezik.
 AllFilesFilter                            = Minden fájl
 JSONNotValid                              = A JSON fájl "{0}" érvénytelen.
-PackageNotInstalled                       = Az "{0}" alkalmazás nincs telepítve.
 PackageIsInstalled                        = A {0} legújabb verziója már telepítve van.
 ScheduledTaskCreatedByAnotherUser         = A "{0}" ütemezett feladatot már létrehozta a "{1}" felhasználó.
 CleanupTaskNotificationTitle              = Windows tisztítása
@@ -79,5 +78,5 @@ NoConnectionEstablished                   = Nem hozható létre kapcsolat a {0} 
 Run                                       = Futtatás
 FunctionSkipped                           = Az "{0}" funkció kihagyva.
 DonateToastTitle                          = Adományokat szívesen fogadunk!❤
-DotSourcedFunction                        = Kérjük, "dot-source"-olja a függvényt (egy ponttal az elején):\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = Kérjük, "dot-source"-olja a függvényt (egy ponttal az elején):\n. .\\Import-TabCompletion.ps1
 '@

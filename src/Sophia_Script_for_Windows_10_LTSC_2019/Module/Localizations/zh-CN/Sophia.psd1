@@ -45,7 +45,6 @@ ProgramPathNotExists                      = 路径"{0}"不存在。
 ProgIdNotExists                           = ProgId"{0}"不存在。
 AllFilesFilter                            = 所有文件
 JSONNotValid                              = JSON文件"{0}"无效。
-PackageNotInstalled                       = 未安装"{0}"应用程序。
 PackageIsInstalled                        = 最新版本的{0}已安装。
 ScheduledTaskCreatedByAnotherUser         = 计划任务"{0}"已由用户"{1}"创建。
 CleanupTaskNotificationTitle              = Windows清理
@@ -79,5 +78,5 @@ NoConnectionEstablished                   = 无法建立{0}。
 Run                                       = 运行
 FunctionSkipped                           = 跳过函数"{0}"。
 DonateToastTitle                          = 欢迎捐赠!❤
-DotSourcedFunction                        = 請"點源"功能（開頭有點）:\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = 請"點源"功能（開頭有點）:\n. .\\Import-TabCompletion.ps1
 '@

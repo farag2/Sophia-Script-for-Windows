@@ -97,5 +97,5 @@ NoConnectionEstablished                   = 无法建立{0}。
 Run                                       = 运行
 FunctionSkipped                           = 跳过函数"{0}"。
 DonateToastTitle                          = 欢迎捐赠!❤
-DotSourcedFunction                        = 請"點源"功能（開頭有點）:\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = 請"點源"功能（開頭有點）:\n. .\\Import-TabCompletion.ps1
 '@

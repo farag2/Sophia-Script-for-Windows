@@ -97,5 +97,5 @@ NoConnectionEstablished                   = No se pudo establecer una conexión 
 Run                                       = Iniciar
 FunctionSkipped                           = Función "{0}" omitida.
 DonateToastTitle                          = ¡Se aceptan donaciones!❤
-DotSourcedFunction                        = Por favor, "dot-source" la función (con un punto al principio):\n. .\\Import-TabCompletion.ps1
+DotSourceFunction                         = Por favor, "dot-source" la función (con un punto al principio):\n. .\\Import-TabCompletion.ps1
 '@
