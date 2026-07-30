@@ -1,7 +1,7 @@
 [
     {
         "psd1Filename": "SophiaScript.psd1",
-        "folderPsd1Filename": "Manifest",
+        "folderPsd1Filename": "Module\\Manifest",
         "psm1Filename": "Sophia.psm1",
         "folderPsm1Filename": "Module",
         "setConsoleFontPs1Filename": "Set-ConsoleFont.ps1",

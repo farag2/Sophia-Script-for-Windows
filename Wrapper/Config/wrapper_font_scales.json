@@ -6,8 +6,17 @@
     "16": {
       "LabelWidth": "250"
     },
+    "18": {
+      "LabelWidth": "270"    
+	},
     "20": {
-      "LabelWidth": "320"
+      "LabelWidth": "320"    
+	},
+    "22": {
+      "LabelWidth": "345"
+    },
+    "24": {
+      "LabelWidth": "370"
     }
   }
 ]
