@@ -173,11 +173,12 @@ public static void PostMessage()
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 	#endregion Toast notifications
 
+	Write-Verbose -Message $Localization.AskQuestion -Verbose
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-	Write-Information -MessageData "" -InformationAction Continue
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.DonateToastTitle -Verbose
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
 

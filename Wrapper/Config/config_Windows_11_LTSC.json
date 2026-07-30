@@ -1520,23 +1520,6 @@
     },
     {
         "Region": "System",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "NetworkDiscovery",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "System",
         "Control": "tboxtboxtbox",
         "Required": "false",
         "Function": "Set-Association",

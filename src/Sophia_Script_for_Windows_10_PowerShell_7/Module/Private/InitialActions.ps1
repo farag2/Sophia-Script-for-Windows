@@ -109,9 +109,10 @@ function InitialActions
 	{
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/sophia_script_versions.json
 		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
-			Verbose         = $true
-			UseBasicParsing = $true
+			Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 10
+			Verbose                  = $true
 		}
 		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_5_1
 		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
@@ -133,8 +134,8 @@ function InitialActions
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://github.com")
-		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://github.com") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json") -ErrorAction SilentlyContinue
 	}
 
 	# Check whether the script was run via PowerShell 7
@@ -486,23 +487,6 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 	}
 
-	# Check whether EventLog service is running in order to be sire that Event Logger is enabled
-	if ((Get-Service -Name EventLog).Status -eq "Stopped")
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Event Viewer" string from %SystemRoot%\System32\shell32.dll
-		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $([WinAPI.GetStrings]::GetString(22029))), $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
 	# Check whether the Microsoft Store or Windows Feature Experience Pack was removed
 	@("Microsoft.WindowsStore", "MicrosoftWindows.Client.CBS") | ForEach-Object -Process {
 		if (-not (Get-AppxPackage -Name $_))
@@ -795,9 +779,10 @@ public extern static string BrandingFormatString(string sFormat);
 			{
 				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
 				$Parameters = @{
-					Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
-					Verbose         = $true
-					UseBasicParsing = $true
+					Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
+					UseBasicParsing          = $true
+					ConnectionTimeoutSeconds = 10
+					Verbose                  = $true
 				}
 				$LatestSupportedBuild = (Invoke-RestMethod @Parameters).Windows_10
 			}
@@ -805,8 +790,8 @@ public extern static string BrandingFormatString(string sFormat);
 			{
 				$LatestSupportedBuild = 0
 
-				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com")
-				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
+				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
 			}
 
 			# We may use Test-Path -Path variable:LatestSupportedBuild
@@ -909,10 +894,13 @@ public extern static string BrandingFormatString(string sFormat);
 	Write-Information -MessageData "┗┛┗┛┣┛┛┗┗┗┻  ┗┛┗┛ ┗┣┛┗  ┛┗┛┛   ┗┻┛┗┛┗┗┻┗┛┗┻┛┛" -InformationAction Continue
 	Write-Information -MessageData "    ┛              ┛                   " -InformationAction Continue
 
+	Write-Verbose -Message $Localization.AskQuestion -Verbose
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
 	Write-Information -MessageData "" -InformationAction Continue
+	Write-Verbose -Message $Localization.DonateToastTitle -Verbose
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 

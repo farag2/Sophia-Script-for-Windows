@@ -2991,10 +2991,11 @@ function Install-Cursors
 			# https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors
 			# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml
 			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"
-				OutFile         = "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip"
-				UseBasicParsing = $true
-				Verbose         = $true
+				Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"
+				OutFile                  = "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip"
+				UseBasicParsing          = $true
+				ConnectionTimeoutSeconds = 10
+				Verbose                  = $true
 			}
 			Invoke-WebRequest @Parameters
 		}
@@ -3003,8 +3004,8 @@ function Install-Cursors
 			Remove-Item -Path "$env:SystemRoot\Cursors" -Recurse -Force -ErrorAction Ignore
 
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6227,67 +6228,6 @@ function RestorePreviousFolders
 
 <#
 	.SYNOPSIS
-	Network Discovery File and Printers Sharing
-
-	.PARAMETER Enable
-	Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-
-	.PARAMETER Disable
-	Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-
-	.EXAMPLE
-	NetworkDiscovery -Enable
-
-	.EXAMPLE
-	NetworkDiscovery -Disable
-
-	.NOTES
-	Current user
-#>
-function NetworkDiscovery
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	$FirewallRules = @(
-		# File and printer sharing
-		"@FirewallAPI.dll,-32752",
-
-		# Network discovery
-		"@FirewallAPI.dll,-28502"
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled True
-			Set-NetFirewallRule -Profile Private -Name FPS-SMB-In-TCP -Enabled True
-			Set-NetConnectionProfile -NetworkCategory Private
-		}
-		"Disable"
-		{
-			Set-NetFirewallRule -Group $FirewallRules -Profile Private -Enabled False
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 
 	.PARAMETER ProgramPath
@@ -6937,17 +6877,18 @@ function Install-VCRedist
 	try
 	{
 		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"
-			UseBasicParsing = $true
-			Verbose         = $true
+			Uri                      = "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 10
+			Verbose                  = $true
 		}
 		$LatestVCRedistVersion = (Invoke-RestMethod @Parameters).version
 	}
 	catch [System.Net.WebException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -6973,10 +6914,11 @@ function Install-VCRedist
 			try
 			{
 				$Parameters = @{
-					Uri             = "https://aka.ms/vc14/vc_redist.$($Item).exe"
-					OutFile         = "$DownloadsFolder\vc_redist.$($Item).exe"
-					UseBasicParsing = $true
-					Verbose         = $true
+					Uri                      = "https://aka.ms/vc14/vc_redist.$($Item).exe"
+					OutFile                  = "$DownloadsFolder\vc_redist.$($Item).exe"
+					UseBasicParsing          = $true
+					ConnectionTimeoutSeconds = 10
+					Verbose                  = $true
 				}
 				Invoke-WebRequest @Parameters
 
@@ -6997,8 +6939,8 @@ function Install-VCRedist
 			catch [System.Net.WebException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://download.visualstudio.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://download.visualstudio.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.$($Item).exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.$($Item).exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -7073,17 +7015,18 @@ function Install-DotNetRuntimes
 			# Get latest build version
 			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 			$Parameters = @{
-				Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"
-				Verbose         = $true
-				UseBasicParsing = $true
+				Uri                      = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"
+				UseBasicParsing          = $true
+				ConnectionTimeoutSeconds = 10
+				Verbose                  = $true
 			}
 			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
 		}
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -7108,18 +7051,19 @@ function Install-DotNetRuntimes
 			{
 				# Downloading .NET Desktop Runtime
 				$Parameters = @{
-					Uri             = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"
-					OutFile         = "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"
-					UseBasicParsing = $true
-					Verbose         = $true
+					Uri                      = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"
+					OutFile                  = "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"
+					UseBasicParsing          = $true
+					ConnectionTimeoutSeconds = 10
+					Verbose                  = $true
 				}
 				Invoke-WebRequest @Parameters
 			}
 			catch [System.Net.WebException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -7352,9 +7296,10 @@ function Install-WSL
 		# https://github.com/microsoft/WSL/blob/main/distributions/DistributionInfo.json
 		# wsl --list --online relies on Internet connection too, so it's much convenient to parse DistributionInfo.json, rather than parse a cmd output
 		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
-			UseBasicParsing = $true
-			Verbose         = $true
+			Uri                      = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 10
+			Verbose                  = $true
 		}
 		$Distributions = (Invoke-RestMethod @Parameters).Distributions | ForEach-Object -Process {
 			[PSCustomObject]@{
@@ -7366,8 +7311,8 @@ function Install-WSL
 	catch [System.Net.WebException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}

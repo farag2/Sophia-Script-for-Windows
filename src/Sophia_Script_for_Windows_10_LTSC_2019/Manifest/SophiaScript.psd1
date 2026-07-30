@@ -3,8 +3,8 @@
 	ModuleVersion         = '6.1.6'
 	GUID                  = 'a36a65ca-70f9-43df-856c-3048fc5e7f01'
 	Author                = 'Team Sophia'
-	Copyright             = '(c) 2014—2026 Team Sophia. All rights reserved'
-	Description           = 'Module for Windows fine-tuning and automating the routine tasks'
+	Copyright             = '(c) 2014—2026 Team Sophia'
+	Description           = 'The most powerful PowerShell module for fine-tuning Windows on GitHub'
 	PowerShellVersion     = '5.1'
 	ProcessorArchitecture = 'AMD64'
 	FunctionsToExport     = '*'
@@ -13,7 +13,6 @@
 		PSData = @{
 			LicenseUri    = 'https://github.com/farag2/Sophia-Script-for-Windows/blob/main/LICENSE'
 			ProjectUri    = 'https://github.com/farag2/Sophia-Script-for-Windows'
-			IconUri       = 'https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/img/Sophia.png'
 			ReleaseNotes  = 'https://github.com/farag2/Sophia-Script-for-Windows/blob/main/CHANGELOG.md'
 		}
 	}

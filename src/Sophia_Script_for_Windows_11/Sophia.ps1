@@ -845,14 +845,6 @@ RestorePreviousFolders -Disable
 # Восстанавливать прежние окна папок при входе в систему
 # RestorePreviousFolders -Enable
 
-# Enable "Network Discovery" and "File and Printers Sharing" for workgroup networks
-# Включить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп
-NetworkDiscovery -Enable
-
-# Disable "Network Discovery" and "File and Printers Sharing" for workgroup networks (default value)
-# Выключить сетевое обнаружение и общий доступ к файлам и принтерам для рабочих групп (значение по умолчанию)
-# NetworkDiscovery -Disable
-
 <#
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 	Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна "Каким образом вы хотите открыть этот файл?"

@@ -1281,20 +1281,6 @@
   },
   {
     "Region": "System",
-    "Function": "NetworkDiscovery",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert die \"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppennetzwerke."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert die \"Netzwerkerkennung\" und \"Datei- und Druckerfreigabe\" für Arbeitsgruppennetzwerke (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Set-Association",
     "ToolTip": "App registrieren, Hash berechnen und mit einer Erweiterung verknüpfen, wobei das Popup-Fenster 'Wie möchten Sie dies öffnen?' ausgeblendet ist.",
     "Arg": {

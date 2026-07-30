@@ -139,8 +139,9 @@ function InitialActions
 		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/sophia_script_versions.json
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
-			Verbose         = $true
 			UseBasicParsing = $true
+			TimeoutSec      = 10
+			Verbose         = $true
 		}
 		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
 		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
@@ -162,8 +163,8 @@ function InitialActions
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://github.com")
-		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://github.com") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json") -ErrorAction SilentlyContinue
 	}
 
 	# Check whether the script was run via PowerShell 5.1
@@ -685,8 +686,28 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 				until ($Choice -ne $KeyboardArrows)
 			}
 		}
+		else
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $Localization.EnableSecureBoot -Verbose
+			Write-Error -Message $Localization.EnableSecureBoot -ErrorAction SilentlyContinue
+			Write-Verbose -Message "https://support.microsoft.com/en-US/Windows/Security/DeviceSecurity/windows-11-and-secure-boot" -Verbose
+		}
 	}
-	catch {}
+	catch
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "Confirm-SecureBootUEFI"), $Localization.ReinstallWindows -join " ")
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
+	}
 
 	# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
 	$Signature = @{
@@ -792,8 +813,9 @@ public extern static string BrandingFormatString(string sFormat);
 				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
 				$Parameters = @{
 					Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
-					Verbose         = $true
 					UseBasicParsing = $true
+					TimeoutSec      = 10
+					Verbose         = $true
 				}
 				$LatestSupportedBuild = (Invoke-RestMethod @Parameters).Windows_11
 			}
@@ -801,8 +823,8 @@ public extern static string BrandingFormatString(string sFormat);
 			{
 				$LatestSupportedBuild = 0
 
-				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com")
-				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
+				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
 			}
 
 			# Check Windows minor build version
@@ -844,8 +866,9 @@ public extern static string BrandingFormatString(string sFormat);
 				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
 				$Parameters = @{
 					Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
-					Verbose         = $true
 					UseBasicParsing = $true
+					TimeoutSec      = 10
+					Verbose         = $true
 				}
 				$LatestSupportedBuild = (Invoke-RestMethod @Parameters).Windows_11
 			}
@@ -853,8 +876,8 @@ public extern static string BrandingFormatString(string sFormat);
 			{
 				$LatestSupportedBuild = 0
 
-				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com")
-				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com") -ErrorAction SilentlyContinue
+				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
+				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
 			}
 
 			# We may use Test-Path -Path variable:LatestSupportedBuild
@@ -928,10 +951,13 @@ public extern static string BrandingFormatString(string sFormat);
 	Write-Information -MessageData "┗┛┗┛┣┛┛┗┗┗┻  ┗┛┗┛ ┗┣┛┗  ┛┗┛┛   ┗┻┛┗┛┗┗┻┗┛┗┻┛┛" -InformationAction Continue
 	Write-Information -MessageData "    ┛              ┛                   " -InformationAction Continue
 
+	Write-Verbose -Message $Localization.AskQuestion -Verbose
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
 	Write-Information -MessageData "" -InformationAction Continue
+	Write-Verbose -Message $Localization.DonateToastTitle -Verbose
 	Write-Verbose -Message "https://ko-fi.com/farag" -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
