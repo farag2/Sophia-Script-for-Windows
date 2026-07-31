@@ -8,7 +8,7 @@ $Latest_Release_Windows_10_LTSC2021 = (Invoke-RestMethod @Parameters).Sophia_Scr
 
 Write-Verbose -Message "Sophia.Script.for.Windows.10.LTSC.2021.v$Latest_Release_Windows_10_LTSC2021.zip" -Verbose
 
-New-Item -Path "Sophia_Script\Sophia_Script_for_Windows_10_LTSC_2021_v$Latest_Release_Windows_10_LTSC2021\Binaries" -ItemType Directory -Force
+New-Item -Path "Sophia_Script\Sophia_Script_for_Windows_10_LTSC_2021_v$Latest_Release_Windows_10_LTSC2021\Module\Binaries" -ItemType Directory -Force
 
 # Copy Windows 10 LTSC 2021 PS 5.1 version to new folder
 Get-ChildItem -Path "src\Sophia_Script_for_Windows_10_LTSC_2021" -Force | Copy-Item -Destination "Sophia_Script\Sophia_Script_for_Windows_10_LTSC_2021_v$Latest_Release_Windows_10_LTSC2021" -Recurse -Force
@@ -16,7 +16,7 @@ Get-ChildItem -Path "src\Sophia_Script_for_Windows_10_LTSC_2021" -Force | Copy-I
 # Add LGPO.exe
 $Parameters = @{
 	Path        = "Sophia_Script\LGPO.exe"
-	Destination = "Sophia_Script\Sophia_Script_for_Windows_10_LTSC_2021_v$Latest_Release_Windows_10_LTSC2021\Binaries"
+	Destination = "Sophia_Script\Sophia_Script_for_Windows_10_LTSC_2021_v$Latest_Release_Windows_10_LTSC2021\Module\Binaries"
 	Recurse     = $true
 	Force       = $true
 }

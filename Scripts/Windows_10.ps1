@@ -8,7 +8,7 @@ $Latest_Release_Windows_10_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Soph
 
 Write-Verbose -Message "Sophia.Script.for.Windows.10.v$Latest_Release_Windows_10_PowerShell_5_1.zip" -Verbose
 
-New-Item -Path "Sophia_Script\Sophia_Script_for_Windows_10_v$Latest_Release_Windows_10_PowerShell_5_1\Binaries" -ItemType Directory -Force
+New-Item -Path "Sophia_Script\Sophia_Script_for_Windows_10_v$Latest_Release_Windows_10_PowerShell_5_1\Module\Binaries" -ItemType Directory -Force
 
 # Copy Windows 10 PS 5.1 version to new folder
 Get-ChildItem -Path "src\Sophia_Script_for_Windows_10" -Force | Copy-Item -Destination "Sophia_Script\Sophia_Script_for_Windows_10_v$Latest_Release_Windows_10_PowerShell_5_1" -Recurse -Force
@@ -16,7 +16,7 @@ Get-ChildItem -Path "src\Sophia_Script_for_Windows_10" -Force | Copy-Item -Desti
 # Add LGPO.exe
 $Parameters = @{
 	Path        = "Sophia_Script\LGPO.exe"
-	Destination = "Sophia_Script\Sophia_Script_for_Windows_10_v$Latest_Release_Windows_10_PowerShell_5_1\Binaries"
+	Destination = "Sophia_Script\Sophia_Script_for_Windows_10_v$Latest_Release_Windows_10_PowerShell_5_1\Module\Binaries"
 	Recurse     = $true
 	Force       = $true
 }
