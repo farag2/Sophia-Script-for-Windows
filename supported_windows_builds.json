@@ -2,8 +2,8 @@
 	"Windows_10_URL": "https://learn.microsoft.com/en-us/windows/release-health/release-information",
 	"Windows_11_URL": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
 	"Windows_10": "6456",
-	"Windows_10_LTSC_2019": "8511",
-	"Windows_10_LTSC_2021": "7058",
-	"Windows_11_LTSC_2024": "8655",
-	"Windows_11": "8655"
+	"Windows_10_LTSC_2019": "9020",
+	"Windows_10_LTSC_2021": "7548",
+	"Windows_11_LTSC_2024": "8875",
+	"Windows_11": "8875"
 }
