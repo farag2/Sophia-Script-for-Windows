@@ -202,7 +202,7 @@ catch
 	exit
 }
 
-New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version\Binaries" -ItemType Directory -Force
+New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" -ItemType Directory -Force
 
 # Download LGPO
 # https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
@@ -214,7 +214,7 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\LGPO.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Binaries" --strip-components=1 "LGPO_30/LGPO.exe"
+& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\LGPO.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" --strip-components=1 "LGPO_30/LGPO.exe"
 
 if ($Version -match "PowerShell_7")
 {
@@ -241,7 +241,7 @@ if ($Version -match "PowerShell_7")
 	}
 
 	# Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
-	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\microsoft.windows.sdk.net.ref.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Binaries" --strip-components=2 "lib/net8.0/WinRT.Runtime.dll" "lib/net8.0/Microsoft.Windows.SDK.NET.dll"
+	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\microsoft.windows.sdk.net.ref.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" --strip-components=2 "lib/net9.0/WinRT.Runtime.dll" "lib/net9.0/Microsoft.Windows.SDK.NET.dll"
 }
 
 $Parameters = @{

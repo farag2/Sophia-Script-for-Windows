@@ -39,10 +39,6 @@ $Parameters = @{
 Invoke-RestMethod @Parameters
 
 # Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
-Add-Type -Assembly System.IO.Compression.FileSystem
-$ZIP = [IO.Compression.ZipFile]::OpenRead("Sophia_Script\microsoft.windows.sdk.net.ref.zip")
-$Entries = $ZIP.Entries | Where-Object -FilterScript {($_.FullName -eq "lib/net8.0/Microsoft.Windows.SDK.NET.dll") -or ($_.FullName -eq "lib/net8.0/WinRT.Runtime.dll")}
-$Entries | ForEach-Object -Process {[IO.Compression.ZipFileExtensions]::ExtractToFile($_, "Sophia_Script\$($_.Name)", $true)}
-$ZIP.Dispose()
+& "$env:SystemRoot\System32\tar.exe" -xvf "Sophia_Script\microsoft.windows.sdk.net.ref.zip" -C "Sophia_Script" --strip-components 2 "lib/net9.0/WinRT.Runtime.dll" "lib/net9.0/Microsoft.Windows.SDK.NET.dll"
 
 Remove-Item -Path "Sophia_Script\LGPO_30", "Sophia_Script\LGPO.zip", "Sophia_Script\microsoft.windows.sdk.net.ref.zip" -Recurse -Force

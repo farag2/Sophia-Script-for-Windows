@@ -8,7 +8,7 @@ $Latest_Release_Windows_10_PowerShell_7 = (Invoke-RestMethod @Parameters).Sophia
 
 Write-Verbose -Message "Sophia.Script.for.Windows.10.PowerShell.7.v$Latest_Release_Windows_10_PowerShell_7.zip" -Verbose
 
-New-Item -Path "Sophia_Script\Sophia_Script_for_Windows_10_PowerShell_7_v$Latest_Release_Windows_10_PowerShell_7\Binaries" -ItemType Directory -Force
+New-Item -Path "Sophia_Script\Sophia_Script_for_Windows_10_PowerShell_7_v$Latest_Release_Windows_10_PowerShell_7\Module\Binaries" -ItemType Directory -Force
 
 # Copy Windows 10 PS 7 version to new folder
 Get-ChildItem -Path "src\Sophia_Script_for_Windows_10_PowerShell_7" -Force | Copy-Item -Destination "Sophia_Script\Sophia_Script_for_Windows_10_PowerShell_7_v$Latest_Release_Windows_10_PowerShell_7" -Recurse -Force
@@ -16,7 +16,7 @@ Get-ChildItem -Path "src\Sophia_Script_for_Windows_10_PowerShell_7" -Force | Cop
 # Add LGPO.exe, WinRT.Runtime.dll, and Microsoft.Windows.SDK.NET.dll
 $Parameters = @{
 	Path        = @("Sophia_Script\LGPO.exe", "Sophia_Script\WinRT.Runtime.dll", "Sophia_Script\Microsoft.Windows.SDK.NET.dll")
-	Destination = "Sophia_Script\Sophia_Script_for_Windows_10_PowerShell_7_v$Latest_Release_Windows_10_PowerShell_7\Binaries"
+	Destination = "Sophia_Script\Sophia_Script_for_Windows_10_PowerShell_7_v$Latest_Release_Windows_10_PowerShell_7\Module\Binaries"
 	Recurse     = $true
 	Force       = $true
 }
