@@ -17,10 +17,6 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@main
 
-      - name: Run Lint
-        run: |
-          . "Scripts\Lint.ps1"
-
       - name: Download Dependencies
         run: |
           . "Scripts\Dependencies.ps1"

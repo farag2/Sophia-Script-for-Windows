@@ -1,6 +1,6 @@
 # Check module
 
-Write-Verbose -Message "Run Lint" -Verbose
+Write-Verbose -Message "PowerShell ScriptAnalyzer" -Verbose
 
 $Results = @(Get-ChildItem -Path src -File -Recurse -Include *.ps1, *.psm1 | Invoke-ScriptAnalyzer)
 if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")})
@@ -19,8 +19,7 @@ if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Sev
 	exit 1
 }
 
-
-Write-Verbose -Message "Check JSONs validity" -Verbose
+Write-Verbose -Message "JSONs validity" -Verbose
 
 # Check JSONs
 $JSONs = [Array]::TrueForAll((@(Get-ChildItem -Path Wrapper -File -Recurse -Filter *.json).FullName),
@@ -65,5 +64,30 @@ Get-ChildItem -Path src -File -Filter *.psd1 -Recurse | ForEach-Object -Process 
 		Write-Verbose -Message $File -Verbose
 		# Exit with a non-zero status to fail the job
 		exit 1
+	}
+}
+
+Write-Verbose -Message "Localizations integrity" -Verbose
+foreach ($Folder in @(Get-ChildItem -Path src -Directory))
+{
+	Import-LocalizedData -BindingVariable Localization -UICulture $PSUICulture -BaseDirectory "$($Folder.FullName)\Module\Localizations" -FileName Sophia
+
+	foreach ($Key in $Localization.Keys)
+	{
+		$Paths = @(
+			"$($Folder.FullName)\Module\Sophia.psm1",
+			"$($Folder.FullName)\Module\Private\InitialActions.ps1",
+			"$($Folder.FullName)\Module\Private\PostActions.ps1",
+			"$($Folder.FullName)\Module\Private\Set-UserShellFolder.ps1",
+			"$($Folder.FullName)\Module\Private\Show-Menu.ps1",
+			"$($Folder.FullName)\Import-TabCompletion.ps1"
+		)
+
+		if (-not ((Get-Content -Path $Paths -Raw) -match $Key))
+		{
+			Write-Verbose -Message "$Key was not found in $Folder.FullName folder" -Verbose
+			# Exit with a non-zero status to fail the job
+			exit 1
+		}
 	}
 }
