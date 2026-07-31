@@ -658,8 +658,12 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			if ([System.Text.Encoding]::ASCII.GetString((Get-SecureBootUEFI -Name db).Bytes) -notmatch "Windows UEFI CA 2023")
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message $Localization.UpdateUEFICertificates
+				Write-Verbose -Message $Localization.UpdateUEFICertificates -Verbose
+				Write-Error -Message $Localization.UpdateUEFICertificates -ErrorAction SilentlyContinue
+
+				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"
+				Write-Warning -Message "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787"
 
 				do
 				{
@@ -667,9 +671,14 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 
 					switch ($Choice)
 					{
-						$Yes
+						$Yes ###
 						{
+							Write-Information -MessageData "" -InformationAction Continue
+							Write-Error -Message "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324" -ErrorAction SilentlyContinue
+							Write-Error -Message "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787" -ErrorAction SilentlyContinue
+
 							Start-Process -FilePath "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"
+							Start-Process -FilePath "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787"
 						}
 						$No
 						{
@@ -687,6 +696,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message $Localization.EnableSecureBoot -Verbose
 			Write-Error -Message $Localization.EnableSecureBoot -ErrorAction SilentlyContinue
 			Write-Verbose -Message "https://support.microsoft.com/en-US/Windows/Security/DeviceSecurity/windows-11-and-secure-boot" -Verbose
+			Write-Error -Message "https://support.microsoft.com/en-US/Windows/Security/DeviceSecurity/windows-11-and-secure-boot" -ErrorAction SilentlyContinue
 		}
 	}
 	catch
