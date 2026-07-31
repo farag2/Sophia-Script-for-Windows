@@ -94,9 +94,20 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * Export and import all Windows associations. You need to install all apps according to exported JSON file to restore all associations
 * Install WSL Linux distribution with [pop-up](#screenshots) using friendly distro names
 * Create scheduled tasks with a [native toast notification](#screenshots)
-  * Create scheduled tasks `Windows Cleanup` and `Windows Cleanup Notification` for cleaning up Windows of unused files and Windows updates files
-  * Create a scheduled task `SoftwareDistribution` for cleaning up `%SystemRoot%\SoftwareDistribution\Download`
-  * Create a scheduled task `Temp` for cleaning up `%TEMP%`
+  * Create `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for cleaning up Windows of unused files and Windows updates files
+  * Create a `SoftwareDistribution` scheduled task for cleaning up `%SystemRoot%\SoftwareDistribution\Download`
+  * Create a `Temp` scheduled task for cleaning up temp folders and files
+    * `%SystemDrive%\$WinREAgent`
+    * `%SystemDrive%\$SysReset`
+    * `%SystemDrive%\$Windows.~WS`
+    * `%SystemDrive%\$GetCurrent`
+    * `%SystemDrive%\ESD`
+    * `%SystemDrive%\Intel`
+    * `%SystemDrive%\PerfLogs`
+    * `%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Temp`
+    * `%LOCALAPPDATA%\CrashDumps`
+    * `%SystemDrive%\Recovery`
+    * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
 * Install the latest provided Microsoft Visual C++ 2015–2026 x86/x64
 * Install the latest provided .NET Desktop Runtime 8, 9, 10 x64
 * Many more File Explorer and context menu tweaks

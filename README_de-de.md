@@ -94,9 +94,20 @@ Mit <img src="https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows
 * Exportieren und importieren Sie alle Windows-Zuordnungen. Sie müssen alle Apps gemäß der exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen
 * Installieren Sie die WSL-Linux-Distribution mit Popup-Fenster(#screenshots) unter Verwendung benutzerfreundlicher Distributionsnamen
 * Erstellen Sie geplante Aufgaben mit einer [nativen Toast-Benachrichtigung](#screenshots)
-  * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von ungenutzten Dateien und Windows-Updates zu bereinigen
+  * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von nicht mehr benötigten Dateien und Windows-Update-Dateien zu bereinigen
   * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`
-  * Erstellen Sie eine geplante Aufgabe `Temp` zum Aufräumen von `%TEMP%`
+  * Erstellen Sie eine geplante Aufgabe namens `Temp`, um temporäre Ordner und Dateien zu bereinigen
+    * `%SystemDrive%\$WinREAgent`
+    * `%SystemDrive%\$SysReset`
+    * `%SystemDrive%\$Windows.~WS`
+    * `%SystemDrive%\$GetCurrent`
+    * `%SystemDrive%\ESD`
+    * `%SystemDrive%\Intel`
+    * `%SystemDrive%\PerfLogs`
+    * `%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Temp`
+    * `%LOCALAPPDATA%\CrashDumps`
+    * `%SystemDrive%\Recovery`
+    * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
 * Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64
 * Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10
 * Viele weitere Optimierungen für den Datei-Explorer und das Kontextmenü

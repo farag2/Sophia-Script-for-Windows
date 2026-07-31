@@ -96,7 +96,18 @@
   * Створити завдання з нативним тостовим повідомленням, де ви зможете запустити або скасувати [виконання](#скріншоти) завдання
   * Створити завдання `Windows Cleanup` и `Windows Cleanup Notification` для очищення Windows від невикористовуваних файлів та оновлень
   * Створити завдання `SoftwareDistribution` для очищення `%SystemRoot%\SoftwareDistribution\Download`
-  * Створити завдання `Temp` для очищення `%TEMP%`
+  * Створити завдання `Temp` для очищення тимчасових папок і файлів
+    * `%SystemDrive%\$WinREAgent`
+    * `%SystemDrive%\$SysReset`
+    * `%SystemDrive%\$Windows.~WS`
+    * `%SystemDrive%\$GetCurrent`
+    * `%SystemDrive%\ESD`
+    * `%SystemDrive%\Intel`
+    * `%SystemDrive%\PerfLogs`
+    * `%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Temp`
+    * `%LOCALAPPDATA%\CrashDumps`
+    * `%SystemDrive%\Recovery`
+    * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
 * Встановити останню версію розповсюджуваних пакетів Microsoft Visual C++ 2015–2026 x86/x64
 * Встановити останню версію розповсюджуваних пакетів .NET Desktop Runtime 8, 9, 10 x64
 * Ще багато налаштувань Файлового Провідника та контекстного меню

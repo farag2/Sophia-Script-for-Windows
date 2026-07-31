@@ -96,7 +96,18 @@
 * Создать задания в Планировщике заданий с [нативным тостовым уведомлением](#скриншоты)
   * Создать задания `Windows Cleanup` и `Windows Cleanup Notification` для очистки Winsows от неиспользуемых файлов и файлов обновлений
   * Создать задание `SoftwareDistribution` для очистки `%SystemRoot%\SoftwareDistribution\Download`
-  * Создать задание `Temp` для очистки `%TEMP%`
+  * Создать задание `Temp` для очистки временных папок и файлов
+    * `%SystemDrive%\$WinREAgent`
+    * `%SystemDrive%\$SysReset`
+    * `%SystemDrive%\$Windows.~WS`
+    * `%SystemDrive%\$GetCurrent`
+    * `%SystemDrive%\ESD`
+    * `%SystemDrive%\Intel`
+    * `%SystemDrive%\PerfLogs`
+    * `%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Temp`
+    * `%LOCALAPPDATA%\CrashDumps`
+    * `%SystemDrive%\Recovery`
+    * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
 * Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2026 x86/x64
 * Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9, 10 x64
 * Много других твиков проводника и контекстного меню
