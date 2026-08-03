@@ -7,7 +7,7 @@ permissions:
   contents: write
 
 jobs:
-  download-and-save:
+  download-cursors:
     runs-on: windows-latest
 
     steps:

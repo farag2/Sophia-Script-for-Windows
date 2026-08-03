@@ -12,9 +12,8 @@ on:
       - main
 
 jobs:
-  patch:
+  Lint:
     runs-on: windows-latest
-    timeout-minutes: 5
     permissions:
       contents: write
     steps:

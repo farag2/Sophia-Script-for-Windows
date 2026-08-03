@@ -1,0 +1,21 @@
+name: VirusTotal
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  VirusTotal:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: VirusTotal
+        env:
+          VirusTotal_API_Key: ${{ secrets.VIRUSTOTAL_API_KEY }}
+        run: |
+          . "Scripts\VirusTotal.ps1"

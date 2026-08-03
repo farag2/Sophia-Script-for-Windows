@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Push:
+  Chocolatey:
     name: Push
     runs-on: windows-latest
     steps:

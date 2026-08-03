@@ -8,7 +8,7 @@ on:
         required: true
 
 jobs:
-  patch:
+  build-sophia:
     runs-on: windows-latest
     timeout-minutes: 5
     permissions:

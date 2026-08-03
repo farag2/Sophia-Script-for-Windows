@@ -8,7 +8,7 @@ on:
     - cron: "0 7 * * *"
 
 jobs:
-  update-badges:
+  badges-downloads:
     name: Update Badges
     runs-on: windows-latest
     steps:

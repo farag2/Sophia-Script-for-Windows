@@ -12,7 +12,7 @@ on:
       - main
 
 jobs:
-  update-badges:
+  badges-lines:
     name: Update Badge Lines
     runs-on: windows-latest
     steps:
