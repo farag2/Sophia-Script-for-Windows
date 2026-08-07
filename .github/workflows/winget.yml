@@ -13,7 +13,7 @@ jobs:
 
       - name: Sync fork
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.WINGET_PAT }}
         run: |
           gh repo sync farag2/winget-pkgs --source microsoft/winget-pkgs --branch master --force
 
