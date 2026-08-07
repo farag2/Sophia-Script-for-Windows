@@ -22,7 +22,8 @@ if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
 {
 	Write-Warning -Message "A new manifest $($LatestManifest) available. Edit manifests in Scripts\WinGet_Manifests."
 
-	exit 1 # Exit with a non-zero status to fail the job
+    # Exit with a non-zero status to fail the job
+	exit 1
 }
 
 # Get latest version tag for Windows 11
