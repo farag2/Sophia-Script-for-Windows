@@ -11,6 +11,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@main
 
+      - name: Sync fork
+        run: |
+          gh repo sync farag2/winget-pkgs --source microsoft/winget-pkgs --branch master --force
+
       - name: Preparation
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
