@@ -1585,39 +1585,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Создать настраиваемое представление \"Создание процесса\" в Просмотре событий для журналирования запускаемых процессов и их аргументов."
+        "ToolTip": "Включить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление \"Создание процесса\" в Просмотре событий."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Удалить настраиваемое представление \"Создание процесса\" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellModulesLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить ведение журнала для всех модулей Windows PowerShell."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить ведение журнала для всех модулей Windows PowerShell (значение по умолчанию)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellScriptsLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Включить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)."
+        "ToolTip": "Выключить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление \"Создание процесса\" в Просмотре событий (значение по умолчанию)."
       }
     }
   },
@@ -1655,11 +1627,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Включить Windows Sandbox. Применимо только к редакциям Professional, Enterprise и Education."
+        "ToolTip": "Включить Windows Sandbox."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Выключить Windows Sandbox (значение по умолчанию). Применимо только к редакциям Professional, Enterprise и Education."
+        "ToolTip": "Выключить Windows Sandbox (значение по умолчанию)."
       }
     }
   },

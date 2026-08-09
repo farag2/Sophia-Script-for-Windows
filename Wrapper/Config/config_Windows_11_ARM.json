@@ -1809,38 +1809,6 @@
         "Region": "Microsoft Defender & Security",
         "Control": "cmb",
         "Required": "false",
-        "Function": "PowerShellModulesLogging",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "PowerShellScriptsLogging",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Microsoft Defender & Security",
-        "Control": "cmb",
-        "Required": "false",
         "Function": "AppsSmartScreen",
         "Arg": {
             "Zero": {

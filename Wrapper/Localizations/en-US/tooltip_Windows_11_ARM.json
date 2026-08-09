@@ -1566,39 +1566,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Create the \"Process Creation\" сustom view in the Event Viewer to log executed processes and their arguments."
+        "ToolTip": "Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom \"Process Creation\" view in the Event Viewer."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Remove the \"Process Creation\" custom view in the Event Viewer to log executed processes and their arguments (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellModulesLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable logging for all Windows PowerShell modules."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable logging for all Windows PowerShell modules (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellScriptsLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Enable logging for all PowerShell scripts input to the Windows PowerShell event log."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)."
+        "ToolTip": "Disable logging of running processes, including their arguments, and PowerShell scripts, and create a custom \"Process Creation\" view in the Event Viewer (default value)."
       }
     }
   },
@@ -1636,11 +1608,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable Windows Sandbox. Applicable only to Professional, Enterprise and Education editions."
+        "ToolTip": "Enable Windows Sandbox."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable Windows Sandbox (default value). Applicable only to Professional, Enterprise and Education editions."
+        "ToolTip": "Disable Windows Sandbox (default value)."
       }
     }
   },

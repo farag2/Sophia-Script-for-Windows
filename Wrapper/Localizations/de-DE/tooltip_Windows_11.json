@@ -1585,39 +1585,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Erstellt eine benutzerdefinierte Ansicht \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren."
+        "ToolTip": "Aktivieren Sie die Protokollierung laufender Prozesse einschließlich ihrer Argumente sowie von PowerShell-Skripten und erstellen Sie eine anpassbare Ansicht \"Prozesserstellung\" in der Ereignisprotokoll."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Entfernt die Ereignisanzeige \"Prozesserstellung\", um ausgeführte Prozesse und ihre Argumente zu protokollieren (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellModulesLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert die Protokollierung für alle Windows PowerShell-Module."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Protokollierung für alle Windows PowerShell-Module (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Microsoft Defender & Security",
-    "Function": "PowerShellScriptsLogging",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktivieren Sie die Protokollierung für alle PowerShell-Skripte, die in das Windows PowerShell-Ereignisprotokoll eingegeben werden (Standardwert)."
+        "ToolTip": "Die Protokollierung laufender Prozesse einschließlich ihrer Argumente und von PowerShell-Skripten deaktivieren sowie die anpassbare Ansicht \"Prozesserstellung\" in der Ereignisprotokoll erstellen (Standardwert).."
       }
     }
   },
@@ -1655,11 +1627,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Aktivieren Sie die Windows-Sandbox. Gilt nur für die Editionen Professional, Enterprise und Education."
+        "ToolTip": "Aktivieren Sie die Windows-Sandbox."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Windows-Sandbox deaktivieren (Standardwert). Gilt nur für die Editionen Professional, Enterprise und Education."
+        "ToolTip": "Windows-Sandbox deaktivieren (Standardwert)."
       }
     }
   },

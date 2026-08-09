@@ -14,8 +14,6 @@
 Diff from vOldVersion
 [OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
 
-
-
 ***
 
 ### Download

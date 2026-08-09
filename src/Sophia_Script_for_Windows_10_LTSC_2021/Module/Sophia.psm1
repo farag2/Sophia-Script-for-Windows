@@ -3086,7 +3086,7 @@ function Install-Cursors
 		{
 			# Download cursors
 			# tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemRoot\Cursors folder
-			# The archive was saved to "Cursors" folder using Selenium to download archive from https://jepricreations.com/products/w11-cursor-concept-free via GitHub CI/CD
+			# The archive was downloaded to "Cursors" folder using GitHub CI/CD workflow from https://jepricreations.com/products/w11-cursor-concept-free
 			# https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors
 			# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml
 			$Parameters = @{
@@ -7162,8 +7162,8 @@ function Install-DotNetRuntimes
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.$($Item).exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.$($Item).exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -7886,33 +7886,29 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 
 			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
 			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
-			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/main/FocusAssistLibrary/FocusAssistLib.cs
-			# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 			$ToastNotificationPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-# Get Focus Assist status
-# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/main/FocusAssistLibrary/FocusAssistLib.cs
-# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-
+# Get Quite Hours status
 `$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
 	Namespace          = "WinAPI"
-	Name               = "Focus"
+	Name               = "QuietHours"
 	Language           = "CSharp"
 	CompilerParameters = `$CompilerParameters
 	MemberDefinition   = @""
-[DllImport("NtDll.dll", SetLastError = true)]
-private static extern uint NtQueryWnfStateData(IntPtr pStateName, IntPtr pTypeId, IntPtr pExplicitScope, out uint nChangeStamp, out IntPtr pBuffer, ref uint nBufferSize);
-
-[StructLayout(LayoutKind.Sequential)]
-public struct WNF_TYPE_ID
-{
-	public Guid TypeId;
-}
+[DllImport("ntdll.dll")]
+private static extern uint NtQueryWnfStateData(
+	ref ulong StateName,
+	IntPtr TypeId,
+	IntPtr ExplicitScope,
+	out uint ChangeStamp,
+	out int Buffer,
+	ref uint BufferSize
+);
 
 [StructLayout(LayoutKind.Sequential)]
 public struct WNF_STATE_NAME
@@ -7929,48 +7925,26 @@ public struct WNF_STATE_NAME
 	}
 }
 
-public enum FocusAssistState
+// WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED
+public static int GetState()
 {
-	NOT_SUPPORTED = -2,
-	FAILED = -1,
-	OFF = 0,
-	PRIORITY_ONLY = 1,
-	ALARMS_ONLY = 2
-};
-
-// Returns the state of Focus Assist if available on this computer
-public static FocusAssistState GetFocusAssistState()
-{
-	try
-	{
-		WNF_STATE_NAME WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED = new WNF_STATE_NAME(0xA3BF1C75, 0xD83063E);
-		uint nBufferSize = (uint)Marshal.SizeOf(typeof(IntPtr));
-		IntPtr pStateName = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WNF_STATE_NAME)));
-		Marshal.StructureToPtr(WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, pStateName, false);
-
-		uint nChangeStamp = 0;
-		IntPtr pBuffer = IntPtr.Zero;
-		bool success = NtQueryWnfStateData(pStateName, IntPtr.Zero, IntPtr.Zero, out nChangeStamp, out pBuffer, ref nBufferSize) == 0;
-		Marshal.FreeHGlobal(pStateName);
-
-		if (success)
-		{
-			return (FocusAssistState)pBuffer;
-		}
-	}
-	catch {}
-
-	return FocusAssistState.FAILED;
+	ulong stateName = 0x0D83063EA3BF1C75;
+	uint size = sizeof(int);
+	uint stamp;
+	int state;
+	uint status = NtQueryWnfStateData(ref stateName, IntPtr.Zero, IntPtr.Zero, out stamp, out state, ref size);
+	return (status == 0) ? state : -1;
 }
 ""@
 }
 
-if (-not ("WinAPI.Focus" -as [type]))
+if (-not ("WinAPI.QuietHours" -as [type]))
 {
 	Add-Type @Signature
 }
 
-while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
+# Wait until it will be 0
+while ([WinAPI.QuietHours]::GetState() -ne 0)
 {
 	Start-Sleep -Seconds 600
 }
@@ -8051,7 +8025,6 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			$Task.Author = "Team Sophia"
 			$Task | Set-ScheduledTask
 
-			# Start Task Scheduler in the end if any scheduled task was created
 			$Global:ScheduledTasks = $true
 
 			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Windows Cleanup"), $Localization.CleanupTaskCLIDescription -join " ")
@@ -8220,33 +8193,29 @@ function SoftwareDistributionTask
 
 			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
 			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
-			# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/main/FocusAssistLibrary/FocusAssistLib.cs
-			# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
 			$SoftwareDistributionTaskPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-# Get Focus Assist status
-# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/main/FocusAssistLibrary/FocusAssistLib.cs
-# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-
+# Get Quite Hours status
 `$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
 `$Signature = @{
 	Namespace          = "WinAPI"
-	Name               = "Focus"
+	Name               = "QuietHours"
 	Language           = "CSharp"
 	CompilerParameters = `$CompilerParameters
 	MemberDefinition   = @""
-[DllImport("NtDll.dll", SetLastError = true)]
-private static extern uint NtQueryWnfStateData(IntPtr pStateName, IntPtr pTypeId, IntPtr pExplicitScope, out uint nChangeStamp, out IntPtr pBuffer, ref uint nBufferSize);
-
-[StructLayout(LayoutKind.Sequential)]
-public struct WNF_TYPE_ID
-{
-	public Guid TypeId;
-}
+[DllImport("ntdll.dll")]
+private static extern uint NtQueryWnfStateData(
+	ref ulong StateName,
+	IntPtr TypeId,
+	IntPtr ExplicitScope,
+	out uint ChangeStamp,
+	out int Buffer,
+	ref uint BufferSize
+);
 
 [StructLayout(LayoutKind.Sequential)]
 public struct WNF_STATE_NAME
@@ -8263,49 +8232,26 @@ public struct WNF_STATE_NAME
 	}
 }
 
-public enum FocusAssistState
+// WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED
+public static int GetState()
 {
-	NOT_SUPPORTED = -2,
-	FAILED = -1,
-	OFF = 0,
-	PRIORITY_ONLY = 1,
-	ALARMS_ONLY = 2
-};
-
-// Returns the state of Focus Assist if available on this computer
-public static FocusAssistState GetFocusAssistState()
-{
-	try
-	{
-		WNF_STATE_NAME WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED = new WNF_STATE_NAME(0xA3BF1C75, 0xD83063E);
-		uint nBufferSize = (uint)Marshal.SizeOf(typeof(IntPtr));
-		IntPtr pStateName = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(WNF_STATE_NAME)));
-		Marshal.StructureToPtr(WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED, pStateName, false);
-
-		uint nChangeStamp = 0;
-		IntPtr pBuffer = IntPtr.Zero;
-		bool success = NtQueryWnfStateData(pStateName, IntPtr.Zero, IntPtr.Zero, out nChangeStamp, out pBuffer, ref nBufferSize) == 0;
-		Marshal.FreeHGlobal(pStateName);
-
-		if (success)
-		{
-			return (FocusAssistState)pBuffer;
-		}
-	}
-	catch {}
-
-	return FocusAssistState.FAILED;
+	ulong stateName = 0x0D83063EA3BF1C75;
+	uint size = sizeof(int);
+	uint stamp;
+	int state;
+	uint status = NtQueryWnfStateData(ref stateName, IntPtr.Zero, IntPtr.Zero, out stamp, out state, ref size);
+	return (status == 0) ? state : -1;
 }
 ""@
 }
 
-if (-not ("WinAPI.Focus" -as [type]))
+if (-not ("WinAPI.QuietHours" -as [type]))
 {
 	Add-Type @Signature
 }
 
-# Wait until it will be "OFF" (0)
-while ([WinAPI.Focus]::GetFocusAssistState() -ne "OFF")
+# Wait until it will be 0
+while ([WinAPI.QuietHours]::GetState() -ne 0)
 {
 	Start-Sleep -Seconds 600
 }
@@ -8548,10 +8494,7 @@ function TempTask
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-# Get Focus Assist status
-# https://github.com/DCourtel/Windows_10_Focus_Assist/blob/main/FocusAssistLibrary/FocusAssistLib.cs
-# https://redplait.blogspot.com/2018/07/wnf-ids-from-perfntcdll-adk-version.html
-
+# Get Quite Hours status
 `$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
@@ -8935,22 +8878,19 @@ function DefenderSandbox
 
 <#
 	.SYNOPSIS
-	The "Process Creation" Event Viewer custom view
+	"Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Create the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments
+	Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
 
 	.PARAMETER Disable
-	Remove the "Process Creation" custom view in the Event Viewer
+	Disable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
 
 	.EXAMPLE
 	EventViewerCustomView -Enable
 
 	.EXAMPLE
 	EventViewerCustomView -Disable
-
-	.NOTES
-	In order this feature to work events auditing and command line in process creation events will be enabled
 
 	.NOTES
 	Machine-wide
@@ -8974,6 +8914,14 @@ function EventViewerCustomView
 		$Disable
 	)
 
+	# Find and close eventvwr.msc by its argument
+	$eventvwr_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
+	# We have to check before executing due to "Set-StrictMode -Version Latest"
+	if ($eventvwr_Process_ID)
+	{
+		Get-Process -Id $eventvwr_Process_ID | Stop-Process -Force
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Enable"
@@ -8985,17 +8933,37 @@ function EventViewerCustomView
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
 			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type DWORD -Value 1
 
+			# Enable logging for all Windows PowerShell modules
+			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames))
+			{
+				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Force
+			}
+			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -PropertyType String -Value * -Force
+
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Type DWORD -Value 1
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -Type SZ -Value *
+
+			# Enable logging for all PowerShell scripts input to the Windows PowerShell event log
+			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging))
+			{
+				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Force
+			}
+			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -PropertyType DWord -Value 1 -Force
+
+			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Type DWORD -Value 1
+
+			# Create custom "Process Creation" view in the Event Viewer
 			$XML = @"
 <ViewerConfig>
 	<QueryConfig>
-		<QueryParams>
-			<UserQuery />
-		</QueryParams>
 		<QueryNode>
 			<Name>$($Localization.EventViewerCustomViewName)</Name>
 			<Description>$($Localization.EventViewerCustomViewDescription)</Description>
 			<QueryList>
-				<Query Id="0" Path="Security">
+				<Query Id="0">
+					<Select Path="Microsoft-Windows-PowerShell/Operational">*[System[(EventID=4103 or EventID=4104)]]</Select>
+					<Select Path="Windows PowerShell">*[System[(EventID=400 or EventID=403 or EventID=800)]]</Select>
 					<Select Path="Security">*[System[(EventID=4688)]]</Select>
 				</Query>
 			</QueryList>
@@ -9008,137 +8976,27 @@ function EventViewerCustomView
 			{
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
+			# Save ProcessCreation.xml in the UTF-8 without BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -NoNewline -Force
 
-			# Save ProcessCreation.xml in the UTF-8 with BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -NoNewline -Force
+			$Global:EventViewerCustomView = $true
 		}
 		"Disable"
 		{
-			# Compared to Windows 11 default value for Windows 10 is "disable" by default
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
+			# Remove the "Process Creation" custom view in the Event Viewer
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
 			Set-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Type CLEAR
-			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction Ignore
-		}
-	}
-}
 
-<#
-	.SYNOPSIS
-	Logging for all Windows PowerShell modules
-
-	.PARAMETER Enable
-	Enable logging for all Windows PowerShell modules
-
-	.PARAMETER Disable
-	Disable logging for all Windows PowerShell modules
-
-	.EXAMPLE
-	PowerShellModulesLogging -Enable
-
-	.EXAMPLE
-	PowerShellModulesLogging -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function PowerShellModulesLogging
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Force
-			}
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -PropertyType String -Value * -Force
-
-			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Type DWORD -Value 1
-			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -Type SZ -Value *
-		}
-		"Disable"
-		{
+			# Disable logging for all Windows PowerShell modules
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -Force -ErrorAction Ignore
-
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Type CLEAR
-		}
-	}
-}
 
-<#
-	.SYNOPSIS
-	Logging for all PowerShell scripts input to the Windows PowerShell event log
-
-	.PARAMETER Enable
-	Enable logging for all PowerShell scripts input to the Windows PowerShell event log
-
-	.PARAMETER Disable
-	Disable logging for all PowerShell scripts input to the Windows PowerShell event log
-
-	.EXAMPLE
-	PowerShellScriptsLogging -Enable
-
-	.EXAMPLE
-	PowerShellScriptsLogging -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function PowerShellScriptsLogging
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Force
-			}
-			New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -PropertyType DWord -Value 1 -Force
-
-			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Type DWORD -Value 1
-		}
-		"Disable"
-		{
+			# Disable logging for all PowerShell scripts input to the Windows PowerShell event log
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Force -ErrorAction Ignore
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Type CLEAR
+
+			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction Ignore
 		}
 	}
 }

@@ -105,13 +105,11 @@ public static void PostMessage()
 		}
 	}
 
-	# Check whether any of scheduled tasks were created. Unless open Task Scheduler
+	# Check whether any of scheduled tasks were created
 	if ($Global:ScheduledTasks)
 	{
 		# Find and close taskschd.msc by its argument
-		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "mmc.exe"} | Where-Object -FilterScript {
-			$_.CommandLine -match "taskschd.msc"
-		}).Handle
+		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "taskschd.msc")}).Handle
 		# We have to check before executing due to "Set-StrictMode -Version Latest"
 		if ($taskschd_Process_ID)
 		{
@@ -124,6 +122,23 @@ public static void PostMessage()
 		Get-ScheduledTask -TaskName SoftwareDistribution, Temp, "Windows Cleanup Notification" -ErrorAction Ignore | Start-ScheduledTask
 
 		$Global:ScheduledTasks = $false
+	}
+
+	# Check whether Event Viewer custom view was created
+	if ($Global:EventViewerCustomView)
+	{
+		# Find and close eventvwr.msc by its argument
+		$eventvwr_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
+		# We have to check before executing due to "Set-StrictMode -Version Latest"
+		if ($eventvwr_Process_ID)
+		{
+			Get-Process -Id $eventvwr_Process_ID | Stop-Process -Force
+		}
+
+		# Open Event Viewer
+		Start-Process -FilePath eventvwr.msc
+
+		$Global:EventViewerCustomView = $false
 	}
 
 	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database

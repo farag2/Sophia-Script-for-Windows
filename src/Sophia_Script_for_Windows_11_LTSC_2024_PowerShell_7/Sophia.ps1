@@ -522,18 +522,6 @@ RecentlyAddedStartApps -Hide
 # Открепить все ярлыки от начального экрана
 # UnpinAllStartTiles
 
-# Use Category View for All Apps on Start (default value)
-# Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
-# StartAppsView -Category
-
-# Use Grid View for All Apps on Start
-# Показывать наиболее часто используемые приложения на начальном экране
-# StartAppsView -Grid
-
-# Use List View for All Apps on Start
-# Удалить раздел "Рекомендуем" на начальном экране
-StartAppsView -List
-
 # Hide most used apps on Start (default value)
 # Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
 MostUsedStartApps -Hide
@@ -966,29 +954,13 @@ DefenderSandbox -Enable
 # Выключить песочницу для Microsoft Defender (значение по умолчанию)
 # DefenderSandbox -Disable
 
-# Create the "Process Creation" сustom view in the Event Viewer to log executed processes and their arguments
-# Создать настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов
+# Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
+# Включить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление "Создание процесса" в Просмотре событий
 EventViewerCustomView -Enable
 
-# Remove the "Process Creation" custom view in the Event Viewer to log executed processes and their arguments (default value)
-# Удалить настраиваемое представление "Создание процесса" в Просмотре событий для журналирования запускаемых процессов и их аргументов (значение по умолчанию)
+# Disable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer (default value)
+# Выключить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление "Создание процесса" в Просмотре событий (значение по умолчанию)
 # EventViewerCustomView -Disable
-
-# Enable logging for all Windows PowerShell modules
-# Включить ведение журнала для всех модулей Windows PowerShell
-PowerShellModulesLogging -Enable
-
-# Disable logging for all Windows PowerShell modules (default value)
-# Выключить ведение журнала для всех модулей Windows PowerShell (значение по умолчанию)
-# PowerShellModulesLogging -Disable
-
-# Enable logging for all PowerShell scripts input to the Windows PowerShell event log
-# Включить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell
-PowerShellScriptsLogging -Enable
-
-# Disable logging for all PowerShell scripts input to the Windows PowerShell event log (default value)
-# Выключить ведение журнала для всех вводимых сценариев PowerShell в журнале событий Windows PowerShell (значение по умолчанию)
-# PowerShellScriptsLogging -Disable
 
 # Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)
 # Microsoft Defender SmartScreen помечает скачанные файлы из интернета как небезопасные (значение по умолчанию)
@@ -1006,12 +978,12 @@ SaveZoneInformation -Disable
 # Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)
 # SaveZoneInformation -Enable
 
-# Enable Windows Sandbox. Applicable only to Professional, Enterprise and Education editions
-# Включить Windows Sandbox. Применимо только к редакциям Professional, Enterprise и Education
+# Enable Windows Sandbox
+# Включить Windows Sandbox
 # WindowsSandbox -Enable
 
-# Disable Windows Sandbox (default value). Applicable only to Professional, Enterprise and Education editions
-# Выключить Windows Sandbox (значение по умолчанию). Применимо только к редакциям Professional, Enterprise и Education
+# Disable Windows Sandbox (default value)
+# Выключить Windows Sandbox (значение по умолчанию)
 # WindowsSandbox -Disable
 
 # Set up DNS from Cloudflare DNS using DNS-over-HTTPS
