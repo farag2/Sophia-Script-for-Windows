@@ -1,18 +1,18 @@
 ﻿ConvertFrom-StringData -StringData @'
-UnsupportedArchitecture                   = Your're using "{0}" based CPU architecture. This script supports an x64 architecture-based CPU only. Download and run script version for your archicture.
+UnsupportedArchitecture                   = You're using "{0}" based CPU architecture. This script supports an x64 architecture-based CPU only. Download and run script version for your architecture.
 NewSophiaScriptFound                      = A new version is available: Sophia Script for Windows {0}. Please update.
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Please run the script in PowerShell {2}.
 CodeCompilationFailed                     = Code compilation failed.
 KeyboardArrows                            = Please use the arrow keys {0} and {1} on your keyboard to select your answer
 UnsupportedLanguageMode                   = The PowerShell session is running in a limited language mode.
-LoggedInUserNotAdmin                      = The logged-in user "{0}" doesn't have admin rights. Script was ran on behalf of "{1}". Please log into account which has admin rights and run script again.
+LoggedInUserNotAdmin                      = The logged-in user "{0}" doesn't have admin rights. Script was run on behalf of "{1}". Please log into account which has admin rights and run script again.
 UnsupportedHost                           = Script doesn't support running via {0}.
 HarmfulTweakerFound                       = Windows stability may have been compromised by using {0}.
 HostsEntriesFound                         = Third-party entries found in the %SystemRoot%\\System32\\drivers\\etc\\hosts file. They may block connection to resources used in the script. Do you want to continue?
 UWPComponentsMissing                      = The "{0}" UWP component is missing.
 DefenderComponentsMissing                 = The "{0}" component of Microsoft Defender is missing.
 WindowsComponentStabilityDisrupted        = An instability issue has been detected in the "{0}" component.
-DisableControlledFolderAccess             = You have Сontrolled folder access enabled. Please disable it and run script again.
+DisableControlledFolderAccess             = You have Controlled folder access enabled. Please disable it and run script again.
 RebootPending                             = Your PC is waiting to be restarted.
 SystemDriveEncryptedBitLockerDisabled     = C drive is encrypted, although BitLocker is turned off. Do you want to decrypt your drive?
 UpdateUEFICertificates                    = The "Microsoft Windows Production PCA 2011" Secure Boot certificate expires in 2026. Your device has not yet received the updated "Windows UEFI CA 2023" certificates. Do you want to install "Microsoft Windows UEFI CA 2023" certificates manually?
