@@ -845,7 +845,7 @@ RegistryBackup -Enable
 #region Gaming
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed
-	Only if you have a dedicated GPU and WDDM verion is 2.7 or higher
+	Only if you have a dedicated GPU and WDDM version is 2.7 or higher
 
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
 	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
@@ -859,7 +859,7 @@ GPUScheduling -Enable
 
 #region Scheduled tasks
 <#
-	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
+	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
 	A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
@@ -872,7 +872,7 @@ CleanupTask -Register
 # CleanupTask -Delete
 
 <#
-	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 	The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
@@ -885,7 +885,7 @@ SoftwareDistributionTask -Register
 # SoftwareDistributionTask -Delete
 
 <#
-	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
+	Create "Temp" scheduled task for cleaning up the %TEMP% folder
 	Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%

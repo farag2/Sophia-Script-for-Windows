@@ -1792,20 +1792,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Отобразить пункт \"Открыть в Терминале Windows\" в контекстном меню папок (значение по умолчанию)."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Open in Windows Terminal\" item in the folders context menu."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {

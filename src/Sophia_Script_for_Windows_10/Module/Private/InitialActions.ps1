@@ -33,7 +33,7 @@ function InitialActions
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File
 
-	[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+	[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 
 	# Progress bar can significantly impact cmdlet performance
 	# https://github.com/PowerShell/PowerShell/issues/2138
@@ -61,6 +61,7 @@ function InitialActions
 		"$PSScriptRoot\..\..\Module\Private\Set-Policy.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Set-UserShellFolder.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Show-Menu.ps1",
+		"$PSScriptRoot\..\..\Module\Private\WinAPI.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Write-AdditionalKeys.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Write-ExtensionKeys.ps1",
 
@@ -127,6 +128,7 @@ function InitialActions
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -151,6 +153,7 @@ function InitialActions
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -230,6 +233,7 @@ public static string GetIndirectString(string indirectString)
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -269,6 +273,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -287,6 +292,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -316,6 +322,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -335,6 +342,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -352,6 +360,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -395,6 +404,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -423,6 +433,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -460,6 +471,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 						Write-Verbose -Message $Localization.AskQuestion -Verbose
 						Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+						Write-Verbose -Message "https://t.me/sophianews" -Verbose
 						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 						$Global:Failed = $true
@@ -488,6 +500,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -515,6 +528,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -540,6 +554,8 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbosed
+		Write-Information -MessageData "" -InformationAction Continue
 
 		# Try to display available AVs
 		try
@@ -548,11 +564,10 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		}
 		catch {}
 
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -586,12 +601,13 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Warning -Message $Localization.DisableControlledFolderAccess
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Start-Process -FilePath "windowsdefender://RansomwareProtection"
-
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		Start-Process -FilePath "windowsdefender://RansomwareProtection"
 
 		$Global:Failed = $true
 
@@ -623,6 +639,7 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -652,13 +669,16 @@ public static extern bool SetForegroundWindow(IntPtr hWnd);
 					catch
 					{
 						Write-Information -MessageData "" -InformationAction Continue
-						Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "BitLocker"), $Localization.ReinstallWindows -join " ")
+						Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
+						Write-Warning -Message $Error.Exception
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+						Write-Information -MessageData "" -InformationAction Continue
 
 						Write-Verbose -Message $Localization.AskQuestion -Verbose
 						Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+						Write-Verbose -Message "https://t.me/sophianews" -Verbose
 						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 						$Global:Failed = $true
@@ -702,6 +722,7 @@ public extern static string BrandingFormatString(string sFormat);
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			$Global:Failed = $true
@@ -722,10 +743,12 @@ public extern static string BrandingFormatString(string sFormat);
 		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $Windows_Long, $DisplayVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#system-requirements" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		# Receive updates for other Microsoft products when you update Windows
@@ -759,6 +782,7 @@ public extern static string BrandingFormatString(string sFormat);
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
 			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 			# Receive updates for other Microsoft products when you update Windows
@@ -816,6 +840,7 @@ public extern static string BrandingFormatString(string sFormat);
 				Write-Verbose -Message $Localization.AskQuestion -Verbose
 				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://t.me/sophianews" -Verbose
 				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 				# Receive updates for other Microsoft products when you update Windows
@@ -936,6 +961,7 @@ public extern static string BrandingFormatString(string sFormat);
 					Write-Verbose -Message $Localization.AskQuestion -Verbose
 					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+					Write-Verbose -Message "https://t.me/sophianews" -Verbose
 					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 					$Global:Failed = $true

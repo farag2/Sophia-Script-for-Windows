@@ -890,17 +890,6 @@ SaveRestartableApps -Enable
 #>
 # Import-Associations
 
-<#
-	Uninstall the "PC Health Check" app and prevent it from installing in the future
-	This application is installed with the KB5005463 update to сheck whether PC meets the system requirements of Windows 11
-
-	Удалить приложение "Проверка работоспособности ПК Windows" и заблокировать его установку в будущем
-	Данное приложение устанавливается обновлением KB5005463 для проверки соответствия компьютера системным требованиям Windows 11
-
-	https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56
-#>
-Uninstall-PCHealthCheck
-
 # Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). Internet connection required
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
 Install-VCRedist
@@ -991,7 +980,7 @@ XboxGameTips -Disable
 
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed
-	Only if you have a dedicated GPU and WDDM verion is 2.7 or higher
+	Only if you have a dedicated GPU and WDDM version is 2.7 or higher
 
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
 	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
@@ -1005,7 +994,7 @@ GPUScheduling -Enable
 
 #region Scheduled tasks
 <#
-	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
+	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
 	A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
@@ -1018,7 +1007,7 @@ CleanupTask -Register
 # CleanupTask -Delete
 
 <#
-	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 	The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
@@ -1031,7 +1020,7 @@ SoftwareDistributionTask -Register
 # SoftwareDistributionTask -Delete
 
 <#
-	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
+	Create "Temp" scheduled task for cleaning up the %TEMP% folder
 	Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%

@@ -1366,16 +1366,6 @@
   },
   {
     "Region": "System",
-    "Function": "Uninstall-PCHealthCheck",
-    "Arg": {
-      "Zero": {
-        "Tag": "",
-        "ToolTip": "Удалить приложение \"Проверка работоспособности ПК Windows\" и заблокировать его установку в будущем. Обновление KB5005463 устанавливает приложение \"Проверка работоспособности ПК Windows\" для проверки соответствия компьютера системным требованиям Windows 11."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Install-VCRedist",
     "ToolTip": "Установить последнюю версию Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)",
     "Arg": {

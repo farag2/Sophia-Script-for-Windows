@@ -14,7 +14,9 @@
 Diff from vOldVersion
 [OldVersion...NewVersion](https://github.com/farag2/Sophia-Script-for-Windows/compare/OldVersion...NewVersion)
 
-***
+[![VirusTotal](https://img.shields.io/badge/VirusTotal-0%2F72-brightgreen?style=flat-square&logo=virustotal)](https://www.virustotal.com/gui/file/8a5eb3a2ecf231285d2b577daf82750995c83524b17aac022d4395215fe6b983)
+
+*** ###
 
 ### Download
 

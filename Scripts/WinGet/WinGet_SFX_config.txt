@@ -1,6 +1,6 @@
 ; Config for creating a WinRAR SFX archive of Sophia Script for Windows 11 for WinGet
 ; https://github.com/farag2/Sophia-Script-for-Windows
-; https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/WinGet_SFX.ps1
+; https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/Building/WinGet_SFX.ps1
 
 ; Unpack to a temp folder and delete it after the Setup command completes
 TempMode

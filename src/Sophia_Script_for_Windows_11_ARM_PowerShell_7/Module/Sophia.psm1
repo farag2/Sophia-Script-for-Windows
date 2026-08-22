@@ -4042,20 +4042,20 @@ function OneDrive
 					# Downloading the latest OneDrive installer 64-bit
 					# https://go.microsoft.com/fwlink/p/?LinkID=844652
 					$Parameters = @{
-						Uri             = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
-						UseBasicParsing = $true
-						TimeoutSec      = 10
-						Verbose         = $true
+						Uri                      = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
+						UseBasicParsing          = $true
+						ConnectionTimeoutSeconds = 10
+						Verbose                  = $true
 					}
 					$OneDriveURL = (Invoke-RestMethod @Parameters).root.update.amd64binary.url | Select-Object -Index 1
 
 					$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 					$Parameters = @{
-						Uri             = $OneDriveURL
-						OutFile         = "$DownloadsFolder\OneDriveSetup.exe"
-						UseBasicParsing = $true
-						TimeoutSec      = 10
-						Verbose         = $true
+						Uri                      = $OneDriveURL
+						OutFile                  = "$DownloadsFolder\OneDriveSetup.exe"
+						UseBasicParsing          = $true
+						ConnectionTimeoutSeconds = 10
+						Verbose                  = $true
 					}
 					Invoke-WebRequest @Parameters
 
@@ -7313,6 +7313,7 @@ function Install-VCRedist
 		return
 	}
 
+	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 	# Check whether vc_redist builds installed
 	if (Test-Path -Path "$env:ProgramData\Package Cache\*\vc_redist.arm64.exe")
 	{
@@ -7323,8 +7324,6 @@ function Install-VCRedist
 	{
 		$CurrentVCredistVersion = "0.0"
 	}
-
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
 	# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
 	if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCredistVersion) -or ($CurrentVCredistVersion -eq "0.0"))
@@ -7791,15 +7790,21 @@ function Install-WSL
 		# https://github.com/microsoft/WSL/blob/main/distributions/DistributionInfo.json
 		# wsl --list --online relies on Internet connection too, so it's much convenient to parse DistributionInfo.json, rather than parse a cmd output
 		$Parameters = @{
-			Uri                      = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
-			UseBasicParsing          = $true
-			ConnectionTimeoutSeconds = 10
-			Verbose                  = $true
+			Uri             = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
+			UseBasicParsing = $true
+			TimeoutSec      = 10
+			Verbose         = $true
 		}
-		$Distributions = (Invoke-RestMethod @Parameters).Distributions | ForEach-Object -Process {
-			[PSCustomObject]@{
-				"Distribution" = $_.FriendlyName
-				"Alias"        = $_.Name
+		$Distributions = Invoke-RestMethod @Parameters
+
+		$Distributions = foreach ($Family in $Distributions.ModernDistributions.PSObject.Properties)
+		{
+			foreach ($Distribution in $Family.Value)
+			{
+				[PSCustomObject]@{
+					Distribution = $Distribution.FriendlyName
+					Alias        = $Distribution.Name
+				}
 			}
 		}
 	}
@@ -7902,13 +7907,16 @@ function Install-WSL
 	foreach ($Distribution in $Distributions)
 	{
 		$Panel = New-Object -TypeName System.Windows.Controls.StackPanel
-		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
-		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
 		$Panel.Orientation = "Horizontal"
+
+		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
 		$RadioButton.GroupName = "WslDistribution"
 		$RadioButton.Tag = $Distribution.Alias
 		$RadioButton.Add_Checked({RadioButtonChecked})
+
+		$TextBlock = New-Object -TypeName System.Windows.Controls.TextBlock
 		$TextBlock.Text = $Distribution.Distribution
+
 		$Panel.Children.Add($RadioButton) | Out-Null
 		$Panel.Children.Add($TextBlock) | Out-Null
 		$PanelContainer.Children.Add($Panel) | Out-Null
@@ -8593,7 +8601,7 @@ function XboxGameTips
 	GPUScheduling -Disable
 
 	.NOTES
-	Only with a dedicated GPU and WDDM verion is 2.7 or higher. Restart needed
+	Only with a dedicated GPU and WDDM version is 2.7 or higher. Restart needed
 
 	.NOTES
 	Current user
@@ -8621,16 +8629,27 @@ function GPUScheduling
 	{
 		"Enable"
 		{
-			# Determining whether PC has an external graphics card
+			# Checking whether PC has an external graphics card
 			$AdapterDACType = Get-CimInstance -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)}
-			# Determining whether an OS is not installed on a virtual machine
+			# Checking whether Windows is not installed on a virtual machine
 			$ComputerSystemModel = (Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual"
-			# Check whether a WDDM verion is 2.7 or higher
 			$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
-
+			# Checking whether WDDM version is 2.7 or higher
 			if ($AdapterDACType -and ($ComputerSystemModel -notmatch "Virtual") -and ($WddmVersion_Min -ge 2700))
 			{
 				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers -Name HwSchMode -PropertyType DWord -Value 2 -Force
+			}
+			else
+			{
+				if ($WddmVersion_Min -lt 2700)
+				{
+					Write-Information -MessageData "" -InformationAction Continue
+					$WddmVersion_Min = ($WddmVersion_Min / 1000).ToString("0.0", [System.Globalization.CultureInfo]::InvariantCulture)
+					Write-Verbose -Message (($Localization.WDDMVersionUnsupported -f $WddmVersion_Min), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message (($Localization.WDDMVersionUnsupported -f $WddmVersion_Min), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+					return
+				}
 			}
 		}
 		"Disable"
@@ -8647,7 +8666,7 @@ function GPUScheduling
 	The "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 
 	.PARAMETER Register
-	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
+	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 
 	.PARAMETER Delete
 	Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
@@ -8686,6 +8705,8 @@ function CleanupTask
 		$Delete
 	)
 
+	Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\CleanupTask.vbs" -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Register"
@@ -8697,38 +8718,9 @@ function CleanupTask
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SystemSettings\AccountNotifications -Name EnableAccountNotifications -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
+
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
-
-			# Remove registry keys if Windows Script Host is disabled
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
-
-			# Check whether VBS engine is enabled
-			try
-			{
-				if ((Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop).State -ne "Installed")
-				{
-					Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop | Add-WindowsCapability -Online -ErrorAction Stop
-				}
-			}
-			catch
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "VBScript"), $Localization.ReinstallWindows -join " ")
-				Write-Information -MessageData "" -InformationAction Continue
-
-				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-				$Global:Failed = $true
-
-				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-				# https://github.com/PowerShell/PowerShell/issues/21070
-				Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
-
-				exit
-			}
 
 			# Check whether we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
@@ -8752,24 +8744,6 @@ function CleanupTask
 
 					return
 				}
-			}
-
-			# Remove all old tasks
-			# We have to use -ErrorAction Ignore in both cases, unless we get an error
-			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
-				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
-			}
-
-			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
-			$ScheduleService = New-Object -ComObject Schedule.Service
-			$ScheduleService.Connect()
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
-			}
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
 			}
 
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
@@ -8852,38 +8826,19 @@ Start-Sleep -Seconds 3
 `$Process.Start() | Out-Null
 "@
 
-			# Save script to be able to call them from VBS file
+			# Save script in UTF8 with BOM
 			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1" -Value $CleanupTaskPS -Encoding utf8BOM -Force
-
-			# Create vbs script that will help us calling Windows_Cleanup.ps1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$CleanupTaskVBS = @"
-' https://github.com/farag2/Sophia-Script-for-Windows
-' https://t.me/sophia_chat
-
-CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup.ps1", 0
-"@
-			# Save in UTF8 without BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.vbs" -Value $CleanupTaskVBS -Encoding utf8NoBOM -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1" -Value $CleanupTaskPS -Encoding UTF8 -Force
 
 			# Create "Windows Cleanup" task
-			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
-			# https://github.com/PowerShell/PowerShell/issues/21377
-			$Action     = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.vbs"
+			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
+			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
-			$Principal = if ($env:USERDOMAIN)
-			{
-				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			}
-			else
-			{
-				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
-			}
+			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
 			$Parameters = @{
 				TaskName    = "Windows Cleanup"
 				TaskPath    = "Sophia"
@@ -8899,13 +8854,11 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			$Task.Author = "Team Sophia"
 			$Task | Set-ScheduledTask
 
-			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
-			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			$ToastNotificationPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-# Get Quite Hours status
+# Get Quiet Hours status
 `$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
@@ -8995,34 +8948,17 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 "@
 
 			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotificationPS -Encoding utf8BOM -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotificationPS -Encoding UTF8 -Force
+
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding utf8BOM).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding utf8BOM -Force
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8 -Force
 
-			# Create vbs script that will help us calling Windows_Cleanup_Notification.ps1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$ToastNotificationVBS = @"
-' https://github.com/farag2/Sophia-Script-for-Windows
-' https://t.me/sophia_chat
-
-CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1", 0
-"@
-			# Save in UTF8 without BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs" -Value $ToastNotificationVBS -Encoding utf8NoBOM -Force
-
-			# Create the "Windows Cleanup Notification" task
-			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
-			# https://github.com/PowerShell/PowerShell/issues/21377
-			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs"
+			# Create "Windows Cleanup Notification" task
+			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
+			$Action    = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1"
 			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
-			$Principal = if ($env:USERDOMAIN)
-			{
-				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			}
-			else
-			{
-				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
-			}
+			$SID       = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$Principal = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
 			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
 			$Parameters = @{
 				TaskName    = "Windows Cleanup Notification"
@@ -9047,34 +8983,6 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 		}
 		"Delete"
 		{
-			# Remove files first unless we cannot remove folder if there's no more tasks there
-			$Paths = @(
-				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs",
-				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1",
-				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1",
-				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.vbs"
-			)
-			Remove-Item -Path $Paths -Force -ErrorAction Ignore
-
-			# Remove all old tasks
-			# We have to use -ErrorAction Ignore in both cases, unless we get an error
-			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
-				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
-			}
-
-			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
-			$ScheduleService = New-Object -ComObject Schedule.Service
-			$ScheduleService.Connect()
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
-			}
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
-			}
-
-			# Removing current task
 			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup", "Windows Cleanup Notification" -Confirm:$false -ErrorAction Ignore
 
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
@@ -9082,10 +8990,20 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			}
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
 
+			# Remove files first unless we cannot remove folder if there's no more tasks there
+			$Paths = @(
+				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1",
+				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1"
+			)
+			Remove-Item -Path $Paths -Force -ErrorAction Ignore
+
 			# Remove folder in Task Scheduler if there is no tasks left there
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
 			{
-				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | Select-Object -Property Name).Name.Count -eq 0)
+				$ScheduleService = New-Object -ComObject Schedule.Service
+				$ScheduleService.Connect()
+
+				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | ForEach-Object -Process {$_.Name}).Count -eq 0)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
@@ -9099,7 +9017,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 	The "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Register
-	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Delete
 	Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
@@ -9138,6 +9056,8 @@ function SoftwareDistributionTask
 		$Delete
 	)
 
+	Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs" -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Register"
@@ -9149,38 +9069,9 @@ function SoftwareDistributionTask
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SystemSettings\AccountNotifications -Name EnableAccountNotifications -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
+
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
-
-			# Remove registry keys if Windows Script Host is disabled
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
-
-			# Check whether VBS engine is enabled
-			try
-			{
-				if ((Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop).State -ne "Installed")
-				{
-					Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop | Add-WindowsCapability -Online -ErrorAction Stop
-				}
-			}
-			catch
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "VBScript"), $Localization.ReinstallWindows -join " ")
-				Write-Information -MessageData "" -InformationAction Continue
-
-				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-				$Global:Failed = $true
-
-				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-				# https://github.com/PowerShell/PowerShell/issues/21070
-				Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
-
-				exit
-			}
 
 			# Check whether we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
@@ -9206,24 +9097,6 @@ function SoftwareDistributionTask
 				}
 			}
 
-			# Remove all old tasks
-			# We have to use -ErrorAction Ignore in both cases, unless we get an error
-			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
-				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
-			}
-
-			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
-			$ScheduleService = New-Object -ComObject Schedule.Service
-			$ScheduleService.Connect()
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
-			}
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
-			}
-
 			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
@@ -9233,13 +9106,11 @@ function SoftwareDistributionTask
 			# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
-			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			$SoftwareDistributionTaskPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-# Get Quite Hours status
+# Get Quiet Hours status
 `$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
@@ -9302,7 +9173,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 (Get-Service -Name wuauserv).WaitForStatus("Stopped", "01:00:00")
 Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
 # Remove files which can be removed in a user scope only
-Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse | Remove-Item -Recurse
+Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Remove-Item -Recurse
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -9324,41 +9195,24 @@ Get-ChildItem -Path $env:SystemRoot\SoftwareDistribution\Download -Recurse | Rem
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show(`$ToastMessage)
 "@
-			# Save script to be able to call them from VBS file
+
+			# Save script in UTF8 with BOM
 			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS -Encoding utf8BOM -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS -Encoding UTF8 -Force
+
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding utf8BOM).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding utf8BOM -Force
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8 -Force
 
-			# Create vbs script that will help us calling PS1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$SoftwareDistributionTaskVBS = @"
-' https://github.com/farag2/Sophia-Script-for-Windows
-' https://t.me/sophia_chat
-
-CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\SoftwareDistributionTask.ps1", 0
-"@
-			# Save in UTF8 without BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs" -Value $SoftwareDistributionTaskVBS -Encoding utf8NoBOM -Force
-
-			# Create the "SoftwareDistribution" task
-			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
-			# https://github.com/PowerShell/PowerShell/issues/21377
-			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs"
-			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
-			$Principal = if ($env:USERDOMAIN)
-			{
-				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			}
-			else
-			{
-				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
-			}
-			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
+			# Create "SoftwareDistribution" task
+			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
+			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1"
+			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
+			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
 			$Parameters = @{
 				TaskName    = "SoftwareDistribution"
 				TaskPath    = "Sophia"
@@ -9383,25 +9237,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 		"Delete"
 		{
 			# Remove files first unless we cannot remove folder if there's no more tasks there
-			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.vbs", "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Force -ErrorAction Ignore
-
-			# Remove all old tasks
-			# We have to use -ErrorAction Ignore in both cases, unless we get an error
-			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
-				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
-			}
-
-			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
-			$ScheduleService = New-Object -ComObject Schedule.Service
-			$ScheduleService.Connect()
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
-			}
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
-			}
+			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Force -ErrorAction Ignore
 
 			# Removing current task
 			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
@@ -9409,7 +9245,10 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			# Remove folder in Task Scheduler if there is no tasks left there
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
 			{
-				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | Select-Object -Property Name).Name.Count -eq 0)
+				$ScheduleService = New-Object -ComObject Schedule.Service
+				$ScheduleService.Connect()
+
+				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | ForEach-Object -Process {$_.Name}).Count -eq 0)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
@@ -9423,7 +9262,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 	The "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.PARAMETER Register
-	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
+	Create "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.PARAMETER Delete
 	Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
@@ -9462,6 +9301,8 @@ function TempTask
 		$Delete
 	)
 
+	Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs" -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Register"
@@ -9473,38 +9314,9 @@ function TempTask
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SystemSettings\AccountNotifications -Name EnableAccountNotifications -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
+
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
-
-			# Remove registry keys if Windows Script Host is disabled
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows Script Host\Settings", "HKLM:\SOFTWARE\Microsoft\Windows Script Host\Settings" -Name Enabled -Force -ErrorAction Ignore
-
-			# Check whether VBS engine is enabled
-			try
-			{
-				if ((Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop).State -ne "Installed")
-				{
-					Get-WindowsCapability -Online -Name VBSCRIPT* -ErrorAction Stop | Add-WindowsCapability -Online -ErrorAction Stop
-				}
-			}
-			catch
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "VBScript"), $Localization.ReinstallWindows -join " ")
-				Write-Information -MessageData "" -InformationAction Continue
-
-				Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-				$Global:Failed = $true
-
-				# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-				# https://github.com/PowerShell/PowerShell/issues/21070
-				Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
-
-				exit
-			}
 
 			# Check whether we're trying to create the task when it was already created as another user
 			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
@@ -9530,24 +9342,6 @@ function TempTask
 				}
 			}
 
-			# Remove all old tasks
-			# We have to use -ErrorAction Ignore in both cases, unless we get an error
-			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
-				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
-			}
-
-			# Remove folders in Task Scheduler. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
-			$ScheduleService = New-Object -ComObject Schedule.Service
-			$ScheduleService.Connect()
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
-			}
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
-			}
-
 			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
@@ -9557,13 +9351,11 @@ function TempTask
 			# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-			# We have to call PowerShell script via another VBS script silently because VBS has appropriate feature to suppress console appearing (none of other workarounds work)
-			# powershell.exe process wakes up system anyway even from turned on Focus Assist mode (not a notification toast)
 			$TempTaskPS = @"
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-# Get Quite Hours status
+# Get Quiet Hours status
 `$CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
 `$CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new(`$env:TEMP, `$false)
 `$CompilerParameters.GenerateInMemory = `$true
@@ -9641,7 +9433,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 
 if ((Get-ChildItem -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Name -eq "ReAgentOld.xml"}).FullName)
 {
-	`$Paths += "$env:SystemDrive\Recovery"
+	`$Paths += "`$env:SystemDrive\Recovery"
 }
 Remove-Item -Path `$Paths -Recurse -Force
 
@@ -9669,41 +9461,24 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 `$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New(`$ToastXML)
 [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show(`$ToastMessage)
 "@
-			# Save script to be able to call them from VBS file
+
+			# Save script in UTF8 with BOM
 			if (-not (Test-Path -Path $env:SystemRoot\System32\Tasks\Sophia))
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS -Encoding utf8BOM -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS -Encoding UTF8 -Force
+
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding utf8BOM).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding utf8BOM -Force
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8 -Force
 
-			# Create vbs script that will help us calling PS1 script silently, without interrupting system from Focus Assist mode turned on, when a powershell.exe console pops up
-			$TempTaskVBS = @"
-' https://github.com/farag2/Sophia-Script-for-Windows
-' https://t.me/sophia_chat
-
-CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoProfile -NoLogo -WindowStyle Hidden -File %SystemRoot%\System32\Tasks\Sophia\TempTask.ps1", 0
-"@
-			# Save in UTF8 without BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs" -Value $TempTaskVBS -Encoding utf8NoBOM -Force
-
-			# Create the "Temp" task
-			# We cannot create a schedule task if %COMPUTERNAME% is equal to %USERNAME%, so we have to use a "$env:COMPUTERNAME\$env:USERNAME" method
-			# https://github.com/PowerShell/PowerShell/issues/21377
-			$Action    = New-ScheduledTaskAction -Execute wscript.exe -Argument "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs"
-			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			# If PC is domain joined, we cannot obtain its SID, because account is cloud managed
-			$Principal = if ($env:USERDOMAIN)
-			{
-				New-ScheduledTaskPrincipal -UserId $env:USERNAME -RunLevel Highest
-			}
-			else
-			{
-				New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -RunLevel Highest
-			}
-			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
+			# Create "Temp" task
+			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
+			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1"
+			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
+			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
 			$Parameters = @{
 				TaskName    = "Temp"
 				TaskPath    = "Sophia"
@@ -9728,25 +9503,7 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 		"Delete"
 		{
 			# Remove files first unless we cannot remove folder if there's no more tasks there
-			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.vbs", "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Force -ErrorAction Ignore
-
-			# Remove all old tasks
-			# We have to use -ErrorAction Ignore in both cases, unless we get an error
-			Get-ScheduledTask -TaskPath "\Sophia Script\", "\SophiApp\" -ErrorAction Ignore | ForEach-Object -Process {
-				Unregister-ScheduledTask -TaskName $_.TaskName -Confirm:$false -ErrorAction Ignore
-			}
-
-			# Remove folder in Task Scheduler if there is no tasks left there. We cannot remove all old folders explicitly and not get errors if any of folders do not exist
-			$ScheduleService = New-Object -ComObject Schedule.Service
-			$ScheduleService.Connect()
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia Script")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("Sophia Script", $null)
-			}
-			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\SophiApp")
-			{
-				$ScheduleService.GetFolder("\").DeleteFolder("SophiApp", $null)
-			}
+			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Force -ErrorAction Ignore
 
 			# Removing current task
 			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
@@ -9754,7 +9511,10 @@ CreateObject("Wscript.Shell").Run "powershell.exe -ExecutionPolicy Bypass -NoPro
 			# Remove folder in Task Scheduler if there is no tasks left there
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
 			{
-				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | Select-Object -Property Name).Name.Count -eq 0)
+				$ScheduleService = New-Object -ComObject Schedule.Service
+				$ScheduleService.Connect()
+
+				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | ForEach-Object -Process {$_.Name}).Count -eq 0)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
@@ -11147,72 +10907,6 @@ function UseStoreOpenWith
 		{
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Force -ErrorAction Ignore
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoUseStoreOpenWith -Type CLEAR
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Open in Windows Terminal" item in the folders context menu
-
-	.PARAMETER Hide
-	Hide the "Open in Windows Terminal" item in the folders context menu
-
-	.PARAMETER Show
-	Show the "Open in Windows Terminal" item in the folders context menu
-
-	.EXAMPLE
-	OpenWindowsTerminalContext -Show
-
-	.EXAMPLE
-	OpenWindowsTerminalContext -Hide
-
-	.NOTES
-	Current user
-#>
-function OpenWindowsTerminalContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide
-	)
-
-	if (-not (Get-AppxPackage -Name Microsoft.WindowsTerminal))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.PackageNotInstalled -f "Windows Terminal"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.PackageNotInstalled -f "Windows Terminal"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Show"
-		{
-			Remove-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -Force -ErrorAction Ignore
-		}
-		"Hide"
-		{
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Shell Extensions\Blocked" -Name "{9F156763-7844-4DC4-B2B1-901F640F5155}" -PropertyType String -Value "" -Force
 		}
 	}
 }

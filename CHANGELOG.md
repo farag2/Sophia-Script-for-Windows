@@ -5,13 +5,6 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## Unreleased
-
-* Fixed localization strings that were copied into the wrong language files
-* Fixed English typos in `en-US`
-* Added a CI check in `Scripts/Lint.ps1` for wrong-language localization fragments
-* Updated Chocolatey install examples in the READMEs to 7.2.0
-
 ## 6.2.0 | 7.2.0 — 31.07.2026
 
 * Code refactoring

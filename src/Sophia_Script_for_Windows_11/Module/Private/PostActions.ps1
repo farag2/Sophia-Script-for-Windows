@@ -189,6 +189,7 @@ public static void PostMessage()
 	#endregion Toast notifications
 
 	Write-Verbose -Message $Localization.AskQuestion -Verbose
+	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://t.me/sophianews" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose

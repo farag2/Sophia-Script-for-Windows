@@ -1811,20 +1811,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Zeigen Sie den Eintrag \"In Windows Terminal öffnen\" im Kontextmenü des Ordners an (Standardwert)."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Das Element \"In Windows Terminal öffnen\" im Kontextmenü der Ordner ausblenden."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {

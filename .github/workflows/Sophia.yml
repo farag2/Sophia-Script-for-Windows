@@ -19,55 +19,55 @@ jobs:
 
       - name: Download Dependencies
         run: |
-          . "Scripts\Dependencies.ps1"
+          . "Scripts\Building\Dependencies.ps1"
 
       - name: Windows 10
         run: |
-          . "Scripts\Windows_10.ps1"
+          . "Scripts\Building\Windows_10.ps1"
 
       - name: Windows 10 PowerShell 7
         run: |
-          . "Scripts\Windows_10_PS_7.ps1"
+          . "Scripts\Building\Windows_10_PS_7.ps1"
 
       - name: Windows 10 LTSC 2019
         run: |
-          . "Scripts\Windows_10_LTSC_2019.ps1"
+          . "Scripts\Building\Windows_10_LTSC_2019.ps1"
 
       - name: Windows 10 LTSC 2021
         run: |
-          . "Scripts\Windows_10_LTSC_2021.ps1"
+          . "Scripts\Building\Windows_10_LTSC_2021.ps1"
 
       - name: Windows 11
         run: |
-          . "Scripts\Windows_11.ps1"
+          . "Scripts\Building\Windows_11.ps1"
 
       - name: Windows 11 PowerShell 7
         run: |
-          . "Scripts\Windows_11_PS_7.ps1"
+          . "Scripts\Building\Windows_11_PS_7.ps1"
 
       - name: Sophia Script for Windows 11 Arm
         run: |
-          . "Scripts\Windows_11_Arm.ps1"
+          . "Scripts\Building\Windows_11_Arm.ps1"
 
       - name: Windows 11 Arm PowerShell 7
         run: |
-          . "Scripts\Windows_11_Arm_PS_7.ps1"
+          . "Scripts\Building\Windows_11_Arm_PS_7.ps1"
 
       - name: Windows 11 LTSC 2024
         run: |
-          . "Scripts\Windows_11_LTSC_2024.ps1"
+          . "Scripts\Building\Windows_11_LTSC_2024.ps1"
 
       - name: Windows 11 LTSC 2024 PowerShell 7
         run: |
-          . "Scripts\Windows_11_LTSC_2024_PS7.ps1"
+          . "Scripts\Building\Windows_11_LTSC_2024_PS7.ps1"
 
       - name: Sophia Script Wrapper
         run: |
-          . "Scripts\Wrapper.ps1"
+          . "Scripts\Building\Wrapper.ps1"
 
       - name: Create SFX Archive
         run: |
-          . "Scripts\WinGet_SFX.ps1"
+          . "Scripts\Building\WinGet_SFX.ps1"
 
       - name: Defender Scan
         run: |

@@ -950,7 +950,7 @@ XboxGameTips -Disable
 
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed
-	Only if you have a dedicated GPU and WDDM verion is 2.7 or higher
+	Only if you have a dedicated GPU and WDDM version is 2.7 or higher
 
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
 	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
@@ -964,7 +964,7 @@ GPUScheduling -Enable
 
 #region Scheduled tasks
 <#
-	Create the "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
+	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
 	A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
@@ -977,7 +977,7 @@ CleanupTask -Register
 # CleanupTask -Delete
 
 <#
-	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 	The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
@@ -990,7 +990,7 @@ SoftwareDistributionTask -Register
 # SoftwareDistributionTask -Delete
 
 <#
-	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
+	Create "Temp" scheduled task for cleaning up the %TEMP% folder
 	Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work
 
 	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%
@@ -1169,14 +1169,6 @@ UseStoreOpenWith -Hide
 # Show the "Look for an app in the Microsoft Store" item in the "Open with" dialog (default value)
 # Отобразить пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
 # UseStoreOpenWith -Show
-
-# Show the "Open in Windows Terminal" item in the folders context menu (default value)
-# Отобразить пункт "Открыть в Терминале Windows" в контекстном меню папок (значение по умолчанию)
-OpenWindowsTerminalContext -Show
-
-# Hide the "Open in Windows Terminal" item in the folders context menu
-# Скрыть пункт "Открыть в Терминале Windows" в контекстном меню папок
-# OpenWindowsTerminalContext -Hide
 
 # Open Windows Terminal in context menu as administrator by default
 # Открывать Windows Terminal из контекстного меню от имени администратора по умолчанию

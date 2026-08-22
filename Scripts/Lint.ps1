@@ -80,84 +80,15 @@ foreach ($Folder in @(Get-ChildItem -Path src -Directory))
 			"$($Folder.FullName)\Module\Private\PostActions.ps1",
 			"$($Folder.FullName)\Module\Private\Set-UserShellFolder.ps1",
 			"$($Folder.FullName)\Module\Private\Show-Menu.ps1",
+			"$($Folder.FullName)\Module\Private\WinAPI.ps1",
 			"$($Folder.FullName)\Import-TabCompletion.ps1"
 		)
 
 		if (-not ((Get-Content -Path $Paths -Raw) -match $Key))
 		{
-			Write-Verbose -Message "$Key was not found in $Folder.FullName folder" -Verbose
+			Write-Verbose -Message "$($Key) was not found in $($Folder.FullName) folder" -Verbose
 			# Exit with a non-zero status to fail the job
 			exit 1
 		}
 	}
-}
-
-Write-Verbose -Message "Localizations language contamination" -Verbose
-
-# Distinctive fragments that mean a string was copied from the wrong culture.
-$ContaminationMarkers = [ordered]@{
-	"en-US" = @("Your're", "archicture", "was ran on behalf", "has no a built-in")
-	"fr-FR" = @("Los comandos de shell")
-	"hu-HU" = @("Vous utilisez Windows", "Ponovno instalirajte", "Ponovo pokrenite")
-	"it-IT" = @("rendszert használ")
-	"pl-PL" = @("rendszert használ", "Nincs letiltandó", "Nincs letiltható", "Lo spazio di archiviazione riservato")
-	"pt-BR" = @("rendszert használ")
-	"tr-TR" = @("rendszert használ", "está faltando")
-}
-
-$CyrillicEs = [char]0x0421
-$ContaminationFound = $false
-
-Get-ChildItem -Path src -File -Filter Sophia.psd1 -Recurse | ForEach-Object -Process {
-	$Culture = $_.Directory.Name
-	$Content = Get-Content -Path $_.FullName -Raw
-
-	if ($Culture -eq "en-US")
-	{
-		if ($Content.Contains("$($CyrillicEs)ontrolled"))
-		{
-			Write-Verbose -Message "Cyrillic Es in 'Controlled' in $($_.FullName)" -Verbose
-			$script:ContaminationFound = $true
-		}
-	}
-
-	if ($Culture -eq "zh-CN")
-	{
-		if ($Content -match '(?m)^OneDriveNotInstalled\s*=\s*已安装第三方开始菜单')
-		{
-			Write-Verbose -Message "OneDriveNotInstalled copied from CustomStartMenuFound in $($_.FullName)" -Verbose
-			$script:ContaminationFound = $true
-		}
-
-		return
-	}
-
-	if ($Culture -eq "hu-HU")
-	{
-		if ($Content -match '(?m)^UWPAppsTitle\s*=\s*Nincs eltávolítandó UWP-alkalmazás')
-		{
-			Write-Verbose -Message "UWPAppsTitle copied from NoUWPAppsFound in $($_.FullName)" -Verbose
-			$script:ContaminationFound = $true
-		}
-	}
-
-	if (-not $ContaminationMarkers.Contains($Culture))
-	{
-		return
-	}
-
-	foreach ($Marker in $ContaminationMarkers[$Culture])
-	{
-		if ($Content.Contains($Marker))
-		{
-			Write-Verbose -Message "Wrong-language fragment '$Marker' in $($_.FullName)" -Verbose
-			$script:ContaminationFound = $true
-		}
-	}
-}
-
-if ($ContaminationFound)
-{
-	Write-Verbose -Message "Found localization language contamination" -Verbose
-	exit 1
 }

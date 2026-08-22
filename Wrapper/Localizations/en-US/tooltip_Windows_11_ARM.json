@@ -1792,20 +1792,6 @@
   },
   {
     "Region": "Context menu",
-    "Function": "OpenWindowsTerminalContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show the \"Open in Windows Terminal\" item in the folders context menu."
-      },
-      "One": {
-        "Tag": "Hide",
-        "ToolTip": "Hide the \"Open in Windows Terminal\" item in the folders context menu (default value)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
     "Function": "OpenWindowsTerminalAdminContext",
     "Arg": {
       "Zero": {

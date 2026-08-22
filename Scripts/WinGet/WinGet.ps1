@@ -1,5 +1,5 @@
 # Get local uploaded manifest version of the package
-$String = Get-Content -Path "Scripts\WinGet_Manifests\TeamSophia.SophiaScript.yaml" | Where-Object -FilterScript {$_ -match "ManifestVersion"}
+$String = Get-Content -Path "Scripts\WinGet\WinGet_Manifests\TeamSophia.SophiaScript.yaml" | Where-Object -FilterScript {$_ -match "ManifestVersion"}
 $LocalManifest = $String -split " " | Select-Object -Last 1
 
 # Get latest supported manifest version provided
@@ -20,9 +20,9 @@ $LatestManifest = (Invoke-RestMethod @Parameters).name | Sort-Object -Property {
 
 if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
 {
-	Write-Warning -Message "A new manifest $($LatestManifest) available. Edit manifests in Scripts\WinGet_Manifests."
+	Write-Warning -Message "A new manifest $($LatestManifest) available. Edit manifests in Scripts\WinGet\WinGet_Manifests."
 
-    # Exit with a non-zero status to fail the job
+	# Exit with a non-zero status to fail the job
 	exit 1
 }
 
@@ -46,7 +46,7 @@ $Request = (Invoke-WebRequest @Parameters).RawContentStream
 $Hash = (Get-FileHash -InputStream $Request).Hash
 
 # Update the metadata for the files
-Get-ChildItem -Path Scripts\WinGet_Manifests | ForEach-Object -Process {
+Get-ChildItem -Path Scripts\WinGet\WinGet_Manifests | ForEach-Object -Process {
 	(Get-Content -Path $_.FullName -Encoding UTF8 -Raw) | Foreach-Object -Process {
 		$_ -replace "SophiaScriptVersion", $Version `
 		-replace "SophiaScriptHash", $Hash `

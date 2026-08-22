@@ -2089,22 +2089,6 @@
         "Region": "Context menu",
         "Control": "cmb",
         "Required": "false",
-        "Function": "OpenWindowsTerminalContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Show"
-            },
-            "One": {
-                "Tag": "Hide"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "Show"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
         "Function": "OpenWindowsTerminalAdminContext",
         "Arg": {
             "Zero": {

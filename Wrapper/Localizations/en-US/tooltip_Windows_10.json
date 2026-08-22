@@ -1366,16 +1366,6 @@
   },
   {
     "Region": "System",
-    "Function": "Uninstall-PCHealthCheck",
-    "Arg": {
-      "Zero": {
-        "Tag": "Block",
-        "ToolTip": "Uninstall the \"PC Health Check\" app and prevent it from installing in the future. The KB5005463 update installs the PC Health Check app to check if PC meets the system requirements of Windows 11."
-      }
-    }
-  },
-  {
-    "Region": "System",
     "Function": "Install-VCRedist",
     "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)",
     "Arg": {
