@@ -65,23 +65,16 @@ jobs:
         run: |
           . "Scripts\Building\Wrapper.ps1"
 
-      - name: Create SFX Archive
+      - name: SFX Archive
         run: |
           . "Scripts\Building\WinGet_SFX.ps1"
 
-      - name: Defender Scan
+      - name: VirusTotal check
+        timeout-minutes: 60
+        env:
+          VirusTotal_API_Key: ${{ secrets.VIRUSTOTAL_API_KEY }}
         run: |
-          # Get Defender path
-          $DefenderPath = (Get-ChildItem -Path "$env:ProgramData\Microsoft\Windows Defender\Platform" -Directory | Sort-Object Name -Descending | Select-Object -First 1).FullName
-
-          # Update Defender definitions
-          & "$DefenderPath\MpCmdRun.exe" -SignatureUpdate -Verbose
-
-          # Start scan
-          # We need to use absolute path
-          & "$DefenderPath\MpCmdRun.exe" -Scan -ScanType 3 -DisableRemediation -File $((Get-Item -Path Sophia_Script).FullName) | ForEach-Object {Write-Verbose -Message $_ -Verbose}
-
-          Get-Content -Path $env:TEMP\MpCmdRun.log
+          . "Scripts\VirusTotal.ps1"
 
       - name: Release Notes Template
         env:

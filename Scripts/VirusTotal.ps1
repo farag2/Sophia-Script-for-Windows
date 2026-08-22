@@ -1,24 +1,16 @@
 #Requires -Version 7.4
 
-New-Item -Path VirusTotal -ItemType Directory -Force
+# Get Defender path
+$DefenderPath = (Get-ChildItem -Path "$env:ProgramData\Microsoft\Windows Defender\Platform" -Directory | Sort-Object Name -Descending | Select-Object -First 1).FullName
 
-$Parameters = @{
-	Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-$Assets = (Invoke-RestMethod @Parameters).assets
+# Update Defender definitions
+& "$DefenderPath\MpCmdRun.exe" -SignatureUpdate -Verbose
 
-foreach ($Asset in $Assets)
-{
-	$Parameters = @{
-		Uri             = $Asset.browser_download_url
-		OutFile         = "VirusTotal\$($Asset.name)"
-		UseBasicParsing = $true
-		Verbose         = $true
-	}
-	Invoke-WebRequest @Parameters
-}
+# Start scan
+# We need to use absolute path
+& "$DefenderPath\MpCmdRun.exe" -Scan -ScanType 3 -DisableRemediation -File $((Get-Item -Path Sophia_Script).FullName) | ForEach-Object {Write-Verbose -Message $_ -Verbose}
+
+Get-Content -Path $env:TEMP\MpCmdRun.log
 
 $Reports = [System.Collections.Generic.List[PSCustomObject]]::new()
 
@@ -26,7 +18,7 @@ $Headers = @{
 	"x-apikey" = $env:VirusTotal_API_Key
 }
 
-foreach ($File in @(Get-ChildItem -Path VirusTotal -File))
+foreach ($File in @(Get-ChildItem -Path Sophia_Script -File))
 {
 	if ($File.Length -gt 32MB)
 	{
