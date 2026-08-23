@@ -6633,7 +6633,7 @@ function Export-Associations
 	$AllJSON = @()
 	$AppxProgIds = @((Get-ChildItem -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\ProgIDs").PSChildName)
 
-	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding UTF8 -Force
+	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding utf8 -Force
 	$XML.DefaultAssociations.Association | ForEach-Object -Process {
 		# Clear varibale not to begin double "\" char
 		$null = $ProgramPath, $Icon
@@ -6827,7 +6827,7 @@ function Import-Associations
 
 		try
 		{
-			$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding UTF8 -Force | ConvertFrom-JSON
+			$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding utf8 -Force | ConvertFrom-JSON
 		}
 		catch [System.Exception]
 		{
@@ -7707,7 +7707,7 @@ Start-Sleep -Seconds 3
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1" -Value $CleanupTaskPS -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1" -Value $CleanupTaskPS -Encoding utf8BOM -Force
 
 			# Create "Windows Cleanup" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
@@ -7824,10 +7824,10 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 "@
 
 			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotificationPS -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotificationPS -Encoding utf8BOM -Force
 
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8 -Force
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding utf8BOM).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding utf8BOM -Force
 
 			# Create "Windows Cleanup Notification" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
@@ -8077,10 +8077,10 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS -Encoding utf8BOM -Force
 
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8 -Force
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding utf8BOM).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding utf8BOM -Force
 
 			# Create "SoftwareDistribution" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
@@ -8343,10 +8343,10 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS -Encoding utf8BOM -Force
 
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8 -Force
+			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding utf8BOM).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding utf8BOM -Force
 
 			# Create "Temp" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
@@ -8681,8 +8681,8 @@ function EventViewerCustomView
 			{
 				New-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views" -ItemType Directory -Force
 			}
-			# Save ProcessCreation.xml in the UTF-8 without BOM encoding
-			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding Default -NoNewline -Force
+			# Save ProcessCreation.xml in UTF-8 with BOM encoding
+			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding utf8BOM -NoNewline -Force
 
 			$Global:EventViewerCustomView = $true
 		}
@@ -9558,7 +9558,7 @@ function ScanRegistryPolicies
 				{
 					# Parse every ADMX template searching if it contains full path and registry key simultaneously
 					# No -Force argument
-					[xml]$admxtemplate = Get-Content -Path $admx.FullName -Encoding UTF8
+					[xml]$admxtemplate = Get-Content -Path $admx.FullName -Encoding utf8
 					$SplitPath = $Path.Name.Replace("HKEY_LOCAL_MACHINE\", "").Replace("HKEY_CURRENT_USER\", "")
 
 					if ($admxtemplate.policyDefinitions.policies.policy | Where-Object -FilterScript {($_.key -eq $SplitPath) -and (($_.valueName -eq $Item) -or ($_.Name -eq $Item))})
