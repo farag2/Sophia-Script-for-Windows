@@ -140,17 +140,6 @@ public static void PostMessage()
 
 		$Global:EventViewerCustomView = $false
 	}
-
-	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
-	if (Test-Path -Path "$env:TEMP\LGPO.txt")
-	{
-		& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
-		& "$env:SystemRoot\System32\gpupdate.exe" /force
-	}
-
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 	#endregion Other actions
 
 	#region Toast notifications
@@ -172,6 +161,16 @@ public static void PostMessage()
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
 	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
+
+	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
+	if (Test-Path -Path "$env:TEMP\LGPO.txt")
+	{
+		& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
+	}
+
+	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# https://github.com/PowerShell/PowerShell/issues/21070
+	Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 	# Call toast notification
 	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\WinRT.Runtime.dll"

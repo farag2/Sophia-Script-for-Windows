@@ -1622,29 +1622,33 @@
     "Arg": {
       "Zero": {
         "Tag": "Cloudflare",
-        "ToolTip": "Set up DNS from Cloudflare using DNS-over-HTTPS."
+        "ToolTip": "Enable DNS-over-HTTPS using Cloudflare DNS."
       },
       "One": {
         "Tag": "Google",
-        "ToolTip": "Set up DNS from Google Public DNS using DNS-over-HTTPS."
+        "ToolTip": "Enable DNS-over-HTTPS using Google Public DNS."
       },
       "Two": {
         "Tag": "Quad9",
-        "ToolTip": "Set up DNS from Quad9 using DNS-over-HTTPS."
+        "ToolTip": "Enable DNS-over-HTTPS using Quad9 DNS."
       },
       "Three": {
         "Tag": "ComssOne",
-        "ToolTip": "Set up DNS from ComssOne using DNS-over-HTTPS."
+        "ToolTip": "Enable DNS-over-HTTPS using Comss.one DNS."
       },
       "Four": {
         "Tag": "AdGuard",
-        "ToolTip": "Set up DNS from AdGuard using DNS-over-HTTPS."
+        "ToolTip": "Enable DNS-over-HTTPS using AdGuard DNS."
       },
       "Five": {
         "Tag": "OpenDNS",
-        "ToolTip": "Set up DNS from OpenDNS using DNS-over-HTTPS."
+        "ToolTip": "Enable DNS-over-HTTPS using OpenDNS DNS."
       },
       "Six": {
+        "Tag": "Wikimedia",
+        "ToolTip": "Enable DNS-over-HTTPS using Wikimedia DNS."
+      },
+      "Seven": {
         "Tag": "Disable",
         "ToolTip": "Set default ISP's DNS records (default value)."
       }

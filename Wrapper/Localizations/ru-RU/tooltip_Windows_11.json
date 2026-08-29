@@ -1641,29 +1641,33 @@
     "Arg": {
       "Zero": {
         "Tag": "Cloudflare",
-        "ToolTip": "Установить DNS от Cloudflare, используя DNS-over-HTTPS."
+        "ToolTip": "Включить DNS-over-HTTPS, используя DNS от Cloudflare."
       },
       "One": {
         "Tag": "Google",
-        "ToolTip": "Установить DNS от Google Public DNS, используя DNS-over-HTTPS."
+        "ToolTip": "Включить DNS-over-HTTPS, используя DNS от Google Public DNS."
       },
       "Two": {
         "Tag": "Quad9",
-        "ToolTip": "Установить DNS от Quad9, используя DNS-over-HTTPS."
+        "ToolTip": "Включить DNS-over-HTTPS, используя DNS от Quad9."
       },
       "Three": {
         "Tag": "ComssOne",
-        "ToolTip": "Установить DNS от ComssOne, используя DNS-over-HTTPS."
+        "ToolTip": "Включить DNS-over-HTTPS, используя DNS от Comss.one."
       },
       "Four": {
         "Tag": "AdGuard",
-        "ToolTip": "Установить DNS от AdGuard, используя DNS-over-HTTPS."
+        "ToolTip": "Включить DNS-over-HTTPS, используя DNS от AdGuard."
       },
       "Five": {
         "Tag": "OpenDNS",
-        "ToolTip": "Установить DNS от OpenDNS, используя DNS-over-HTTPS."
+        "ToolTip": "Включить DNS-over-HTTPS, используя DNS от OpenDNS."
       },
       "Six": {
+        "Tag": "Wikimedia",
+        "ToolTip": "Включить DNS-over-HTTPS, используя DNS от Wikimedia."
+      },
+      "Seven": {
         "Tag": "Disable",
         "ToolTip": "Установить DNS-записи вашего провайдера (значение по умолчанию)."
       }

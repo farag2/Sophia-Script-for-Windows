@@ -285,7 +285,7 @@ function ErrorReporting
 
 		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
-		Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+		Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 		exit
 	}
@@ -10066,6 +10066,9 @@ function WindowsSandbox
 	.PARAMETER OpenDNS
 	Enable DNS-over-HTTPS using OpenDNS DNS
 
+	.PARAMETER Wikimedia
+	Enable DNS-over-HTTPS using Wikimedia DNS
+
 	.PARAMETER Disable
 	Set default ISP's DNS records
 
@@ -10086,6 +10089,9 @@ function WindowsSandbox
 
 	.EXAMPLE
 	DNSoverHTTPS -OpenDNS
+
+	.EXAMPLE
+	DNSoverHTTPS -Wikimedia
 
 	.EXAMPLE
 	DNSoverHTTPS -Disable
@@ -10145,6 +10151,13 @@ function DNSoverHTTPS
 
 		[Parameter(
 			Mandatory = $true,
+			ParameterSetName = "Wikimedia"
+		)]
+		[switch]
+		$Wikimedia,
+
+		[Parameter(
+			Mandatory = $true,
 			ParameterSetName = "Disable"
 		)]
 		[switch]
@@ -10191,18 +10204,21 @@ function DNSoverHTTPS
 		{
 			$PrimaryDNS   = "1.1.1.1"
 			$SecondaryDNS = "1.0.0.1"
+			$Query        = "https://cloudflare-dns.com/dns-query"
 		}
 		# https://developers.google.com/speed/public-dns/docs/using
 		"Google"
 		{
 			$PrimaryDNS   = "8.8.8.8"
 			$SecondaryDNS = "8.8.4.4"
+			$Query        = "https://dns.google/dns-query"
 		}
 		# https://quad9.net/service/service-addresses-and-features/
 		"Quad9"
 		{
 			$PrimaryDNS   = "9.9.9.9"
 			$SecondaryDNS = "149.112.112.112"
+			$Query        = "https://dns.quad9.net/dns-query"
 		}
 		# https://www.comss.ru/page.php?id=7315
 		"ComssOne"
@@ -10225,6 +10241,13 @@ function DNSoverHTTPS
 			$SecondaryDNS = "208.67.220.220"
 			$Query        = "https://doh.umbrella.com/dns-query"
 		}
+		# https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions
+		"Wikimedia"
+		{
+			$PrimaryDNS   = "185.71.138.138"
+			$SecondaryDNS = ""
+			$Query        = "https://wikimedia-dns.org/dns-query"
+		}
 	}
 
 	# Set primary and secondary DNS servers
@@ -10237,30 +10260,24 @@ function DNSoverHTTPS
 		Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 	}
 
+	# Encrypted preffered, unencrypted allowed
 	foreach ($InterfaceGuid in $InterfaceGuids)
 	{
 		if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS"))
 		{
 			New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
 		}
-		if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
-		{
-			New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
-		}
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 2 -Force
+		New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohTemplate -PropertyType String -Value $Query -Force
 
-		# Encrypted preffered, unencrypted allowed
-		if ($Query)
+		if ($SecondaryDNS)
 		{
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 2 -Force
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohTemplate -PropertyType String -Value $Query -Force
+			if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS"))
+			{
+				New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Force
+			}
 			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 2 -Force
 			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohTemplate -PropertyType String -Value $Query -Force
-		}
-		else
-		{
-
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$PrimaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
-			New-ItemProperty -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$InterfaceGuid\DohInterfaceSettings\Doh\$SecondaryDNS" -Name DohFlags -PropertyType QWord -Value 5 -Force
 		}
 	}
 

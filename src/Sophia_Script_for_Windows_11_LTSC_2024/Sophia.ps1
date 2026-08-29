@@ -986,29 +986,33 @@ SaveZoneInformation -Disable
 # Выключить Windows Sandbox (значение по умолчанию)
 # WindowsSandbox -Disable
 
-# Set up DNS from Cloudflare DNS using DNS-over-HTTPS
-# Установить DNS от Cloudflare, используя DNS-over-HTTPS
+# Enable DNS-over-HTTPS using Cloudflare DNS
+# Включить DNS-over-HTTPS, используя DNS от Cloudflare
 DNSoverHTTPS -Cloudflare
 
-# Set up DNS from Google Public DNS using DNS-over-HTTPS
-# Установить DNS от Google Public DNS, используя DNS-over-HTTPS
+# Enable DNS-over-HTTPS using Google Public DNS
+# Включить DNS-over-HTTPS, используя DNS от Google Public DNS
 # DNSoverHTTPS -Google
 
-# Set up DNS from Quad9 DNS using DNS-over-HTTPS
-# Установить DNS от Quad9, используя DNS-over-HTTPS
+# Enable DNS-over-HTTPS using Quad9 DNS
+# Включить DNS-over-HTTPS, используя DNS от Quad9
 # DNSoverHTTPS -Quad9
 
-# Set up DNS from Comss.one DNS using DNS-over-HTTPS
-# Установить DNS от Comss.one, используя DNS-over-HTTPS
+# Enable DNS-over-HTTPS using Comss.one DNS
+# Включить DNS-over-HTTPS, используя DNS от Comss.one
 # DNSoverHTTPS -ComssOne
 
-# Set up DNS from AdGuard DNS using DNS-over-HTTPS
-# Установить DNS от AdGuard, используя DNS-over-HTTPS
+# Enable DNS-over-HTTPS using AdGuard DNS
+# Включить DNS-over-HTTPS, используя DNS от AdGuard
 # DNSoverHTTPS -AdGuard
 
-# Set up DNS from OpenDNS DNS using DNS-over-HTTPS
-# Установить DNS от OpenDNS, используя DNS-over-HTTPS
+# Enable DNS-over-HTTPS using OpenDNS DNS
+# Включить DNS-over-HTTPS, используя DNS от OpenDNS
 # DNSoverHTTPS -OpenDNS
+
+# Enable DNS-over-HTTPS using Wikimedia DNS
+# Включить DNS-over-HTTPS, используя DNS от Wikimedia
+# DNSoverHTTPS -Wikimedia
 
 # Set default ISP's DNS records (default value)
 # Установить DNS-записи вашего провайдера (значение по умолчанию)

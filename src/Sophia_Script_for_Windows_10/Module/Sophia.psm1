@@ -282,7 +282,7 @@ function ErrorReporting
 
 		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
-		Get-ChildItem -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+		Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
 		exit
 	}
@@ -7874,7 +7874,7 @@ function Install-VCRedist
 			# https://github.com/PowerShell/PowerShell/issues/21070
 			$Paths = @(
 				"$DownloadsFolder\vc_redist.$($Item).exe",
-				"$env:TEMP\dd_vcredist_$($Item)_*.log"
+				"$env:TEMP\dd_vcredist_*.log"
 			)
 			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 		}

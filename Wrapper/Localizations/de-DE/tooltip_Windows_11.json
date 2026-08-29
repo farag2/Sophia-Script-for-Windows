@@ -1641,31 +1641,35 @@
     "Arg": {
       "Zero": {
         "Tag": "Cloudflare",
-        "ToolTip": "Richten Sie DNS von Cloudflare mithilfe von DNS-over-HTTPS ein."
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Cloudflare DNS."
       },
       "One": {
         "Tag": "Google",
-        "ToolTip": "Richten Sie DNS von Google Public DNS mithilfe von DNS-over-HTTPS ein."
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Google Public DNS."
       },
       "Two": {
         "Tag": "Quad9",
-        "ToolTip": "Richten Sie DNS von Quad9 mithilfe von DNS-over-HTTPS ein."
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Quad9 DNS."
       },
       "Three": {
         "Tag": "ComssOne",
-        "ToolTip": "Richten Sie DNS von ComssOne mithilfe von DNS-over-HTTPS ein."
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Comss.one DNS."
       },
       "Four": {
         "Tag": "AdGuard",
-        "ToolTip": "Richten Sie DNS von AdGuard mithilfe von DNS-over-HTTPS ein."
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit AdGuard DNS."
       },
       "Five": {
         "Tag": "OpenDNS",
-        "ToolTip": "Richten Sie DNS von OpenDNS mithilfe von DNS-over-HTTPS ein."
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit OpenDNS DNS."
       },
       "Six": {
+        "Tag": "Wikimedia",
+        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Wikimedia DNS."
+      },
+      "Seven": {
         "Tag": "Disable",
-        "ToolTip": "Standard-DNS-Einträge des Internetdienstanbieters festlegen (Standardwert)."
+        "ToolTip": "DNS-Einträge des Standard-Internetdienstanbieters festlegen (Standardwert)."
       }
     }
   },
