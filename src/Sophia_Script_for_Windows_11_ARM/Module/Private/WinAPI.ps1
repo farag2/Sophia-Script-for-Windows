@@ -3,7 +3,7 @@ $Global:CompilerParameters                  = [System.CodeDom.Compiler.CompilerP
 $Global:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 $Global:CompilerParameters.GenerateInMemory = $true
 
-# Get localization from dll
+# Extract localized strings from %SystemRoot%\System32\shell32.dll
 $Signature = @{
 	Namespace          = "WinAPI"
 	Name               = "GetStrings"
@@ -151,4 +151,94 @@ if (-not ("WinAPI.Winbrand" -as [type]))
 
 		exit
 	}
+}
+
+# Reload cursor on-the-fly for Install-Cursors function
+$Signature = @{
+	Namespace          = "WinAPI"
+	Name               = "Cursor"
+	Language           = "CSharp"
+	CompilerParameters = $CompilerParameters
+	MemberDefinition   = @"
+[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
+public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
+"@
+}
+if (-not ("WinAPI.Cursor" -as [type]))
+{
+	Add-Type @Signature
+}
+[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, $null, 0)
+
+# Read registry key last write time for Get-Hash (Set-Association)
+$Signature = @{
+	Namespace          = "WinAPI"
+	Name               = "Action"
+	Language           = "CSharp"
+	UsingNamespace     = "Microsoft.Win32"
+	CompilerParameters = $CompilerParameters
+	MemberDefinition   = @"
+[DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "RegOpenKeyExW", ExactSpelling = true)]
+private static extern int RegOpenKeyEx(IntPtr hKey, string lpSubKey, int ulOptions, int samDesired, out IntPtr phkResult);
+
+[DllImport("advapi32.dll", ExactSpelling = true)]
+private static extern int RegCloseKey(IntPtr hKey);
+
+[DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "RegQueryInfoKeyW", ExactSpelling = true)]
+private static extern int RegQueryInfoKey(IntPtr hKey, IntPtr lpClass, IntPtr lpcchClass, IntPtr lpReserved,
+	out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues,
+	out uint lpcbMaxValueNameLen, out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor,
+	out System.Runtime.InteropServices.ComTypes.FILETIME lpftLastWriteTime);
+
+private const int ERROR_SUCCESS   = 0;
+private const int KEY_READ        = 0x20019;
+private const int KEY_WOW64_64KEY = 0x0100;
+
+// winreg.h defines predefined keys as ((HKEY)(ULONG_PTR)((LONG)0x8000000n)),
+// i.e. sign-extended to 64 bits. new IntPtr(int) reproduces that exactly.
+private static IntPtr ToHandle(RegistryHive hive)
+{
+	return new IntPtr((int)hive);
+}
+
+// Returns the key's last write time as UTC, or null if the key cannot be opened or queried.
+public static DateTime? GetLastModified(RegistryHive hive, string subKey)
+{
+	IntPtr hKey = IntPtr.Zero;
+
+	try
+	{
+		if (RegOpenKeyEx(ToHandle(hive), subKey, 0, KEY_READ | KEY_WOW64_64KEY, out hKey) != ERROR_SUCCESS)
+		{
+			return null;
+		}
+
+		uint subKeys, maxSubKeyLen, maxClassLen, values, maxValueNameLen, maxValueLen, securityDescriptor;
+		System.Runtime.InteropServices.ComTypes.FILETIME lastWriteTime;
+
+		if (RegQueryInfoKey(hKey, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero,
+			out subKeys, out maxSubKeyLen, out maxClassLen, out values,
+			out maxValueNameLen, out maxValueLen, out securityDescriptor, out lastWriteTime) != ERROR_SUCCESS)
+		{
+			return null;
+		}
+
+		long fileTime = ((long)lastWriteTime.dwHighDateTime << 32) | (uint)lastWriteTime.dwLowDateTime;
+
+		return DateTime.FromFileTimeUtc(fileTime);
+	}
+	finally
+	{
+		if (hKey != IntPtr.Zero)
+		{
+			RegCloseKey(hKey);
+		}
+	}
+}
+"@
+}
+
+if (-not ("WinAPI.Action" -as [type]))
+{
+	Add-Type @Signature
 }

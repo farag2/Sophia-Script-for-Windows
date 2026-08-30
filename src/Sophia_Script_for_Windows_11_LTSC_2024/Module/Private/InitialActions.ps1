@@ -3,10 +3,10 @@
 	Initial checks before proceeding to module execution
 
 	.VERSION
-	7.2.0
+	7.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -28,7 +28,7 @@ function InitialActions
 
 	Set-StrictMode -Version Latest
 
-	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 LTSC 2024 v7.2.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
+	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 LTSC 2024 v7.3.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File
@@ -125,7 +125,7 @@ function InitialActions
 			exit
 		}
 	}
-	catch [System.Net.WebException]
+	catch
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "Get-CimInstance -ClassName CIM_Processor"), $Localization.ReinstallWindows -join " ")
@@ -151,7 +151,7 @@ function InitialActions
 		$Parameters = @{
 			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
 			UseBasicParsing = $true
-			TimeoutSec      = 10
+			TimeoutSec      = 5
 			Verbose         = $true
 		}
 		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_LTSC2024_PowerShell_5_1
@@ -201,14 +201,14 @@ function InitialActions
 		exit
 	}
 
-	# Extract the localized "Browse" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Browse" string from %SystemRoot%\System32\shell32.dll
 	$Global:Browse = [WinAPI.GetStrings]::GetString(9015)
-	# Extract the localized "&No" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "&No" string from %SystemRoot%\System32\shell32.dll
 	$Global:No = [WinAPI.GetStrings]::GetString(33232).Replace("&", "")
-	# Extract the localized "&Yes" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "&Yes" string from %SystemRoot%\System32\shell32.dll
 	$Global:Yes = [WinAPI.GetStrings]::GetString(33224).Replace("&", "")
 	$Global:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
-	# Extract the localized "Skip" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Skip" string from %SystemRoot%\System32\shell32.dll
 	$Global:Skip = [WinAPI.GetStrings]::GetString(16956)
 
 	# Check the language mode
@@ -346,7 +346,7 @@ function InitialActions
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
@@ -670,9 +670,9 @@ function InitialActions
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 
-		# Windows 11 Pro
+		# Windows 11 Enterprise LTSC
 		$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-		# e.g. 25H2
+		# e.g. 24H2
 		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
 		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $Windows_Long, $DisplayVersion)
@@ -695,32 +695,67 @@ function InitialActions
 		exit
 	}
 
+	# Check whether Windows build is the latest one
+	try
+	{
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
+		$Parameters = @{
+			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
+			UseBasicParsing = $true
+			TimeoutSec      = 5
+			Verbose         = $true
+		}
+		$LatestSupportedMinorBuild = (Invoke-RestMethod @Parameters).Windows_11
+	}
+	catch [System.Net.WebException]
+	{
+		$LatestSupportedMinorBuild = 9168
+
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
+	}
+
 	# Detect Windows build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
+		{$_ -ne 26100}
+		{
+			# Check Windows minor build version
+			$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
+			$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
+			# Windows 11 Enterprise LTSC
+			$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+			# e.g. 24H2
+			$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.UpdateWindowsBuild -f 26100, $LatestSupportedMinorBuild, $Windows_Long, $DisplayVersion, $CurrentBuild, $UBR)
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Write-Verbose -Message $Localization.AskQuestion -Verbose
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+			# Receive updates for other Microsoft products when you update Windows
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
+
+			# Check for UWP apps updates
+			Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
+
+			# Check for updates
+			& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
+
+			# Open the "Windows Update" page
+			Start-Process -FilePath "ms-settings:windowsupdate"
+
+			$Global:Failed = $true
+
+			exit
+		}
 		"26100"
 		{
-			# Check whether the current module version is the latest one
-			try
-			{
-				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
-				$Parameters = @{
-					Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
-					UseBasicParsing = $true
-					TimeoutSec      = 10
-					Verbose         = $true
-				}
-				$LatestSupportedMinorBuild = (Invoke-RestMethod @Parameters).Windows_11_LTSC_2024
-			}
-			catch [System.Net.WebException]
-			{
-				$LatestSupportedMinorBuild = 8875
-				$LatestSupportedMajorBuild = 26100
-
-				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
-				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
-			}
-
 			# We may use Test-Path -Path variable:LatestSupportedBuild
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt $LatestSupportedMinorBuild)
 			{
@@ -733,7 +768,7 @@ function InitialActions
 				$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
 
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message ($Localization.UpdateWindowsBuild -f $LatestSupportedMajorBuild, $LatestSupportedMinorBuild, $Windows_Long, $DisplayVersion, $CurrentBuild, $UBR)
+				Write-Warning -Message ($Localization.UpdateWindowsBuild -f 26100, $LatestSupportedMinorBuild, $Windows_Long, $DisplayVersion, $CurrentBuild, $UBR)
 				Write-Information -MessageData "" -InformationAction Continue
 
 				Write-Verbose -Message $Localization.AskQuestion -Verbose

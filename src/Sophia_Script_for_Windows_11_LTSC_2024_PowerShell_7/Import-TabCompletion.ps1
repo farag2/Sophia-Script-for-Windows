@@ -3,17 +3,17 @@
 	Enable tab completion to invoke for functions if you do not know function name
 
 	.VERSION
-	7.2.0
+	7.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
 
 	.DESCRIPTION
 	Dot source the script first: . .\Import-TabCompletion.ps1 (with a dot at the beginning)
-	Start typing any characters contained in the function's name or its arguments, and press the TAB button
+	Start typing any characters contained in the function's name or its arguments, and press TAB button
 
 	.EXAMPLE
 	Sophia -Functions <tab>

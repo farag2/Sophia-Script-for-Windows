@@ -3,10 +3,10 @@
 	Write registry keys for Set-Association function
 
 	.VERSION
-	7.2.0
+	7.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -44,58 +44,43 @@ function Global:Write-AdditionalKeys
 		New-ItemProperty -Path Registry::HKEY_USERS\.DEFAULT\Software\Microsoft\Windows\CurrentVersion\FileAssociations\ProgIds -Name "_$($Extension)" -PropertyType DWord -Value 1 -Force
 	}
 
-	# Setting 'NoOpenWith' for all registered the extension ProgIDs
-	# We have to check everything due to "Set-StrictMode -Version Latest"
-	if (Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore)
+	# Setting 'NoOpenWith' for all registered UWP ProgIds of the extension
+	$OpenWithProgids = Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore
+	if ($OpenWithProgids)
 	{
-		[psobject]$OpenSubkey = (Get-Item -Path "Registry::HKEY_CLASSES_ROOT\$Extension\OpenWithProgids" -ErrorAction Ignore).Property
-		if ($OpenSubkey)
+		foreach ($AppxProgID in @($OpenWithProgids.Property | Where-Object -FilterScript {$_ -match "AppX"}))
 		{
-			foreach ($AppxProgID in ($OpenSubkey | Where-Object -FilterScript {$_ -match "AppX"}))
+			# If an app is installed
+			if (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$AppxProgID\Shell\open" -Name PackageId -ErrorAction Ignore)
 			{
-				# If an app is installed
-				if (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$AppxProgID\Shell\open" -Name PackageId)
+				# If the specified ProgId is equal to UWP installed ProgId
+				if ($ProgId -eq $AppxProgID)
 				{
-					# If the specified ProgId is equal to UWP installed ProgId
-					if ($ProgId -eq $AppxProgID)
-					{
-						# Remove association limitations for this UWP apps
-						Remove-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith, NoStaticDefaultVerb -Force -ErrorAction Ignore
-					}
-					else
-					{
-						New-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith -PropertyType String -Value "" -Force
-					}
-
-					$Global:RegisteredProgIDs += $AppxProgID
+					# Remove association limitations for this UWP app
+					Remove-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith, NoStaticDefaultVerb -Force -ErrorAction Ignore
 				}
+				else
+				{
+					New-ItemProperty -Path "HKCU:\Software\Classes\$AppxProgID" -Name NoOpenWith -PropertyType String -Value "" -Force
+				}
+
+				$Global:RegisteredProgIDs += $AppxProgID
 			}
 		}
 	}
 
+	# Paint (PBrush) is a registered handler for every "picture" kind extension
 	# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null))
-	{
-		$picture = (Get-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap -Name $Extension -ErrorAction Ignore).$Extension
-	}
-	# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\PBrush\CLSID", "", $null))
-	{
-		$PBrush = (Get-ItemProperty -Path HKLM:\SOFTWARE\Classes\PBrush\CLSID -Name "(default)" -ErrorAction Ignore)."(default)"
-	}
+	$KindMap = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null)
+	$PBrush  = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\PBrush\CLSID", "", $null)
 
-	# We have to check everything due to "Set-StrictMode -Version Latest"
-	if (Get-Variable -Name picture -ErrorAction Ignore)
+	if ($KindMap -eq "picture")
 	{
-		if (($picture -eq "picture") -and $PBrush)
+		if ($PBrush)
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name "PBrush_$($Extension)" -PropertyType DWord -Value 0 -Force
 		}
-	}
 
-	# We have to use GetValue() due to "Set-StrictMode -Version Latest"
-	if (([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\KindMap", $Extension, $null)) -eq "picture")
-	{
 		$Global:RegisteredProgIDs += "PBrush"
 	}
 
@@ -124,10 +109,9 @@ function Global:Write-AdditionalKeys
 		}
 	}
 
-	Clear-Variable -Name UserRegisteredProgIDs -Force -ErrorAction Ignore
 	[array]$UserRegisteredProgIDs = @()
 
-	foreach ($Item in (Get-Item -Path "HKCU:\Software\RegisteredApplications").Property)
+	foreach ($Item in @((Get-Item -Path "HKCU:\Software\RegisteredApplications").Property))
 	{
 		$Subkey = (Get-ItemProperty -Path "HKCU:\Software\RegisteredApplications" -Name $Item -ErrorAction Ignore).$Item
 		if ($Subkey)

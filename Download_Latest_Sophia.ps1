@@ -12,13 +12,13 @@
 Clear-Host
 $Error.Clear()
 
-[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
-
 if ($Host.Version.Major -eq 5)
 {
 	# Progress bar can significantly impact cmdlet performance
 	# https://github.com/PowerShell/PowerShell/issues/2138
 	$Script:ProgressPreference = "SilentlyContinue"
+
+	[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 }
 
 # https://github.com/PowerShell/PowerShell/issues/21070

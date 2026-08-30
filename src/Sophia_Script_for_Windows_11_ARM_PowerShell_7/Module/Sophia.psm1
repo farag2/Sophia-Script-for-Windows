@@ -3,10 +3,10 @@
 	Sophia Script is a PowerShell module for fine-tuning Windows and automating routine tasks
 
 	.VERSION
-	7.2.0
+	7.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -68,7 +68,7 @@ function CreateRestorePoint
 	# Never skip creating a restore point
 	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
 
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ($Localization.CreatingRestorePoint, ([WinAPI.GetStrings]::GetString(12612)) -join " ") -Verbose
 
 	Checkpoint-Computer -Description "Sophia Script for Windows" -RestorePointType MODIFY_SETTINGS
@@ -555,7 +555,7 @@ function ScheduledTasks
 	function DisableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -567,7 +567,7 @@ function ScheduledTasks
 	function EnableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -620,7 +620,7 @@ function ScheduledTasks
 		"Enable"
 		{
 			$State           = "Disabled"
-			# Extract the localized "Enable" string from %SystemRoot%\System32\shell32.dll
+			# Extract localized "Enable" string from %SystemRoot%\System32\shell32.dll
 			$ButtonContent   = [WinAPI.GetStrings]::GetString(51472)
 			$ButtonAdd_Click = {EnableButton}
 		}
@@ -633,7 +633,7 @@ function ScheduledTasks
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all scheduled tasks according to the conditions
@@ -3061,11 +3061,6 @@ function Install-Cursors
 
 	if (-not $Default)
 	{
-		if (-not (Test-Path -Path "$env:SystemRoot\Cursors"))
-		{
-			New-Item -Path "$env:SystemRoot\Cursors" -ItemType Directory -Force
-		}
-
 		try
 		{
 			# Download cursors
@@ -3077,15 +3072,13 @@ function Install-Cursors
 				Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"
 				OutFile                  = "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip"
 				UseBasicParsing          = $true
-				ConnectionTimeoutSeconds = 10
+				ConnectionTimeoutSeconds = 5
 				Verbose                  = $true
 			}
 			Invoke-WebRequest @Parameters
 		}
-		catch [System.Net.WebException]
+		catch [System.Net.Http.HttpRequestException]
 		{
-			Remove-Item -Path "$env:SystemRoot\Cursors" -Recurse -Force -ErrorAction Ignore
-
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
 			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
@@ -3238,21 +3231,6 @@ function Install-Cursors
 		}
 	}
 
-	# Reload cursor on-the-fly
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "Cursor"
-		Language         = "CSharp"
-		CompilerOptions  = $CompilerOptions
-		MemberDefinition = @"
-[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
-public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
-"@
-	}
-	if (-not ("WinAPI.Cursor" -as [type]))
-	{
-		Add-Type @Signature
-	}
 	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, $null, 0)
 }
 
@@ -3442,7 +3420,7 @@ function RecentlyAddedStartApps
 	Unpin all Start tiles
 
 	.EXAMPLE
-	UnPinsAllStartTiles
+	UnpinAllStartTiles
 
 	.NOTES
 	Current user
@@ -3966,7 +3944,7 @@ function OneDrive
 			Get-Process -Name explorer | Stop-Process -Force
 
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+			# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 3
@@ -3988,7 +3966,7 @@ function OneDrive
 			Start-Process -FilePath "$env:SystemRoot\explorer.exe"
 
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+			# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 3
@@ -4044,7 +4022,7 @@ function OneDrive
 					$Parameters = @{
 						Uri                      = "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"
 						UseBasicParsing          = $true
-						ConnectionTimeoutSeconds = 10
+						ConnectionTimeoutSeconds = 5
 						Verbose                  = $true
 					}
 					$OneDriveURL = (Invoke-RestMethod @Parameters).root.update.amd64binary.url | Select-Object -Index 1
@@ -4054,7 +4032,7 @@ function OneDrive
 						Uri                      = $OneDriveURL
 						OutFile                  = "$DownloadsFolder\OneDriveSetup.exe"
 						UseBasicParsing          = $true
-						ConnectionTimeoutSeconds = 10
+						ConnectionTimeoutSeconds = 5
 						Verbose                  = $true
 					}
 					Invoke-WebRequest @Parameters
@@ -4074,7 +4052,7 @@ function OneDrive
 					Get-Process -Name OneDriveSetup -ErrorAction Ignore | Stop-Process -Force
 					Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
 				}
-				catch [System.Net.WebException]
+				catch [System.Net.Http.HttpRequestException]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -4662,7 +4640,7 @@ function WindowsFeatures
 	function DisableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -4674,7 +4652,7 @@ function WindowsFeatures
 	function EnableButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
@@ -4736,7 +4714,7 @@ function WindowsFeatures
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all optional features according to the conditions
@@ -4949,34 +4927,45 @@ function WindowsCapabilities
 	function UninstallButton
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		[void]$Window.Close()
 
 		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
-		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in $WindowsCapability.Name} | Remove-WindowsCapability -Online
+		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in $WindowsCapability.Name} | Remove-WindowsCapability -Online -ErrorAction Stop
 	}
 
 	function InstallButton
 	{
+		# We cannot catch DISM exceptions other ways
 		try
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-			[void]$Window.Close()
-
-			$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
-			$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in $WindowsCapability.Name} | Add-WindowsCapability -Online
+			$Parameters = @{
+				Uri                      = "https://www.google.com"
+				UseBasicParsing          = $true
+				ConnectionTimeoutSeconds = 5
+				Verbose                  = $true
+			}
+			$null = Invoke-WebRequest @Parameters
 		}
-		catch [System.Runtime.InteropServices.COMException]
+		catch [System.Net.Http.HttpRequestException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
 			Write-Error -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+			return
 		}
+
+		Write-Information -MessageData "" -InformationAction Continue
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+
+		[void]$Window.Close()
+
+		$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
+		$SelectedCapabilities | Where-Object -FilterScript {$_.Name -in $WindowsCapability.Name} | Add-WindowsCapability -Online
 	}
 
 	function Add-CapabilityControl
@@ -5017,20 +5006,9 @@ function WindowsCapabilities
 	{
 		"Install"
 		{
-			try
-			{
-				$State           = "NotPresent"
-				$ButtonContent   = $Localization.Install
-				$ButtonAdd_Click = {InstallButton}
-			}
-			catch [System.ComponentModel.Win32Exception]
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-				return
-			}
+			$State           = "NotPresent"
+			$ButtonContent   = $Localization.Install
+			$ButtonAdd_Click = {InstallButton}
 		}
 		"Uninstall"
 		{
@@ -5041,7 +5019,7 @@ function WindowsCapabilities
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all capabilities according to the conditions
@@ -5544,7 +5522,7 @@ function NetworkAdaptersSavePower
 		)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+			# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 2
@@ -5590,7 +5568,7 @@ function NetworkAdaptersSavePower
 		)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+			# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 			Start-Sleep -Seconds 2
@@ -5820,7 +5798,7 @@ IconIndex=-238
 
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				# Extract the localized user folders strings from %SystemRoot%\System32\shell32.dll
+				# Extract localized user folders strings from %SystemRoot%\System32\shell32.dll
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.DriveSelect -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
@@ -5854,7 +5832,7 @@ IconIndex=-238
 		{
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				# Extract the localized user folders strings from %SystemRoot%\System32\shell32.dll
+				# Extract localized user folders strings from %SystemRoot%\System32\shell32.dll
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
@@ -5910,7 +5888,7 @@ IconIndex=-238
 		{
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
-				# Extract the localized user folders strings from %SystemRoot%\System32\shell32.dll
+				# Extract localized user folders strings from %SystemRoot%\System32\shell32.dll
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
@@ -6132,7 +6110,7 @@ function ReservedStorage
 			{
 				Set-WindowsReservedStorageState -State Disabled
 			}
-			catch [System.Runtime.InteropServices.COMException]
+			catch
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.ReservedStorageIsInUse, ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -6592,11 +6570,6 @@ function RestorePreviousFolders
 	.EXAMPLE
 	Set-Association -ProgramPath MSEdgeHTM -Extension .html
 
-	.LINK
-	https://github.com/DanysysTeam/PS-SFTA
-	https://github.com/default-username-was-already-taken/set-fileassoc
-	https://forum.ru-board.com/profile.cgi?action=show&member=westlife
-
 	.NOTES
 	Machine-wide
 #>
@@ -6606,30 +6579,23 @@ function Set-Association
 	Param
 	(
 		[Parameter(
-			Mandatory = $true,
-			Position = 0
+			Mandatory = $true
 		)]
 		[string]
 		$ProgramPath,
 
 		[Parameter(
-			Mandatory = $true,
-			Position = 1
+			Mandatory = $true
 		)]
 		[string]
 		$Extension,
 
 		[Parameter(
-			Mandatory = $false,
-			Position = 2
+			Mandatory = $false
 		)]
 		[string]
 		$Icon
 	)
-
-	# Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
-	# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
-	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
 	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
 
@@ -6663,290 +6629,93 @@ function Set-Association
 		$Icon = [System.Environment]::ExpandEnvironmentVariables($Icon)
 	}
 
-	if (Test-Path -Path $ProgramPath)
-	{
-		# Generate ProgId
-		$ProgId = (Get-Item -Path $ProgramPath).BaseName + $Extension.ToUpper()
-	}
-	else
-	{
-		$ProgId = $ProgramPath
-	}
-
-	$Signature = @{
-		Namespace        = "WinAPI"
-		Name             = "Action"
-		Language         = "CSharp"
-		UsingNamespace   = "System.Text", "System.Security.AccessControl", "Microsoft.Win32"
-		CompilerOptions  = $CompilerOptions
-		MemberDefinition = @"
-[DllImport("advapi32.dll", CharSet = CharSet.Auto)]
-private static extern int RegOpenKeyEx(UIntPtr hKey, string subKey, int ulOptions, int samDesired, out UIntPtr hkResult);
-
-[DllImport("advapi32.dll", SetLastError = true)]
-private static extern int RegCloseKey(UIntPtr hKey);
-
-[DllImport("advapi32.dll", SetLastError=true, CharSet = CharSet.Unicode)]
-private static extern uint RegDeleteKey(UIntPtr hKey, string subKey);
-
-[DllImport("advapi32.dll", EntryPoint = "RegQueryInfoKey", CallingConvention = CallingConvention.Winapi, SetLastError = true)]
-private static extern int RegQueryInfoKey(UIntPtr hkey, out StringBuilder lpClass, ref uint lpcbClass, IntPtr lpReserved,
-	out uint lpcSubKeys, out uint lpcbMaxSubKeyLen, out uint lpcbMaxClassLen, out uint lpcValues, out uint lpcbMaxValueNameLen,
-	out uint lpcbMaxValueLen, out uint lpcbSecurityDescriptor, ref System.Runtime.InteropServices.ComTypes.FILETIME lpftLastWriteTime);
-
-[DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
-internal static extern bool OpenProcessToken(IntPtr h, int acc, ref IntPtr phtok);
-
-[DllImport("kernel32.dll", ExactSpelling = true)]
-internal static extern IntPtr GetCurrentProcess();
-
-[DllImport("advapi32.dll", SetLastError = true)]
-internal static extern bool LookupPrivilegeValue(string host, string name, ref long pluid);
-
-[DllImport("advapi32.dll", ExactSpelling = true, SetLastError = true)]
-internal static extern bool AdjustTokenPrivileges(IntPtr htok, bool disall, ref TokPriv1Luid newst, int len, IntPtr prev, IntPtr relen);
-
-[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-private static extern int RegLoadKey(uint hKey, string lpSubKey, string lpFile);
-
-[DllImport("advapi32.dll", CharSet = CharSet.Auto, SetLastError = true)]
-private static extern int RegUnLoadKey(uint hKey, string lpSubKey);
-
-[StructLayout(LayoutKind.Sequential, Pack = 1)]
-internal struct TokPriv1Luid
-{
-	public int Count;
-	public long Luid;
-	public int Attr;
-}
-
-public static void DeleteKey(RegistryHive registryHive, string subkey)
-{
-	UIntPtr hKey = UIntPtr.Zero;
+	# Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+	# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
+	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
 	try
 	{
-		var hive = new UIntPtr(unchecked((uint)registryHive));
-		RegOpenKeyEx(hive, subkey, 0, 0x20019, out hKey);
-		RegDeleteKey(hive, subkey);
-	}
-	finally
-	{
-		if (hKey != UIntPtr.Zero)
+		if (Test-Path -Path $ProgramPath)
 		{
-			RegCloseKey(hKey);
-		}
-	}
-}
-
-private static DateTime ToDateTime(System.Runtime.InteropServices.ComTypes.FILETIME ft)
-{
-	IntPtr buf = IntPtr.Zero;
-	try
-	{
-		long[] longArray = new long[1];
-		int cb = Marshal.SizeOf(ft);
-		buf = Marshal.AllocHGlobal(cb);
-		Marshal.StructureToPtr(ft, buf, false);
-		Marshal.Copy(buf, longArray, 0, 1);
-		return DateTime.FromFileTime(longArray[0]);
-	}
-	finally
-	{
-		if (buf != IntPtr.Zero) Marshal.FreeHGlobal(buf);
-	}
-}
-
-public static DateTime? GetLastModified(RegistryHive registryHive, string subKey)
-{
-	var lastModified = new System.Runtime.InteropServices.ComTypes.FILETIME();
-	var lpcbClass = new uint();
-	var lpReserved = new IntPtr();
-	UIntPtr hKey = UIntPtr.Zero;
-
-	try
-	{
-		try
-		{
-			var hive = new UIntPtr(unchecked((uint)registryHive));
-			if (RegOpenKeyEx(hive, subKey, 0, (int)RegistryRights.ReadKey, out hKey) != 0)
-			{
-				return null;
-			}
-
-			uint lpcbSubKeys;
-			uint lpcbMaxKeyLen;
-			uint lpcbMaxClassLen;
-			uint lpcValues;
-			uint maxValueName;
-			uint maxValueLen;
-			uint securityDescriptor;
-			StringBuilder sb;
-
-			if (RegQueryInfoKey(hKey, out sb, ref lpcbClass, lpReserved, out lpcbSubKeys, out lpcbMaxKeyLen, out lpcbMaxClassLen,
-			out lpcValues, out maxValueName, out maxValueLen, out securityDescriptor, ref lastModified) != 0)
-			{
-				return null;
-			}
-
-			var result = ToDateTime(lastModified);
-			return result;
-		}
-		finally
-		{
-			if (hKey != UIntPtr.Zero)
-			{
-				RegCloseKey(hKey);
-			}
-		}
-	}
-	catch (Exception)
-	{
-		return null;
-	}
-}
-
-internal const int SE_PRIVILEGE_DISABLED = 0x00000000;
-internal const int SE_PRIVILEGE_ENABLED = 0x00000002;
-internal const int TOKEN_QUERY = 0x00000008;
-internal const int TOKEN_ADJUST_PRIVILEGES = 0x00000020;
-
-public enum RegistryHives : uint
-{
-	HKEY_USERS = 0x80000003,
-	HKEY_LOCAL_MACHINE = 0x80000002
-}
-
-public static void AddPrivilege(string privilege)
-{
-	bool retVal;
-	TokPriv1Luid tp;
-	IntPtr hproc = GetCurrentProcess();
-	IntPtr htok = IntPtr.Zero;
-	retVal = OpenProcessToken(hproc, TOKEN_ADJUST_PRIVILEGES | TOKEN_QUERY, ref htok);
-	tp.Count = 1;
-	tp.Luid = 0;
-	tp.Attr = SE_PRIVILEGE_ENABLED;
-	retVal = LookupPrivilegeValue(null, privilege, ref tp.Luid);
-	retVal = AdjustTokenPrivileges(htok, false, ref tp, 0, IntPtr.Zero, IntPtr.Zero);
-	///return retVal;
-}
-
-public static int LoadHive(RegistryHives hive, string subKey, string filePath)
-{
-	AddPrivilege("SeRestorePrivilege");
-	AddPrivilege("SeBackupPrivilege");
-
-	uint regHive = (uint)hive;
-	int result = RegLoadKey(regHive, subKey, filePath);
-
-	return result;
-}
-
-public static int UnloadHive(RegistryHives hive, string subKey)
-{
-	AddPrivilege("SeRestorePrivilege");
-	AddPrivilege("SeBackupPrivilege");
-
-	uint regHive = (uint)hive;
-	int result = RegUnLoadKey(regHive, subKey);
-
-	return result;
-}
-"@
-	}
-
-	if (-not ("WinAPI.Action" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
-	Clear-Variable -Name RegisteredProgIDs -Force -ErrorAction Ignore
-	[array]$Global:RegisteredProgIDs = @()
-
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	# Register %1 argument if ProgId exists as an executable file
-	if (Test-Path -Path $ProgramPath)
-	{
-		if (-not (Test-Path -Path "HKCU:\Software\Classes\$ProgId\shell\open\command"))
-		{
-			New-Item -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Force
-		}
-
-		if ($ProgramPath.Contains("%1"))
-		{
-			New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value $ProgramPath -Force
+			# Generate ProgId
+			$ProgId = (Get-Item -Path $ProgramPath).BaseName + $Extension.ToUpper()
 		}
 		else
 		{
-			New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+			$ProgId = $ProgramPath
 		}
 
-		$FileNameEXE = Split-Path -Path $ProgramPath -Leaf
-		if (-not (Test-Path -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command"))
+		Clear-Variable -Name RegisteredProgIDs -Force -ErrorAction Ignore
+		[array]$Global:RegisteredProgIDs = @()
+
+		Write-Information -MessageData "" -InformationAction Continue
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+
+		# Register %1 argument if ProgId exists as an executable file
+		if (Test-Path -Path $ProgramPath)
 		{
-			New-Item -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Force
+			if (-not (Test-Path -Path "HKCU:\Software\Classes\$ProgId\shell\open\command"))
+			{
+				New-Item -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Force
+			}
+
+			if ($ProgramPath.Contains("%1"))
+			{
+				New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value $ProgramPath -Force
+			}
+			else
+			{
+				New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+			}
+
+			$FileNameEXE = Split-Path -Path $ProgramPath -Leaf
+			if (-not (Test-Path -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command"))
+			{
+				New-Item -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Force
+			}
+			New-ItemProperty -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
 		}
-		New-ItemProperty -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
-	}
 
-	if ($Icon)
-	{
-		if (-not (Test-Path -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon"))
+		if ($Icon)
 		{
-			New-Item -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon" -Force
-		}
-		New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon" -Name "(default)" -PropertyType String -Value $Icon -Force
-	}
-
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name "$($ProgID)_$($Extension)" -PropertyType DWord -Value 0 -Force
-
-	if ($Extension.Contains("."))
-	{
-		# If the file extension specified configure the extension
-		Write-ExtensionKeys -ProgId $ProgId -Extension $Extension
-	}
-	else
-	{
-		[WinAPI.Action]::DeleteKey([Microsoft.Win32.RegistryHive]::CurrentUser, "Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice")
-
-		if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice"))
-		{
-			New-Item -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Force
+			if (-not (Test-Path -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon"))
+			{
+				New-Item -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon" -Force
+			}
+			New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\DefaultIcon" -Name "(default)" -PropertyType String -Value $Icon -Force
 		}
 
-		$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey "Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice"
+		New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\ApplicationAssociationToasts -Name "$($ProgID)_$($Extension)" -PropertyType DWord -Value 0 -Force
 
-		# We need to remove DENY permission set for user before setting a value
-		if (@(".pdf", "http", "https") -contains $Extension)
+		if ($Extension.Contains("."))
 		{
-			# https://powertoe.wordpress.com/2010/08/28/controlling-registry-acl-permissions-with-powershell/
-			$Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey("Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice",[Microsoft.Win32.RegistryKeyPermissionCheck]::ReadWriteSubTree,[System.Security.AccessControl.RegistryRights]::ChangePermissions)
-			$ACL = $key.GetAccessControl()
-			$Principal = [System.Security.Principal.WindowsIdentity]::GetCurrent().Name
-			# https://learn.microsoft.com/en-us/dotnet/api/system.security.accesscontrol.filesystemrights
-			$Rule = New-Object -TypeName System.Security.AccessControl.RegistryAccessRule -ArgumentList ($Principal,"FullControl","Deny")
-			$ACL.RemoveAccessRule($Rule)
-			$Key.SetAccessControl($ACL)
-
-			# We need to use here an approach with "-Command & {}" as there's a variable inside
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice' -Name ProgId -PropertyType String -Value $ProgID -Force}"
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Command "& {New-ItemProperty -Path 'HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice' -Name Hash -PropertyType String -Value $ProgHash -Force}"
+			# If the file extension specified configure the extension
+			Write-ExtensionKeys -ProgId $ProgId -Extension $Extension
 		}
 		else
 		{
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Name ProgId -PropertyType String -Value $ProgId -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice" -Name Hash -PropertyType String -Value $ProgHash -Force
+			$SubKey = "Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice"
+			$Path   = "HKCU:\$SubKey"
+
+			# UCPD driver blocks access to UserChoice keys by process name (powershell.exe, reg.exe, ...), and the list of protected protocols is not documented,
+			# so every UserChoice operation is done from a renamed copy of powershell.exe regardless of the protocol
+			# The DENY ACE on UserChoice covers KEY_SET_VALUE only, so the key is deleted and recreated with the parent's inherited (clean) ACL instead of editing the DACL
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command "& {[Microsoft.Win32.Registry]::CurrentUser.DeleteSubKey('$SubKey', `$false); New-Item -Path '$Path' -Force; New-ItemProperty -Path '$Path' -Name ProgId -PropertyType String -Value '$ProgId' -Force}"
+
+			# The hash is derived from the key's last write time, so it has to be calculated after ProgId is written, same as in Write-ExtensionKeys
+			$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey $SubKey
+
+			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command "& {New-ItemProperty -Path '$Path' -Name Hash -PropertyType String -Value '$ProgHash' -Force}"
 		}
+
+		# Setting additional parameters to comply with the requirements before configuring the extension
+		Write-AdditionalKeys -ProgId $ProgId -Extension $Extension
 	}
-
-	# Setting additional parameters to comply with the requirements before configuring the extension
-	Write-AdditionalKeys -ProgId $ProgId -Extension $Extension
-
-	Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
+	finally
+	{
+		Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force -ErrorAction Ignore
+	}
 }
 
 <#
@@ -7170,7 +6939,7 @@ function Import-Associations
 		{
 			$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding utf8 -Force | ConvertFrom-JSON
 		}
-		catch [System.Exception]
+		catch
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.JSONNotValid -f $ProgramPath), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7299,12 +7068,12 @@ function Install-VCRedist
 		$Parameters = @{
 			Uri                      = "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"
 			UseBasicParsing          = $true
-			ConnectionTimeoutSeconds = 10
+			ConnectionTimeoutSeconds = 5
 			Verbose                  = $true
 		}
 		$LatestVCRedistVersion = (Invoke-RestMethod @Parameters).version
 	}
-	catch [System.Net.WebException]
+	catch [System.Net.Http.HttpRequestException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7334,12 +7103,12 @@ function Install-VCRedist
 				Uri                      = "https://aka.ms/vc14/vc_redist.arm64.exe"
 				OutFile                  = "$DownloadsFolder\vc_redist.arm64.exe"
 				UseBasicParsing          = $true
-				ConnectionTimeoutSeconds = 10
+				ConnectionTimeoutSeconds = 5
 				Verbose                  = $true
 			}
 			Invoke-WebRequest @Parameters
 		}
-		catch [System.Net.WebException]
+		catch [System.Net.Http.HttpRequestException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.arm64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7433,12 +7202,12 @@ function Install-DotNetRuntimes
 			$Parameters = @{
 				Uri                      = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"
 				UseBasicParsing          = $true
-				ConnectionTimeoutSeconds = 10
+				ConnectionTimeoutSeconds = 5
 				Verbose                  = $true
 			}
 			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
 		}
-		catch [System.Net.WebException]
+		catch [System.Net.Http.HttpRequestException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7470,16 +7239,16 @@ function Install-DotNetRuntimes
 					Uri                      = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
 					OutFile                  = "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
 					UseBasicParsing          = $true
-					ConnectionTimeoutSeconds = 10
+					ConnectionTimeoutSeconds = 5
 					Verbose                  = $true
 				}
 				Invoke-WebRequest @Parameters
 			}
-			catch [System.Net.WebException]
+			catch [System.Net.Http.HttpRequestException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -7746,7 +7515,7 @@ function WindowsAI
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -7790,10 +7559,10 @@ function Install-WSL
 		# https://github.com/microsoft/WSL/blob/main/distributions/DistributionInfo.json
 		# wsl --list --online relies on Internet connection too, so it's much convenient to parse DistributionInfo.json, rather than parse a cmd output
 		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
-			UseBasicParsing = $true
-			TimeoutSec      = 10
-			Verbose         = $true
+			Uri                      = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 5
+			Verbose                  = $true
 		}
 		$Distributions = Invoke-RestMethod @Parameters
 
@@ -7808,7 +7577,7 @@ function Install-WSL
 			}
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.Net.Http.HttpRequestException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -8207,7 +7976,7 @@ function Uninstall-UWPApps
 	$Window.Title               = $Localization.UWPAppsTitle
 	$ButtonUninstall.Content    = $Localization.Uninstall
 	$TextBlockRemoveForAll.Text = $Localization.UninstallUWPForAll
-	# Extract the localized "Select all" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Select all" string from %SystemRoot%\System32\shell32.dll
 	$TextBlockSelectAll.Text    = [WinAPI.GetStrings]::GetString(31276)
 
 	$ButtonUninstall.Add_Click({ButtonUninstallClick})
@@ -8229,7 +7998,7 @@ function Uninstall-UWPApps
 		)
 
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		$AppxPackages = @(Get-AppxPackage -PackageTypeFilter Bundle -AllUsers:$AllUsers | Where-Object -FilterScript {$_.Name -notin $ExcludedAppxPackages})
@@ -8337,7 +8106,7 @@ function Uninstall-UWPApps
 	function ButtonUninstallClick
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 		$Window.Close() | Out-Null
@@ -8705,7 +8474,11 @@ function CleanupTask
 		$Delete
 	)
 
-	Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\CleanupTask.vbs" -Force -ErrorAction Ignore
+	$Paths = @(
+		"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.vbs",
+		"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.vbs"
+	)
+	Remove-Item -Path $Paths -Force -ErrorAction Ignore
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -8721,30 +8494,6 @@ function CleanupTask
 
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
-
-			# Check whether we're trying to create the task when it was already created as another user
-			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup" -ErrorAction Ignore)
-			{
-				# Also we can parse "$env:SystemRoot\System32\Tasks\Sophia\Windows Cleanup" to check whether the task was created
-				$ScheduleService = New-Object -ComObject Schedule.Service
-				$ScheduleService.Connect()
-				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Windows Cleanup"} | Foreach-Object {
-					# Get user's SID the task was created as
-					$Global:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
-				}
-
-				# Convert SID to username
-				$TaskUserAccount = (New-Object -TypeName System.Security.Principal.SecurityIdentifier($SID)).Translate([System.Security.Principal.NTAccount]).Value -split "\\" | Select-Object -Last 1
-
-				if ($TaskUserAccount -ne $env:USERNAME)
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Windows Cleanup", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-					return
-				}
-			}
 
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
@@ -8955,11 +8704,11 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 
 			# Create "Windows Cleanup Notification" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
-			$Action    = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1"
-			$Settings  = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID       = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-			$Principal = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
-			$Trigger   = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
+			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1"
+			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
+			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
+			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
 			$Parameters = @{
 				TaskName    = "Windows Cleanup Notification"
 				TaskPath    = "Sophia"
@@ -8988,12 +8737,12 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 			Get-ChildItem -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\VolumeCaches | ForEach-Object -Process {
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
 			}
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Recurse -Force -ErrorAction Ignore
 
 			# Remove files first unless we cannot remove folder if there's no more tasks there
 			$Paths = @(
 				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1",
-				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1"
+				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1",
+				"Registry::HKEY_CLASSES_ROOT\WindowsCleanup"
 			)
 			Remove-Item -Path $Paths -Force -ErrorAction Ignore
 
@@ -9072,30 +8821,6 @@ function SoftwareDistributionTask
 
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
-
-			# Check whether we're trying to create the task when it was already created as another user
-			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -ErrorAction Ignore)
-			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistribution to check whether the task was created
-				$ScheduleService = New-Object -ComObject Schedule.Service
-				$ScheduleService.Connect()
-				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "SoftwareDistribution"} | Foreach-Object {
-					# Get user's SID the task was created as
-					$Global:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
-				}
-
-				# Convert SID to username
-				$TaskUserAccount = (New-Object -TypeName System.Security.Principal.SecurityIdentifier($SID)).Translate([System.Security.Principal.NTAccount]).Value -split "\\" | Select-Object -Last 1
-
-				if ($TaskUserAccount -ne $env:USERNAME)
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "SoftwareDistribution", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-					return
-				}
-			}
 
 			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
 			{
@@ -9318,30 +9043,6 @@ function TempTask
 			Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 			Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
 
-			# Check whether we're trying to create the task when it was already created as another user
-			if (Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -ErrorAction Ignore)
-			{
-				# Also we can parse $env:SystemRoot\System32\Tasks\Sophia\Temp to check whether the task was created
-				$ScheduleService = New-Object -ComObject Schedule.Service
-				$ScheduleService.Connect()
-				$ScheduleService.GetFolder("\Sophia").GetTasks(0) | Where-Object -FilterScript {$_.Name -eq "Temp"} | Foreach-Object {
-					# Get user's SID the task was created as
-					$Global:SID = ([xml]$_.xml).Task.Principals.Principal.UserID
-				}
-
-				# Convert SID to username
-				$TaskUserAccount = (New-Object -TypeName System.Security.Principal.SecurityIdentifier($SID)).Translate([System.Security.Principal.NTAccount]).Value -split "\\" | Select-Object -Last 1
-
-				if ($TaskUserAccount -ne $env:USERNAME)
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.ScheduledTaskCreatedByAnotherUser -f "Temp", $TaskUserAccount), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-					return
-				}
-			}
-
 			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
 			{
 				New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
@@ -9486,7 +9187,7 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 				Settings    = $Settings
 				Principal   = $Principal
 				Trigger     = $Trigger
-				Description = $Localization.TempTaskDescription -f "$env:TEMP"
+				Description = $Localization.TempTaskDescription -f "$((Get-Item -Path $env:TEMP).FullName)"
 			}
 			Register-ScheduledTask @Parameters -Force
 
@@ -9497,8 +9198,8 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 
 			$Global:ScheduledTasks = $true
 
-			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$env:TEMP") -join " ")
-			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$env:TEMP") -join " ") -ErrorAction SilentlyContinue
+			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -join " ")
+			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -join " ") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -10019,7 +9720,7 @@ function WindowsSandbox
 						Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart -Verbose
 					}
 				}
-				catch [System.Exception]
+				catch
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -10044,7 +9745,7 @@ function WindowsSandbox
 						Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart -Verbose
 					}
 				}
-				catch [System.Exception]
+				catch
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -10362,7 +10063,7 @@ function LocalSecurityAuthority
 						New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPLBoot -PropertyType DWord -Value 2 -Force
 					}
 				}
-				catch [System.Exception]
+				catch
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -11060,7 +10761,7 @@ function ScanRegistryPolicies
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 

@@ -3,10 +3,10 @@
 	Post actions
 
 	.VERSION
-	7.2.0
+	7.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -197,6 +197,7 @@ public static void PostMessage()
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 	#endregion Toast notifications
 
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.AskQuestion -Verbose
 	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -234,7 +235,7 @@ public static void PostMessage()
 
 			[PSCustomObject]@{
 				$Localization.ErrorsLine                  = $_.InvocationInfo.ScriptLineNumber
-				# Extract the localized "File" string from %SystemRoot%\System32\shell32.dll
+				# Extract localized "File" string from %SystemRoot%\System32\shell32.dll
 				"$([WinAPI.GetStrings]::GetString(4130))" = $ErrorInFile
 				$Localization.ErrorsMessage               = $_.Exception.Message
 			}

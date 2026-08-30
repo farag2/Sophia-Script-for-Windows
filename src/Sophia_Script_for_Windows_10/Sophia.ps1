@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows"
 
 	.VERSION
-	6.2.0
+	6.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -29,7 +29,7 @@
 	Supports Windows 10 22H2 x64 Home/Pro/Enterprise
 
 	.NOTES
-	To use Enable tab completion to invoke for functions if you do not know function name dot source the Import-TabCompletion.ps1 script first:
+	You may dot source Import-TabCompletion.ps1 to call functions if you do not know their names:
 		. .\Import-TabCompletion.ps1 (with a dot at the beginning)
 	Read more at https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions
 

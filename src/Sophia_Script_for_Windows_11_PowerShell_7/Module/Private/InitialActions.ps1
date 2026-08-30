@@ -3,10 +3,10 @@
 	Initial checks before proceeding to module execution
 
 	.VERSION
-	7.2.0
+	7.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -28,14 +28,10 @@ function InitialActions
 
 	Set-StrictMode -Version Latest
 
-	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v7.2.0 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
+	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 11 v7.3.0 (PowerShell 7) | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File
-
-	# Progress bar can significantly impact cmdlet performance
-	# https://github.com/PowerShell/PowerShell/issues/2138
-	$Global:ProgressPreference = "SilentlyContinue"
 
 	# Check whether all files were expanded before running
 	$ScriptFiles = [Array]::TrueForAll(@(
@@ -125,7 +121,7 @@ function InitialActions
 			exit
 		}
 	}
-	catch [System.Net.WebException]
+	catch
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f "Get-CimInstance -ClassName CIM_Processor"), $Localization.ReinstallWindows -join " ")
@@ -151,7 +147,7 @@ function InitialActions
 		$Parameters = @{
 			Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
 			UseBasicParsing          = $true
-			ConnectionTimeoutSeconds = 10
+			ConnectionTimeoutSeconds = 5
 			Verbose                  = $true
 		}
 		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
@@ -176,7 +172,7 @@ function InitialActions
 			exit
 		}
 	}
-	catch [System.Net.WebException]
+	catch [System.Net.Http.HttpRequestException]
 	{
 		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json")
 		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json") -ErrorAction SilentlyContinue
@@ -213,6 +209,7 @@ function InitialActions
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
 		$Global:Failed = $true
@@ -242,14 +239,14 @@ function InitialActions
 		exit
 	}
 
-	# Extract the localized "Browse" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Browse" string from %SystemRoot%\System32\shell32.dll
 	$Global:Browse = [WinAPI.GetStrings]::GetString(9015)
-	# Extract the localized "&No" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "&No" string from %SystemRoot%\System32\shell32.dll
 	$Global:No = [WinAPI.GetStrings]::GetString(33232).Replace("&", "")
-	# Extract the localized "&Yes" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "&Yes" string from %SystemRoot%\System32\shell32.dll
 	$Global:Yes = [WinAPI.GetStrings]::GetString(33224).Replace("&", "")
 	$Global:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
-	# Extract the localized "Skip" string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Skip" string from %SystemRoot%\System32\shell32.dll
 	$Global:Skip = [WinAPI.GetStrings]::GetString(16956)
 
 	# Check the language mode
@@ -387,7 +384,7 @@ function InitialActions
 	}
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Extract the localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
@@ -741,14 +738,14 @@ function InitialActions
 	# Check whether current terminal is Windows Terminal
 	if ($env:WT_SESSION)
 	{
-		# Check whether Windows Terminal version is higher than 1.23
+		# Check whether Windows Terminal version is higher than 1.24
 		# Get Windows Terminal process PID
 		$ParentProcessID = (Get-CimInstance -ClassName Win32_Process -Filter ProcessID=$PID).ParentProcessID
 		$WindowsTerminalVersion = (Get-Process -Id $ParentProcessID).FileVersion
 		# FileVersion has four properties while $WindowsTerminalVersion has only three, unless the [System.Version] accelerator fails
 		$WindowsTerminalVersion = "{0}.{1}.{2}" -f $WindowsTerminalVersion.Split(".")
 
-		if ([System.Version]$WindowsTerminalVersion -lt [System.Version]"1.23.0")
+		if ([System.Version]$WindowsTerminalVersion -lt [System.Version]"1.24.0")
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message $Localization.UpdateWindowsTerminal
@@ -771,35 +768,35 @@ function InitialActions
 		}
 	}
 
+	# Check whether Windows build is the latest one
+	try
+	{
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
+		$Parameters = @{
+			Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 5
+			Verbose                  = $true
+		}
+		$Response = Invoke-RestMethod @Parameters
+
+		$LatestSupportedMinorBuild = $Response.Windows_11
+		$LatestSupportedMajorBuild = $Response.Windows_11_Major
+	}
+	catch [System.Net.Http.HttpRequestException]
+	{
+		$LatestSupportedMinorBuild = 9168
+		$LatestSupportedMajorBuild = 26200
+
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
+	}
+
 	# Detect Windows build version
 	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{$_ -lt 26200}
 		{
-			# Check whether the current module version is the latest one
-			try
-			{
-				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
-				$Parameters = @{
-					Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
-					UseBasicParsing          = $true
-					ConnectionTimeoutSeconds = 10
-					Verbose                  = $true
-				}
-				$Response = Invoke-RestMethod @Parameters
-
-				$LatestSupportedMinorBuild = $Response.Windows_11
-				$LatestSupportedMajorBuild = $Response.Windows_11_Major
-			}
-			catch [System.Net.WebException]
-			{
-				$LatestSupportedMinorBuild = 8875
-				$LatestSupportedMajorBuild = 26200
-
-				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
-				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
-			}
-
 			# Check Windows minor build version
 			$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
 			$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
@@ -836,30 +833,6 @@ function InitialActions
 		}
 		"26200"
 		{
-			# Check whether Windows build is the latest one
-			try
-			{
-				# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
-				$Parameters = @{
-					Uri                      = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
-					UseBasicParsing          = $true
-					ConnectionTimeoutSeconds = 10
-					Verbose                  = $true
-				}
-				$Response = Invoke-RestMethod @Parameters
-
-				$LatestSupportedMinorBuild = $Response.Windows_11
-				$LatestSupportedMajorBuild = $Response.Windows_11_Major
-			}
-			catch [System.Net.WebException]
-			{
-				$LatestSupportedMinorBuild = 8875
-				$LatestSupportedMajorBuild = 26200
-
-				Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
-				Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
-			}
-
 			# We may use Test-Path -Path variable:LatestSupportedBuild
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt $LatestSupportedMinorBuild)
 			{

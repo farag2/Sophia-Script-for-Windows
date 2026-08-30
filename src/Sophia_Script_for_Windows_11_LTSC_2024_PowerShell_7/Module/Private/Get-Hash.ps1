@@ -1,12 +1,12 @@
-<#
+﻿<#
 	.SYNOPSIS
 	Calculate hash for Set-Association function
 
 	.VERSION
-	7.2.0
+	7.3.0
 
 	.DATE
-	31.07.2026
+	31.08.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -46,7 +46,7 @@ function Get-Hash
 		Namespace        = "WinAPI"
 		Name             = "PatentHash"
 		Language         = "CSharp"
-		CompilerOptions  = $CompilerOptions
+		CompilerOptions  = $CompilerParameters
 		MemberDefinition = @"
 public static uint[] WordSwap(byte[] a, int sz, byte[] md5)
 {
@@ -169,8 +169,16 @@ public static long MakeLong(uint left, uint right)
 		Add-Type @Signature
 	}
 
-	function Get-KeyLastWriteTime ($SubKey)
+	function Get-KeyLastWriteTime
 	{
+		[OutputType([string])]
+		param
+		(
+			[Parameter(Mandatory = $true)]
+			[string]
+			$SubKey
+		)
+
 		$LastModified = [WinAPI.Action]::GetLastModified([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
 		$FileTime = ([DateTime]::New($LastModified.Year, $LastModified.Month, $LastModified.Day, $LastModified.Hour, $LastModified.Minute, 0, $LastModified.Kind)).ToFileTime()
 
@@ -179,18 +187,18 @@ public static long MakeLong(uint left, uint right)
 
 	function Get-DataArray
 	{
-		[OutputType([array])]
+		[OutputType([byte[]])]
+		param ()
 
-		# Secret static string stored in %SystemRoot%\SysWOW64\%SystemRoot%\System32\shell32.dll
-		$userExperience        = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
+		# Secret static string stored in %SystemRoot%\System32\shell32.dll
+		$UserExperience   = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
 		# Get user SID
-		$userSID               = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-		$KeyLastWriteTime      = Get-KeyLastWriteTime -SubKey $SubKey
-		$baseInfo              = ("{0}{1}{2}{3}{4}" -f $Extension, $userSID, $ProgId, $KeyLastWriteTime, $userExperience).ToLowerInvariant()
-		$StringToUTF16LEArray  = [System.Collections.ArrayList]@([System.Text.Encoding]::Unicode.GetBytes($baseInfo))
-		$StringToUTF16LEArray += (0,0)
+		$UserSID          = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+		$KeyLastWriteTime = Get-KeyLastWriteTime -SubKey $SubKey
+		$BaseInfo         = ("{0}{1}{2}{3}{4}" -f $Extension, $UserSID, $ProgId, $KeyLastWriteTime, $UserExperience).ToLowerInvariant()
 
-			return $StringToUTF16LEArray
+		# UTF-16LE with the terminating null character included
+		return [System.Text.Encoding]::Unicode.GetBytes("$BaseInfo`0")
 	}
 
 	function Get-PatentHash
@@ -207,8 +215,8 @@ public static long MakeLong(uint left, uint right)
 			$MD5
 		)
 
-		$Size = $Array.Count
-		$ShiftedSize = ($Size -shr 2) - ($Size -shr 2 -band 1) * 1
+		$Size        = $Array.Count
+		$ShiftedSize = ($Size -shr 2) - (($Size -shr 2) -band 1)
 
 		[uint32[]]$Array1 = [WinAPI.PatentHash]::WordSwap($Array, [int]$ShiftedSize, $MD5)
 		[uint32[]]$Array2 = [WinAPI.PatentHash]::Reversible($Array, [int]$ShiftedSize, $MD5)
@@ -218,9 +226,8 @@ public static long MakeLong(uint left, uint right)
 		return [System.Convert]::ToBase64String([System.BitConverter]::GetBytes([Int64]$Ret))
 	}
 
-	$DataArray = Get-DataArray
-	$DataMD5   = [System.Security.Cryptography.HashAlgorithm]::Create("MD5").ComputeHash($DataArray)
-	$Hash      = Get-PatentHash -Array $DataArray -MD5 $DataMD5
+	[byte[]]$DataArray = Get-DataArray
+	$DataMD5           = [System.Security.Cryptography.MD5]::Create().ComputeHash($DataArray)
 
-	return $Hash
+	return Get-PatentHash -Array $DataArray -MD5 $DataMD5
 }

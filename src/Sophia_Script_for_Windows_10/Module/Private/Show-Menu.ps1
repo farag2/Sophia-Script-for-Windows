@@ -43,7 +43,7 @@ function Global:Show-Menu
 
 	if ($AddSkip)
 	{
-		# Extract the localized "Skip" string from %SystemRoot%\System32\shell32.dll
+		# Extract localized "Skip" string from %SystemRoot%\System32\shell32.dll
 		$Menu += [WinAPI.GetStrings]::GetString(16956)
 	}
 
