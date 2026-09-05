@@ -738,33 +738,45 @@ function InitialActions
 	# Check whether current terminal is Windows Terminal
 	if ($env:WT_SESSION)
 	{
-		# Check whether Windows Terminal version is higher than 1.24
-		# Get Windows Terminal process PID
-		$ParentProcessID = (Get-CimInstance -ClassName Win32_Process -Filter ProcessID=$PID).ParentProcessID
-		$WindowsTerminalVersion = (Get-Process -Id $ParentProcessID).FileVersion
-		# FileVersion has four properties while $WindowsTerminalVersion has only three, unless the [System.Version] accelerator fails
-		$WindowsTerminalVersion = "{0}.{1}.{2}" -f $WindowsTerminalVersion.Split(".")
+		# Get parent process name
+		$ParentProcess = (Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$PID" | ForEach-Object -Process {
+			Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$($_.ParentProcessID)"
+		}).Name
 
-		if ([System.Version]$WindowsTerminalVersion -lt [System.Version]"1.24.0")
+		if ($ParentProcess -eq "WindowsTerminal.exe")
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message $Localization.UpdateWindowsTerminal
-			Write-Information -MessageData "" -InformationAction Continue
+			$WindowsTerminalVersion = (Get-Process -Id $ParentProcess.ProcessID).FileVersion
+			# FileVersion has four properties while $WindowsTerminalVersion has only three, unless the [System.Version] accelerator fails
+			$WindowsTerminalVersion = "{0}.{1}.{2}" -f $WindowsTerminalVersion.Split(".")
 
-			Write-Verbose -Message $Localization.AskQuestion -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://t.me/sophianews" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+			if ([System.Version]$WindowsTerminalVersion -lt [System.Version]"1.24.0")
+			{
+				# Check whether Windows Terminal version is higher than 1.24
+				# Get Windows Terminal process PID
+				$ParentProcessID = (Get-CimInstance -ClassName Win32_Process -Filter ProcessID=$PID).ParentProcessID
+				$WindowsTerminalVersion = (Get-Process -Id $ParentProcessID).FileVersion
+				# FileVersion has four properties while $WindowsTerminalVersion has only three, unless the [System.Version] accelerator fails
+				$WindowsTerminalVersion = "{0}.{1}.{2}" -f $WindowsTerminalVersion.Split(".")
 
-			Start-Process -FilePath "ms-windows-store://pdp/?productid=9N0DX20HK701"
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Warning -Message $Localization.UpdateWindowsTerminal
+				Write-Information -MessageData "" -InformationAction Continue
 
-			# Check for UWP apps updates
-			Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
+				Write-Verbose -Message $Localization.AskQuestion -Verbose
+				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://t.me/sophianews" -Verbose
+				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-			$Global:Failed = $true
+				Start-Process -FilePath "ms-windows-store://pdp/?productid=9N0DX20HK701"
 
-			exit
+				# Check for UWP apps updates
+				Get-CimInstance -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 -Namespace root/CIMV2/mdm/dmmap | Invoke-CimMethod -MethodName UpdateScanMethod
+
+				$Global:Failed = $true
+
+				exit
+			}
 		}
 	}
 
