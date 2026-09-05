@@ -11,47 +11,92 @@ The most powerful PowerShell module for fine-tuning Windows on GitHub
 Made with <img src="./img/heart.svg" height="17px"/> of Windows
 
 <kbd>
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions"><img src="https://img.shields.io/github/actions/workflow/status/farag2/Sophia-Script-for-Windows/Sophia.yml?labelColor=151B23&color=151B23&style=for-the-badge&label=build&logo=GitHub"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/actions">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/github/ci/farag2/Sophia-Script-for-Windows.svg?workflow=Sophia.yml&amp;label=build&amp;variant=outline&amp;size=sm&amp;mode=dark">
+			<img src="https://shieldcn.dev/github/ci/farag2/Sophia-Script-for-Windows.svg?workflow=Sophia.yml&amp;label=build&amp;variant=outline&amp;size=sm&amp;mode=light">
+		</picture>
+	</a>
 </kbd>
 <kbd>
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Human%20Coded%20100%25-green?labelColor=151B23&color=151B23&style=for-the-badge"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Human%20Coded%20100%25.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
+			<img src="https://shieldcn.dev/badge/Human%20Coded%20100%25.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
+		</picture>
+	</a>
 </kbd>
 <kbd>
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Since%202014-green?labelColor=151B23&color=151B23&style=for-the-badge"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Since%202014.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
+			<img src="https://shieldcn.dev/badge/Since%202014.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
+		</picture>
+	</a>
 </kbd>
 
 <br>
 
 <kbd>
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Badge_downloads.yml"><img src="https://img.shields.io/endpoint?labelColor=151B23&color=151B23&style=for-the-badge&url=https://gist.githubusercontent.com/farag2/25ddc72387f298503b752ad5b8d16eed/raw/SophiaScriptDownloadsCount.json"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Badge_downloads.yml">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/dynamic/json.svg?url=https://gist.githubusercontent.com/farag2/25ddc72387f298503b752ad5b8d16eed/raw/SophiaScriptDownloadsCount.json&amp;query=%24.message&amp;label=Downloads&amp;logo=github&amp;variant=outline&amp;size=sm&amp;mode=dark">
+			<img src="https://shieldcn.dev/badge/dynamic/json.svg?url=https://gist.githubusercontent.com/farag2/25ddc72387f298503b752ad5b8d16eed/raw/SophiaScriptDownloadsCount.json&amp;query=%24.message&amp;label=Downloads&amp;logo=github&amp;variant=outline&amp;size=sm&amp;mode=light">
+		</picture>
+	</a>
 </kbd>
 <kbd>
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Badge_lines.yml"><img src="https://img.shields.io/endpoint?labelColor=151B23&color=151B23&style=for-the-badge&url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Badge_lines.yml">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/dynamic/json.svg?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json&amp;query=%24.message&amp;label=Lines%20of%20Code&amp;logo=github&amp;variant=outline&amp;size=sm&amp;mode=dark">
+			<img src="https://shieldcn.dev/badge/dynamic/json.svg?url=https://gist.githubusercontent.com/farag2/9852d6b9569a91bf69ceba8a94cc97f4/raw/SophiaScript.json&amp;query=%24.message&amp;label=Lines%20of%20Code&amp;logo=github&amp;variant=outline&amp;size=sm&amp;mode=light">
+		</picture>
+	</a>
 </kbd>
 
 <br>
 
 <kbd>
-	<a href="https://t.me/sophianews"><img src="https://img.shields.io/badge/Sophia%20News-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=telegram&logoColor=white"></a>
+	<a href="https://t.me/sophianews">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Sophia%20News.svg?logo=telegram&amp;variant=outline&amp;size=sm&amp;mode=dark">
+			<img src="https://shieldcn.dev/badge/Sophia%20News.svg?logo=telegram&amp;variant=outline&amp;size=sm&amp;mode=light">
+		</picture>
+	</a>
 </kbd>
 <kbd>
-	<a href="https://t.me/sophia_chat"><img src="https://img.shields.io/badge/Sophia%20Chat-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=telegram&logoColor=white"></a>
+	<a href="https://t.me/sophia_chat">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Sophia%20Chat.svg?logo=telegram&amp;variant=outline&amp;size=sm&amp;mode=dark">
+			<img src="https://shieldcn.dev/badge/Sophia%20Chat.svg?logo=telegram&amp;variant=outline&amp;size=sm&amp;mode=light">
+		</picture>
+	</a>
 </kbd>
 <kbd>
-	<a href="https://discord.gg/sSryhaEv79"><img src="https://img.shields.io/badge/Discord-green?labelColor=151B23&color=151B23&style=for-the-badge&logo=discord&logoColor=white"></a>
+	<a href="https://discord.gg/sSryhaEv79">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Discord.svg?logo=discord&amp;variant=outline&amp;size=sm&amp;mode=dark">
+			<img src="https://shieldcn.dev/badge/Discord.svg?logo=discord&amp;variant=outline&amp;size=sm&amp;mode=light">
+		</picture>
+	</a>
 </kbd>
 
 <br>
 <br>
 
 <kbd>
-	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Download-green?labelColor=151B23&color=151B23&style=for-the-badge"></a>
+	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Download.svg?logo=download&amp;variant=outline&amp;size=sm&amp;mode=dark">
+			<img src="https://shieldcn.dev/badge/Download.svg?logo=download&amp;variant=outline&amp;size=sm&amp;mode=light">
+		</picture>
+	</a>
 </kbd>
 
 <br>
 <br>
 
-<img src="./img/SophiaScript.gif" width='800'>
+<img src="./img/SophiaScript.svg" width='800'>
 
 </div>
 
@@ -78,6 +123,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
   * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
   * [OpenDNS](https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html)
+  * [Wikimedia DNS](https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions)
 * Uninstall OneDrive
 * Interactive [prompts and popups](#screenshots)
 * <kbd>TAB</kbd> [completion](#how-to-run-the-specific-functions) for functions and their arguments (using Import-TabCompletion.ps1)
@@ -133,31 +179,108 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
     <td align="center">Windows 11</td>
   </tr>
   <tr>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010%20x64-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2010%20x64&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2010%20x64&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
   </tr>
   <tr>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010%20x64-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2010%20x64&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2010%20x64&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
   </tr>
   <tr>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010-LTSC%202019-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20LTSC%202024-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/LTSC%202019.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/LTSC%202019.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
   </tr>
   <tr>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2010-LTSC%202021-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20LTSC%202024-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/LTSC%202021.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/LTSC%202021.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
   </tr>
   <tr>
     <td></td>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%205.1-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
   </tr>
   <tr>
     <td></td>
-    <td align="left"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Windows%2011%20Arm-PowerShell%207-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="left">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=dark">
+          <img src="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=light">
+        </picture>
+      </a>
+    </td>
   </tr>
   <tr>
-    <td align="center" colspan="2"><a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest"><img src="https://img.shields.io/badge/Sophia%20Script%20Wrapper-green?labelColor=151B23&color=151B23&style=for-the-badge"></a></td>
+    <td align="center" colspan="2">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
+        <picture>
+          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
+          <img src="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
+        </picture>
+      </a>
+    </td>
   </tr>
 </table>
 
