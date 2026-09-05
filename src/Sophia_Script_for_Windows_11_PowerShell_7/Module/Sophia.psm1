@@ -9950,12 +9950,12 @@ function DNSoverHTTPS
 	)
 
 	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient -Name DoHPolicy -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient -Name DohPolicySetting -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient -Name DotPolicySetting -Force -ErrorAction Ignore
-	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows NT\DNSClient -Name DoHPolicy -Type CLEAR
-	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows NT\DNSClient -Name DohPolicySetting -Type CLEAR
-	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows NT\DNSClient -Name DotPolicySetting -Type CLEAR
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DoHPolicy -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DohPolicySetting -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DotPolicySetting -Force -ErrorAction Ignore
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DoHPolicy -Type CLEAR
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DohPolicySetting -Type CLEAR
+	Set-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DotPolicySetting -Type CLEAR
 
 	# Determining whether Hyper-V is enabled
 	# After enabling Hyper-V feature a virtual switch being created, so we need to use different method to isolate the proper adapter
