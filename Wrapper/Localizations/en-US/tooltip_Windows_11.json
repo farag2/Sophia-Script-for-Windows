@@ -774,6 +774,16 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "UnpinAllStartTiles",
+    "Arg": {
+      "Zero": {
+        "Tag": "",
+        "ToolTip": "Unpin all Start tiles"
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "StartAppsView",
     "Arg": {
       "Zero": {

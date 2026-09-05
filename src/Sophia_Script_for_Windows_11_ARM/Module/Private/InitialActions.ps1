@@ -701,9 +701,9 @@ function InitialActions
 	if ($env:WT_SESSION)
 	{
 		# Get parent process name
-		$ParentProcess = (Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$PID" | ForEach-Object -Process {
+		$ParentProcess = Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$PID" | ForEach-Object -Process {
 			Get-CimInstance -ClassName Win32_Process -Filter "ProcessID=$($_.ParentProcessID)"
-		}).Name
+		}
 
 		if ($ParentProcess -eq "WindowsTerminal.exe")
 		{

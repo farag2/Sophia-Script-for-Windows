@@ -4,8 +4,6 @@
         "folderPsd1Filename": "Module\\Manifest",
         "psm1Filename": "Sophia.psm1",
         "folderPsm1Filename": "Module",
-        "setConsoleFontPs1Filename": "Set-ConsoleFont.ps1",
-        "folderSetConsoleFontPs1": "Config",
         "functionControlsPerColumn": "100",
         "urlSophiaScriptVersionsJson": "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json",
         "urlLatestSophiaScriptDownloads": "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest",

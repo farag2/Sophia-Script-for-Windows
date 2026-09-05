@@ -908,6 +908,19 @@
     },
     {
         "Region": "UI & Personalization",
+        "Control": "chk",
+        "Required": "false",
+        "Function": "UnpinAllStartTiles",
+        "Arg": {
+            "Zero": {
+                "Tag": ""
+            }
+        },
+        "Preset": "",
+        "WindowsDefault": ""
+    },
+    {
+        "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
         "Function": "StartLayout",
