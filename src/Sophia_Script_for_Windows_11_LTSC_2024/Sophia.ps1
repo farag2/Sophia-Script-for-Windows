@@ -522,6 +522,18 @@ RecentlyAddedStartApps -Hide
 # Открепить все ярлыки от начального экрана
 # UnpinAllStartTiles
 
+# Show default Start layout (default value)
+# Отображать стандартный макет начального экрана (значение по умолчанию)
+# StartLayout -Default
+
+# Show more pins on Start
+# Отображать больше закреплений на начальном экране
+StartLayout -ShowMorePins
+
+# Show more recommendations on Start
+# Отображать больше рекомендаций на начальном экране
+# StartLayout -ShowMoreRecommendations
+
 # Hide most used apps on Start (default value)
 # Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
 MostUsedStartApps -Hide
@@ -553,18 +565,6 @@ StartAccountNotifications -Hide
 # Show Microsoft account-related notifications on Start (default value)
 # Отображать на начальном экране уведомления, касающиеся учетной записи Microsoft (значение по умолчанию)
 # StartAccountNotifications -Show
-
-# Show default Start layout (default value)
-# Отображать стандартный макет начального экрана (значение по умолчанию)
-# StartLayout -Default
-
-# Show more pins on Start
-# Отображать больше закреплений на начальном экране
-StartLayout -ShowMorePins
-
-# Show more recommendations on Start
-# Отображать больше рекомендаций на начальном экране
-# StartLayout -ShowMoreRecommendations
 #endregion UI & Personalization
 
 #region System
@@ -1044,29 +1044,6 @@ CABInstallContext -Show
 # Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
 # CABInstallContext -Hide
 
-# Hide the "Print" item from the .bat and .cmd context menu
-# Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
-PrintCMDContext -Hide
-
-# Show the "Print" item in the .bat and .cmd context menu (default value)
-# Отобразить пункт "Печать" в контекстном меню .bat и .cmd файлов (значение по умолчанию)
-# PrintCMDContext -Show
-
-# Hide the "Compressed (zipped) Folder" item from the "New" context menu
-# Скрыть пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
-CompressedFolderNewContext -Hide
-
-# Show the "Compressed (zipped) Folder" item to the "New" context menu (default value)
-# Отобразить пункт "Сжатая ZIP-папка" в контекстном меню "Создать" (значение по умолчанию)
-# CompressedFolderNewContext -Show
-
-# Enable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
-# Включить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
-MultipleInvokeContext -Enable
-
-# Disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected (default value)
-# Отключить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов (значение по умолчанию)
-# MultipleInvokeContext -Disable
 #endregion Context menu
 
 #region Update Policies

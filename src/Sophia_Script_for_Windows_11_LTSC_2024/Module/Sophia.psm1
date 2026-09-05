@@ -3376,6 +3376,86 @@ function UnpinAllStartTiles
 
 <#
 	.SYNOPSIS
+	Configure Start layout
+
+	.PARAMETER Default
+	Show default Start layout
+
+	.PARAMETER ShowMorePins
+	Show more pins on Start
+
+	.PARAMETER ShowMoreRecommendations
+	Show more recommendations on Start
+
+	.EXAMPLE
+	StartLayout -Default
+
+	.EXAMPLE
+	StartLayout -ShowMorePins
+
+	.EXAMPLE
+	StartLayout -ShowMoreRecommendations
+
+	.NOTES
+	Current user
+#>
+function StartLayout
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "ShowMorePins"
+		)]
+		[switch]
+		$ShowMorePins,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "ShowMoreRecommendations"
+		)]
+		[switch]
+		$ShowMoreRecommendations
+	)
+
+	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Default"
+		{
+			# Default
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 0 -Force
+		}
+		"ShowMorePins"
+		{
+			# Show More Pins
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 1 -Force
+		}
+		"ShowMoreRecommendations"
+		{
+			# Show More Recommendations
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 2 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Most used apps on Start
 
 	.PARAMETER Hide
@@ -3661,86 +3741,6 @@ function StartAccountNotifications
 		"Show"
 		{
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_AccountNotifications -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Configure Start layout
-
-	.PARAMETER Default
-	Show default Start layout
-
-	.PARAMETER ShowMorePins
-	Show more pins on Start
-
-	.PARAMETER ShowMoreRecommendations
-	Show more recommendations on Start
-
-	.EXAMPLE
-	StartLayout -Default
-
-	.EXAMPLE
-	StartLayout -ShowMorePins
-
-	.EXAMPLE
-	StartLayout -ShowMoreRecommendations
-
-	.NOTES
-	Current user
-#>
-function StartLayout
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "ShowMorePins"
-		)]
-		[switch]
-		$ShowMorePins,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "ShowMoreRecommendations"
-		)]
-		[switch]
-		$ShowMoreRecommendations
-	)
-
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Default"
-		{
-			# Default
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 0 -Force
-		}
-		"ShowMorePins"
-		{
-			# Show More Pins
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 1 -Force
-		}
-		"ShowMoreRecommendations"
-		{
-			# Show More Recommendations
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_Layout -PropertyType DWord -Value 2 -Force
 		}
 	}
 }
@@ -9072,165 +9072,6 @@ function CABInstallContext
 		"Hide"
 		{
 			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas -Recurse -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Print" item in the .bat and .cmd context menu
-
-	.PARAMETER Hide
-	Hide the "Print" item from the .bat and .cmd context menu
-
-	.PARAMETER Show
-	Show the "Print" item in the .bat and .cmd context menu
-
-	.EXAMPLE
-	PrintCMDContext -Hide
-
-	.EXAMPLE
-	PrintCMDContext -Show
-
-	.NOTES
-	Current user
-#>
-function PrintCMDContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Name ProgrammaticAccessOnly -PropertyType String -Value "" -Force
-		}
-		"Show"
-		{
-			Remove-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\batfile\shell\print, Registry::HKEY_CLASSES_ROOT\cmdfile\shell\print -Name ProgrammaticAccessOnly -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Compressed (zipped) Folder" item in the "New" context menu
-
-	.PARAMETER Hide
-	Hide the "Compressed (zipped) Folder" item from the "New" context menu
-
-	.PARAMETER Show
-	Show the "Compressed (zipped) Folder" item to the "New" context menu
-
-	.EXAMPLE
-	CompressedFolderNewContext -Hide
-
-	.EXAMPLE
-	CompressedFolderNewContext -Show
-
-	.NOTES
-	Current user
-#>
-function CompressedFolderNewContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Hide"
-		)]
-		[switch]
-		$Hide,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Show"
-		)]
-		[switch]
-		$Show
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Hide"
-		{
-			Remove-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Force -ErrorAction Ignore
-		}
-		"Show"
-		{
-			if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew))
-			{
-				New-Item -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Force
-			}
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name Data -PropertyType Binary -Value ([byte[]](80,75,5,6,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0)) -Force
-			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\.zip\CompressedFolder\ShellNew -Name ItemName -PropertyType ExpandString -Value "@%SystemRoot%\System32\zipfldr.dll,-10194" -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The "Open", "Print", and "Edit" items if more than 15 files selected
-
-	.PARAMETER Enable
-	Enable the "Open", "Print", and "Edit" items if more than 15 files selected
-
-	.PARAMETER Disable
-	Disable the "Open", "Print", and "Edit" items if more than 15 files selected
-
-	.EXAMPLE
-	MultipleInvokeContext -Enable
-
-	.EXAMPLE
-	MultipleInvokeContext -Disable
-
-	.NOTES
-	Current user
-#>
-function MultipleInvokeContext
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -PropertyType DWord -Value 300 -Force
-		}
-		"Disable"
-		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name MultipleInvokePromptMinimum -Force -ErrorAction Ignore
 		}
 	}
 }

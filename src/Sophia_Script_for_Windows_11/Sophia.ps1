@@ -1122,54 +1122,6 @@ CABInstallContext -Show
 # Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
 # CABInstallContext -Hide
 
-# Hide the "Edit with Clipchamp" item from the media files context menu
-# Скрыть пункт "Редактировать в Clipchamp" из контекстного меню
-EditWithClipchampContext -Hide
-
-# Show the "Edit with Clipchamp" item in the media files context menu (default value)
-# Отобразить пункт "Редактировать в Clipchamp" в контекстном меню (значение по умолчанию)
-# EditWithClipchampContext -Show
-
-# Hide the "Edit with Photos" item from the media files context menu
-# Скрыть пункт "Изменить с помощью приложения "Фотографии"" из контекстного меню
-EditWithPhotosContext -Hide
-
-# Show the "Edit with Photos" item in the media files context menu (default value)
-# Отобразить пункт "Изменить с помощью приложения "Фотографии"" в контекстном меню (значение по умолчанию)
-# EditWithPhotosContext -Show
-
-# Hide the "Edit with Paint" item from the media files context menu
-# Скрыть пункт "Изменить с помощью приложения "Paint"" из контекстного меню
-EditWithPaintContext -Hide
-
-# Show the "Edit with Paint" item in the media files context menu (default value)
-# Отобразить пункт "Изменить с помощью приложения "Paint"" в контекстном меню (значение по умолчанию)
-# EditWithPaintContext -Show
-
-# Hide the "Print" item from the .bat and .cmd context menu
-# Скрыть пункт "Печать" из контекстного меню .bat и .cmd файлов
-PrintCMDContext -Hide
-
-# Show the "Print" item in the .bat and .cmd context menu (default value)
-# Отобразить пункт "Печать" в контекстном меню .bat и .cmd файлов (значение по умолчанию)
-# PrintCMDContext -Show
-
-# Hide the "Compressed (zipped) Folder" item from the "New" context menu
-# Скрыть пункт "Сжатая ZIP-папка" из контекстного меню "Создать"
-CompressedFolderNewContext -Hide
-
-# Show the "Compressed (zipped) Folder" item to the "New" context menu (default value)
-# Отобразить пункт "Сжатая ZIP-папка" в контекстном меню "Создать" (значение по умолчанию)
-# CompressedFolderNewContext -Show
-
-# Enable the "Open", "Print", and "Edit" context menu items for more than 15 items selected
-# Включить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов
-MultipleInvokeContext -Enable
-
-# Disable the "Open", "Print", and "Edit" context menu items for more than 15 items selected (default value)
-# Отключить элементы контекстного меню "Открыть", "Изменить" и "Печать" при выделении более 15 элементов (значение по умолчанию)
-# MultipleInvokeContext -Disable
-
 # Hide the "Look for an app in the Microsoft Store" item in the "Open with" dialog
 # Скрыть пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью"
 UseStoreOpenWith -Hide

@@ -1386,7 +1386,7 @@
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
-        "Tag": "Channels",
+        "Tag": "Channels Stable, Beta, Dev, Canary",
         "ToolTip": "Microsoft Edge-Kanäle auflisten, um die Erstellung von Desktop-Verknüpfungen bei der Aktualisierung zu verhindern."
       },
       "One": {
@@ -1712,90 +1712,6 @@
       "One": {
         "Tag": "Hide",
         "ToolTip": "Eintrag \"Installieren\" im Kontextmenü der Cabinet (.cab)-Dateinamenerweiterungen ausblenden (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithClipchampContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Eintrag \"Mit Clipchamp bearbeiten\" im Kontextmenü ausblenden."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Eintrag \"Mit Clipchamp bearbeiten\" im Kontextmenü anzeigen (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithPhotosContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Eintrag \"Mit Fotos bearbeiten\" im Kontextmenü ausblenden."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Eintrag \"Mit Fotos bearbeiten\" im Kontextmenü anzeigen (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "EditWithPaintContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Eintrag \"Mit Paint bearbeiten\" im Kontextmenü ausblenden."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Eintrag \"Mit Paint bearbeiten\" im Kontextmenü anzeigen (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "PrintCMDContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Ausblenden des Eintrags \"Drucken\" im Kontextmenü von .bat und .cmd."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Drucken\" im Kontextmenü von .bat und .cmd anzeigen (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "CompressedFolderNewContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Hide",
-        "ToolTip": "Den Eintrag \"Komprimierter ZIP-Ordner\" \"Neu\" im Kontextmenü ausblenden."
-      },
-      "One": {
-        "Tag": "Show",
-        "ToolTip": "Den Eintrag \"Komprimierter (zip) Ordner\" \"Neu\" im Kontextmenü anzeigen (Standardwert)."
-      }
-    }
-  },
-  {
-    "Region": "Context menu",
-    "Function": "MultipleInvokeContext",
-    "Arg": {
-      "Zero": {
-        "Tag": "Enable",
-        "ToolTip": "Aktiviert die Kontextmenüelemente \"Öffnen\", \"Drucken\" und \"Bearbeiten\" für mehr als 15 ausgewählte Elemente."
-      },
-      "One": {
-        "Tag": "Disable",
-        "ToolTip": "Deaktiviert die Kontextmenüelemente \"Öffnen\", \"Drucken\" und \"Bearbeiten\" für mehr als 15 ausgewählte Elemente (Standardwert)."
       }
     }
   },

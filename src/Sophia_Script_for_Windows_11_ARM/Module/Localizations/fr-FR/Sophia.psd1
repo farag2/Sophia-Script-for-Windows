@@ -80,7 +80,6 @@ EventViewerCustomViewDescription          = Audit des événements de création 
 ThirdPartyAVInstalled                     = Un antivirus tiers est installé.
 NoHomeWindowsEditionSupport               = Windows Home Edition ne prend pas en charge la fonction "{0}".
 EnableHardwareVT                          = Activer la virtualisation dans UEFI.
-PhotosNotInstalled                        = L'application "Photos" n'est pas installée.
 ThirdPartyArchiverInstalled               = Un programme d'archivage tiers est installé.
 gpeditNotSupported                        = Windows Home Edition ne prend pas en charge le composant logiciel enfichable Éditeur de stratégie de groupe locale (gpedit.msc).
 RestartWarning                            = Assurez-vous de redémarrer votre PC.

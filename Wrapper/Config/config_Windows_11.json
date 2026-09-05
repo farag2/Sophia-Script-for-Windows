@@ -973,28 +973,6 @@
         "WindowsDefault": "Zero"
     },
     {
-        "Region": "UI & Personalization",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartLayout",
-        "Arg": {
-            "Zero": {
-                "Tag": "Default",
-                "Opposite": "Two"
-            },
-            "One": {
-                "Tag": "ShowMorePins",
-                "Opposite": "Zero"
-            },
-            "Two": {
-                "Tag": "ShowMoreRecommendations",
-                "Opposite": "Zero"
-            }
-        },
-        "Preset": "One",
-        "WindowsDefault": "Zero"
-    },
-    {
         "Region": "OneDrive",
         "Control": "cmbchkalter",
         "Required": "false",
@@ -1968,102 +1946,6 @@
             },
             "One": {
                 "Tag": "Hide"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "EditWithClipchampContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "EditWithPhotosContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "EditWithPaintContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "PrintCMDContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "CompressedFolderNewContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "MultipleInvokeContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
             }
         },
         "Preset": "Zero",

@@ -1,118 +1,109 @@
 <#
 	.SYNOPSIS
-	Set console font to Consolas when script is called from the Wrapper due to it is not loaded by default
+	Set console font to Consolas when the script is launched from the Wrapper, as it is not applied by default
 
 	.LINK
 	https://github.com/ReneNyffenegger/ps-modules-console
 #>
-function Set-ConsoleFont
+
+# We have to be sure that powershell.exe was spawned by the Wrapper, otherwise the Sophia Script logo gets distorted
+$ParentProcessId = (Get-CimInstance -ClassName Win32_Process -Filter "ProcessId = $PID" -Property ParentProcessId).ParentProcessId
+$ParentProcess = Get-Process -Id $ParentProcessId -ErrorAction Ignore
+$ParentProcess.ProcessName -eq "SophiaScriptWrapper" |set-content -path D:\Sophia-Script-for-Windows\Wrapper\1.txt
+pause
+if ($ParentProcess.ProcessName -eq "SophiaScriptWrapper")
 {
 	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "ConsoleFont"
-		Language           = "CSharp"
-		MemberDefinition   = @"
+		Namespace        = "WinAPI"
+		Name             = "ConsoleFont"
+		Language         = "CSharp"
+		UsingNamespace   = "System.ComponentModel"
+		MemberDefinition = @"
 [StructLayout(LayoutKind.Sequential)]
-
 public struct COORD
 {
 	public short X;
 	public short Y;
-
-	public COORD(short x, short y)
-	{
-		X = x;
-		Y = y;
-	}
 }
 
 [StructLayout(LayoutKind.Sequential, CharSet = CharSet.Unicode)]
-
 public struct CONSOLE_FONT_INFOEX
 {
-	public uint  cbSize;
-	public uint  n;
-	public COORD size;
-
-	// The four low-order bits of 'family' specify information about the pitch and the technology:
-	//     1 = TMPF_FIXED_PITCH, 2 = TMPF_VECTOR, 4 = TMPF_TRUETYPE, 8 = TMPF_DEVICE.
-	// The four high-order bits specifies the fonts family:
-	//     80 = FF_DECORATIVE, 0 = FF_DONTCARE, 48 = FF_MODERN, 16 = FF_ROMAN, 64 = FF_SCRIPT, 32 = FF_SWISS
-	//     I assume(!) this value is always 48.
-	//    (In fact, it seems that family is is always 54 = TMPF_VECTOR + TMPF_TRUETYPE + FF_MODERN)
-	public int   family;
-	public int   weight;
-
+	public uint cbSize;
+	public uint nFont;
+	public COORD dwFontSize;
+	// The four low-order bits specify the pitch and technology, the four high-order bits specify the font family
+	// 54 = TMPF_VECTOR | TMPF_TRUETYPE | FF_MODERN
+	public int FontFamily;
+	public int FontWeight;
 	[MarshalAs(UnmanagedType.ByValTStr, SizeConst = 32)]
-	public string name;
+	public string FaceName;
 }
-
-[DllImport("kernel32.dll", SetLastError = true)] 
-public static extern IntPtr GetStdHandle(int nStdHandle);
 
 [DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
-extern static bool GetCurrentConsoleFontEx(
-	IntPtr hConsoleOutput,
-	bool   bMaximumWindow,
-	ref    CONSOLE_FONT_INFOEX lpConsoleCurrentFont
-);
+private static extern IntPtr CreateFile(string lpFileName, uint dwDesiredAccess, uint dwShareMode, IntPtr lpSecurityAttributes, uint dwCreationDisposition, uint dwFlagsAndAttributes, IntPtr hTemplateFile);
+
+[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+private static extern bool GetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFOEX lpConsoleCurrentFont);
+
+[DllImport("kernel32.dll", CharSet = CharSet.Unicode, SetLastError = true)]
+private static extern bool SetCurrentConsoleFontEx(IntPtr hConsoleOutput, bool bMaximumWindow, ref CONSOLE_FONT_INFOEX lpConsoleCurrentFont);
 
 [DllImport("kernel32.dll", SetLastError = true)]
-static extern Int32 SetCurrentConsoleFontEx(
-	IntPtr ConsoleOutput,
-	bool   MaximumWindow,
-	ref    CONSOLE_FONT_INFOEX lpConsoleCurrentFont
-);
-
-public static CONSOLE_FONT_INFOEX GetFont()
-{
-	CONSOLE_FONT_INFOEX ret = new CONSOLE_FONT_INFOEX();
-
-	ret.cbSize = (uint) Marshal.SizeOf(ret);
-	if (GetCurrentConsoleFontEx(GetStdHandle(-11), false, ref ret))
-	{
-		return ret;
-	}
-
-	throw new Exception("something went wrong with GetCurrentConsoleFontEx");
-}
-
-public static void SetFont(CONSOLE_FONT_INFOEX font)
-{
-	if (SetCurrentConsoleFontEx(GetStdHandle(-11), false, ref font ) == 0)
-	{
-		throw new Exception("something went wrong with SetCurrentConsoleFontEx");
-	}
-}
-
-public static void SetSize(short w, short h)
-{
-	CONSOLE_FONT_INFOEX font = GetFont();
-	font.size.X = w;
-	font.size.Y = h;
-	SetFont(font);
-}
+private static extern bool CloseHandle(IntPtr hObject);
 
 public static void SetName(string name)
 {
-	CONSOLE_FONT_INFOEX font = GetFont();
-	font.name = name;
-	SetFont(font);
+	// GENERIC_READ | GENERIC_WRITE, FILE_SHARE_READ | FILE_SHARE_WRITE, OPEN_EXISTING
+	// Unlike GetStdHandle(-11), CONOUT$ always refers to the console even if stdout is redirected
+	IntPtr handle = CreateFile("CONOUT$", 0x80000000 | 0x40000000, 3, IntPtr.Zero, 3, 0, IntPtr.Zero);
+	if (handle == new IntPtr(-1))
+	{
+		throw new Win32Exception(Marshal.GetLastWin32Error(), "Cannot open CONOUT$");
+	}
+
+	try
+	{
+		CONSOLE_FONT_INFOEX font = new CONSOLE_FONT_INFOEX();
+		font.cbSize = (uint)Marshal.SizeOf(typeof(CONSOLE_FONT_INFOEX));
+
+		if (!GetCurrentConsoleFontEx(handle, false, ref font))
+		{
+			throw new Win32Exception(Marshal.GetLastWin32Error(), "GetCurrentConsoleFontEx failed");
+		}
+
+		if (font.FaceName == name)
+		{
+			return;
+		}
+
+		font.FaceName = name;
+		font.FontFamily = 54;
+		font.FontWeight = 400;
+		// Let the console calculate the glyph width itself, as the current one may come from a raster font
+		font.dwFontSize.X = 0;
+		if (font.dwFontSize.Y <= 0)
+		{
+			font.dwFontSize.Y = 16;
+		}
+
+		if (!SetCurrentConsoleFontEx(handle, false, ref font))
+		{
+			throw new Win32Exception(Marshal.GetLastWin32Error(), "SetCurrentConsoleFontEx failed");
+		}
+	}
+	finally
+	{
+		CloseHandle(handle);
+	}
 }
 "@
 	}
+
 	if (-not ("WinAPI.ConsoleFont" -as [type]))
 	{
 		Add-Type @Signature
 	}
-	[WinAPI.ConsoleFont]::SetName("Consolas")
-}
 
-# We need to be sure that the Wrapper generated a powershell.exe process. If that true, we need to set Consolas font, unless a Sophia Script logo in console is distored
-$PowerShellParentProcessId = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {$_.Name -eq "powershell.exe"}).ParentProcessId
-$ParrentProcess = Get-Process -Id $PowerShellParentProcessId -ErrorAction Ignore
-$WrapperProcess = Get-Process -Name SophiaScriptWrapper -ErrorAction Ignore
-if ($ParrentProcess.Id -eq $WrapperProcess.Id)
-{
-	Set-ConsoleFont
+	[WinAPI.ConsoleFont]::SetName("Consolas")
 }

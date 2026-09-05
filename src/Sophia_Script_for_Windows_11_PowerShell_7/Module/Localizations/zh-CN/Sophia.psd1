@@ -82,7 +82,6 @@ EventViewerCustomViewDescription          = 进程创建和命令行审核事件
 ThirdPartyAVInstalled                     = 已安装第三方杀毒软件。
 NoHomeWindowsEditionSupport               = Windows 家庭版不支持"{0}"功能。
 EnableHardwareVT                          = UEFI中开启虚拟化。
-PhotosNotInstalled                        = 照片应用程序未安装。
 ThirdPartyArchiverInstalled               = 已安装第三方归档工具。
 gpeditNotSupported                        = Windows 家庭版不支持本地组策略编辑器管理单元 (gpedit.msc)。
 RestartWarning                            = 请务必重新启动您的电脑。

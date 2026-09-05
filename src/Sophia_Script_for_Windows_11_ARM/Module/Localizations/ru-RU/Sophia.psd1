@@ -80,7 +80,6 @@ EventViewerCustomViewDescription          = События создания но
 ThirdPartyAVInstalled                     = Установлен сторонний антивирус.
 NoHomeWindowsEditionSupport               = Редакция Windows Домашняя не поддерживает функцию "{0}".
 EnableHardwareVT                          = Включите виртуализацию в UEFI.
-PhotosNotInstalled                        = Приложение "Фотографии" не установлено.
 ThirdPartyArchiverInstalled               = Установлен сторонний архиватор.
 gpeditNotSupported                        = Редакция Windows Домашняя не поддерживает оснастку Редактора локальной групповой политики (gpedit.msc).
 RestartWarning                            = Обязательно перезагрузите ваш ПК.

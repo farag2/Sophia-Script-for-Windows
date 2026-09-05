@@ -80,7 +80,6 @@ EventViewerCustomViewDescription          = Folyamatok létrehozása és parancs
 ThirdPartyAVInstalled                     = Harmadik féltől származó vírusirtó van telepítve.
 NoHomeWindowsEditionSupport               = A Windows Home Edition nem támogatja a "{0}" funkciót.
 EnableHardwareVT                          = Virtualizáció engedélyezése UEFI-ben.
-PhotosNotInstalled                        = A "Fotók" alkalmazás nincs telepítve.
 ThirdPartyArchiverInstalled               = Egy harmadik fél által készített archívum van telepítve.
 gpeditNotSupported                        = A Windows Home Edition nem támogatja a Helyi csoportházirend-szerkesztő beépülő modult (gpedit.msc).
 RestartWarning                            = Indítsa újra a számítógépet.

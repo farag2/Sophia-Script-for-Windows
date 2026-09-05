@@ -80,7 +80,6 @@ EventViewerCustomViewDescription          = Süreç oluşturma ve komut satırı
 ThirdPartyAVInstalled                     = Üçüncü taraf bir antivirüs yüklüdür.
 NoHomeWindowsEditionSupport               = Windows Home sürümü "{0}" işlevini desteklemiyor.
 EnableHardwareVT                          = UEFI'dan sanallaştırmayı aktifleştirin.
-PhotosNotInstalled                        = "Fotoğraflar" uygulaması yüklü değil.
 ThirdPartyArchiverInstalled               = Üçüncü taraf bir arşivleyici yüklenmiştir.
 gpeditNotSupported                        = Windows Home sürümü, Yerel Grup İlkesi Düzenleyicisi ek bileşenini (gpedit.msc) desteklemez.
 RestartWarning                            = Bilgisayarınızı yeniden başlatmayı unutmayın.

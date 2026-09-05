@@ -295,7 +295,7 @@ Wrapper — це сторонній лончер із закритим вихі�
 | Windows 11 25H2+                         | [Остання стабільн][Windows-11-25h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Остання стабільн][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Остання стабільн][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 21H2 Enterprise LTSC 2021     | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 21H2 Enterprise LTSC 2021     | [Остання стабільн][Windows-10-LTSC-2021] | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | [Остання стабільн][Windows-10-LTSC-2019] | Enterprise          |
 
 ## Скріншоти

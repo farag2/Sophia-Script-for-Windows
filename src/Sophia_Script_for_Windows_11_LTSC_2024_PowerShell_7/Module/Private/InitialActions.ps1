@@ -859,10 +859,10 @@ function InitialActions
 	Clear-Host
 
 	# https://patorjk.com/software/taag/#p=display&f=Tmplr
-	Write-Information -MessageData "┏┓    ┓ •    ┏┓   •     ┏      ┓ ┏•   ┓ " -InformationAction Continue
-	Write-Information -MessageData "┗┓┏┓┏┓┣┓┓┏┓  ┗┓┏┏┓┓┏┓╋  ╋┏┓┏┓  ┃┃┃┓┏┓┏┫┏┓┓┏┏┏" -InformationAction Continue
-	Write-Information -MessageData "┗┛┗┛┣┛┛┗┗┗┻  ┗┛┗┛ ┗┣┛┗  ┛┗┛┛   ┗┻┛┗┛┗┗┻┗┛┗┻┛┛" -InformationAction Continue
-	Write-Information -MessageData "    ┛              ┛                   " -InformationAction Continue
+	Write-Information -MessageData "┌┐    ┐ ·    ┌┐   ·     ┌      ┐ ┌·   ┐ " -InformationAction Continue
+	Write-Information -MessageData "└┐┌┐┌┐├┐┐┌┐  └┐┌┌┐┐┌┐┼  ┼┌┐┌┐  │││┐┌┐┌┤┌┐┐┌┌┌" -InformationAction Continue
+	Write-Information -MessageData "└┘└┘├┘┘└└└┴  └┘└┘ └├┘└  ┘└┘┘   └┴┘└┘└└┴└┘└┴┘┘" -InformationAction Continue
+	Write-Information -MessageData "    ┘              ┘                   " -InformationAction Continue
 
 	Write-Verbose -Message $Localization.AskQuestion -Verbose
 	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose

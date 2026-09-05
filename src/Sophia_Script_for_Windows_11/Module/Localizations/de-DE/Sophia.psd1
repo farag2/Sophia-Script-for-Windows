@@ -80,7 +80,6 @@ EventViewerCustomViewDescription          = Prozesserstellungen und Befehlszeile
 ThirdPartyAVInstalled                     = Ein Antivirenprogramm eines Drittanbieters ist installiert.
 NoHomeWindowsEditionSupport               = Die Windows Home Edition unterstützt die Funktion "{0}" nicht.
 EnableHardwareVT                          = Virtualisierung in UEFI aktivieren.
-PhotosNotInstalled                        = Die App "Fotos" ist nicht installiert.
 ThirdPartyArchiverInstalled               = Ein Archivierungsprogramm eines Drittanbieters ist installiert.
 gpeditNotSupported                        = Die Windows Home Edition unterstützt das Snap-In "Lokaler Gruppenrichtlinien-Editor" (gpedit.msc) nicht.
 RestartWarning                            = Sicherstellen, dass Sie Ihren PC neu starten.

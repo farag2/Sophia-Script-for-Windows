@@ -910,23 +910,24 @@
         "Region": "UI & Personalization",
         "Control": "cmb",
         "Required": "false",
-        "Function": "StartAppsView",
+        "Function": "StartLayout",
         "Arg": {
             "Zero": {
-                "Tag": "Category",
+                "Tag": "Default",
                 "Opposite": "Two"
             },
             "One": {
-                "Tag": "Grid",
+                "Tag": "ShowMorePins",
                 "Opposite": "Zero"
             },
             "Two": {
-                "Tag": "List",
+                "Tag": "ShowMoreRecommendations",
                 "Opposite": "Zero"
             }
         },
-        "Preset": "Two",
-        "WindowsDefault": "Zero"
+        "Preset": "One",
+        "WindowsDefault": "Zero",
+        "LTSC2024": "true"
     },
     {
         "Region": "UI & Personalization",
@@ -993,29 +994,6 @@
             }
         },
         "Preset": "Zero",
-        "WindowsDefault": "Zero",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "UI & Personalization",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "StartLayout",
-        "Arg": {
-            "Zero": {
-                "Tag": "Default",
-                "Opposite": "Two"
-            },
-            "One": {
-                "Tag": "ShowMorePins",
-                "Opposite": "Zero"
-            },
-            "Two": {
-                "Tag": "ShowMoreRecommendations",
-                "Opposite": "Zero"
-            }
-        },
-        "Preset": "One",
         "WindowsDefault": "Zero",
         "LTSC2024": "true"
     },
@@ -1947,57 +1925,6 @@
             },
             "One": {
                 "Tag": "Hide"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "PrintCMDContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "CompressedFolderNewContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Hide"
-            },
-            "One": {
-                "Tag": "Show"
-            }
-        },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
-        "LTSC2024": "true"
-    },
-    {
-        "Region": "Context menu",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "MultipleInvokeContext",
-        "Arg": {
-            "Zero": {
-                "Tag": "Enable"
-            },
-            "One": {
-                "Tag": "Disable"
             }
         },
         "Preset": "Zero",
