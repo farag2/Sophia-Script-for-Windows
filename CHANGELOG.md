@@ -5,6 +5,44 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 6.3.0 | 7.3.0 — 05.08.2026
+
+* Code refactoring
+* Updated `Set-Association` function
+  * All WinAPI releated internal functions rewritten
+* Add new DNS provider `Wikimedia` to `DNSoverHTTPS` function
+  * DNSoverHTTPS -Wikimedia
+  * https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions
+* Merged `PowerShellModulesLogging`, `PowerShellScriptsLogging`, and `EventViewerCustomView` into one `EventViewerCustomView` function
+  * Custom Event Viewer now catches `EventID 400, 403 800, 4103 and 4104` to help user identify arguments for all launched apps
+  * Please reapply `EventViewerCustomView -Enable` to add new functionality
+* The following functions were removed as unnecessary ones
+  * Windows 11
+    * EditWithClipchampContext
+    * EditWithPhotosContext
+    * EditWithPaintContext
+    * OpenWindowsTerminalContext
+  * Windows 10
+    * Uninstall-PCHealthCheck
+    * CastToDeviceContext
+    * ShareContext
+    * EditWithPaint3DContext
+    * ImagesEditContext
+    * PrintCMDContext
+    * SendToContext
+    * BitmapImageNewContext
+    * RichTextDocumentNewContext
+    * CompressedFolderNewContext
+    * MultipleInvokeContext
+* Updated `CleanupTask`, `SoftwareDistributionTask`, and `TempTask`
+  * Updated code to detect `Do not disturb` mode
+  * Functions now use an unofficial `conhost.exe --headless` to suppress any popup windows instead of using vbs files
+    * Please reapply `CleanupTask -Registry`, `SoftwareDistributionTask -Registry`, and `TempTask -Registry` to add new functionality
+* Added VirusTotal check for [CI/CD](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/VirusTotal.ps1)
+* Updated `WinGet_SFX_config.txt` for creating SFX WinGet archive
+* Improved localizations
+* Minor changes
+
 ## 6.2.0 | 7.2.0 — 31.07.2026
 
 * Code refactoring
