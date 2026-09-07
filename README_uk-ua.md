@@ -303,13 +303,13 @@ iwr sl.sophia.team -useb | iex
 Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` залежно від вашої версії Windows.
 
 ```powershell
-choco install sophia --version=7.2.0 --force --yes
+choco install sophia --force --yes
 ```
 
 Завантажте та розпакуйте в папку Завантаження останню версію `Sophia Script for Windows` для PowerShell 7 залежно від вашої версії Windows.
 
 ```powershell
-choco install sophia --version=7.2.0 --params "/PS7" --force --yes
+choco install sophia --params "/PS7" --force --yes
 ```
 
 ```powershell
@@ -325,7 +325,7 @@ choco uninstall sophia --force --yes
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept-source-agreements --force
 
-& "$DownloadsFolder\sophiascript.exe"
+& "$DownloadsFolder\sophiascript.exe"; Start-Sleep -Seconds 3; Remove-Item -Path "$DownloadsFolder\sophiascript.exe" -Force
 ```
 
 ```powershell
@@ -411,13 +411,13 @@ Wrapper — це сторонній лончер із закритим вихі�
 [Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 [Windows-11-25h2]: https://support.microsoft.com/topic/windows-11-version-25h2-update-history-99c7f493-df2a-4832-bd2d-6706baa0dec0
 
-|                Версія                    |                 Збіркa                   |       Видання       |
-|:-----------------------------------------|:----------------------------------------:|:-------------------:|
-| Windows 11 25H2+                         | [Остання стабільн][Windows-11-25h2]      | Home/Pro/Enterprise |
-| Windows 10 x64 22H2                      | [Остання стабільн][Windows-10]           | Home/Pro/Enterprise |
-| Windows 11 Enterprise LTSC 2024          | [Остання стабільн][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 21H2 Enterprise LTSC 2021     | [Остання стабільн][Windows-10-LTSC-2021] | Enterprise          |
-| Windows 10 x64 1809 Enterprise LTSC 2019 | [Остання стабільн][Windows-10-LTSC-2019] | Enterprise          |
+|                Версія                    |                 Збiрка                    |       Видання       |
+|:-----------------------------------------|:-----------------------------------------:|:-------------------:|
+| Windows 11 25H2+                         | [Остання стабільна][Windows-11-25h2]      | Home/Pro/Enterprise |
+| Windows 10 x64 22H2                      | [Остання стабільна][Windows-10]           | Home/Pro/Enterprise |
+| Windows 11 Enterprise LTSC 2024          | [Остання стабільна][Windows-11-LTSC-2024] | Enterprise          |
+| Windows 10 21H2 Enterprise LTSC 2021     | [Остання стабільна][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 x64 1809 Enterprise LTSC 2019 | [Остання стабільн][Windows-10-LTSC-2019]  | Enterprise          |
 
 ## Скріншоти
 
@@ -471,5 +471,5 @@ Wrapper — це сторонній лончер із закритим вихі�
 
 [SophiApp](https://github.com/Sophia-Community/SophiApp) перебуває в активній розробці. 🚀
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/0.gif)
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/1.png)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.gif)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)

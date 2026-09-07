@@ -303,13 +303,13 @@ iwr sl.sophia.team -useb | iex
 Laden Sie die neueste Version von `Sophia Script for Windows` entsprechend Ihrer Windows-Version herunter und entpacken Sie sie in den Ordner Downloads.
 
 ```powershell
-choco install sophia --version=7.2.0 --force --yes
+choco install sophia --force --yes
 ```
 
 Laden Sie die neueste Version von `Sophia Script for Windows` für PowerShell 7 entsprechend Ihrer Windows-Version herunter und entpacken Sie sie in den Ordner Downloads.
 
 ```powershell
-choco install sophia --version=7.2.0 --params "/PS7" --force --yes
+choco install sophia --params "/PS7" --force --yes
 ```
 
 ```powershell
@@ -325,7 +325,7 @@ Laden Sie die neueste Version von `Sophia Script for Windows` für Windows 11 un
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept-source-agreements --force
 
-& "$DownloadsFolder\sophiascript.exe"
+& "$DownloadsFolder\sophiascript.exe"; Start-Sleep -Seconds 3; Remove-Item -Path "$DownloadsFolder\sophiascript.exe" -Force
 ```
 
 ```powershell
@@ -415,7 +415,7 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 | Windows 11 25H2+                         | [Aktuelle stabile Version][Windows-11-25h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Aktuelle stabile Version][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Aktuelle stabile Version][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 21H2 Enterprise LTSC 2021     | [Latest stable][Windows-10-LTSC-2021]            | Enterprise          |
+| Windows 10 21H2 Enterprise LTSC 2021     | [Aktuelle stabile Version][Windows-10-LTSC-2021] | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | [Aktuelle stabile Version][Windows-10-LTSC-2019] | Enterprise          |
 
 ## Screenshots
@@ -470,5 +470,5 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
 [SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) befindet sich in der Entwicklung. 🚀
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/0.gif)
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/1.png)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.gif)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)

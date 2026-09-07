@@ -303,13 +303,13 @@ iwr sl.sophia.team -useb | iex
 Download and expand to Downloads folder latest `Sophia Script for Windows` version depending to your Windows version you use.
 
 ```powershell
-choco install sophia --version=7.2.0 --force --yes
+choco install sophia --force --yes
 ```
 
 Download and expand to Downloads folder latest `Sophia Script for Windows` version for PowerShell 7 depending to your Windows version you use.
 
 ```powershell
-choco install sophia --version=7.2.0 --params "/PS7" --force --yes
+choco install sophia --params "/PS7" --force --yes
 ```
 
 ```powershell
@@ -325,7 +325,7 @@ Download and expand to Downloads folder latest `Sophia Script for Windows` versi
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept-source-agreements --force
 
-& "$DownloadsFolder\sophiascript.exe"
+& "$DownloadsFolder\sophiascript.exe"; Start-Sleep -Seconds 3; Remove-Item -Path "$DownloadsFolder\sophiascript.exe" -Force
 ```
 
 ```powershell
@@ -471,5 +471,5 @@ Read more [here](./Wrapper/README.md)
 
 [SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) is in ongoing development. 🚀
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/0.gif)
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/1.png)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.gif)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)
