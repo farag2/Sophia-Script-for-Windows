@@ -21,7 +21,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          . "Scripts\WinGet.ps1"
+          . "Scripts\WinGet\WinGet.ps1"
 
       - name: Publish to WinGet
         run: |
@@ -36,4 +36,4 @@ jobs:
           }
           Invoke-WebRequest @Parameters
 
-          .\wingetcreate.exe submit --prtitle "New Version: TeamSophia.SophiaScript version $Version" --token "${{ secrets.WINGET_PAT }}" "Scripts\WinGet_Manifests"
+          .\wingetcreate.exe submit --prtitle "New Version: TeamSophia.SophiaScript version $Version" --token "${{ secrets.WINGET_PAT }}" "Scripts\WinGet\WinGet_Manifests"

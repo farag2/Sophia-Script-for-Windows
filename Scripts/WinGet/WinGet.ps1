@@ -10,6 +10,8 @@ $Headers = @{
 	Accept        = "application/vnd.github+json"
 	Authorization = "Bearer $Token"
 }
+
+<#
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/microsoft/winget-pkgs/contents/doc/manifest/schema"
 	Headers         = $Headers
@@ -17,6 +19,29 @@ $Parameters = @{
 	Verbose         = $true
 }
 $LatestManifest = (Invoke-RestMethod @Parameters).name | Sort-Object -Property {[System.Version]$_} | Select-Object -Last 1
+#>
+
+$Parameters = @{
+	Uri             = "https://raw.githubusercontent.com/microsoft/winget-pkgs/refs/heads/master/Tools/YamlCreate.ps1"
+	UseBasicParsing = $true
+	Verbose         = $true
+}
+$Content = (Invoke-WebRequest @Parameters).Content
+
+$AST = [System.Management.Automation.Language.Parser]::ParseInput($Content, [ref]$null, [ref]$null)
+$LatestManifest = $AST.Find(
+	{
+		param
+		(
+			$Node
+		)
+
+		($Node -is [System.Management.Automation.Language.AssignmentStatementAst]) -and
+		($Node.Left -is [System.Management.Automation.Language.VariableExpressionAst]) -and
+		($Node.Left.VariablePath.UserPath -eq "ManifestVersion")
+	},
+	$true
+).Right.Expression.Value
 
 if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
 {
