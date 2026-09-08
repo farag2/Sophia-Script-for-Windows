@@ -645,6 +645,9 @@
             },
             "One": {
                 "Tag": "Store"
+            },
+            "Two": {
+                "Tag": "Outlook"
             }
         },
         "Preset": "",

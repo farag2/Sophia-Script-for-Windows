@@ -47,5 +47,9 @@
     "ShowMorePins": "Mehr Pins anzeigen",
     "ShowMoreRecommendations": "Weitere Empfehlungen anzeigen",
     "SearchIconLabel": "Beschriftung des Suchsymbols",
-    "Skip": "Überspringen"
+    "Skip": "Überspringen",
+	"Always": "Stets",
+	"Full": "Voll",
+	"Grid": "Netz",
+	"List": "Liste"
 }
