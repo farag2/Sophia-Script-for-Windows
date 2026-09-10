@@ -471,5 +471,5 @@ Wrapper — це сторонній лончер із закритим вихі�
 
 [SophiApp](https://github.com/Sophia-Community/SophiApp) перебуває в активній розробці. 🚀
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.gif)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.png)
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)

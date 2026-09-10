@@ -471,5 +471,5 @@ Wrapper — это сторонний лончер с закрытым исхо�
 
 [SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) находится в активной разработке. 🚀
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.gif)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.png)
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)

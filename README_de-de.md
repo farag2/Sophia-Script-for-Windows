@@ -470,5 +470,5 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
 [SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) befindet sich in der Entwicklung. 🚀
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.gif)
+![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.png)
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)
