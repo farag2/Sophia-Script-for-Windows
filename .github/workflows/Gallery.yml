@@ -1,0 +1,57 @@
+name: Gallery push
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Gallery:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: Publish to Gallery
+        shell: pwsh
+        env:
+          GALLERY_KEY: ${{ secrets.GALLERY_KEY }}
+        run: |
+          # https://www.powershellgallery.com/packages/SophiaScript
+
+          $Token = $env:GITHUB_TOKEN
+          $Headers = @{
+              Accept        = "application/vnd.github+json"
+              Authorization = "Bearer $Token"
+          }
+
+          # Get latest version tag for Windows 11
+          $Parameters = @{
+              Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/sophia_script_versions.json"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          $Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+
+          $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+          $Parameters = @{
+              Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($Version)/Sophia.Script.for.Windows.11.v$($Version).zip"
+              OutFile         = "$DownloadsFolder\Sophia.Script.for.Windows.11.v$($Version).zip"
+              UseBasicParsing = $true
+              Verbose         = $true
+          }
+          $Request = Invoke-WebRequest @Parameters
+
+          $Parameters = @{
+              Path            = "$DownloadsFolder\Sophia.Script.for.Windows.11.v$($Version).zip"
+              DestinationPath = $DownloadsFolder
+              Force           = $true
+          }
+          Expand-Archive @Parameters
+
+          $Parameters = @{
+              Path       = "$DownloadsFolder\Sophia_Script_for_Windows_11_v$($Version)"
+              ApiKey     = $env:GALLERY_KEY
+              Repository = "PSGallery"
+              Verbose    = $true
+          }
+          Publish-PSResource @Parameters
