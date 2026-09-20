@@ -1,0 +1,10 @@
+{
+	"Windows_10_URL": "https://learn.microsoft.com/en-us/windows/release-health/release-information",
+	"Windows_11_URL": "https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information",
+	"Windows_10_Minor": "7663",
+	"Windows_10_LTSC_2019_Minor": "9121",
+	"Windows_10_LTSC_2021_Minor": "7663",
+	"Windows_11_LTSC_2024_Minor": "9168",
+	"Windows_11_Minor": "9168",
+	"Windows_11_Major": "26200"
+}
