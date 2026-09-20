@@ -41,17 +41,13 @@ try
 }
 catch [System.Net.WebException]
 {
-	Write-Warning -Message "https://github.com is unreachable. Please fix connection or change your DNS records."
+	Write-Warning -Message "https://codeload.github.com is unreachable. Please check Internet connection or change your DNS records."
 	Write-Information -MessageData "" -InformationAction Continue
 
-	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-	{
-		$DNS = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
-	}
-	else
-	{
-		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
-	}
+	$DNS = (Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.Protocol -eq "NetMgmt"} | Get-NetAdapter | Where-Object -FilterScript {
+		($_.Status -eq "Up") -and (-not $_.Virtual)
+	} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+
 	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -172,7 +168,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 
 try
 {
-	# tar.exe cannot expand archive if username contains unicode characters, so we download archive to the system drive root
+	# tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemDrive\Sophia_Script_Temp folder
 	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\main.zip" -C "$env:SystemDrive\Sophia_Script_Temp" --strip-components=2 "Sophia-Script-for-Windows-main/src/$Version"
 }
 catch
@@ -260,7 +256,7 @@ $Parameters = @{
 }
 Copy-Item @Parameters
 
-Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
+Remove-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -Force -Recurse
 
 switch ($Version)
 {

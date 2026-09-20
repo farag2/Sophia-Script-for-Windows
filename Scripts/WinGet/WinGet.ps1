@@ -52,13 +52,14 @@ if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
 }
 
 # Get latest version tag for Windows 11
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
 $Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/sophia_script_versions.json"
+	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json"
 	Headers         = $Headers
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-$Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+$Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11
 
 # Get archive hash
 $Parameters = @{

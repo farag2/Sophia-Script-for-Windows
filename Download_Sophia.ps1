@@ -31,6 +31,7 @@ try
 	$Parameters = @{
 		Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
 		UseBasicParsing = $true
+		Verbose         = $true
 	}
 	$LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
 }
@@ -39,14 +40,10 @@ catch [System.Net.WebException]
 	Write-Warning -Message "https://api.github.com is unreachable. Please check Internet connection or change your DNS records."
 	Write-Information -MessageData "" -InformationAction Continue
 
-	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-	{
-		$DNS = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
-	}
-	else
-	{
-		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
-	}
+	$DNS = (Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.Protocol -eq "NetMgmt"} | Get-NetAdapter | Where-Object -FilterScript {
+		($_.Status -eq "Up") -and (-not $_.Virtual)
+	} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+
 	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -59,24 +56,21 @@ catch [System.Net.WebException]
 try
 {
 	$Parameters = @{
-		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
+		Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json"
 		UseBasicParsing = $true
+		Verbose         = $true
 	}
-	$JSONVersions = Invoke-RestMethod @Parameters
+	$JSON = Invoke-RestMethod @Parameters
 }
 catch [System.Net.WebException]
 {
 	Write-Warning -Message "https://raw.githubusercontent.com is unreachable. Please check Internet connection or change your DNS records."
 	Write-Information -MessageData "" -InformationAction Continue
 
-	if ((Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent)
-	{
-		$DNS = (Get-NetRoute | Where-Object -FilterScript {$_.DestinationPrefix -eq "0.0.0.0/0"} | Get-NetAdapter | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
-	}
-	else
-	{
-		$DNS = (Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"} | Get-NetIPInterface -AddressFamily IPv4 | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
-	}
+	$DNS = (Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.Protocol -eq "NetMgmt"} | Get-NetAdapter | Where-Object -FilterScript {
+		($_.Status -eq "Up") -and (-not $_.Virtual)
+	} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+
 	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
@@ -96,7 +90,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Windows 10 LTSC 2019
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2019")
 		{
-			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2019
+			$LatestRelease = $JSON.Sophia_Script_Windows_10_LTSC_2019
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
 				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -129,10 +123,10 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 	"19044"
 	{
-		# Check for Windows 10 LTSC 2021
+		# Windows 10 LTSC 2021
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2021")
 		{
-			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_LTSC2021
+			$LatestRelease = $JSON.Sophia_Script_Windows_10_LTSC_2021
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
 				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -165,9 +159,10 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 	"19045"
 	{
+		$LatestRelease = $JSON.Sophia_Script_Windows_10
+
 		if ($Host.Version.Major -eq 5)
 		{
-			$LatestRelease = $JSONVersions.Sophia_Script_Windows_10_PowerShell_5_1
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
 				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -180,7 +175,6 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
-			$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_PowerShell_7
 			$Parameters = @{
 				Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip"
 				OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -197,10 +191,11 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		# Windows 11 LTSC 2024
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2024")
 		{
+			$LatestRelease = $JSON.Sophia_Script_Windows_11_LTSC_2024
+
 			# PowerShell 5.1
 			if ($Host.Version.Major -eq 5)
 			{
-				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_LTSC2024_PowerShell_5_1
 				$Parameters = @{
 					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.v$LatestRelease.zip"
 					OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -214,7 +209,6 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			else
 			{
 				# PowerShell 7
-				$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_LTSC2024_PowerShell_7
 				$Parameters = @{
 					Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7.v$LatestRelease.zip"
 					OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -228,13 +222,14 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
+			$LatestRelease = $JSON.Sophia_Script_Windows_11
+
 			# PowerShell 5.1
 			if ($Host.Version.Major -eq 5)
 			{
 				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
 				{
 					# Arm based
-					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_Arm_PowerShell_5_1
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.ARM.v$LatestRelease.zip"
 						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -247,7 +242,6 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 				}
 				else
 				{
-					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_5_1
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
 						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -261,11 +255,12 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 			}
 			else
 			{
+				$LatestRelease = $JSON.Sophia_Script_Windows_11
+
 				# PowerShell 7
 				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
 				{
 					# Arm based
-					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_Arm_PowerShell_7
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.ARM.PowerShell.7.v$LatestRelease.zip"
 						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -278,7 +273,6 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 				}
 				else
 				{
-					$LatestRelease = $JSONVersions.Sophia_Script_Windows_11_PowerShell_7
 					$Parameters = @{
 						Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
 						OutFile         = "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip"
@@ -422,7 +416,7 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 
 Start-Sleep -Seconds 1
 
-Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia_Script_for_Windows_$([System.Environment]::OSVersion.Version.Major)"} | ForEach-Object -Process {
+Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia_Script_for_Windows"} | ForEach-Object -Process {
 	# Show window, if minimized
 	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
 

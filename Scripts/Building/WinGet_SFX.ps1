@@ -4,14 +4,15 @@ Write-Verbose -Message SFX -Verbose
 winget install --id RARLab.WinRAR --accept-source-agreements --force
 
 # Get latest version tag for Windows 11
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
 $Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/sophia_script_versions.json"
+	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Sophia_Script_Releases.json"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-$Latest_Release_Windows_11_PowerShell_5_1 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11_PowerShell_5_1
+$Latest_Release_Windows_11 = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11
 
-(Get-Content -Path Scripts\WinGet\WinGet_SFX_config.txt -Encoding utf8NoBOM -Raw) | Foreach-Object -Process {$_ -replace "SophiaScriptVersion", $Latest_Release_Windows_11_PowerShell_5_1} | Set-Content -Path Scripts\WinGet\WinGet_SFX_config.txt -Encoding utf8NoBOM -Force
+(Get-Content -Path Scripts\WinGet\WinGet_SFX_config.txt -Encoding utf8NoBOM -Raw) | Foreach-Object -Process {$_ -replace "SophiaScriptVersion", $Latest_Release_Windows_11} | Set-Content -Path Scripts\WinGet\WinGet_SFX_config.txt -Encoding utf8NoBOM -Force
 
 # Create SFX archive
-& "$env:ProgramFiles\WinRAR\RAR.exe" a -sfx -z"Scripts\WinGet\WinGet_SFX_config.txt" -ep1 -r "Sophia_Script\Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11_PowerShell_5_1)_WinGet.exe" "Sophia_Script\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11_PowerShell_5_1)\*"
+& "$env:ProgramFiles\WinRAR\RAR.exe" a -sfx -z"Scripts\WinGet\WinGet_SFX_config.txt" -ep1 -r "Sophia_Script\Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11)_WinGet.exe" "Sophia_Script\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11)\*"

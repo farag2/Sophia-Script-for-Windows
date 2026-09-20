@@ -110,7 +110,7 @@ Diff from vOldVersion
   </tr>
   <tr>
     <td align="left">
-      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.LTSC.2019.vSophia_Script_Windows_10_LTSC2019.zip">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.LTSC.2019.vSophia_Script_Windows_10_LTSC_2019.zip">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/LTSC%202019.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/LTSC%202019.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=light">
@@ -118,7 +118,7 @@ Diff from vOldVersion
       </a>
     </td>
     <td align="left">
-      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_10_LTSC2019">
+      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_10_LTSC_2019">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=light">
@@ -126,7 +126,7 @@ Diff from vOldVersion
       </a>
     </td>
     <td align="left">
-      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.LTSC.2024.vSophia_Script_Windows_11_LTSC2024_PowerShell_5_1.zip">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.LTSC.2024.vSophia_Script_Windows_11_LTSC_2024_PowerShell_5_1.zip">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/PowerShell%205.1.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=light">
@@ -134,7 +134,7 @@ Diff from vOldVersion
       </a>
     </td>
     <td align="left">
-      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_11_LTSC2024_PowerShell_5_1">
+      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=light">
@@ -144,7 +144,7 @@ Diff from vOldVersion
   </tr>
   <tr>
     <td align="left">
-      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.LTSC.2021.vSophia_Script_Windows_10_LTSC2021.zip">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.10.LTSC.2021.vSophia_Script_Windows_10_LTSC_2021.zip">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/LTSC%202021.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/LTSC%202021.svg?label=Windows%2010&amp;variant=outline&amp;size=sm&amp;mode=light">
@@ -152,7 +152,7 @@ Diff from vOldVersion
       </a>
     </td>
     <td align="left">
-      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_10_LTSC2021">
+      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_10_LTSC_2021">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=light">
@@ -160,7 +160,7 @@ Diff from vOldVersion
       </a>
     </td>
     <td align="left">
-      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7.vSophia_Script_Windows_11_LTSC2024_PowerShell_7.zip">
+      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7.vSophia_Script_Windows_11_LTSC_2024_PowerShell_7.zip">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20LTSC%202024&amp;variant=outline&amp;size=sm&amp;mode=light">
@@ -168,7 +168,7 @@ Diff from vOldVersion
       </a>
     </td>
     <td align="left">
-      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_11_LTSC2024_PowerShell_7">
+      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Windows_11_LTSC_2024_PowerShell_7">
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=light">

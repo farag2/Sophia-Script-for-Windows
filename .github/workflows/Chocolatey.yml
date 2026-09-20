@@ -17,7 +17,7 @@ jobs:
 
       - name: Pack and push to Chocolatey
         run: |
-          # $Latest_Release.Sophia_Script_Windows_11_PowerShell_5_1
+          # $Latest_Release.Sophia_Script_Windows_11
           Write-Verbose -Message $env:LatestRelease -Verbose
 
           # Replace variables with script latest versions
