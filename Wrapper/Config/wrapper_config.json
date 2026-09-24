@@ -3,7 +3,7 @@
         "psd1Filename": "SophiaScript.psd1",
         "folderPsd1Filename": "Module\\Manifest",
         "psm1Filename": "Sophia.psm1",
-        "folderPsm1Filename": "Module",      
+        "folderPsm1Filename": "Module",
         "functionControlsPerColumn": "100",
         "urlSophiaScriptVersionsJson": "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json",
         "urlLatestSophiaScriptDownloads": "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest",
