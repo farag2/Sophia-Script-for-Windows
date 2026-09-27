@@ -40,9 +40,8 @@ catch [System.Net.WebException]
 	Write-Warning -Message "https://api.github.com is unreachable. Please check Internet connection or change your DNS records."
 	Write-Information -MessageData "" -InformationAction Continue
 
-	$DNS = (Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.Protocol -eq "NetMgmt"} | Get-NetAdapter | Where-Object -FilterScript {
-		($_.Status -eq "Up") -and (-not $_.Virtual)
-	} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+	$InterfaceIndex = (Find-NetRoute -RemoteIPAddress "1.1.1.1" | Select-Object -First 1).InterfaceIndex
+	$DNS = (Get-NetAdapter -InterfaceIndex $InterfaceIndex | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
 
 	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
@@ -67,9 +66,8 @@ catch [System.Net.WebException]
 	Write-Warning -Message "https://raw.githubusercontent.com is unreachable. Please check Internet connection or change your DNS records."
 	Write-Information -MessageData "" -InformationAction Continue
 
-	$DNS = (Get-NetRoute -AddressFamily IPv4 | Where-Object -FilterScript {$_.Protocol -eq "NetMgmt"} | Get-NetAdapter | Where-Object -FilterScript {
-		($_.Status -eq "Up") -and (-not $_.Virtual)
-	} | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
+	$InterfaceIndex = (Find-NetRoute -RemoteIPAddress "1.1.1.1" | Select-Object -First 1).InterfaceIndex
+	$DNS = (Get-NetAdapter -InterfaceIndex $InterfaceIndex | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
 
 	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
 
