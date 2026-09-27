@@ -242,3 +242,55 @@ if (-not ("WinAPI.Action" -as [type]))
 {
 	Add-Type @Signature
 }
+
+# Simulate pressing F5 to refresh Desktop and refresh desktop icons, environment variables, taskbar
+$Signature = @{
+	Namespace        = "WinAPI"
+	Name             = "UpdateEnvironment"
+	Language         = "CSharp"
+	CompilerOptions  = $CompilerParameters
+	MemberDefinition = @"
+private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
+private const int WM_SETTINGCHANGE = 0x1a;
+private const int SMTO_ABORTIFHUNG = 0x0002;
+
+[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
+
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
+
+[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
+
+public static void Refresh()
+{
+	// Update desktop icons
+	SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
+
+	// Update environment variables
+	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
+
+	// Update taskbar
+	SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
+}
+
+private static readonly IntPtr hWnd = new IntPtr(65535);
+private const int Msg = 273;
+// Virtual key ID of the F5 in File Explorer
+private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
+
+[DllImport("user32.dll", SetLastError=true)]
+public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
+
+public static void PostMessage()
+{
+	// Simulate pressing F5 to refresh the desktop
+	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
+}
+"@
+}
+if (-not ("WinAPI.UpdateEnvironment" -as [type]))
+{
+	Add-Type @Signature
+}

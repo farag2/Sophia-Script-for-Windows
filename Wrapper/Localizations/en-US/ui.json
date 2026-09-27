@@ -87,7 +87,7 @@
             "messageBoxFilesMissingClose": "Files missing so Sophia Script Wrapper will close.",
             "messageBoxConsoleEmpty": "The console is empty.\nClick 'Refresh Console' button to create script with your selections.",
             "messageBoxPowerShellVersionNotInstalled": "PowerShell version you selected is not installed.",
-			"messageBoxPresetDoesNotMatchOS": "Preset did not match current OS version."
+            "messageBoxPresetDoesNotMatchOS": "Preset did not match current OS version."
         }
     },
     {

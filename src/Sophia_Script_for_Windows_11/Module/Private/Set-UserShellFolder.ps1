@@ -28,7 +28,7 @@ function Global:Set-UserShellFolder
 
 	# Get current user folder path
 	$CurrentUserFolderPath = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserFolderRegistry[$UserFolder]
-	if ($CurrentUserFolder -ne $Path)
+	if ($CurrentUserFolderPath -ne $Path)
 	{
 		if (-not (Test-Path -Path $Path))
 		{
@@ -44,10 +44,9 @@ function Global:Set-UserShellFolder
 		# Save desktop.ini in the UTF-16 LE encoding
 		Set-Content -Path "$Path\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
 		(Get-Item -Path "$Path\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
-		(Get-Item -Path "$Path\desktop.ini" -Force).Refresh()
 
 		# Warn user is some files left in an old folder
-		if ((Get-ChildItem -Path $CurrentUserFolderPath -ErrorAction Ignore | Measure-Object).Count -ne 0)
+		if (Get-ChildItem -Path $CurrentUserFolderPath -ErrorAction Ignore | Select-Object -First 1)
 		{
 			Write-Warning -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath)
 			Write-Error -Message ($Localization.UserShellFolderNotEmpty -f $CurrentUserFolderPath) -ErrorAction SilentlyContinue

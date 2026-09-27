@@ -1426,11 +1426,11 @@
   },
   {
     "Region": "UWP apps",
-    "Function": "Uninstall-UWPApps -ForAllUsers",
+    "Function": "Uninstall-UWPApps -AllUsers",
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users."
+        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"AllUsers\" argument sets a checkbox to unistall packages for all users."
       }
     }
   },
@@ -1645,11 +1645,7 @@
         "ToolTip": "Enable DNS-over-HTTPS using OpenDNS DNS."
       },
       "Six": {
-        "Tag": "Wikimedia",
-        "ToolTip": "Enable DNS-over-HTTPS using Wikimedia DNS."
-      },
-      "Seven": {
-        "Tag": "Disable",
+        "Tag": "Reset",
         "ToolTip": "Set default ISP's DNS records (default value)."
       }
     }

@@ -21,8 +21,8 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 <kbd>
 	<a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
 		<picture>
-			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Human%20Coded%20100%25.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
-			<img src="https://shieldcn.dev/badge/Human%20Coded%20100%25.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
+			<source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Human%20Coded.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
+			<img src="https://shieldcn.dev/badge/Human%20Coded.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
 		</picture>
 	</a>
 </kbd>

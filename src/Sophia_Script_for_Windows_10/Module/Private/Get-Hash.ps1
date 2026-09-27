@@ -48,118 +48,115 @@ function Get-Hash
 		Language           = "CSharp"
 		CompilerParameters = $CompilerParameters
 		MemberDefinition   = @"
-public static uint[] WordSwap(byte[] a, int sz, byte[] md5)
+// Secret static string stored in %SystemRoot%\System32\shell32.dll
+private const string UserExperience = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}";
+
+[DllImport("advapi32.dll", CharSet = CharSet.Unicode)]
+private static extern int RegQueryInfoKey(
+	Microsoft.Win32.SafeHandles.SafeRegistryHandle hKey,
+	IntPtr lpClass,
+	IntPtr lpcchClass,
+	IntPtr lpReserved,
+	IntPtr lpcSubKeys,
+	IntPtr lpcbMaxSubKeyLen,
+	IntPtr lpcbMaxClassLen,
+	IntPtr lpcValues,
+	IntPtr lpcbMaxValueNameLen,
+	IntPtr lpcbMaxValueLen,
+	IntPtr lpcbSecurityDescriptor,
+	out long lpftLastWriteTime
+);
+
+private static string GetKeyTimestamp(string subKey)
 {
-	if (sz < 2 || (sz & 1) == 1)
+	using (Microsoft.Win32.RegistryKey key = Microsoft.Win32.Registry.CurrentUser.OpenSubKey(subKey))
 	{
-		throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
-	}
-
-	unchecked
-	{
-		uint o1 = 0;
-		uint o2 = 0;
-		int ta = 0;
-		int ts = sz;
-		int ti = ((sz - 2) >> 1) + 1;
-
-		uint c0 = (BitConverter.ToUInt32(md5, 0) | 1) + 0x69FB0000;
-		uint c1 = (BitConverter.ToUInt32(md5, 4) | 1) + 0x13DB0000;
-
-		for (uint i = (uint)ti; i > 0; i--)
+		if (key == null)
 		{
-			uint n = BitConverter.ToUInt32(a, ta) + o1;
-			ta += 8;
-			ts -= 2;
-
-			uint v1 = 0x79F8A395 * (n * c0 - 0x10FA9605 * (n >> 16)) + 0x689B6B9F * ((n * c0 - 0x10FA9605 * (n >> 16)) >> 16);
-			uint v2 = 0xEA970001 * v1 - 0x3C101569 * (v1 >> 16);
-			uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
-			uint v4 = v3 * c1 - 0x3CE8EC25 * (v3 >> 16);
-			uint v5 = 0x59C3AF2D * v4 - 0x2232E0F1 * (v4 >> 16);
-
-			o1 = 0x1EC90001 * v5 + 0x35BD1EC9 * (v5 >> 16);
-			o2 += o1 + v2;
+			throw new ArgumentException("Registry key not found: HKCU\\" + subKey, "subKey");
 		}
 
-		if (ts == 1)
+		long fileTime;
+		int result = RegQueryInfoKey(key.Handle, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, IntPtr.Zero, out fileTime);
+		if (result != 0)
 		{
-			uint n = BitConverter.ToUInt32(a, ta) + o1;
-
-			uint v1 = n * c0 - 0x10FA9605 * (n >> 16);
-			uint v2 = 0xEA970001 * (0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) - 0x3C101569 * ((0x79F8A395 * v1 + 0x689B6B9F * (v1 >> 16)) >> 16);
-			uint v3 = v2 * c1 - 0x3CE8EC25 * (v2 >> 16);
-
-			o1 = 0x1EC90001 * (0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) + 0x35BD1EC9 * ((0x59C3AF2D * v3 - 0x2232E0F1 * (v3 >> 16)) >> 16);
-			o2 += o1 + v2;
+			throw new InvalidOperationException(String.Format("RegQueryInfoKey failed: 0x{0:X8}", result));
 		}
 
-		uint[] ret = new uint[2];
-		ret[0] = o1;
-		ret[1] = o2;
-		return ret;
+		// Truncate to whole minutes: 1 minute = 600 000 000 * 100 ns
+		fileTime -= fileTime % 600000000L;
+
+		return fileTime.ToString("x16");
 	}
 }
 
-public static uint[] Reversible(byte[] a, int sz, byte[] md5)
+public static string Get(string extension, string sid, string progId, string subKey)
 {
-	if (sz < 2 || (sz & 1) == 1)
+	string baseInfo = (extension + sid + progId + GetKeyTimestamp(subKey) + UserExperience).ToLowerInvariant();
+
+	// UTF-16LE with the terminating null character included
+	byte[] data = System.Text.Encoding.Unicode.GetBytes(baseInfo + "\0");
+
+	byte[] md5;
+	using (System.Security.Cryptography.MD5 hasher = System.Security.Cryptography.MD5.Create())
 	{
-		throw new ArgumentException(String.Format("Invalid input size: {0}", sz), "sz");
+		md5 = hasher.ComputeHash(data);
+	}
+
+	// Number of DWORDs, rounded down to an even value
+	int length = (data.Length >> 2) & ~1;
+	if (length < 2)
+	{
+		throw new ArgumentException("Input data is too short");
 	}
 
 	unchecked
 	{
-		uint o1 = 0;
-		uint o2 = 0;
-		int ta = 0;
-		int ts = sz;
-		int ti = ((sz - 2) >> 1) + 1;
-
 		uint c0 = BitConverter.ToUInt32(md5, 0) | 1;
 		uint c1 = BitConverter.ToUInt32(md5, 4) | 1;
+		uint d0 = c0 + 0x69FB0000;
+		uint d1 = c1 + 0x13DB0000;
 
-		for (uint i = (uint)ti; i > 0; i--)
+		// a* - WordSwap state, b* - Reversible state
+		uint a1 = 0, a2 = 0, b1 = 0, b2 = 0;
+
+		for (int offset = 0; offset < length * 4; offset += 8)
 		{
-			uint n = (BitConverter.ToUInt32(a, ta) + o1) * c0;
-			n = 0xB1110000 * n - 0x30674EEF * (n >> 16);
-			ta += 8;
-			ts -= 2;
+			uint x0 = BitConverter.ToUInt32(data, offset);
+			uint x1 = BitConverter.ToUInt32(data, offset + 4);
 
-			uint v1 = 0x5B9F0000 * n - 0x78F7A461 * (n >> 16);
-			uint v2 = 0x1D830000 * (0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) + 0x257E1D83 * ((0x12CEB96D * (v1 >> 16) - 0x46930000 * v1) >> 16);
-			uint v3 = BitConverter.ToUInt32(a, ta - 4) + v2;
+			// WordSwap
+			uint n  = x0 + a1;
+			uint t  = n * d0 - 0x10FA9605 * (n >> 16);
+			uint v1 = 0x79F8A395 * t + 0x689B6B9F * (t >> 16);
+			uint v2 = 0xEA970001 * v1 - 0x3C101569 * (v1 >> 16);
+			uint v3 = x1 + v2;
+			uint v4 = v3 * d1 - 0x3CE8EC25 * (v3 >> 16);
+			uint v5 = 0x59C3AF2D * v4 - 0x2232E0F1 * (v4 >> 16);
+			a1  = 0x1EC90001 * v5 + 0x35BD1EC9 * (v5 >> 16);
+			a2 += a1 + v2;
 
-			uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * (c1 * v3 >> 16);
-			uint v5 = 0x2B890000 * (0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) + 0x7C932B89 * ((0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16)) >> 16);
-
-			o1 = 0x9F690000 * v5 - 0x405B6097 * (v5 >> 16);
-			o2 += o1 + v2;
+			// Reversible
+			n  = (x0 + b1) * c0;
+			n  = 0xB1110000 * n - 0x30674EEF * (n >> 16);
+			v1 = 0x5B9F0000 * n - 0x78F7A461 * (n >> 16);
+			t  = 0x12CEB96D * (v1 >> 16) - 0x46930000 * v1;
+			v2 = 0x1D830000 * t + 0x257E1D83 * (t >> 16);
+			v3 = c1 * (x1 + v2);
+			v4 = 0x16F50000 * v3 - 0x5D8BE90B * (v3 >> 16);
+			t  = 0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16);
+			v5 = 0x2B890000 * t + 0x7C932B89 * (t >> 16);
+			b1  = 0x9F690000 * v5 - 0x405B6097 * (v5 >> 16);
+			b2 += b1 + v2;
 		}
 
-		if (ts == 1)
-		{
-			uint n = BitConverter.ToUInt32(a, ta) + o1;
+		// Little-endian: low DWORD = o1 xor, high DWORD = o2 xor
+		byte[] hash = new byte[8];
+		BitConverter.GetBytes(a1 ^ b1).CopyTo(hash, 0);
+		BitConverter.GetBytes(a2 ^ b2).CopyTo(hash, 4);
 
-			uint v1 = 0xB1110000 * c0 * n - 0x30674EEF * ((c0 * n) >> 16);
-			uint v2 = 0x5B9F0000 * v1 - 0x78F7A461 * (v1 >> 16);
-			uint v3 = 0x1D830000 * (0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) + 0x257E1D83 * ((0x12CEB96D * (v2 >> 16) - 0x46930000 * v2) >> 16);
-			uint v4 = 0x16F50000 * c1 * v3 - 0x5D8BE90B * ((c1 * v3) >> 16);
-			uint v5 = 0x96FF0000 * v4 - 0x2C7C6901 * (v4 >> 16);
-			o1 = 0x9F690000 * (0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) - 0x405B6097 * ((0x2B890000 * v5 + 0x7C932B89 * (v5 >> 16)) >> 16);
-			o2 += o1 + v2;
-		}
-
-		uint[] ret = new uint[2];
-		ret[0] = o1;
-		ret[1] = o2;
-		return ret;
+		return Convert.ToBase64String(hash);
 	}
-}
-
-public static long MakeLong(uint left, uint right)
-{
-	return (long)left << 32 | (long)right;
 }
 "@
 	}
@@ -169,65 +166,8 @@ public static long MakeLong(uint left, uint right)
 		Add-Type @Signature
 	}
 
-	function Get-KeyLastWriteTime
-	{
-		[OutputType([string])]
-		param
-		(
-			[Parameter(Mandatory = $true)]
-			[string]
-			$SubKey
-		)
+	# Get user SID
+	$UserSID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 
-		$LastModified = [WinAPI.Action]::GetLastModified([Microsoft.Win32.RegistryHive]::CurrentUser,$SubKey)
-		$FileTime = ([DateTime]::New($LastModified.Year, $LastModified.Month, $LastModified.Day, $LastModified.Hour, $LastModified.Minute, 0, $LastModified.Kind)).ToFileTime()
-
-		return [string]::Format("{0:x8}{1:x8}", $FileTime -shr 32, $FileTime -band [uint32]::MaxValue)
-	}
-
-	function Get-DataArray
-	{
-		[OutputType([byte[]])]
-		param ()
-
-		# Secret static string stored in %SystemRoot%\System32\shell32.dll
-		$UserExperience   = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}"
-		# Get user SID
-		$UserSID          = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-		$KeyLastWriteTime = Get-KeyLastWriteTime -SubKey $SubKey
-		$BaseInfo         = ("{0}{1}{2}{3}{4}" -f $Extension, $UserSID, $ProgId, $KeyLastWriteTime, $UserExperience).ToLowerInvariant()
-
-		# UTF-16LE with the terminating null character included
-		return [System.Text.Encoding]::Unicode.GetBytes("$BaseInfo`0")
-	}
-
-	function Get-PatentHash
-	{
-		[OutputType([string])]
-		param
-		(
-			[Parameter(Mandatory = $true)]
-			[byte[]]
-			$Array,
-
-			[Parameter(Mandatory = $true)]
-			[byte[]]
-			$MD5
-		)
-
-		$Size        = $Array.Count
-		$ShiftedSize = ($Size -shr 2) - (($Size -shr 2) -band 1)
-
-		[uint32[]]$Array1 = [WinAPI.PatentHash]::WordSwap($Array, [int]$ShiftedSize, $MD5)
-		[uint32[]]$Array2 = [WinAPI.PatentHash]::Reversible($Array, [int]$ShiftedSize, $MD5)
-
-		$Ret = [WinAPI.PatentHash]::MakeLong($Array1[1] -bxor $Array2[1], $Array1[0] -bxor $Array2[0])
-
-		return [System.Convert]::ToBase64String([System.BitConverter]::GetBytes([Int64]$Ret))
-	}
-
-	[byte[]]$DataArray = Get-DataArray
-	$DataMD5           = [System.Security.Cryptography.MD5]::Create().ComputeHash($DataArray)
-
-	return Get-PatentHash -Array $DataArray -MD5 $DataMD5
+	return [WinAPI.PatentHash]::Get($Extension, $UserSID, $ProgId, $SubKey)
 }

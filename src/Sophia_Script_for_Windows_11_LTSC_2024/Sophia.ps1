@@ -65,10 +65,10 @@
 $Global:Failed = $false
 
 # Unload and import private functions and module
-Get-ChildItem function: | Where-Object {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
+Get-ChildItem -Path function: | Where-Object -FilterScript {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Module\Manifest\SophiaScript.psd1 -PassThru -Force
-Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_.FullName}
+Get-ChildItem -Path $PSScriptRoot\Module\private | ForEach-Object -Process {. $_.FullName}
 
 # "-Warning" argument enables and disables a warning message about whether the preset file was customized
 # Аргумент "-Warning" включает и выключает предупреждение о необходимости настройки пресет-файла
@@ -1010,13 +1010,9 @@ DNSoverHTTPS -Cloudflare
 # Включить DNS-over-HTTPS, используя DNS от OpenDNS
 # DNSoverHTTPS -OpenDNS
 
-# Enable DNS-over-HTTPS using Wikimedia DNS
-# Включить DNS-over-HTTPS, используя DNS от Wikimedia
-# DNSoverHTTPS -Wikimedia
-
 # Set default ISP's DNS records (default value)
 # Установить DNS-записи вашего провайдера (значение по умолчанию)
-# DNSoverHTTPS -Disable
+# DNSoverHTTPS -Reset
 
 # Enable Local Security Authority protection to prevent code injection
 # Включить защиту локальной системы безопасности, чтобы предотвратить внедрение кода

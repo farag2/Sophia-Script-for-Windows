@@ -1444,7 +1444,7 @@
   },
   {
     "Region": "UWP apps",
-    "Function": "Uninstall-UWPApps -ForAllUsers",
+    "Function": "Uninstall-UWPApps -AllUsers",
     "Arg": {
       "Zero": {
         "Tag": "",

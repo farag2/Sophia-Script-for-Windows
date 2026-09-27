@@ -1444,11 +1444,11 @@
   },
   {
     "Region": "UWP apps",
-    "Function": "Uninstall-UWPApps -ForAllUsers",
+    "Function": "Uninstall-UWPApps -AllUsers",
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"ForAllUsers\" argument sets a checkbox to unistall packages for all users."
+        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"AllUsers\" argument sets a checkbox to unistall packages for all users."
       }
     }
   },

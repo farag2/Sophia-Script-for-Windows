@@ -54,15 +54,16 @@ function InitialActions
 		"$PSScriptRoot\..\Localizations\uk-UA\Sophia.psd1",
 		"$PSScriptRoot\..\Localizations\zh-CN\Sophia.psd1",
 
+		"$PSScriptRoot\..\..\Module\Private\Add-Policy.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Get-Hash.ps1",
 		"$PSScriptRoot\..\..\Module\Private\InitialActions.ps1",
 		"$PSScriptRoot\..\..\Module\Private\PostActions.ps1",
+		"$PSScriptRoot\..\..\Module\Private\Remove-Policy.ps1",
+		"$PSScriptRoot\..\..\Module\Private\Send-ConsoleBackspace.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Set-KnownFolderPath.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Set-Policy.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Set-UserShellFolder.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Show-Menu.ps1",
 		"$PSScriptRoot\..\..\Module\Private\WinAPI.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Write-AdditionalKeys.ps1",
 		"$PSScriptRoot\..\..\Module\Private\Write-ExtensionKeys.ps1",
 
 		"$PSScriptRoot\..\..\Module\Sophia.psm1",
@@ -107,14 +108,14 @@ function InitialActions
 	# Check whether the current module version is the latest one
 	try
 	{
-		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/sophia_script_versions.json
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
 		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json"
+			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json"
 			UseBasicParsing = $true
 			TimeoutSec      = 5
 			Verbose         = $true
 		}
-		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC2019
+		$LatestRelease = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_10_LTSC_2019
 		$CurrentRelease = (Get-Module -Name SophiaScript).Version.ToString()
 
 		if ([System.Version]$LatestRelease -gt [System.Version]$CurrentRelease)
@@ -138,15 +139,15 @@ function InitialActions
 	}
 	catch [System.Net.WebException]
 	{
-		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json")
-		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json") -ErrorAction SilentlyContinue
 	}
 
 	# Check whether the script was run via PowerShell 5.1
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		$MandatoryPSVersion = (Import-PowershellDataFile -Path "$PSScriptRoot\..\..\Manifest\SophiaScript.psd1").PowerShellVersion
+		$MandatoryPSVersion = (Import-PowershellDataFile -Path "$PSScriptRoot\..\Manifest\SophiaScript.psd1").PowerShellVersion
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor, $MandatoryPSVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
@@ -250,54 +251,31 @@ function InitialActions
 	# Check whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
 	$Tweakers = @{
 		# https://www.youtube.com/GHOSTSPECTRE
-		"Ghost Toolbox"     = "$env:SystemRoot\System32\migwiz\dlmanifests\run.ghost.cmd"
+		"Ghost Toolbox"  = Test-Path -Path "$env:SystemRoot\System32\migwiz\dlmanifests\run.ghost.cmd"
 		# https://win10tweaker.ru
-		"Win 10 Tweaker"    = "HKCU:\Software\Win 10 Tweaker"
+		"Win 10 Tweaker" = Test-Path -Path "HKCU:\Software\Win 10 Tweaker"
 		# https://revi.cc
-		"Revision Tool"     = "${env:ProgramFiles(x86)}\Revision Tool"
+		"Revision Tool"  = Test-Path -Path "${env:ProgramFiles(x86)}\Revision Tool"
 		# https://github.com/Atlas-OS/Atlas
-		AtlasOS              = "$env:SystemRoot\AtlasModules"
+		AtlasOS          = Test-Path -Path "$env:SystemRoot\AtlasModules"
 		# https://boosterx.ru
-		BoosterX            = "$env:ProgramFiles\GameModeX\GameModeX.exe"
+		BoosterX         = Test-Path -Path "$env:ProgramFiles\GameModeX\GameModeX.exe"
 		# https://www.youtube.com/watch?v=5NBqbUUB1Pk
-		WinClean             = "$env:ProgramFiles\WinClean Plus Apps"
+		WinClean         = Test-Path -Path "$env:ProgramFiles\WinClean Plus Apps"
 		# https://pc-np.com
-		PCNP                 = "HKCU:\Software\PCNP"
+		PCNP             = Test-Path -Path "HKCU:\Software\PCNP"
 		# https://www.reddit.com/r/TronScript/
-		Tron                 = "$env:SystemDrive\logs\tron"
+		Tron             = Test-Path -Path "$env:SystemDrive\logs\tron"
 		# https://crystalcry.ru
-		CrystalCry           = "HKLM:\SOFTWARE\CrystalCry"
+		CrystalCry       = Test-Path -Path "HKLM:\SOFTWARE\CrystalCry"
 		# https://github.com/es3n1n/defendnot
-		defendnot            = "$env:SystemRoot\System32\Tasks\defendnot"
-	}
-	foreach ($Tweaker in $Tweakers.Keys)
-	{
-		if (Test-Path -Path $Tweakers[$Tweaker])
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message (($Localization.HarmfulTweakerFound -f $Tweaker), $Localization.ReinstallWindows -join " ")
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-			Write-Information -MessageData "" -InformationAction Continue
-
-			Write-Verbose -Message $Localization.AskQuestion -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://t.me/sophianews" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = $true
-
-			exit
-		}
-	}
-
-	# Check whether Windows was broken by 3rd party harmful tweakers, trojans, or custom Windows images
-	$Tweakers = @{
+		defendnot        = Test-Path -Path "$env:SystemRoot\System32\Tasks\defendnot"
+		# https://github.com/zoicware/RemoveWindowsAI
+		RemoveWindowsAI  = Test-Path -Path "$env:SystemRoot\System32\CatRoot\*\ZoicwareRemoveWindowsAI*"
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
-		AutoSettingsPS                   = "$(Get-ItemProperty -Path `"HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths`" -Name *AutoSettingsPS*)"
+		AutoSettingsPS   = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths" -Name *AutoSettingsPS* -ErrorAction Ignore
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
-		"Modern Tweaker"                 = "$(Get-ItemProperty -Path `"HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache`" -Name *ModernTweaker*)"
+		"Modern Tweaker" = Get-ItemProperty -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache" -Name *ModernTweaker* -ErrorAction Ignore
 	}
 	foreach ($Tweaker in $Tweakers.Keys)
 	{
@@ -326,44 +304,40 @@ function InitialActions
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 	Write-Information -MessageData "" -InformationAction Continue
 
-	# Check whether third-party enries added to hosts file
-	foreach ($Item in @(Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force))
+	# Check whether third-party entries were added to the hosts file
+	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
+	if ($HostsEntries)
 	{
-		if (-not ([string]::IsNullOrEmpty($Item) -or $Item.StartsWith("#")))
+		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
+
+		do
 		{
-			Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
 
-			do
+			switch ($Choice)
 			{
-				$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-				switch ($Choice)
+				$Yes
 				{
-					$Yes
-					{
-						continue
-					}
-					$No
-					{
-						Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
-
-						Write-Verbose -Message $Localization.AskQuestion -Verbose
-						Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-						Write-Verbose -Message "https://t.me/sophianews" -Verbose
-						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-						$Global:Failed = $true
-
-						exit
-					}
-					$KeyboardArrows {}
+					continue
 				}
-			}
-			until ($Choice -ne $KeyboardArrows)
+				$No
+				{
+					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
 
-			break
+					Write-Verbose -Message $Localization.AskQuestion -Verbose
+					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+					Write-Verbose -Message "https://t.me/sophianews" -Verbose
+					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+					$Global:Failed = $true
+
+					exit
+				}
+				$KeyboardArrows {}
+			}
 		}
+		until ($Choice -ne $KeyboardArrows)
 	}
 
 	# Check whether Windows Feature Experience Pack was removed
@@ -393,7 +367,7 @@ function InitialActions
 		"$env:SystemRoot\System32\SecurityHealthSystray.exe",
 		"$env:SystemRoot\System32\CompatTelRunner.exe"
 	)
-	$DefenderFiles| ForEach-Object -Process {
+	$DefenderFiles | ForEach-Object -Process {
 		if (-not (Test-Path -Path $_))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
@@ -417,7 +391,7 @@ function InitialActions
 	# Checking Microsoft Defender properties
 	try
 	{
-		$AntiVirusProduct = @(
+		$null = @(
 			Get-Service -Name Windefend, SecurityHealthService, wscsvc, wdFilter -ErrorAction Stop
 			Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service -ErrorAction Stop
 			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop
@@ -431,7 +405,7 @@ function InitialActions
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbosed
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		# Try to display available AVs
@@ -453,7 +427,7 @@ function InitialActions
 	}
 
 	# Check whether Microsoft Defender is a default AV
-	$InstalledAVs = Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2
+	$InstalledAVs = @(Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2)
 	if (($InstalledAVs.displayName | Measure-Object).Count -gt 1)
 	{
 		$Global:DefenderDefaultAV = $false
@@ -493,11 +467,12 @@ function InitialActions
 	#endregion Defender checks
 
 	# Check for a pending reboot
-	$PendingActions = [Array]::TrueForAll(@(
+	$PendingActions = [Array]::Exists(@(
 		# CBS pending
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootPending",
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\RebootInProgress",
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Component Based Servicing\PackagesPending",
+
 		# Windows Update pending
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\PostRebootReporting",
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\WindowsUpdate\Auto Update\RebootRequired"
@@ -547,7 +522,7 @@ function InitialActions
 					{
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
-						Write-Warning -Message $Error.Exception
+						Write-Warning -Message $_.Exception.Message
 						Write-Information -MessageData "" -InformationAction Continue
 						Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 						Write-Information -MessageData "" -InformationAction Continue
@@ -606,22 +581,22 @@ function InitialActions
 	# Check whether Windows build is the latest one
 	try
 	{
-		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/supported_windows_builds.json
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Windows_Builds.json
 		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json"
+			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Windows_Builds.json"
 			UseBasicParsing = $true
 			TimeoutSec      = 5
 			Verbose         = $true
 		}
-		$LatestSupportedMinorBuild = (Invoke-RestMethod @Parameters).Windows_10_LTSC_2019
+		$LatestSupportedMinorBuild = (Invoke-RestMethod @Parameters).Windows_10_LTSC_2019_Minor
 	}
 	catch [System.Net.WebException]
 	{
-		# https://learn.microsoft.com/en-us/windows/release-health/release-information
+		# https://learn.microsoft.com/en-us/windows/release-health/windows10-release-information
 		$LatestSupportedMinorBuild = 9121
 
-		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json")
-		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/supported_windows_builds.json") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Windows_Builds.json")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Windows_Builds.json") -ErrorAction SilentlyContinue
 	}
 
 	# Detect Windows build version
@@ -702,8 +677,7 @@ function InitialActions
 	# Enable back the SysMain service if it was disabled by harmful tweakers
 	if ((Get-Service -Name SysMain).Status -eq "Stopped")
 	{
-		Get-Service -Name SysMain | Set-Service -StartupType Automatic
-		Get-Service -Name SysMain | Start-Service
+		Get-Service -Name SysMain | Set-Service -StartupType Automatic | Start-Service
 
 		Start-Process -FilePath "https://www.outsidethebox.ms/19318"
 	}

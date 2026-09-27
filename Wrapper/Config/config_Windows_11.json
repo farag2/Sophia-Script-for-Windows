@@ -1668,7 +1668,7 @@
         "Required": "false",
         "Separate": "true",
         "Function": "Uninstall-UWPApps",
-        "Function2": "Uninstall-UWPApps -ForAllUsers",
+        "Function2": "Uninstall-UWPApps -AllUsers",
         "Arg": {
             "Zero": {
                 "Tag": ""
@@ -1912,7 +1912,11 @@
                 "Opposite": "Four"
             },
             "Five": {
-                "Tag": "Disable",
+                "Tag": "OpenDNS",
+                "Opposite": "Four"
+            },
+            "Six": {
+                "Tag": "Reset",
                 "Opposite": "Four"
             }
         },

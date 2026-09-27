@@ -16,58 +16,6 @@
 #>
 function PostActions
 {
-	#region Refresh Environment
-	$Signature = @{
-		Namespace          = "WinAPI"
-		Name               = "UpdateEnvironment"
-		Language           = "CSharp"
-		CompilerParameters = $CompilerParameters
-		MemberDefinition   = @"
-private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
-private const int WM_SETTINGCHANGE = 0x1a;
-private const int SMTO_ABORTIFHUNG = 0x0002;
-
-[DllImport("shell32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-private static extern int SHChangeNotify(int eventId, int flags, IntPtr item1, IntPtr item2);
-
-[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-private static extern IntPtr SendMessageTimeout(IntPtr hWnd, int Msg, IntPtr wParam, string lParam, int fuFlags, int uTimeout, IntPtr lpdwResult);
-
-[DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-static extern bool SendNotifyMessage(IntPtr hWnd, uint Msg, IntPtr wParam, string lParam);
-
-public static void Refresh()
-{
-	// Update desktop icons
-	SHChangeNotify(0x8000000, 0x1000, IntPtr.Zero, IntPtr.Zero);
-
-	// Update environment variables
-	SendMessageTimeout(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, null, SMTO_ABORTIFHUNG, 100, IntPtr.Zero);
-
-	// Update taskbar
-	SendNotifyMessage(HWND_BROADCAST, WM_SETTINGCHANGE, IntPtr.Zero, "TraySettings");
-}
-
-private static readonly IntPtr hWnd = new IntPtr(65535);
-private const int Msg = 273;
-// Virtual key ID of the F5 in File Explorer
-private static readonly UIntPtr UIntPtr = new UIntPtr(41504);
-
-[DllImport("user32.dll", SetLastError=true)]
-public static extern int PostMessageW(IntPtr hWnd, uint Msg, UIntPtr wParam, IntPtr lParam);
-
-public static void PostMessage()
-{
-	// Simulate pressing F5 to refresh the desktop
-	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
-}
-"@
-	}
-	if (-not ("WinAPI.UpdateEnvironment" -as [type]))
-	{
-		Add-Type @Signature
-	}
-
 	# Simulate pressing F5 to refresh the desktop
 	[WinAPI.UpdateEnvironment]::PostMessage()
 
@@ -76,7 +24,6 @@ public static void PostMessage()
 
 	# Restart Start menu
 	Stop-Process -Name StartMenuExperienceHost -Force -ErrorAction Ignore
-	#endregion Refresh Environment
 
 	#region Other actions
 	# Call MeetNow unless binary value is reverted
@@ -110,7 +57,6 @@ public static void PostMessage()
 	{
 		# Find and close taskschd.msc by its argument
 		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "taskschd.msc")}).Handle
-		# We have to check before executing due to "Set-StrictMode -Version Latest"
 		if ($taskschd_Process_ID)
 		{
 			Get-Process -Id $taskschd_Process_ID | Stop-Process -Force
@@ -129,7 +75,6 @@ public static void PostMessage()
 	{
 		# Find and close eventvwr.msc by its argument
 		$eventvwr_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
-		# We have to check before executing due to "Set-StrictMode -Version Latest"
 		if ($eventvwr_Process_ID)
 		{
 			Get-Process -Id $eventvwr_Process_ID | Stop-Process -Force
@@ -140,7 +85,6 @@ public static void PostMessage()
 
 		$Global:EventViewerCustomView = $false
 	}
-	#endregion Other actions
 
 	#region Toast notifications
 	# Enable notifications
@@ -150,8 +94,8 @@ public static void PostMessage()
 	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SystemSettings\AccountNotifications -Name EnableAccountNotifications -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
-	Set-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
-	Set-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Type CLEAR
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter
+	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter
 
 	if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
 	{
@@ -162,15 +106,29 @@ public static void PostMessage()
 	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-	# Apply policies found in registry to re-build database database because gpedit.msc relies in its own database
+	# Import policies back from LGPO.txt to re-build database database because gpedit.msc relies in its own database
 	if (Test-Path -Path "$env:TEMP\LGPO.txt")
 	{
-		& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
-	}
+		# Check if all policies were removed
+		if (Get-Content -Path "$env:TEMP\LGPO.txt" | Where-Object -FilterScript {$_ -ne ""})
+		{
+			# Find and close taskschd.msc by its argument
+			$gpedit_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "gpedit.msc")}).Handle
+			if ($gpedit_Process_ID)
+			{
+				Get-Process -Id $gpedit_Process_ID | Stop-Process -Force
+			}
 
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+			# Recreate Registry.pol from scratch, because LGPO.exe /t only adds and changes values
+			Remove-Item -Path "$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol", "$env:SystemRoot\System32\GroupPolicy\User\Registry.pol" -Force -ErrorAction Ignore
+
+			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
+		}
+
+		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# https://github.com/PowerShell/PowerShell/issues/21070
+		Get-Item -Path "$env:TEMP\LGPO.txt" -Force | Remove-Item -Force
+	}
 
 	# Call toast notification
 	[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null

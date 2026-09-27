@@ -763,7 +763,7 @@
       },
       "One": {
         "Tag": "Grid",
-        "ToolTip": "\"Rasteransicht\" für alle Apps im Startmenü verwenden."
+        "ToolTip": "Verwenden Sie die Rasteransicht für alle Apps auf dem Startbildschirm."
       },
       "Two": {
         "Tag": "List",
@@ -1426,7 +1426,7 @@
   },
   {
     "Region": "UWP apps",
-    "Function": "Uninstall-UWPApps -ForAllUsers",
+    "Function": "Uninstall-UWPApps -AllUsers",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1645,11 +1645,7 @@
         "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit OpenDNS DNS."
       },
       "Six": {
-        "Tag": "Wikimedia",
-        "ToolTip": "Aktivieren Sie DNS-over-HTTPS mit Wikimedia DNS."
-      },
-      "Seven": {
-        "Tag": "Disable",
+        "Tag": "Reset",
         "ToolTip": "DNS-Einträge des Standard-Internetdienstanbieters festlegen (Standardwert)."
       }
     }

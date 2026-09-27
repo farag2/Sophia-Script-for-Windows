@@ -39,7 +39,7 @@ function Global:Show-Menu
 	Write-Information -MessageData "" -InformationAction Continue
 
 	# Add "Please use the arrow keys 🠕 and 🠗 on your keyboard to select your answer" to menu
-	$Menu += $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
+	$Menu += $Localization.KeyboardArrows -f [char]0x2191, [char]0x2193
 
 	if ($AddSkip)
 	{
@@ -47,16 +47,16 @@ function Global:Show-Menu
 		$Menu += [WinAPI.GetStrings]::GetString(16956)
 	}
 
-	$i = 0
-	while ($i -lt $Menu.Count)
+	# Reserve a line for each menu item
+	foreach ($Item in $Menu)
 	{
-		$i++
 		Write-Host -Object ""
 	}
 
-	$SelectedValueIndex = [Math]::Max([Math]::Min($Default, $Menu.Count), 0)
+	# The last valid index is $Menu.Count - 1
+	$SelectedValueIndex = [Math]::Max([Math]::Min($Default, $Menu.Count - 1), 0)
 
-	do
+	while ($true)
 	{
 		[Console]::SetCursorPosition(0, [Console]::CursorTop - $Menu.Count)
 
@@ -64,17 +64,15 @@ function Global:Show-Menu
 		{
 			if ($i -eq $SelectedValueIndex)
 			{
-				Write-Host -Object "[>] $($Menu[$i])" -NoNewline
+				Write-Host -Object "[>] $($Menu[$i])"
 			}
 			else
 			{
-				Write-Host -Object "[ ] $($Menu[$i])" -NoNewline
+				Write-Host -Object "[ ] $($Menu[$i])"
 			}
-
-			Write-Host -Object ""
 		}
 
-		$Key = [Console]::ReadKey()
+		$Key = [Console]::ReadKey($true)
 		switch ($Key.Key)
 		{
 			"UpArrow"
@@ -89,7 +87,13 @@ function Global:Show-Menu
 			{
 				return $Menu[$SelectedValueIndex]
 			}
+			"Escape"
+			{
+				if ($AddSkip)
+				{
+					return $Menu[-1]
+				}
+			}
 		}
 	}
-	while ($Key.Key -notin ([ConsoleKey]::Escape, [ConsoleKey]::Enter))
 }

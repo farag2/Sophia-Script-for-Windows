@@ -1885,7 +1885,11 @@
                 "Opposite": "Four"
             },
             "Five": {
-                "Tag": "Disable",
+                "Tag": "OpenDNS",
+                "Opposite": "Four"
+            },
+            "Six": {
+                "Tag": "Reset",
                 "Opposite": "Four"
             }
         },

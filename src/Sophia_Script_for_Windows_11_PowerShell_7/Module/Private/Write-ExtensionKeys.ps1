@@ -33,9 +33,6 @@ function Global:Write-ExtensionKeys
 		$Extension
 	)
 
-	$SubKey = "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
-	$Path   = "HKCU:\$SubKey"
-
 	# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 	$OrigProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null)
 	if ($OrigProgID)
@@ -78,12 +75,25 @@ function Global:Write-ExtensionKeys
 		New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\OpenWithProgids" -Name $OrigProgID -PropertyType None -Value ([byte[]]@()) -Force
 	}
 
-	Start-Sleep -Seconds 1
+	# The hash is derived from the key's last write time truncated to minutes, so ProgId and Hash have to be written within the same minute
+	# Two powershell_temp.exe launches and the first Add-Type compilation in Get-Hash take a few seconds, so skip the end of the current minute
+	if ((Get-Date).Second -ge 50)
+	{
+		Start-Sleep -Seconds (60 - (Get-Date).Second)
+	}
 
-	# UCPD driver blocks access to UserChoice keys by process name (powershell.exe, reg.exe, ...), and the list of protected extensions is not documented,
-	# so every UserChoice operation is done from a renamed copy of powershell.exe regardless of the extension
-	# The DENY ACE on UserChoice covers KEY_SET_VALUE only, so the key is deleted and recreated with the parent's inherited (clean) ACL instead of editing the DACL
-	& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command "& {[Microsoft.Win32.Registry]::CurrentUser.DeleteSubKey('$SubKey', `$false); New-Item -Path '$Path' -Force; New-ItemProperty -Path '$Path' -Name ProgId -PropertyType String -Value '$ProgId' -Force}"
+	# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+	# UCPD driver tracks all executables to block the access to the registry so all UserChoice records will be made within powershell_temp.exe
+	$SubKey = "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
+	$Path   = "HKCU:\$SubKey"
+
+	& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
+		param ($SubKey, $Path, $ProgId)
+
+		[Microsoft.Win32.Registry]::CurrentUser.DeleteSubKey($SubKey, $false)
+		New-Item -Path $Path -Force
+		New-ItemProperty -Path $Path -Name ProgId -PropertyType String -Value $ProgId -Force
+	} -args $SubKey, $Path, $ProgId
 
 	# The hash is derived from the key's last write time, so it has to be calculated after ProgId is written
 	$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey $SubKey
@@ -91,7 +101,17 @@ function Global:Write-ExtensionKeys
 	# Writing the hash and then setting the same block Windows sets on UserChoice: DENY KEY_SET_VALUE for the current user
 	# Writing the owner needs WRITE_OWNER and writing the DACL needs WRITE_DAC, so both rights are requested
 	$UserSID = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
-	$Sddl    = "O:$($UserSID)G:$($UserSID)D:AI(D;;DC;;;$($UserSID))"
+	$SDDL    = "O:$($UserSID)G:$($UserSID)D:AI(D;;DC;;;$($UserSID))"
 
-	& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command "& {New-ItemProperty -Path '$Path' -Name Hash -PropertyType String -Value '$ProgHash' -Force; `$Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey('$SubKey', 'ReadWriteSubTree', 'ChangePermissions, TakeOwnership'); `$Acl = [System.Security.AccessControl.RegistrySecurity]::new(); `$Acl.SetSecurityDescriptorSddlForm('$Sddl'); `$Key.SetAccessControl(`$Acl); `$Key.Close()}"
+	& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
+		param ($Path, $ProgHash, $SubKey, $SDDL)
+
+		New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force
+
+		$Key = [Microsoft.Win32.Registry]::CurrentUser.OpenSubKey($SubKey, "ReadWriteSubTree", "ChangePermissions, TakeOwnership")
+		$Acl = [System.Security.AccessControl.RegistrySecurity]::new()
+		$Acl.SetSecurityDescriptorSDDLForm($SDDL)
+		$Key.SetAccessControl($Acl)
+		$Key.Close()
+	} -args $Path, $ProgHash, $SubKey, $SDDL
 }

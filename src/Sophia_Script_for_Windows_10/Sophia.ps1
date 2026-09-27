@@ -65,10 +65,10 @@
 $Global:Failed = $false
 
 # Unload and import private functions and module
-Get-ChildItem function: | Where-Object {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
+Get-ChildItem -Path function: | Where-Object -FilterScript {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Module\Manifest\SophiaScript.psd1 -PassThru -Force
-Get-ChildItem -Path $PSScriptRoot\Module\private | Foreach-Object -Process {. $_.FullName}
+Get-ChildItem -Path $PSScriptRoot\Module\private | ForEach-Object -Process {. $_.FullName}
 
 # "-Warning" argument enables and disables a warning message about whether the preset file was customized
 # Аргумент "-Warning" включает и выключает предупреждение о необходимости настройки пресет-файла
@@ -933,7 +933,7 @@ Uninstall-UWPApps
 	Удалить UWP-приложения для всех пользователей, используя всплывающее диалоговое окно
 	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
 #>
-# Uninstall-UWPApps -ForAllUsers
+# Uninstall-UWPApps -AllUsers
 
 # Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
 # Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
