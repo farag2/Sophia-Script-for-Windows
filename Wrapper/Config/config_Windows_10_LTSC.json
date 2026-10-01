@@ -6,14 +6,14 @@
         "RequiredIndex": "0",
         "Function": "InitialActions",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Warning"
             },
-            "One": {
+            "1": {
                 "Tag": ""
             }
         },
-        "Preset": "Zero",
+        "Preset": "0",
         "WindowsDefault": "",
         "LTSC2019": "true",
         "LTSC2021": "true"
@@ -24,7 +24,7 @@
         "Required": "false",
         "Function": "Logging",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
@@ -39,12 +39,12 @@
         "Required": "false",
         "Function": "CreateRestorePoint",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "Zero",
+        "Preset": "0",
+        "WindowsDefault": "0",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -54,15 +54,15 @@
         "Required": "false",
         "Function": "DiagTrackService",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -72,15 +72,15 @@
         "Required": "false",
         "Function": "DiagnosticDataLevel",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Minimal"
             },
-            "One": {
+            "1": {
                 "Tag": "Default"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -90,15 +90,15 @@
         "Required": "false",
         "Function": "ErrorReporting",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -108,15 +108,15 @@
         "Required": "false",
         "Function": "FeedbackFrequency",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Never"
             },
-            "One": {
+            "1": {
                 "Tag": "Automatically"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -126,15 +126,15 @@
         "Required": "false",
         "Function": "ScheduledTasks",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -144,15 +144,15 @@
         "Required": "false",
         "Function": "SigninInfo",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -162,15 +162,15 @@
         "Required": "false",
         "Function": "LanguageListAccess",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -180,15 +180,15 @@
         "Required": "false",
         "Function": "AdvertisingID",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -198,15 +198,15 @@
         "Required": "false",
         "Function": "WhatsNewInWindows",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -216,15 +216,15 @@
         "Required": "false",
         "Function": "TailoredExperiences",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -234,15 +234,15 @@
         "Required": "false",
         "Function": "BingSearch",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -252,15 +252,15 @@
         "Required": "false",
         "Function": "ThisPC",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Show"
             },
-            "One": {
+            "1": {
                 "Tag": "Hide"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -270,15 +270,15 @@
         "Required": "false",
         "Function": "CheckBoxes",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -288,15 +288,15 @@
         "Required": "false",
         "Function": "HiddenItems",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -306,15 +306,15 @@
         "Required": "false",
         "Function": "FileExtensions",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Show"
             },
-            "One": {
+            "1": {
                 "Tag": "Hide"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -324,15 +324,15 @@
         "Required": "false",
         "Function": "MergeConflicts",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Show"
             },
-            "One": {
+            "1": {
                 "Tag": "Hide"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -342,15 +342,15 @@
         "Required": "false",
         "Function": "OpenFileExplorerTo",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "ThisPC"
             },
-            "One": {
+            "1": {
                 "Tag": "QuickAccess"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -360,15 +360,15 @@
         "Required": "false",
         "Function": "FileExplorerRibbon",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Expanded"
             },
-            "One": {
+            "1": {
                 "Tag": "Minimized"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -378,15 +378,15 @@
         "Required": "false",
         "Function": "OneDriveFileExplorerAd",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -396,15 +396,15 @@
         "Required": "false",
         "Function": "SnapAssist",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -414,15 +414,15 @@
         "Required": "false",
         "Function": "FileTransferDialog",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Detailed"
             },
-            "One": {
+            "1": {
                 "Tag": "Compact"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -432,15 +432,15 @@
         "Required": "false",
         "Function": "RecycleBinDeleteConfirmation",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -452,94 +452,94 @@
         "Arg2Width": "110",
         "Arg2ArgWidth": "100",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
         "Arg2": {
-            "Zero": {
+            "0": {
                 "Function": "ThreeDObjects",
                 "Arg": {
-                    "Zero": {
+                    "0": {
                         "Tag": "Hide"
                     },
-                    "One": {
+                    "1": {
                         "Tag": "Show"
                     }
                 }
             },
-            "One": {
+            "1": {
                 "Function": "Desktop",
                 "Arg": {
-                    "Zero": {
+                    "0": {
                         "Tag": "Hide"
                     },
-                    "One": {
+                    "1": {
                         "Tag": "Show"
                     }
                 }
             },
-            "Two": {
+            "2": {
                 "Function": "Documents",
                 "Arg": {
-                    "Zero": {
+                    "0": {
                         "Tag": "Hide"
                     },
-                    "One": {
+                    "1": {
                         "Tag": "Show"
                     }
                 }
             },
-            "Three": {
+            "3": {
                 "Function": "Downloads",
                 "Arg": {
-                    "Zero": {
+                    "0": {
                         "Tag": "Hide"
                     },
-                    "One": {
+                    "1": {
                         "Tag": "Show"
                     }
                 }
             },
-            "Four": {
+            "4": {
                 "Function": "Music",
                 "Arg": {
-                    "Zero": {
+                    "0": {
                         "Tag": "Hide"
                     },
-                    "One": {
+                    "1": {
                         "Tag": "Show"
                     }
                 }
             },
-            "Five": {
+            "5": {
                 "Function": "Pictures",
                 "Arg": {
-                    "Zero": {
+                    "0": {
                         "Tag": "Hide"
                     },
-                    "One": {
+                    "1": {
                         "Tag": "Show"
                     }
                 }
             },
-            "Six": {
+            "6": {
                 "Function": "Videos",
                 "Arg": {
-                    "Zero": {
+                    "0": {
                         "Tag": "Hide"
                     },
-                    "One": {
+                    "1": {
                         "Tag": "Show"
                     }
                 }
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -549,15 +549,15 @@
         "Required": "false",
         "Function": "QuickAccessRecentFiles",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -567,15 +567,15 @@
         "Required": "false",
         "Function": "QuickAccessFrequentFolders",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -585,21 +585,21 @@
         "Required": "false",
         "Function": "TaskbarSearch",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide",
-                "Opposite": "Two"
+                "Opposite": "2"
             },
-            "One": {
+            "1": {
                 "Tag": "SearchIcon",
-                "Opposite": "Zero"
+                "Opposite": "0"
             },
-            "Two": {
+            "2": {
                 "Tag": "SearchBox",
-                "Opposite": "Zero"
+                "Opposite": "0"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "Two",
+        "Preset": "0",
+        "WindowsDefault": "2",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -609,15 +609,15 @@
         "Required": "false",
         "Function": "TaskViewButton",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -627,15 +627,15 @@
         "Required": "false",
         "Function": "MeetNow",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -645,15 +645,15 @@
         "Required": "false",
         "Function": "PeopleTaskbar",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "false"
     },
@@ -663,15 +663,15 @@
         "Required": "false",
         "Function": "WindowsInkWorkspace",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -681,15 +681,15 @@
         "Required": "false",
         "Function": "NotificationAreaIcons",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -699,15 +699,15 @@
         "Required": "false",
         "Function": "SecondsInSystemClock",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Show"
             },
-            "One": {
+            "1": {
                 "Tag": "Hide"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -717,21 +717,21 @@
         "Required": "false",
         "Function": "TaskbarCombine",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Always",
-                "Opposite": "Two"
+                "Opposite": "2"
             },
-            "One": {
+            "1": {
                 "Tag": "Full",
-                "Opposite": "Two"
+                "Opposite": "2"
             },
-            "Two": {
+            "2": {
                 "Tag": "Never",
-                "Opposite": "Zero"
+                "Opposite": "0"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "Zero",
+        "Preset": "0",
+        "WindowsDefault": "0",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -741,21 +741,21 @@
         "Required": "false",
         "Function": "ControlPanelView",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "LargeIcons",
-                "Opposite": "One"
+                "Opposite": "1"
             },
-            "One": {
+            "1": {
                 "Tag": "SmallIcons",
-                "Opposite": "Zero"
+                "Opposite": "0"
             },
-            "Two": {
+            "2": {
                 "Tag": "Category",
-                "Opposite": "Two"
+                "Opposite": "2"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "Two",
+        "Preset": "0",
+        "WindowsDefault": "2",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -765,15 +765,15 @@
         "Required": "false",
         "Function": "WindowsColorMode",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Dark"
             },
-            "One": {
+            "1": {
                 "Tag": "Light"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -783,15 +783,15 @@
         "Required": "false",
         "Function": "AppColorMode",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Dark"
             },
-            "One": {
+            "1": {
                 "Tag": "Light"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -801,15 +801,15 @@
         "Required": "false",
         "Function": "NewAppInstalledNotification",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -819,15 +819,15 @@
         "Required": "false",
         "Function": "FirstLogonAnimation",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -837,15 +837,15 @@
         "Required": "false",
         "Function": "JPEGWallpapersQuality",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Max"
             },
-            "One": {
+            "1": {
                 "Tag": "Default"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -855,15 +855,15 @@
         "Required": "false",
         "Function": "TaskManagerWindow",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Expanded"
             },
-            "One": {
+            "1": {
                 "Tag": "Compact"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -873,15 +873,15 @@
         "Required": "false",
         "Function": "ShortcutsSuffix",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -891,15 +891,15 @@
         "Required": "false",
         "Function": "PrtScnSnippingTool",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -909,15 +909,15 @@
         "Required": "false",
         "Function": "AppsLanguageSwitch",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -927,15 +927,15 @@
         "Required": "false",
         "Function": "AeroShaking",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "One",
-        "WindowsDefault": "Zero",
+        "Preset": "1",
+        "WindowsDefault": "0",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -945,21 +945,21 @@
         "Required": "false",
         "Function": "Cursors",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Default",
-                "Opposite": "Zero"
+                "Opposite": "0"
             },
-            "One": {
+            "1": {
                 "Tag": "Dark",
-                "Opposite": "Two"
+                "Opposite": "2"
             },
-            "Two": {
+            "2": {
                 "Tag": "Light",
-                "Opposite": "One"
+                "Opposite": "1"
             }
         },
-        "Preset": "One",
-        "WindowsDefault": "Zero",
+        "Preset": "1",
+        "WindowsDefault": "0",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -969,15 +969,15 @@
         "Required": "false",
         "Function": "FolderGroupBy",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "None"
             },
-            "One": {
+            "1": {
                 "Tag": "Default"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -987,15 +987,15 @@
         "Required": "false",
         "Function": "NavigationPaneExpand",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1005,15 +1005,15 @@
         "Required": "false",
         "Function": "RecentlyAddedStartApps",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1023,15 +1023,15 @@
         "Required": "false",
         "Function": "MostUsedStartApps",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "Zero",
+        "Preset": "0",
+        "WindowsDefault": "0",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1041,15 +1041,15 @@
         "Required": "false",
         "Function": "StartAccountNotifications",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1059,15 +1059,15 @@
         "Required": "false",
         "Function": "AppSuggestions",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Hide"
             },
-            "One": {
+            "1": {
                 "Tag": "Show"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1077,10 +1077,10 @@
         "Required": "false",
         "Function": "PinToStart -Tiles",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "ControlPanel"
             },
-            "One": {
+            "1": {
                 "Tag": "DevicesPrinters"
             }
         },
@@ -1095,7 +1095,7 @@
         "Required": "false",
         "Function": "PinToStart -UnpinAll",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
@@ -1110,14 +1110,14 @@
         "Required": "false",
         "Function": "StorageSense",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
+        "Preset": "0",
         "WindowsDefault": "",
         "LTSC2019": "true",
         "LTSC2021": "true"
@@ -1128,15 +1128,15 @@
         "Required": "false",
         "Function": "Hibernation",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1146,15 +1146,15 @@
         "Required": "false",
         "Function": "Win32LongPathsSupport",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1164,15 +1164,15 @@
         "Required": "false",
         "Function": "BSoDStopError",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1182,15 +1182,15 @@
         "Required": "false",
         "Function": "AdminApprovalMode",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Never"
             },
-            "One": {
+            "1": {
                 "Tag": "Default"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1200,15 +1200,15 @@
         "Required": "false",
         "Function": "DeliveryOptimization",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1218,15 +1218,15 @@
         "Required": "false",
         "Function": "WindowsManageDefaultPrinter",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1236,15 +1236,15 @@
         "Required": "false",
         "Function": "WindowsFeatures",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1254,15 +1254,15 @@
         "Required": "false",
         "Function": "WindowsCapabilities",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Uninstall"
             },
-            "One": {
+            "1": {
                 "Tag": "Install"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1272,15 +1272,15 @@
         "Required": "false",
         "Function": "UpdateMicrosoftProducts",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1290,15 +1290,15 @@
         "Required": "false",
         "Function": "RestartNotification",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Show"
             },
-            "One": {
+            "1": {
                 "Tag": "Hide"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1308,15 +1308,15 @@
         "Required": "false",
         "Function": "RestartDeviceAfterUpdate",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1326,15 +1326,15 @@
         "Required": "false",
         "Function": "ActiveHours",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Automatically"
             },
-            "One": {
+            "1": {
                 "Tag": "Manually"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1344,16 +1344,16 @@
         "Required": "false",
         "Function": "WindowsLatestUpdate",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1363,15 +1363,15 @@
         "Required": "false",
         "Function": "PowerPlan",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "High"
             },
-            "One": {
+            "1": {
                 "Tag": "Balanced"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1381,15 +1381,15 @@
         "Required": "false",
         "Function": "NetworkAdaptersSavePower",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1399,15 +1399,15 @@
         "Required": "false",
         "Function": "InputMethod",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "English"
             },
-            "One": {
+            "1": {
                 "Tag": "Default"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1417,21 +1417,21 @@
         "Required": "false",
         "Function": "Set-UserShellFolderLocation",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Root",
-                "Opposite": "Two"
+                "Opposite": "2"
             },
-            "One": {
+            "1": {
                 "Tag": "Custom",
-                "Opposite": "Two"
+                "Opposite": "2"
             },
-            "Two": {
+            "2": {
                 "Tag": "Default",
-                "Opposite": "One"
+                "Opposite": "1"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "Two",
+        "Preset": "0",
+        "WindowsDefault": "2",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1441,15 +1441,15 @@
         "Required": "false",
         "Function": "WinPrtScrFolder",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Desktop"
             },
-            "One": {
+            "1": {
                 "Tag": "Default"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1459,15 +1459,15 @@
         "Required": "false",
         "Function": "RecommendedTroubleshooting",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Automatically"
             },
-            "One": {
+            "1": {
                 "Tag": "Default"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1477,15 +1477,15 @@
         "Required": "false",
         "Function": "FoldersLaunchSeparateProcess",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1495,15 +1495,15 @@
         "Required": "false",
         "Function": "ReservedStorage",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1513,15 +1513,15 @@
         "Required": "false",
         "Function": "F1HelpPage",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1531,15 +1531,15 @@
         "Required": "false",
         "Function": "NumLock",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1549,15 +1549,15 @@
         "Required": "false",
         "Function": "CapsLock",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
         "Preset": "",
-        "WindowsDefault": "One",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1567,15 +1567,15 @@
         "Required": "false",
         "Function": "StickyShift",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1585,15 +1585,15 @@
         "Required": "false",
         "Function": "Autoplay",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1603,15 +1603,15 @@
         "Required": "false",
         "Function": "ThumbnailCacheRemoval",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1621,15 +1621,15 @@
         "Required": "false",
         "Function": "SaveRestartableApps",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1647,15 +1647,15 @@
         "WidthSave": "100",
         "MarginSave": "225",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "ProgramPath",
                 "Width": "325"
             },
-            "One": {
+            "1": {
                 "Tag": "Extension",
                 "Width": "85"
             },
-            "Two": {
+            "2": {
                 "Tag": "Icon",
                 "Width": "250",
                 "Number": "1000"
@@ -1663,7 +1663,7 @@
         },
         "Preset": "",
         "WindowsDefault": "",
-        "WindowsDefault": "One",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1673,11 +1673,11 @@
         "Required": "false",
         "Function": "Export-Associations",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
-        "Preset": "Zero",
+        "Preset": "0",
         "WindowsDefault": "",
         "LTSC2019": "true",
         "LTSC2021": "true"
@@ -1688,7 +1688,7 @@
         "Required": "false",
         "Function": "Import-Associations",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
@@ -1703,7 +1703,7 @@
         "Required": "false",
         "Function": "Install-VCRedist",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
@@ -1718,13 +1718,13 @@
         "Required": "false",
         "Function": "Install-DotNetRuntimes -Runtimes",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "NET8"
             },
-            "One": {
+            "1": {
                 "Tag": "NET9"
             },
-            "Two": {
+            "2": {
                 "Tag": "NET10"
             }
         },
@@ -1739,33 +1739,33 @@
         "Required": "false",
         "Function": "PreventEdgeShortcutCreation",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Channels"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
         "Arg2": {
-            "Zero": {
+            "0": {
                 "Tag": "Stable",
                 "Width": "75"
             },
-            "One": {
+            "1": {
                 "Tag": "Beta",
                 "Width": "65"
             },
-            "Two": {
+            "2": {
                 "Tag": "Dev",
                 "Width": "62"
             },
-            "Three": {
+            "3": {
                 "Tag": "Canary",
                 "Width": "80"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "Preset2": "0123",
         "WindowsDefault2": "",
         "LTSC2019": "false",
@@ -1777,15 +1777,15 @@
         "Required": "false",
         "Function": "RegistryBackup",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1795,7 +1795,7 @@
         "Required": "false",
         "Function": "Install-WSL",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
@@ -1810,15 +1810,15 @@
         "Required": "false",
         "Function": "GPUScheduling",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1828,14 +1828,14 @@
         "Required": "false",
         "Function": "CleanupTask",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Register"
             },
-            "One": {
+            "1": {
                 "Tag": "Delete"
             }
         },
-        "Preset": "Zero",
+        "Preset": "0",
         "WindowsDefault": "",
         "LTSC2019": "true",
         "LTSC2021": "true"
@@ -1846,14 +1846,14 @@
         "Required": "false",
         "Function": "SoftwareDistributionTask",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Register"
             },
-            "One": {
+            "1": {
                 "Tag": "Delete"
             }
         },
-        "Preset": "Zero",
+        "Preset": "0",
         "WindowsDefault": "",
         "LTSC2019": "true",
         "LTSC2021": "true"
@@ -1864,14 +1864,14 @@
         "Required": "false",
         "Function": "TempTask",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Register"
             },
-            "One": {
+            "1": {
                 "Tag": "Delete"
             }
         },
-        "Preset": "Zero",
+        "Preset": "0",
         "WindowsDefault": "",
         "LTSC2019": "true",
         "LTSC2021": "true"
@@ -1882,15 +1882,15 @@
         "Required": "false",
         "Function": "NetworkProtection",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1900,15 +1900,15 @@
         "Required": "false",
         "Function": "PUAppsDetection",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1918,15 +1918,15 @@
         "Required": "false",
         "Function": "DefenderSandbox",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1936,15 +1936,15 @@
         "Required": "false",
         "Function": "EventViewerCustomView",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1954,15 +1954,15 @@
         "Required": "false",
         "Function": "AppsSmartScreen",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1972,15 +1972,15 @@
         "Required": "false",
         "Function": "SaveZoneInformation",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Disable"
             },
-            "One": {
+            "1": {
                 "Tag": "Enable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1990,15 +1990,15 @@
         "Required": "false",
         "Function": "WindowsSandbox",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Enable"
             },
-            "One": {
+            "1": {
                 "Tag": "Disable"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -2008,15 +2008,15 @@
         "Required": "false",
         "Function": "MSIExtractContext",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Show"
             },
-            "One": {
+            "1": {
                 "Tag": "Hide"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -2026,15 +2026,15 @@
         "Required": "false",
         "Function": "CABInstallContext",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": "Show"
             },
-            "One": {
+            "1": {
                 "Tag": "Hide"
             }
         },
-        "Preset": "Zero",
-        "WindowsDefault": "One",
+        "Preset": "0",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -2044,11 +2044,11 @@
         "Required": "false",
         "Function": "ScanRegistryPolicies",
         "Arg": {
-            "Zero": {
+            "0": {
                 "Tag": ""
             }
         },
-        "Preset": "Zero",
+        "Preset": "0",
         "WindowsDefault": "",
         "LTSC2019": "true",
         "LTSC2021": "true"
