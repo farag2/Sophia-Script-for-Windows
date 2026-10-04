@@ -99,10 +99,10 @@ CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	Disable the "Connected User Experiences and Telemetry" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic
-	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub
+	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
 
 	Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и блокировать соединение для исходящего трафик клиента единой телеметрии
-	Отключение службы "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) может привести к тому, что вы больше не сможете получать достижения Xbox, а также влияет на работу Feedback Hub
+	Отключение службы "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) может привести к тому, что вы больше не сможете получать достижения XBOX, а также влияет на работу Feedback Hub
 #>
 DiagTrackService -Disable
 
@@ -932,25 +932,25 @@ Uninstall-UWPApps
 
 #region Gaming
 <#
-	Disable Xbox Game Bar
-	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before
+	Disable XBOX Game Bar
+	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the XBOX Game Bar app, even if you uninstalled it before
 
-	Отключить Xbox Game Bar
-	Чтобы предотвратить появление предупреждения "Вам понадобится новое приложение, чтобы открыть этот ms-gamingoverlay", вам необходимо отключить приложение Xbox Game Bar, даже если вы удалили его раньше
+	Отключить XBOX Game Bar
+	Чтобы предотвратить появление предупреждения "Вам понадобится новое приложение, чтобы открыть этот ms-gamingoverlay", вам необходимо отключить приложение XBOX Game Bar, даже если вы удалили его раньше
 #>
-XboxGameBar -Disable
+XBOXGameBar -Disable
 
-# Enable Xbox Game Bar (default value)
-# Включить Xbox Game Bar (значение по умолчанию)
-# XboxGameBar -Enable
+# Enable XBOX Game Bar (default value)
+# Включить XBOX Game Bar (значение по умолчанию)
+# XBOXGameBar -Enable
 
-# Disable Xbox Game Bar tips
-# Отключить советы Xbox Game Bar
-XboxGameTips -Disable
+# Disable XBOX Game Bar tips
+# Отключить советы XBOX Game Bar
+XBOXGameTips -Disable
 
-# Enable Xbox Game Bar tips (default value)
-# Включить советы Xbox Game Bar (значение по умолчанию)
-# XboxGameTips -Enable
+# Enable XBOX Game Bar tips (default value)
+# Включить советы XBOX Game Bar (значение по умолчанию)
+# XBOXGameTips -Enable
 
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed

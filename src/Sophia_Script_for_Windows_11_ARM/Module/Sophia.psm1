@@ -96,7 +96,7 @@ function CreateRestorePoint
 	DiagTrackService -Enable
 
 	.NOTES
-	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub
+	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
 
 	.NOTES
 	Current user
@@ -134,7 +134,7 @@ function DiagTrackService
 		"Disable"
 		{
 			# Connected User Experiences and Telemetry
-			# Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub
+			# Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
 			Get-Service -Name DiagTrack | Stop-Service -Force -PassThru
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled -PassThru
 
@@ -470,7 +470,7 @@ function ScheduledTasks
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all scheduled tasks according to the conditions
-	$Tasks = Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq $State) -and ($_.TaskName -in $CheckedScheduledTasks)}
+	$Tasks = Get-ScheduledTask -TaskName $CheckedScheduledTasks -ErrorAction Ignore | Where-Object -FilterScript {$_.State -eq $State}
 	if (-not $Tasks)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -630,7 +630,7 @@ function SigninInfo
 	{
 		"Disable"
 		{
-			$SID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID"))
 			{
 				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Force
@@ -639,7 +639,7 @@ function SigninInfo
 		}
 		"Enable"
 		{
-			$SID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -Force -ErrorAction Ignore
 		}
 	}
@@ -847,7 +847,7 @@ function WindowsTips
 
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableSoftLanding -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\CloudConten -Name DisableSoftLanding
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\CloudContent -Name DisableSoftLanding
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -1068,7 +1068,7 @@ function TailoredExperiences
 
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CloudContent -Name DisableTailoredExperiencesWithDiagnosticData -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path Software\Policies\Microsoft\Windows\CloudContent -Name DisableTailoredExperiencesWithDiagnosticData
+	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\CloudContent -Name DisableTailoredExperiencesWithDiagnosticData
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -1705,8 +1705,8 @@ function RecycleBinDeleteConfirmation
 
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ConfirmFileDelete
-	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ConfirmFileDelete
+	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete
+	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name ConfirmFileDelete
 
 	$ShellState = Get-ItemPropertyValue -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShellState
 
@@ -1764,9 +1764,9 @@ function QuickAccessRecentFiles
 	)
 
 	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name NoRecentDocsHistory
-	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name NoRecentDocsHistory
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory -Force -ErrorAction Ignore
+	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory
+	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoRecentDocsHistory
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -2088,7 +2088,6 @@ function SearchHighlights
 		"Hide"
 		{
 			# Check whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
-			# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 			$BingSearchEnabled = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search", "BingSearchEnabled", $null))
 			$DisableSearchBoxSuggestions = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null))
 			if (($BingSearchEnabled -eq 1) -or ($DisableSearchBoxSuggestions -eq 1))
@@ -2109,8 +2108,8 @@ function SearchHighlights
 			# Enable "Ask Copilot" and "Find results in Web" icons in Windows Search in order to enable Search Highlights
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name BingSearchEnabled -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
-
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 1 -Force
+			Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions
 		}
 	}
 }
@@ -2493,10 +2492,10 @@ function ControlPanelView
 	Set the default Windows mode to light
 
 	.EXAMPLE
-	WindowsColorScheme -Dark
+	WindowsColorMode -Dark
 
 	.EXAMPLE
-	WindowsColorScheme -Light
+	WindowsColorMode -Light
 
 	.NOTES
 	Current user
@@ -3108,7 +3107,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$env:SystemDrive\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
+			Remove-Item -Path "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
 		}
 		"Default"
 		{
@@ -3481,14 +3480,23 @@ function MostUsedStartApps
 	)
 
 	# Remove all policies in order to make changes visible in UI
+	$Parameters = @{
+		Path        = @(
+			"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer",
+			"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+		)
+		Name        = @("NoStartMenuMFUprogramsList", "NoInstrumentation")
+		Force       = $true
+		ErrorAction = "Ignore"
+	}
+	Remove-ItemProperty @Parameters
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Force -ErrorAction Ignore
+
 	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps
-
-	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList, NoInstrumentation -Force -ErrorAction Ignore
 	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList
-	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation
 	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList
+	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation
 	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation
 
 	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
@@ -4644,9 +4652,10 @@ function WindowsCapabilities
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
 	# Getting list of all capabilities
+	$WindowsCapability = Get-WindowsCapability -Online
 	$Capabilities = foreach ($Pattern in $CheckedCapabilities)
 	{
-		Get-WindowsCapability -Online | Where-Object -FilterScript {($_.State -eq $State) -and ($_.Name -like $Pattern)} | ForEach-Object -Process {
+		$WindowsCapability | Where-Object -FilterScript {($_.State -eq $State) -and ($_.Name -like $Pattern)} | ForEach-Object -Process {
 			Get-WindowsCapability -Online -Name $_.Name
 		}
 	}
@@ -4910,10 +4919,10 @@ function RestartNotification
 	Don't restart as soon as possible to finish updating
 
 	.EXAMPLE
-	DeviceRestartAfterUpdate -Enable
+	RestartDeviceAfterUpdate -Enable
 
 	.EXAMPLE
-	DeviceRestartAfterUpdate -Disable
+	RestartDeviceAfterUpdate -Disable
 
 	.NOTES
 	Machine-wide
@@ -5172,7 +5181,7 @@ function NetworkAdaptersSavePower
 		$Enable
 	)
 
-	# Turn On Desktop Apps Access to Location
+	# Turn on desktop apps access to location
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Allow -Force
 	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Allow -Force
 	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location\NonPackaged -Name Value -PropertyType String -Value Allow -Force
@@ -5183,10 +5192,9 @@ function NetworkAdaptersSavePower
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\LocationAndSensors -Name DisableLocation
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\AppPrivacy -Name LetAppsAccessLocation
 
-	# Check whether there's an adapter that has AllowComputerToTurnOffDevice property to manage
-	# We need also check for adapter status per some laptops have many equal adapters records in adapters list
-	$PhysicalAdaptersStatusUp = @(Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"})
-	$Adapters = $PhysicalAdaptersStatusUp | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	# Check whether adapters have AllowComputerToTurnOffDevice property to manage
+	$PhysicalAdapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}
+	$Adapters = $PhysicalAdapters | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -5196,53 +5204,44 @@ function NetworkAdaptersSavePower
 		return
 	}
 
+	$SSID = $null
+	$ProfileName = $null
+
 	# Check whether PC is currently connected to a Wi-Fi network
-	# NetConnectionStatus 2 is Wi-Fi
-	$InterfaceIndex = (Get-CimInstance -ClassName Win32_NetworkAdapter -Namespace root/CIMV2 | Where-Object -FilterScript {$_.NetConnectionStatus -eq 2}).InterfaceIndex
-	if (Get-NetAdapter -Physical | Where-Object -FilterScript {($_.Status -eq "Up") -and ($_.PhysicalMediaType -eq "Native 802.11") -and ($_.InterfaceIndex -eq $InterfaceIndex)})
+	# https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/hh968170(v=vs.85)
+	if ($PhysicalAdapters | Where-Object -FilterScript {($_.Name -in $Adapters.Name) -and ($_.NdisPhysicalMedium -eq 9)})
 	{
 		# Get currently connected Wi-Fi network SSID
-		$SSID = (Get-NetConnectionProfile).Name
-	}
+		# Get the whole output first: Select-Object -First 1 in the same pipeline would terminate netsh
+		$WLAN = & "$env:SystemRoot\System32\netsh.exe" wlan show interfaces
+		$WLAN = $WLAN | Where-Object -FilterScript {$_.Trim().StartsWith("SSID")} | Select-Object -First 1
 
-	if ($PhysicalAdaptersStatusUp)
-	{
-		# If Wi-Fi network was used
-		if ($SSID)
-		{
-			Write-Verbose -Message $SSID -Verbose
-
-			# Check whether network shell commands were granted location permission to access WLAN information
-			# https://learn.microsoft.com/en-us/windows/win32/nativewifi/wi-fi-access-location-changes
-			try
-			{
-				# Connect to it
-				Start-Process -FilePath "$env:SystemRoot\System32\netsh.exe" -ArgumentList "wlan connect name=$SSID" -Wait -ErrorAction Stop
-			}
-			catch
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.LocationServicesDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.LocationServicesDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-				Start-Process -FilePath ms-settings:privacy-location
-
-				return
-			}
-		}
-
-		# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
-		# Otherwise functions below will indicate that there is no the Internet connection
-		while
-		(
-			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp.Name | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
-		)
+		if (-not $WLAN)
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+			Write-Verbose -Message ($Localization.LocationServicesDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message ($Localization.LocationServicesDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
-			Start-Sleep -Seconds 2
+			Start-Process -FilePath ms-settings:privacy-location
+
+			return
+		}
+
+		$SSID = $WLAN.Split(":", 2)[1].Trim()
+
+		# Get the WLAN profile name by SSID, since they may differ
+		$WLANProfile = Get-ChildItem -Path "$env:ProgramData\Microsoft\Wlansvc\Profiles\Interfaces" -Filter *.xml -Recurse -ErrorAction Ignore | ForEach-Object -Process {
+			([xml](Get-Content -Path $_.FullName -Raw -Encoding UTF8)).WLANProfile
+		} | Where-Object -FilterScript {$_.SSIDConfig.SSID.name -eq $SSID} | Select-Object -First 1
+
+		if ($WLANProfile)
+		{
+			$ProfileName = $WLANProfile.name
+		}
+		else
+		{
+			# Profile was not found
+			$ProfileName = $SSID
 		}
 	}
 
@@ -5266,30 +5265,33 @@ function NetworkAdaptersSavePower
 		}
 	}
 
-	if ($PhysicalAdaptersStatusUp)
+	# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
+	# Otherwise functions below will indicate that there is no the Internet connection
+	$Attempt = 0
+	while
+	(
+		(Get-NetAdapter -Physical -Name $Adapters.Name | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}) -and ($Attempt -lt 15)
+	)
 	{
-		# If Wi-Fi network was used
-		if ($SSID)
+		# If Wi-Fi network was used, connect to it again. Retry every 10 seconds in case the adapter was not ready
+		if ($SSID -and ($Attempt % 5 -eq 0))
 		{
-			Write-Verbose -Message $SSID -Verbose
-
-			# Connect to it
-			Start-Process -FilePath "$env:SystemRoot\System32\netsh.exe" -ArgumentList "wlan connect name=$SSID" -Wait
+			# Connect to Wi-Fi
+			$Parameters = @{
+				FilePath     = "$env:SystemRoot\System32\netsh.exe"
+				ArgumentList = "wlan connect name=`"$ProfileName`" ssid=`"$SSID`""
+				WindowStyle  = "Hidden"
+				Wait         = $true
+			}
+			Start-Process @Parameters
 		}
 
-		# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
-		# Otherwise functions below will indicate that there is no the Internet connection
-		while
-		(
-			Get-NetAdapter -Physical -Name $PhysicalAdaptersStatusUp.Name | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}
-		)
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-			Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
-			Start-Sleep -Seconds 2
-		}
+		Start-Sleep -Seconds 2
+		$Attempt++
 	}
 }
 
@@ -5503,7 +5505,7 @@ IconIndex=-238
 		{
 			# Store all fixed disks' letters except C drive to call with Show-Menu function
 			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype
-			$DriveLetters = @((Get-CimInstance -ClassName CIM_LogicalDisk | Where-Object -FilterScript {($_.DriveType -eq 3) -and ($_.Name -ne $env:SystemDrive)}).DeviceID | Sort-Object)
+			$DriveLetters = @((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_LogicalDisk | Where-Object -FilterScript {($_.DriveType -eq 3) -and ($_.Name -ne $env:SystemDrive)}).DeviceID | Sort-Object)
 			if (-not $DriveLetters)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -5550,6 +5552,7 @@ IconIndex=-238
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
 				# Extract localized user folders strings from %SystemRoot%\System32\shell32.dll
+				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.UserFolderRequest -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
 				$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserFolderRegistry[$UserFolder]
@@ -5606,6 +5609,7 @@ IconIndex=-238
 			foreach ($UserFolder in @("Desktop", "Documents", "Downloads", "Music", "Pictures", "Videos"))
 			{
 				# Extract localized user folders strings from %SystemRoot%\System32\shell32.dll
+				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.UserDefaultFolder -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
 
 				$CurrentUserFolderLocation = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name $UserFolderRegistry[$UserFolder]
@@ -6621,10 +6625,10 @@ function Export-Associations
 		}
 
 		[PSCustomObject]@{
-			ProgId       = $Association.ProgId
-			ProgrammPath = $ProgramPath
-			Extension    = $Association.Identifier
-			Icon         = $Icon
+			ProgId      = $Association.ProgId
+			ProgramPath = $ProgramPath
+			Extension   = $Association.Identifier
+			Icon        = $Icon
 		}
 	}
 
@@ -6660,6 +6664,16 @@ function Import-Associations
 	$DialogResult = $OpenFileDialog.ShowDialog($Focus)
 	$Focus.Dispose()
 
+	# The dialog was closed without selecting a file
+	if ($DialogResult -ne "OK")
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.FunctionSkipped -f $MyInvocation.Line.Trim() -Verbose
+		Write-Error -Message $Localization.FunctionSkipped -f $MyInvocation.Line.Trim() -ErrorAction SilentlyContinue
+
+		return
+	}
+
 	try
 	{
 		$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding UTF8 -Raw | ConvertFrom-Json
@@ -6687,9 +6701,9 @@ function Import-Associations
 		}
 		else
 		{
-			Write-Verbose -Message ($Item.ProgrammPath, $Item.Extension, $Item.Icon -join " | ") -Verbose
+			Write-Verbose -Message ($Item.ProgramPath, $Item.Extension, $Item.Icon -join " | ") -Verbose
 
-			Set-Association -ProgramPath $Item.ProgrammPath -Extension $Item.Extension -Icon $Item.Icon
+			Set-Association -ProgramPath $Item.ProgramPath -Extension $Item.Extension -Icon $Item.Icon
 		}
 	}
 }
@@ -6945,20 +6959,7 @@ function Install-DotNetRuntimes
 		}
 
 		# Check whether .NET installed
-		if (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe")
-		{
-			# Choose the first item if user has more than one package installed
-			# FileVersion has four properties while $LatestNETVersion has only three, unless the [System.Version] accelerator fails
-			$CurrentNETVersion = (Get-Item -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe" | Select-Object -First 1).VersionInfo.FileVersion
-			$CurrentNETVersion = "{0}.{1}.{2}" -f $CurrentNETVersion.Split(".")
-		}
-		else
-		{
-			$CurrentNETVersion = "0.0"
-		}
-
-		# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or .NET is not installed at all
-		if (([System.Version]$LatestNETVersion -gt [System.Version]$CurrentNETVersion) -or ($CurrentNETVersion -eq "0.0"))
+		if (-not (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"))
 		{
 			try
 			{
@@ -7070,7 +7071,7 @@ function PreventEdgeShortcutCreation
 					# msedgeupdate.admx is not a default ADMX template
 					if (Test-Path -Path "$env:SystemRoot\PolicyDefinitions\msedgeupdate.admx")
 					{
-						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 3
+						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 0
 					}
 				}
 			}
@@ -7082,7 +7083,7 @@ function PreventEdgeShortcutCreation
 					# msedgeupdate.admx is not a default ADMX template
 					if (Test-Path -Path "$env:SystemRoot\PolicyDefinitions\msedgeupdate.admx")
 					{
-						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -Type DWORD -Value 3
+						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -Type DWORD -Value 0
 					}
 				}
 			}
@@ -7094,7 +7095,7 @@ function PreventEdgeShortcutCreation
 					# msedgeupdate.admx is not a default ADMX template
 					if (Test-Path -Path "$env:SystemRoot\PolicyDefinitions\msedgeupdate.admx")
 					{
-						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -Type DWORD -Value 3
+						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -Type DWORD -Value 0
 					}
 				}
 			}
@@ -7106,7 +7107,7 @@ function PreventEdgeShortcutCreation
 					# msedgeupdate.admx is not a default ADMX template
 					if (Test-Path -Path "$env:SystemRoot\PolicyDefinitions\msedgeupdate.admx")
 					{
-						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -Type DWORD -Value 3
+						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -Type DWORD -Value 0
 					}
 				}
 			}
@@ -7231,13 +7232,13 @@ function WindowsAI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI -Name AllowRecallEnablement -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot, HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot -Name TurnOffWindowsCopilot -Force -ErrorAction Ignore
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WindowsAI\DisableAIDataAnalysis -Name value -PropertyType DWord -Value 0 -Force
-	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name DisableAIDataAnalysis
-	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name DisableAIDataAnalysis
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsAI -Name DisableAIDataAnalysis
+	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\WindowsAI -Name DisableAIDataAnalysis
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsAI -Name AllowRecallEnablement
 	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\WindowsCopilot -Name TurnOffWindowsCopilot
-	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsAI -Name TurnOffWindowsCopilot
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot -Name TurnOffWindowsCopilot
 
-	if (-not (Get-CimInstance -ClassName Win32_PnPEntity | Where-Object -FilterScript {($null -ne $_.ClassGuid) -and ($_.PNPClass -eq "ComputeAccelerator")}))
+	if (-not (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_PnPEntity | Where-Object -FilterScript {($null -ne $_.ClassGuid) -and ($_.PNPClass -eq "ComputeAccelerator")}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.PCNPUSupport -Verbose
@@ -7368,11 +7369,6 @@ function Install-WSL
 			$ButtonInstall.IsEnabled = $true
 		})
 
-		if ($Distribution.Name -eq $Distributions.Default)
-		{
-			$RadioButton.IsChecked = $true
-		}
-
 		$PanelContainer.Children.Add($RadioButton) | Out-Null
 	}
 
@@ -7451,29 +7447,29 @@ function Uninstall-UWPApps
 		# Windows Camera
 		"Microsoft.WindowsCamera",
 
-		# Xbox Identity Provider
+		# XBOX Identity Provider
 		"Microsoft.XboxIdentityProvider",
 
-		# Xbox Console Companion
+		# XBOX Console Companion
 		"Microsoft.XboxApp",
 
-		# Xbox
+		# XBOX
 		"Microsoft.GamingApp",
 		"Microsoft.GamingServices",
 
 		# Paint
 		"Microsoft.Paint",
 
-		# Xbox TCUI
+		# XBOX TCUI
 		"Microsoft.Xbox.TCUI",
 
-		# Xbox Speech To Text Overlay
+		# XBOX Speech To Text Overlay
 		"Microsoft.XboxSpeechToTextOverlay",
 
-		# Xbox Game Bar
+		# XBOX Game Bar
 		"Microsoft.XboxGamingOverlay",
 
-		# Xbox Game Bar Plugin
+		# XBOX Game Bar Plugin
 		"Microsoft.XboxGameOverlay"
 	)
 
@@ -7784,27 +7780,27 @@ function Uninstall-UWPApps
 #region Gaming
 <#
 	.SYNOPSIS
-	Xbox Game Bar
+	XBOX Game Bar
 
 	.PARAMETER Disable
-	Disable Xbox Game Bar
+	Disable XBOX Game Bar
 
 	.PARAMETER Enable
-	Enable Xbox Game Bar
+	Enable XBOX Game Bar
 
 	.EXAMPLE
-	XboxGameBar -Disable
+	XBOXGameBar -Disable
 
 	.EXAMPLE
-	XboxGameBar -Enable
+	XBOXGameBar -Enable
 
 	.NOTES
-	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the Xbox Game Bar app, even if you uninstalled it before
+	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the XBOX Game Bar app, even if you uninstalled it before
 
 	.NOTES
 	Current user
 #>
-function XboxGameBar
+function XBOXGameBar
 {
 	param
 	(
@@ -7840,24 +7836,24 @@ function XboxGameBar
 
 <#
 	.SYNOPSIS
-	Xbox Game Bar tips
+	XBOX Game Bar tips
 
 	.PARAMETER Disable
-	Disable Xbox Game Bar tips
+	Disable XBOX Game Bar tips
 
 	.PARAMETER Enable
-	Enable Xbox Game Bar tips
+	Enable XBOX Game Bar tips
 
 	.EXAMPLE
-	XboxGameTips -Disable
+	XBOXGameTips -Disable
 
 	.EXAMPLE
-	XboxGameTips -Enable
+	XBOXGameTips -Enable
 
 	.NOTES
 	Current user
 #>
-function XboxGameTips
+function XBOXGameTips
 {
 	param
 	(
@@ -7879,8 +7875,8 @@ function XboxGameTips
 	if (-not (Get-AppxPackage -Name Microsoft.GamingApp))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.PackageNotInstalled -f "Xbox"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.PackageNotInstalled -f "Xbox"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.PackageNotInstalled -f "XBOX"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.PackageNotInstalled -f "XBOX"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -7944,9 +7940,9 @@ function GPUScheduling
 		"Enable"
 		{
 			# Checking whether PC has an external graphics card
-			$AdapterDACType = Get-CimInstance -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)}
+			$AdapterDACType = Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)}
 			# Checking whether Windows is not installed on a virtual machine
-			$ComputerSystemModel = (Get-CimInstance -ClassName CIM_ComputerSystem).Model -notmatch "Virtual"
+			$ComputerSystemModel = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem).Model
 			$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
 			# Checking whether WDDM version is 2.7 or higher
 			if ($AdapterDACType -and ($ComputerSystemModel -notmatch "Virtual") -and ($WddmVersion_Min -ge 2700))
@@ -8130,7 +8126,7 @@ Start-Sleep -Seconds 3
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
 			$Parameters = @{
 				TaskName    = "Windows Cleanup"
@@ -8250,7 +8246,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
 			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
 			$Parameters = @{
@@ -8478,7 +8474,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
 			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
 			$Parameters = @{
@@ -8719,7 +8715,7 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
 			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
 			$Parameters = @{
@@ -8987,7 +8983,7 @@ function EventViewerCustomView
 	)
 
 	# Find and close eventvwr.msc by its argument
-	$eventvwr_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
+	$eventvwr_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
 	if ($eventvwr_Process_ID)
 	{
 		Get-Process -Id $eventvwr_Process_ID | Stop-Process -Force
@@ -9051,6 +9047,9 @@ function EventViewerCustomView
 			Set-Content -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Value $XML -Encoding UTF8 -NoNewline -Force
 
 			$Global:EventViewerCustomView = $true
+
+			Write-Verbose -Message ($Localization.EventViewerCustomViewNotification -f $Localization.EventViewerCustomViewName) -Verbose
+			Write-Error -Message ($Localization.EventViewerCustomViewNotification -f $Localization.EventViewerCustomViewName) -ErrorAction SilentlyContinue
 		}
 		"Disable"
 		{
@@ -9205,10 +9204,10 @@ function SaveZoneInformation
 	Enable Windows Sandbox
 
 	.EXAMPLE
-	WindowsSandbox -Disable
+	WindowsSandbox -Enable
 
 	.EXAMPLE
-	WindowsSandbox -Enable
+	WindowsSandbox -Disable
 
 	.NOTES
 	Current user
@@ -9219,17 +9218,17 @@ function WindowsSandbox
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Enable
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
 	)
 
 	$EditionID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID
@@ -9244,55 +9243,24 @@ function WindowsSandbox
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Disable"
-		{
-			# Check whether x86 virtualization is enabled in the firmware
-			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
-			{
-				Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart -Verbose
-			}
-			else
-			{
-				try
-				{
-					# Determining whether Hyper-V is enabled
-					if ((Get-CimInstance -ClassName CIM_ComputerSystem -ErrorAction Stop).HypervisorPresent)
-					{
-						Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart -Verbose
-					}
-				}
-				catch
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-				}
-			}
-		}
 		"Enable"
 		{
 			# Check whether x86 virtualization is enabled in the firmware
-			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
+			$VirtualizationEnabled = (Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent
+			if (-not $VirtualizationEnabled)
 			{
-				Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart -Verbose
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
 			}
-			else
-			{
-				try
-				{
-					# Determining whether Hyper-V is enabled
-					if ((Get-CimInstance -ClassName CIM_ComputerSystem -ErrorAction Stop).HypervisorPresent)
-					{
-						Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart -Verbose
-					}
-				}
-				catch
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-				}
-			}
+
+			Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart -Verbose
+		}
+		"Disable"
+		{
+			Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart -Verbose
 		}
 	}
 }
@@ -9413,12 +9381,28 @@ function DNSoverHTTPS
 	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DotPolicySetting
 
 	# Get settings of currently used network adapter
-	$InterfaceIndex = (Find-NetRoute -RemoteIPAddress "1.1.1.1" | Select-Object -First 1).InterfaceIndex
-	$Adapter = Get-NetAdapter -InterfaceIndex $InterfaceIndex
+	$Route = Find-NetRoute -RemoteIPAddress "1.1.1.1" -ErrorAction Ignore | Select-Object -First 1
+	if ($Route)
+	{
+		$Adapter = Get-NetAdapter -InterfaceIndex $Route.InterfaceIndex -ErrorAction Ignore
+	}
+
+	if (-not $Adapter)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.ActiveNetworkAdapterNotFound, ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.ActiveNetworkAdapterNotFound, ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
 
 	# Reset DNS records
 	$ResetDNS = {
-		$Adapter | Set-DnsClientServerAddress -ResetServerAddresses
+		if ($Adapter)
+		{
+			$Adapter | Set-DnsClientServerAddress -ResetServerAddresses
+		}
+
 		Remove-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\*\DohInterfaceSettings\Doh\*" -Recurse -Force -ErrorAction Ignore
 	}
 
@@ -9484,6 +9468,7 @@ function DNSoverHTTPS
 	# Set primary and secondary DNS servers
 	$Adapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
 
+	# Enable DNS over HTTPS for both servers
 	if (-not (Test-Path -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$($Adapter.InterfaceGuid)\DohInterfaceSettings\Doh\$PrimaryDNS"))
 	{
 		New-Item -Path "HKLM:\SYSTEM\CurrentControlSet\Services\Dnscache\InterfaceSpecificParameters\$($Adapter.InterfaceGuid)\DohInterfaceSettings\Doh\$PrimaryDNS" -Force
@@ -9551,29 +9536,18 @@ function LocalSecurityAuthority
 		"Enable"
 		{
 			# Check whether x86 virtualization is enabled in the firmware
-			if ((Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled)
+			$VirtualizationEnabled = (Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent
+			if (-not $VirtualizationEnabled)
 			{
-				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL -PropertyType DWord -Value 2 -Force
-				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPLBoot -PropertyType DWord -Value 2 -Force
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
 			}
-			else
-			{
-				try
-				{
-					# Determining whether Hyper-V is enabled
-					if ((Get-CimInstance -ClassName CIM_ComputerSystem -ErrorAction Stop).HypervisorPresent)
-					{
-						New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL -PropertyType DWord -Value 2 -Force
-						New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPLBoot -PropertyType DWord -Value 2 -Force
-					}
-				}
-				catch
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-				}
-			}
+
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL -PropertyType DWord -Value 2 -Force
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPLBoot -PropertyType DWord -Value 2 -Force
 		}
 		"Disable"
 		{
@@ -9839,8 +9813,8 @@ function OpenWindowsTerminalAdminContext
 		Invoke-Item -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState"
 
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.JSONNotValid -f $OpenFileDialog.FileName), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.JSONNotValid -f $OpenFileDialog.FileName), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.JSONNotValid -f "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.JSONNotValid -f "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}

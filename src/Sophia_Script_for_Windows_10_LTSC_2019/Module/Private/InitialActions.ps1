@@ -105,6 +105,54 @@ function InitialActions
 		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\Localizations -FileName Sophia
 	}
 
+	# Checking Windows components: services, WMI providers and Microsoft Defender
+	try
+	{
+		$null = @(
+			Get-Service -Name Windefend, SecurityHealthService, wscsvc, wdFilter -ErrorAction Stop
+			Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service -ErrorAction Stop
+			Get-Service -Name VSS, swprv -ErrorAction Stop | Where-Object -FilterScript {$_.StartType -eq "Disabled"} | Set-Service -StartupType Manual -ErrorAction Stop
+			Get-Service -Name SysMain -ErrorAction Stop | Set-Service -StartupType Automatic -PassThru -ErrorAction Stop | Start-Service -ErrorAction Stop
+
+			Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem -ErrorAction Stop
+			Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_Volume -ErrorAction Stop
+			Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_ShadowStorage -ErrorAction Stop
+			Get-CimInstance -Namespace root/StandardCimv2 -ClassName MSFT_NetAdapter -ErrorAction Stop
+			Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem -ErrorAction Stop | Set-CimInstance -Property @{AutomaticManagedPageFile = $true} -ErrorAction Stop
+
+			Get-CimInstance -Namespace root/CIMV2/Security/MicrosoftVolumeEncryption -ClassName Win32_EncryptableVolume -ErrorAction Stop
+			Get-CimInstance -Namespace root/Microsoft/Windows/Defender -ClassName MSFT_MpComputerStatus -ErrorAction Stop
+			Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Stop
+			Get-MpPreference -ErrorAction Stop
+		)
+	}
+	catch
+	{
+		# Get the exact string where script failed
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+
+		# Display available AVs
+		try
+		{
+			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
+		}
+		catch {}
+
+		Write-Verbose -Message $Localization.AskQuestion -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
+	}
+
 	# Check whether the current module version is the latest one
 	try
 	{
@@ -212,7 +260,7 @@ function InitialActions
 
 	# Check whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
-	$LoginUserName = (Get-CimInstance -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
+	$LoginUserName = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
 	if ($CurrentUserName -ne $LoginUserName)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -271,7 +319,7 @@ function InitialActions
 		# https://github.com/es3n1n/defendnot
 		defendnot        = Test-Path -Path "$env:SystemRoot\System32\Tasks\defendnot"
 		# https://github.com/zoicware/RemoveWindowsAI
-		RemoveWindowsAI  = Test-Path -Path "$env:SystemRoot\System32\CatRoot\*\ZoicwareRemoveWindowsAI*"
+		RemoveWindowsAI  = Test-Path -Path "HKLM:\SOFTWARE\RemoveWindowsAI"
 		# https://forum.ru-board.com/topic.cgi?forum=62&topic=30617&start=1600#14
 		AutoSettingsPS   = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows Defender\Exclusions\Paths" -Name *AutoSettingsPS* -ErrorAction Ignore
 		# https://forum.ru-board.com/topic.cgi?forum=5&topic=50519
@@ -299,15 +347,11 @@ function InitialActions
 		}
 	}
 
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-	Write-Information -MessageData "" -InformationAction Continue
-
 	# Check whether third-party entries were added to the hosts file
 	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
 	if ($HostsEntries)
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
 
 		do
@@ -388,46 +432,8 @@ function InitialActions
 		}
 	}
 
-	# Checking Microsoft Defender properties
-	try
-	{
-		$null = @(
-			Get-Service -Name Windefend, SecurityHealthService, wscsvc, wdFilter -ErrorAction Stop
-			Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service -ErrorAction Stop
-			Get-CimInstance -ClassName MSFT_MpComputerStatus -Namespace root/Microsoft/Windows/Defender -ErrorAction Stop
-			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
-			Get-MpPreference -ErrorAction Stop
-		)
-	}
-	catch
-	{
-		# Get the exact string where script failed
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Information -MessageData "" -InformationAction Continue
-
-		# Try to display available AVs
-		try
-		{
-			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
-		}
-		catch {}
-
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
 	# Check whether Microsoft Defender is a default AV
-	$InstalledAVs = @(Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2)
+	$InstalledAVs = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct)
 	if (($InstalledAVs.displayName | Measure-Object).Count -gt 1)
 	{
 		$Global:DefenderDefaultAV = $false
@@ -513,30 +519,8 @@ function InitialActions
 			{
 				$Yes
 				{
-					try
-					{
-						Disable-BitLocker -MountPoint $env:SystemDrive -ErrorAction Stop
-						Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
-					}
-					catch
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
-						Write-Warning -Message $_.Exception.Message
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-						Write-Information -MessageData "" -InformationAction Continue
-
-						Write-Verbose -Message $Localization.AskQuestion -Verbose
-						Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-						Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-						Write-Verbose -Message "https://t.me/sophianews" -Verbose
-						Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-						$Global:Failed = $true
-
-						exit
-					}
+					Disable-BitLocker -MountPoint $env:SystemDrive -ErrorAction Stop
+					Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
 				}
 				$No
 				{
@@ -600,7 +584,7 @@ function InitialActions
 	}
 
 	# Detect Windows build version
-	switch ((Get-CimInstance -ClassName CIM_OperatingSystem).BuildNumber)
+	switch ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{$_ -ne 17763}
 		{
@@ -674,19 +658,6 @@ function InitialActions
 		}
 	}
 
-	# Enable back the SysMain service if it was disabled by harmful tweakers
-	if ((Get-Service -Name SysMain).Status -eq "Stopped")
-	{
-		Get-Service -Name SysMain | Set-Service -StartupType Automatic | Start-Service
-
-		Start-Process -FilePath "https://www.outsidethebox.ms/19318"
-	}
-
-	# Automatically manage paging file size for all drives
-	if (-not (Get-CimInstance -ClassName CIM_ComputerSystem).AutomaticManagedPageFile)
-	{
-		Get-CimInstance -ClassName CIM_ComputerSystem | Set-CimInstance -Property @{AutomaticManagedPageFile = $true}
-	}
 
 	# If you do not use old applications, there's no need to force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework, HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore

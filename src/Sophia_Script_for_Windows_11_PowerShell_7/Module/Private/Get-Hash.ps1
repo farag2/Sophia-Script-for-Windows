@@ -167,7 +167,7 @@ public static string Get(string extension, string sid, string progId, string sub
 	}
 
 	# Get user SID
-	$UserSID = (Get-CimInstance -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+	$UserSID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
 
 	return [WinAPI.PatentHash]::Get($Extension, $UserSID, $ProgId, $SubKey)
 }

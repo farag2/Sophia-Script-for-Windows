@@ -40,13 +40,13 @@ function PostActions
 	Start-Sleep -Seconds 3
 
 	# Restoring closed folders
-	if (Get-Variable -Name OpenedFolder -ErrorAction Ignore)
+	if (Get-Variable -Name OpenedFolders -Scope Global -ErrorAction Ignore)
 	{
-		foreach ($Global:OpenedFolder in $Global:OpenedFolders)
+		foreach ($OpenedFolder in $Global:OpenedFolders)
 		{
-			if (Test-Path -Path $Global:OpenedFolder)
+			if ($OpenedFolder -and (Test-Path -Path $OpenedFolder))
 			{
-				Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $Global:OpenedFolder
+				Start-Process -FilePath "$env:SystemRoot\explorer.exe" -ArgumentList $OpenedFolder
 			}
 		}
 	}
@@ -55,7 +55,7 @@ function PostActions
 	if ($Global:ScheduledTasks)
 	{
 		# Find and close taskschd.msc by its argument
-		$taskschd_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "taskschd.msc")}).Handle
+		$taskschd_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "taskschd.msc")}).Handle
 		if ($taskschd_Process_ID)
 		{
 			Get-Process -Id $taskschd_Process_ID | Stop-Process -Force
@@ -73,7 +73,7 @@ function PostActions
 	if ($Global:EventViewerCustomView)
 	{
 		# Find and close eventvwr.msc by its argument
-		$eventvwr_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
+		$eventvwr_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
 		if ($eventvwr_Process_ID)
 		{
 			Get-Process -Id $eventvwr_Process_ID | Stop-Process -Force
@@ -108,16 +108,18 @@ function PostActions
 	# Import policies back from LGPO.txt to re-build database database because gpedit.msc relies in its own database
 	if (Test-Path -Path "$env:TEMP\LGPO.txt")
 	{
-		# Check if all policies were removed
+		# Find and close gpedit.msc by its argument
+		$gpedit_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {
+			($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "gpedit.msc")
+		}).Handle
+		if ($gpedit_Process_ID)
+		{
+			Get-Process -Id $gpedit_Process_ID | Stop-Process -Force
+		}
+
+		# Nothing to import if all policies were removed
 		if (Get-Content -Path "$env:TEMP\LGPO.txt" | Where-Object -FilterScript {$_ -ne ""})
 		{
-			# Find and close taskschd.msc by its argument
-			$gpedit_Process_ID = (Get-CimInstance -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "gpedit.msc")}).Handle
-			if ($gpedit_Process_ID)
-			{
-				Get-Process -Id $gpedit_Process_ID | Stop-Process -Force
-			}
-
 			# Recreate Registry.pol from scratch, because LGPO.exe /t only adds and changes values
 			Remove-Item -Path "$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol", "$env:SystemRoot\System32\GroupPolicy\User\Registry.pol" -Force -ErrorAction Ignore
 
@@ -170,15 +172,20 @@ function PostActions
 
 	Write-Information -MessageData "" -InformationAction Continue
 	# Get how much restore points on C drive take up in GB
-	$Volume = Get-CimInstance -ClassName Win32_Volume | Where-Object -FilterScript {$_.DriveLetter -eq "C:"}
-	$RestorePointVolume = [math]::Round((Get-CimInstance -ClassName Win32_ShadowStorage | Where-Object -FilterScript {$_.Volume.DeviceID -eq $Volume.DeviceID}).UsedSpace/1GB, 2)
-	if ($RestorePointVolume -ge 1)
+	$DeviceID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_Volume | Where-Object -FilterScript {$_.BootVolume}).DeviceID
+	$ShadowStorage = Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_ShadowStorage | Where-Object -FilterScript {$_.Volume.DeviceID -eq $DeviceID}
+	# There's no shadow storage, if System Protection has never been enabled
+	if ($ShadowStorage)
 	{
-		Write-Warning -Message ($Localization.RestorePointVolume -f $RestorePointVolume)
-		Write-Information -MessageData "" -InformationAction Continue
+		$RestorePointVolume = [math]::Round($ShadowStorage.UsedSpace/1GB, 2)
+		if ($RestorePointVolume -ge 1)
+		{
+			Write-Warning -Message ($Localization.RestorePointVolume -f $RestorePointVolume)
+			Write-Information -MessageData "" -InformationAction Continue
 
-		# Open System Protection settings
-		& "$env:SystemRoot\System32\SystemPropertiesProtection.exe"
+			# Open System Protection settings
+			& "$env:SystemRoot\System32\SystemPropertiesProtection.exe"
+		}
 	}
 
 	if ($Global:Error)
