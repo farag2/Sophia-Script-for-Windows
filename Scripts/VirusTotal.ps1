@@ -4,7 +4,7 @@
 $DefenderPath = (Get-ChildItem -Path "$env:ProgramData\Microsoft\Windows Defender\Platform" -Directory | Sort-Object Name -Descending | Select-Object -First 1).FullName
 
 # Update Defender definitions
-& "$DefenderPath\MpCmdRun.exe" -SignatureUpdate -Verbose
+& "$DefenderPath\MpCmdRun.exe" -SignatureUpdate
 
 # Start scan
 # We need to use absolute path

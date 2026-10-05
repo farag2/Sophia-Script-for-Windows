@@ -94,7 +94,6 @@ while (-not $ZIP)
 
 $Driver.Quit()
 
-# Copy APK to Morphe_Builder folder
 $Parameters = @{
 	Path        = "$DownloadsFolder\*.zip"
 	Destination = "Cursors"

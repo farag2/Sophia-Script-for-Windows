@@ -12,21 +12,8 @@ $Parameters = @{
 }
 Invoke-WebRequest @Parameters
 
-# Expand zip archive
-$Parameters = @{
-	Path            = "Sophia_Script\LGPO.zip"
-	DestinationPath = "Sophia_Script"
-	Force           = $true
-	Verbose         = $true
-}
-Expand-Archive @Parameters
-
-$Parameters = @{
-	Path        = "Sophia_Script\LGPO_30\LGPO.exe"
-	Destination = "Sophia_Script"
-	Force       = $true
-}
-Move-Item @Parameters
+# Extract LGPO.exe only
+& "$env:SystemRoot\System32\tar.exe" -xvf "Sophia_Script\LGPO.zip" -C "Sophia_Script" --strip-components 1 "LGPO_30/LGPO.exe"
 
 # Download Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
 # https://www.nuget.org/packages/Microsoft.Windows.SDK.NET.Ref
@@ -36,9 +23,9 @@ $Parameters = @{
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-Invoke-RestMethod @Parameters
+Invoke-WebRequest @Parameters
 
-# Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll from archive
+# Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll only
 & "$env:SystemRoot\System32\tar.exe" -xvf "Sophia_Script\microsoft.windows.sdk.net.ref.zip" -C "Sophia_Script" --strip-components 2 "lib/net9.0/WinRT.Runtime.dll" "lib/net9.0/Microsoft.Windows.SDK.NET.dll"
 
-Remove-Item -Path "Sophia_Script\LGPO_30", "Sophia_Script\LGPO.zip", "Sophia_Script\microsoft.windows.sdk.net.ref.zip" -Recurse -Force
+Remove-Item -Path "Sophia_Script\LGPO.zip", "Sophia_Script\microsoft.windows.sdk.net.ref.zip" -Force

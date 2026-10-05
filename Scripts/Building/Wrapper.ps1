@@ -1,10 +1,5 @@
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
-$Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json"
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-$Latest_Release_Sophia_Script_Wrapper = (Invoke-RestMethod @Parameters).Sophia_Script_Wrapper
+$Latest_Release_Sophia_Script_Wrapper = (Get-Content -Path "Sophia_Script_Releases.json" -Raw | ConvertFrom-Json).Sophia_Script_Wrapper
 
 Write-Verbose -Message "Sophia.Script.Wrapper.v$Latest_Release_Sophia_Script_Wrapper.zip" -Verbose
 

@@ -40,7 +40,7 @@ $Hashes = [ordered]@{}
 foreach ($Token in $Archives.Keys)
 {
 	$Hashes[$Token] = (Get-FileHash -Path "Sophia_Script\$($Archives[$Token])" -Algorithm SHA256).Hash.ToLower()
-	Write-Verbose -Message "$($Archive.Name): $($Hashes[$Token])" -Verbose
+	Write-Verbose -Message "$($Archives[$Token]): $($Hashes[$Token])" -Verbose
 }
 
 # Replace variables with script latest versions
@@ -49,7 +49,7 @@ foreach ($Token in $Archives.Keys)
 	$_ -replace "SHA256_Sophia_Script_Windows_10_PowerShell_5_1",        $Hashes.Sophia_Script_Windows_10_PowerShell_5_1 `
 	-replace "SHA256_Sophia_Script_Windows_10_PowerShell_7",             $Hashes.Sophia_Script_Windows_10_PowerShell_7 `
 	-replace "SHA256_Sophia_Script_Windows_10_LTSC_2019",                $Hashes.Sophia_Script_Windows_10_LTSC_2019 `
-	-replace "SHA256_Sophia_Script_Windows_10_LTSC_2021",                $Hashes.Sophia_Script_Windows_10_LTS_C2021 `
+	-replace "SHA256_Sophia_Script_Windows_10_LTSC_2021",                $Hashes.Sophia_Script_Windows_10_LTSC_2021 `
 	-replace "SHA256_Sophia_Script_Windows_11_PowerShell_5_1",           $Hashes.Sophia_Script_Windows_11_PowerShell_5_1 `
 	-replace "SHA256_Sophia_Script_Windows_11_PowerShell_7",             $Hashes.Sophia_Script_Windows_11_PowerShell_7 `
 	-replace "SHA256_Sophia_Script_Windows_11_Arm_PowerShell_5_1",       $Hashes.Sophia_Script_Windows_11_Arm_PowerShell_5_1 `
@@ -61,8 +61,8 @@ foreach ($Token in $Archives.Keys)
 	-replace "OldVersion", $OldTag `
 	-replace "Sophia_Script_Windows_10_PowerShell_5_1",           $JSON.Sophia_Script_Windows_10 `
 	-replace "Sophia_Script_Windows_10_PowerShell_7",             $JSON.Sophia_Script_Windows_10 `
-	-replace "Sophia_Script_Windows_10_LTSC_2019",                 $JSON.Sophia_Script_Windows_10_LTSC_2019 `
-	-replace "Sophia_Script_Windows_10_LTSC_2021",                 $JSON.Sophia_Script_Windows_10_LTSC_2021 `
+	-replace "Sophia_Script_Windows_10_LTSC_2019",                $JSON.Sophia_Script_Windows_10_LTSC_2019 `
+	-replace "Sophia_Script_Windows_10_LTSC_2021",                $JSON.Sophia_Script_Windows_10_LTSC_2021 `
 	-replace "Sophia_Script_Windows_11_PowerShell_5_1",           $JSON.Sophia_Script_Windows_11 `
 	-replace "Sophia_Script_Windows_11_PowerShell_7",             $JSON.Sophia_Script_Windows_11 `
 	-replace "Sophia_Script_Windows_11_Arm_PowerShell_5_1",       $JSON.Sophia_Script_Windows_11 `

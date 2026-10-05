@@ -42,7 +42,7 @@ $JSON = Invoke-RestMethod @Parameters
 
 $packageParameters = $env:chocolateyPackageParameters
 
-switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
+switch ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber)
 {
 	"17763"
 	{
@@ -60,6 +60,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 	"19045"
 	{
+		# Windows 10
 		if ($packageParameters)
 		{
 			if ($packageParameters.Contains('PS7'))
@@ -78,7 +79,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 	{$_ -eq 26100}
 	{
-		# Windows 11 LTSC 2024
+		# Windows 11 Enterprise LTSC 2024
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2024")
 		{
 			if ($packageParameters)
@@ -100,13 +101,14 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 	}
 	{$_ -ge 26200}
 	{
+		# Windows 11
 		if ($packageParameters)
 		{
 			if ($packageParameters.Contains('PS7'))
 			{
-				if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+				if ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Caption -match "ARM")
 				{
-					$LatestRelease = $JSON.Sophia_Script_Windows_11_Arm
+					$LatestRelease = $JSON.Sophia_Script_Windows_11
 					$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.Arm.PowerShell.7.v$LatestRelease.zip"
 					$Hash = "Hash_Sophia_Script_Windows_11_Arm_PowerShell_7"
 				}
@@ -120,6 +122,7 @@ switch ((Get-CimInstance -ClassName Win32_OperatingSystem).BuildNumber)
 		}
 		else
 		{
+			# Windows 11 ARM
 			if ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
 			{
 				$LatestRelease = $JSON.Sophia_Script_Windows_11

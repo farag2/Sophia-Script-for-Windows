@@ -5,13 +5,13 @@ $LocalManifest = $String -split " " | Select-Object -Last 1
 # Get latest supported manifest version provided
 # https://github.com/microsoft/winget-cli/tree/master/schemas/JSON/manifests
 # https://github.com/microsoft/winget-pkgs/tree/master/doc/manifest/schema
+
+<#
 $Token = $env:GITHUB_TOKEN
 $Headers = @{
 	Accept        = "application/vnd.github+json"
 	Authorization = "Bearer $Token"
 }
-
-<#
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/microsoft/winget-pkgs/contents/doc/manifest/schema"
 	Headers         = $Headers
@@ -28,6 +28,7 @@ $Parameters = @{
 }
 $Content = (Invoke-WebRequest @Parameters).Content
 
+# Parse YamlCreate.ps1
 $AST = [System.Management.Automation.Language.Parser]::ParseInput($Content, [ref]$null, [ref]$null)
 $LatestManifest = $AST.Find(
 	{
@@ -55,7 +56,6 @@ if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
 $Parameters = @{
 	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json"
-	Headers         = $Headers
 	UseBasicParsing = $true
 	Verbose         = $true
 }
@@ -64,7 +64,6 @@ $Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11
 # Get archive hash
 $Parameters = @{
 	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($Version)/Sophia.Script.for.Windows.11.v$($Version)_WinGet.exe"
-	Headers         = $Headers
 	UseBasicParsing = $true
 	Verbose         = $true
 }
