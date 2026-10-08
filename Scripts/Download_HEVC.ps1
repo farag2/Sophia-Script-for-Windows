@@ -171,7 +171,6 @@ $Parameters.Uri  = "$Uri/secured"
 $Parameters.Body = $FileRequest
 $TempURL = ((Invoke-RestMethod @Parameters).Envelope.Body.GetExtendedUpdateInfo2Response.GetExtendedUpdateInfo2Result.FileLocations.FileLocation | Where-Object -FilterScript {$_.Url.Contains("tlu")}).Url
 
-# Download archive
 if (-not (Test-Path -Path HEVC))
 {
 	New-Item -Path HEVC -ItemType Directory -Force

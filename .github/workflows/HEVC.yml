@@ -16,7 +16,7 @@ jobs:
 
       - name: Download HEVC package
         run: |
-          . "Scripts\HEVC.ps1"
+          . "Scripts\Download_HEVC.ps1"
 
       - name: Commit and push changes
         run: |
@@ -24,7 +24,7 @@ jobs:
           git config user.name "${{ github.actor }}"
           git config user.email "${{ github.actor }}@users.noreply.github.com"
 
-          git add HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx
+          git add HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle
           git add HEVC/HEVC_version.txt
-          git commit -m "Update Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
+          git commit -m "Update Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle"
           git push

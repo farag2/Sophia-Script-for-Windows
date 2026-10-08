@@ -15,8 +15,13 @@ jobs:
         uses: actions/checkout@main
 
       - name: Download cursors
+        env:
+          DEVIANTART_CLIENT_ID: ${{ secrets.DEVIANTART_CLIENT_ID }}
+          DEVIANTART_CLIENT_SECRET: ${{ secrets.DEVIANTART_CLIENT_SECRET }}
+          DEVIANTART_TOKEN: ${{ secrets.DEVIANTART_TOKEN }}
+          GH_TOKEN: ${{ secrets.CURSOR_PAT }}
         run: |
-          . "Scripts\Cursors.ps1"
+          . "Scripts\Download_Cursors.ps1"
 
       - name: Commit and push changes
         run: |
