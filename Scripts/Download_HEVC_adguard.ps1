@@ -19,7 +19,7 @@ try
 	}
 	Invoke-WebRequest @Parameters | Out-Null
 }
-catch [System.Net.WebException]
+catch [System.Net.Http.HttpRequestException]
 {
 	Write-Verbose -Message "Connection could not be established with https://store.rg-adguard.net" -Verbose
 
@@ -53,7 +53,7 @@ try
 	}
 	$Raw = Invoke-WebRequest @Parameters
 }
-catch [System.Net.WebException]
+catch [System.Net.Http.HttpRequestException]
 {
 	Write-Verbose -Message "Connection could not be established with https://store.rg-adguard.net/api/GetFiles" -Verbose
 
@@ -61,14 +61,16 @@ catch [System.Net.WebException]
 }
 
 # Get a temp URL
-# Replace &, unless it fails to be parsed
-[xml]$TempURL = ($Raw.Links.outerHTML | Where-Object -FilterScript {$_ -match "appxbundle"}).Replace("&", "&amp;") | Select-Object -Last 1
-if (-not $TempURL)
+$Link = $Raw.Links.outerHTML | Where-Object -FilterScript {$_ -match "appxbundle"} | Select-Object -Last 1
+if (-not $Link)
 {
 	Write-Verbose -Message "https://store.rg-adguard.net/api/GetFiles does not output correct URL" -Verbose
 
 	exit 1 # Exit with a non-zero status to fail the job
 }
+
+# Replace &, otherwise it fails to be parsed
+[xml]$TempURL = $Link.Replace("&", "&amp;")
 
 # Get package build version and save to HEVC\HEVC_version.txt
 $TempURL.a."#text".Split("_") | Select-Object -Index 1 | Set-Content -Path HEVC\HEVC_version.txt -Encoding utf8 -Force
@@ -76,8 +78,8 @@ $TempURL.a."#text".Split("_") | Select-Object -Index 1 | Set-Content -Path HEVC\
 # Download archive
 $Parameters = @{
 	Uri             = $TempURL.a.href
-	OutFile         = "HEVC\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
-	Verbose         = $true
+	OutFile         = "HEVC\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle"
 	UseBasicParsing = $true
+	Verbose         = $true
 }
 Invoke-WebRequest @Parameters

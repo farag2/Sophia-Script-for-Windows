@@ -46,7 +46,7 @@ $LatestManifest = $AST.Find(
 
 if ([System.Version]$LocalManifest -lt [System.Version]$LatestManifest)
 {
-	Write-Warning -Message "A new manifest $($LatestManifest) available. Edit manifests in Scripts\WinGet\WinGet_Manifests."
+	Write-Warning -Message "A new manifest version $($LatestManifest) is available. Edit manifests in Scripts\WinGet\WinGet_Manifests."
 
 	# Exit with a non-zero status to fail the job
 	exit 1
@@ -62,8 +62,10 @@ $Parameters = @{
 $Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11
 
 # Get archive hash
+# SFX archive isn't attached to release, it's stored in the WinGet folder of the repo
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/Building/WinGet_SFX.ps1
 $Parameters = @{
-	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($Version)/Sophia.Script.for.Windows.11.v$($Version)_WinGet.exe"
+	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/WinGet/Sophia.Script.for.Windows.11.v$($Version)_WinGet.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
@@ -72,7 +74,7 @@ $Hash = (Get-FileHash -InputStream $Request).Hash
 
 # Update the metadata for the files
 Get-ChildItem -Path Scripts\WinGet\WinGet_Manifests | ForEach-Object -Process {
-	(Get-Content -Path $_.FullName -Encoding UTF8 -Raw) | Foreach-Object -Process {
+	(Get-Content -Path $_.FullName -Encoding utf8 -Raw) | ForEach-Object -Process {
 		$_ -replace "SophiaScriptVersion", $Version `
 		-replace "SophiaScriptHash", $Hash `
 		-replace "SophiaScriptDate", $(Get-Date -Format "yyyy-MM-dd")

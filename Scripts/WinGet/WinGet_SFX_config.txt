@@ -6,7 +6,7 @@
 TempMode
 
 ; Copy folder recursively to Downloads folder
-Setup=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -WindowStyle Hidden -Command & {$Downloads = Get-ItemPropertyValue -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -Name '{374DE290-123F-4565-9164-39C4925E467B}'; New-Item -Path (Join-Path -Path $Downloads -ChildPath "Sophia_Script_for_Windows_11_vSophiaScriptVersion") -ItemType Directory -Force; Copy-Item -Path (Join-Path -Path $PWD.Path -ChildPath '*') -Destination (Join-Path -Path $Downloads -ChildPath "Sophia_Script_for_Windows_11_vSophiaScriptVersion") -Recurse -Force; Invoke-Item -Path (Join-Path -Path $Downloads -ChildPath "Sophia_Script_for_Windows_11_vSophiaScriptVersion")}
+Setup=C:\Windows\System32\WindowsPowerShell\v1.0\powershell.exe -NoProfile -WindowStyle Hidden -Command & {$Downloads = Get-ItemPropertyValue -Path 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders' -Name '{374DE290-123F-4565-9164-39C4925E467B}'; New-Item -Path (Join-Path -Path $Downloads -ChildPath 'Sophia_Script_for_Windows_11_vSophiaScriptVersion') -ItemType Directory -Force; Copy-Item -Path (Join-Path -Path $PWD.Path -ChildPath '*') -Destination (Join-Path -Path $Downloads -ChildPath 'Sophia_Script_for_Windows_11_vSophiaScriptVersion') -Recurse -Force; Invoke-Item -Path (Join-Path -Path $Downloads -ChildPath 'Sophia_Script_for_Windows_11_vSophiaScriptVersion')}
 
-; No GUI while expaning SFX archive
+; No GUI while expanding SFX archive
 Silent=1

@@ -8,7 +8,7 @@ Commands:
 - sophiascript
 Installers:
 - Architecture: x64
-  InstallerUrl: https://github.com/farag2/Sophia-Script-for-Windows/releases/download/SophiaScriptVersion/Sophia.Script.for.Windows.11.vSophiaScriptVersion_WinGet.exe
+  InstallerUrl: https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/WinGet/Sophia.Script.for.Windows.11.vSophiaScriptVersion_WinGet.exe
   InstallerSha256: SophiaScriptHash
 ManifestType: installer
 ManifestVersion: 1.12.0

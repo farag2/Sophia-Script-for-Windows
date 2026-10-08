@@ -83,26 +83,36 @@ function Global:Add-Policy
 		}
 	}
 
-	# Comments and empty lines carry nothing and are dropped
-	$Blocks = @($Content | Where-Object -FilterScript {($_ -ne "") -and (-not $_.StartsWith(";"))})
+	# A block is 4 lines: scope, registry key, value name, and action. Comments and empty lines between blocks carry nothing and are dropped
+	# A value name is an empty line for the default value, so lines are not filtered before splitting into blocks
+	$Blocks = [System.Collections.Generic.List[string[]]]::new()
 
-	# Emit the lines back, an empty one after every 4th, skipping the same block if it already exists, and the new block last
+	for ($i = 0; ($i + 3) -lt $Content.Count; $i++)
+	{
+		if ($Content[$i].Trim() -in @("Computer", "User"))
+		{
+			$Blocks.Add([string[]]@($Content[$i].Trim(), $Content[$i + 1], $Content[$i + 2], $Content[$i + 3]))
+			$i += 3
+		}
+	}
+
+	# Emit the blocks back, an empty line after each, skipping the same block if it already exists, and the new block last
 	$Lines = [System.Collections.Generic.List[string]]::new()
 
-	for ($i = 0; $i -lt $Blocks.Count; $i += 4)
+	foreach ($Block in $Blocks)
 	{
-		if (($Blocks[$i] -eq $Scope) -and ($Blocks[$i + 1] -eq $Path) -and ($Blocks[$i + 2] -eq $Name))
+		if (($Block[0] -eq $Scope) -and ($Block[1] -eq $Path) -and ($Block[2] -eq $Name))
 		{
 			continue
 		}
 
-		$Lines.AddRange([string[]]$Blocks[$i..($i + 3)])
+		$Lines.AddRange($Block)
 		$Lines.Add("")
 	}
 
 	$Lines.AddRange([string[]]@($Scope, $Path, $Name, "${Type}:$Value"))
 	$Lines.Add("")
 
-	# Save with UTF-16LE Unicode encoding
-	Set-Content -Path "$env:TEMP\LGPO.txt" -Value $Lines -Encoding "Unicode" -Force
+	# Save with Unicode encoding
+	Set-Content -Path "$env:TEMP\LGPO.txt" -Value $Lines -Encoding Unicode -Force
 }

@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Enable tab completion to invoke for functions if you do not know function name
+	Enable tab completion to invoke functions if you do not know their names
 
 	.VERSION
 	7.3.0
@@ -30,18 +30,18 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
-$Global:Failed = $false
+# Import localizations before dot-sourcing private functions: WinAPI.ps1 needs them to display warnings
+try
+{
+	Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Module\Localizations -FileName Sophia -ErrorAction Stop
+}
+catch
+{
+	# If there's no folder with current localization ID ($PSUICulture), then import en-US localization
+	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Module\Localizations -FileName Sophia -ErrorAction Ignore
+}
 
-# Unload and import private functions and module
-Get-ChildItem -Path function: | Where-Object -FilterScript {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
-Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Module\Manifest\SophiaScript.psd1 -PassThru -Force
-Get-ChildItem -Path $PSScriptRoot\Module\private | ForEach-Object -Process {. $_.FullName}
-
-# Dot-source script with checks
-InitialActions
-
-# Check whether script wasn't dot-sourced, but called explicitly
+# Check whether script wasn't dot-sourced, but called explicitly. Must go before importing the module
 if ($MyInvocation.InvocationName -ne ".")
 {
 	Write-Warning -Message $Localization.DotSourceFunction
@@ -51,10 +51,25 @@ if ($MyInvocation.InvocationName -ne ".")
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-	$Global:Failed = $false
+	return
+}
 
+$Global:Failed = $false
+
+# Unload and import private functions and module
+Get-ChildItem -Path function: | Where-Object -FilterScript {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
+Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
+Import-Module -Name $PSScriptRoot\Module\Manifest\SophiaScript.psd1 -PassThru -Force
+Get-ChildItem -Path $PSScriptRoot\Module\Private | ForEach-Object -Process {. $_.FullName}
+
+# Global variable if WinAPI.ps1 failed to compile the code
+if ($Global:Failed)
+{
 	exit
 }
+
+# Run initial checks
+InitialActions
 
 # Global variable if checks failed
 if ($Global:Failed)
@@ -77,7 +92,7 @@ function Sophia
 		Invoke-Expression -Command $Function
 	}
 
-	# The "PostActions" and "Errors" functions will be executed at the end
+	# The "PostActions" function will be executed at the end
 	PostActions
 }
 
@@ -169,5 +184,5 @@ Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions 'DiagTrackService -Disable', 'DiagnosticDataLevel -Minimal', Uninstall-UWPApps" -Verbose
 Write-Information -MessageData "" -InformationAction Continue
-Write-Verbose -Message "Sophia -Functions Uninstall-UWPApps, 'PinToStart -UnpinAll'" -Verbose
+Write-Verbose -Message "Sophia -Functions Uninstall-UWPApps, UnpinAllStartTiles" -Verbose
 Write-Verbose -Message "Sophia -Functions `"Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'`"" -Verbose

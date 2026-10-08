@@ -116,7 +116,7 @@ function PostActions
 			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
 		}
 
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
 		Get-Item -Path "$env:TEMP\LGPO.txt" -Force | Remove-Item -Force
 	}

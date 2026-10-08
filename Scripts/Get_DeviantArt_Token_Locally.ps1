@@ -1,8 +1,8 @@
 # Run once locally to sign in to DeviantArt in a browser and get a refresh token for CI/CD
 # https://www.deviantart.com/studio/apps
 
-$client_id     = ""
-$client_secret = ""
+$ClientID     = ""
+$ClientSecret = ""
 
 $Bytes = [byte[]]::new(32)
 [System.Security.Cryptography.RandomNumberGenerator]::Create().GetBytes($Bytes)
@@ -21,7 +21,7 @@ try
 {
 	$Listener.Start()
 
-	Start-Process -FilePath "https://www.deviantart.com/oauth2/authorize?response_type=code&client_id=$client_id&redirect_uri=$RedirectURL&scope=browse&state=$State&code_challenge=$CodeChallenge&code_challenge_method=S256"
+	Start-Process -FilePath "https://www.deviantart.com/oauth2/authorize?response_type=code&client_id=$ClientID&redirect_uri=$RedirectURL&scope=browse&state=$State&code_challenge=$CodeChallenge&code_challenge_method=S256"
 
 	# Blocks until the browser hits the redirect_uri
 	$Context       = $Listener.GetContext()
@@ -40,8 +40,8 @@ finally
 
 $Body = @{
 	grant_type    = "authorization_code"
-	client_id     = $client_id
-	client_secret = $client_secret
+	client_id     = $ClientID
+	client_secret = $ClientSecret
 	redirect_uri  = "http://localhost:8080/cb"
 	code          = $Code
 	code_verifier = $CodeVerifier

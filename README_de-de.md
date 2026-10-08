@@ -110,7 +110,7 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
 * Vollständig quelloffenes Projekt
   * Alle Archive werden mit [GitHub Actions](https://github.com/farag2/Sophia-Script-for-Windows/actions) erstellt und hochgeladen
 * Verfügbar über Scoop, Chocolatey und WinGet
-* ARM64-Unterstützung
+* Arm64-Unterstützung
 * PowerShell 7-Unterstützung
 * Es besteht kein Konflikt mit [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
 * Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen
@@ -138,7 +138,7 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
   * Das Archiv wurde mit der [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml) in den Ordner  [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors) heruntergeladen
 * Eine App als Standard für eine bestimmte Dateiendung festlegen, ohne dass das Popup-Fenster `Wie möchten Sie diese Datei öffnen?` angezeigt wird
 * Exportieren und importieren Sie alle Windows-Zuordnungen. Sie müssen alle Apps gemäß der exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen
-* Installieren Sie die WSL-Linux-Distribution mit Popup-Fenster(#screenshots) unter Verwendung benutzerfreundlicher Distributionsnamen
+* Installieren Sie die WSL-Linux-Distribution mit [Popup-Fenster](#screenshots) unter Verwendung benutzerfreundlicher Distributionsnamen
 * Erstellen Sie geplante Aufgaben mit einer [nativen Toast-Benachrichtigung](#screenshots)
   * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von nicht mehr benötigten Dateien und Windows-Update-Dateien zu bereinigen
   * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`
@@ -155,7 +155,7 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
     * `%SystemDrive%\Recovery`
     * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
 * Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64
-* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10
+* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10 x64
 * Viele weitere Optimierungen für den Datei-Explorer und das Kontextmenü
 
 ## Inhaltsverzeichnis
@@ -164,9 +164,11 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
 * [Wie kann man herunterladen](#wie-kann-man-herunterladen)
 * [Wie zu verwenden](#wie-zu-verwenden)
   * [Verwendung von spezifischen Funktionen](#verwendung-von-spezifischen-funktionen)
+* [Wrapper](#wrapper)
 * [System-Voraussetzungen](#system-voraussetzungen)
 * [Screenshots](#screenshots)
 * [Wie man übersetzt](#wie-man-übersetzt)
+* [Medien](#medien)
 * [SophiApp 2.0](#sophiapp-20-c--winui-3)
 
 ## Wie kann man herunterladen
@@ -356,6 +358,7 @@ scoop uninstall sophia-script --purge
 * Schauen Sie sich die Datei `Sophia.ps1` an, um die Funktionen zu konfigurieren, die Sie ausführen möchten
   * Setzen Sie das `#`-Zeichen vor die Funktion, wenn Sie nicht möchten, dass sie ausgeführt wird
   * Entfernen Sie das `#`-Zeichen vor der Funktion, wenn sie ausgeführt werden soll
+* Kopieren Sie den Pfad zum heruntergeladenen Ordner `Sophia Script for Windows`
 * Klicken Sie mit der rechten Maustaste auf die Schaltfläche `Windows`, öffnen Sie das Terminal (PowerShell) als Administrator und fügen Sie den kopierten Pfad zum Ordner ein
 
 ```batch
@@ -378,7 +381,7 @@ scoop uninstall sophia-script --purge
 * Um spezifische Funktionen auszuführen [dot source](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) die `Import-TabCompletion.ps1` datei zuerst:
 
 ```powershell
-# With a dot at the beginning
+# Mit einem Punkt am Anfang
 . .\Import-TabCompletion.ps1
 ```
 
@@ -398,7 +401,7 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 <img src="./img/Wrapper.png" width='600'>
 
-Wrapper ist ein Closed-Source-Wrapper eines Drittanbieters für `Sophia Script for Windows”. Er wird vollständig von [@BenchTweakGaming](https://github.com/BenchTweakGaming) gepflegt.
+Wrapper ist ein Closed-Source-Wrapper eines Drittanbieters für `Sophia Script for Windows`. Er wird vollständig von [@BenchTweakGaming](https://github.com/BenchTweakGaming) gepflegt.
 
 Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
@@ -455,7 +458,7 @@ Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
 <a href="https://habr.com/company/skillfactory/blog/553800">Habr</a>
 
-<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)">Deskmodder.de</a>
+<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">Deskmodder.de</a>
 
 <a href="https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15">Ru-Board</a>
 

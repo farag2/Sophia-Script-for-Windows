@@ -96,7 +96,7 @@
 <br>
 <br>
 
-<img src="./img/SophiaScript.gif" width='800'>
+<img src="./img/SophiaScript.svg" width='800'>
 
 </div>
 
@@ -107,13 +107,13 @@
   * Каждая настройка имеет соответствующую функцию для восстановления значений по умолчанию
 * Проект с полностью открытым исходным кодом
   * Все архивы собираются и загружаются на страницу релизов, используя [GitHub Actions](https://github.com/farag2/Sophia-Script-for-Windows/actions)
-* Настроить Windows AI
+* Настройка Windows AI
 * Настройка приватности, безопасности и персонализации Windows
 * Доступен через Scoop, Chocolatey и WinGet
-* Поддержка ARM64
+* Поддержка Arm64
 * Поддержка PowerShell 7
 * Не конфликтует с [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
-* Удалить UWP-приложений с отображением локализованных имен пакетов
+* Удаление UWP-приложений с отображением локализованных имен пакетов
   * Скрипт генерирует список установленных UWP-приложений [динамически](#скриншоты)
 * Примененные политики реестра будут отображаться в оснастке редактирования групповых политик (gpedit.msc)
 * Установить на выбор следующие DNS-провайдеры, используя DNS-over-HTTPS
@@ -126,7 +126,7 @@
   * [Wikimedia DNS](https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions)
 * Удалить OneDrive
 * Интерактивные [подсказки и всплывающие окна](#скриншоты)
-* [Автопродление](#как-выполнить-конкретную-функциюи) функций и их аргументов с помощью <kbd>TAB</kbd> (используя Import-TabCompletion.ps1)
+* [Автодополнение](#как-выполнить-конкретную-функциюи) функций и их аргументов с помощью <kbd>TAB</kbd> (используя Import-TabCompletion.ps1)
 * Изменить расположение пользовательских папок (без перемещения пользовательских файлов) с помощью интерактивного меню
   * Рабочий стол
   * Документы
@@ -137,10 +137,10 @@
 * Установить бесплатный (светлый и темный) курсор "Windows 11 Cursors Concept v2" от [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) на лету (без перезагрузок)
   * Архив был скачан в папку [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors), используя [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml)
 * Установить приложение по умолчанию для конкретного расширения без всплывающего окошка `Каким образом вы хотите открыть этот файл?`
-* Экспортировать и импортировать все ассоциации в Windows. Необходимо установить все приложения в соответствии с экспортированным файлом JSON-файлом, чтобы восстановить ассоциации
+* Экспортировать и импортировать все ассоциации в Windows. Необходимо установить все приложения в соответствии с экспортированным JSON-файлом, чтобы восстановить ассоциации
 * Установить дистрибутив Linux через WSL, используя локализованные имена дистрибутивов с помощью всплывающего [окна](#скриншоты)
 * Создать задания в Планировщике заданий с [нативным тостовым уведомлением](#скриншоты)
-  * Создать задания `Windows Cleanup` и `Windows Cleanup Notification` для очистки Winsows от неиспользуемых файлов и файлов обновлений
+  * Создать задания `Windows Cleanup` и `Windows Cleanup Notification` для очистки Windows от неиспользуемых файлов и файлов обновлений
   * Создать задание `SoftwareDistribution` для очистки `%SystemRoot%\SoftwareDistribution\Download`
   * Создать задание `Temp` для очистки временных папок и файлов
     * `%SystemDrive%\$WinREAgent`
@@ -154,8 +154,8 @@
     * `%LOCALAPPDATA%\CrashDumps`
     * `%SystemDrive%\Recovery`
     * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
-* Установить последней версии распространяемых пакетов Microsoft Visual C++ 2015–2026 x86/x64
-* Установить последней версии распространяемых пакетов .NET Desktop Runtime 8, 9, 10 x64
+* Установить последние версии распространяемых пакетов Microsoft Visual C++ 2015–2026 x86/x64
+* Установить последние версии .NET Desktop Runtime 8, 9, 10 x64
 * Много других твиков проводника и контекстного меню
 
 ## Содержание
@@ -164,9 +164,11 @@
 * [Как скачать](#как-скачать)
 * [Как использовать](#как-использовать)
   * [Как выполнить конкретную функцию(и)](#как-выполнить-конкретную-функциюи)
+* [Wrapper](#wrapper)
 * [Системные требования](#системные-требования)
 * [Скриншоты](#скриншоты)
 * [Перевод](#перевод)
+* [Ссылки](#ссылки)
 * [SophiApp 2.0](#sophiapp-20-c--winui-3)
 
 ## Как скачать
@@ -353,8 +355,8 @@ scoop uninstall sophia-script --purge
 <https://github.com/user-attachments/assets/5af5c234-5fb5-4e7e-a3d0-ae496a89e6ba>
 
 * Скачайте и распакуйте архив для вашей системы
-* Просмотрите файл `Sophia.ps1` для настройки того, что выхотите, чтобы запускалось
-  * Поставьте символ `#` перед функцией, если не хотите, чтобы она не запускалась
+* Просмотрите файл `Sophia.ps1` для настройки того, что вы хотите, чтобы запускалось
+  * Поставьте символ `#` перед функцией, если не хотите, чтобы она запускалась
   * Удалите символ `#` перед функцией, если хотите, чтобы она запускалась
 * Скопируйте путь до папки `Sophia Script for Windows`
 * Нажмите правой кнопкой по кнопке Windows и откройте Терминал (PowerShell) от имени администратора и вставьте скопированный путь
@@ -363,7 +365,7 @@ scoop uninstall sophia-script --purge
   cd путь\до\папки
 ```
 
-* Установите политику выполнения, чтобы можно было выполнять скрипты в текущей сессии PowerShell
+* Установите политику выполнения, чтобы можно было выполнять скрипты только в текущей сессии PowerShell
 
 ```powershell
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
@@ -375,7 +377,7 @@ scoop uninstall sophia-script --purge
 
 <https://github.com/user-attachments/assets/d70150d6-af8c-4933-9ec5-b2cf3bb1dd34>
 
-* Выполните все шаги из пункта [Как использовать](#как-использовать) и остановитесь на пункте по изменнию политики выполнения скриптов в `PowerShell`
+* Выполните все шаги из пункта [Как использовать](#как-использовать) и остановитесь на пункте по изменению политики выполнения скриптов в `PowerShell`
 * Сначала загрузите файл `Import-TabCompletion.ps1` через [дот сорсинг](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-):
 
 ```powershell
@@ -383,7 +385,7 @@ scoop uninstall sophia-script --purge
 . .\Import-TabCompletion.ps1
 ```
 
-* Вызовите любую функцию из скрипта с использованием автопродления имени с помощью <kbd>TAB</kbd>
+* Вызовите любую функцию из скрипта с использованием автодополнения имени с помощью <kbd>TAB</kbd>
 
 ```powershell
 Sophia -Functions<TAB>
@@ -416,7 +418,7 @@ Wrapper — это сторонний лончер с закрытым исхо�
 | Windows 11 25H2+                         | [Последняя стабильная][Windows-11-25h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Последняя стабильная][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Последняя стабильная][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 21H2 Enterprise LTSC 2021     | [Последняя стабильная][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 x64 21H2 Enterprise LTSC 2021 | [Последняя стабильная][Windows-10-LTSC-2021] | Enterprise          |
 | Windows 10 x64 1809 Enterprise LTSC 2019 | [Последняя стабильная][Windows-10-LTSC-2019] | Enterprise          |
 
 ## Скриншоты
@@ -456,7 +458,7 @@ Wrapper — это сторонний лончер с закрытым исхо�
 
 <a href="https://habr.com/company/skillfactory/blog/553800">Habr</a>
 
-<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)">Deskmodder.de</a>
+<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">Deskmodder.de</a>
 
 <a href="https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15">Ru-Board</a>
 

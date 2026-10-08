@@ -8,11 +8,11 @@ if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Sev
 	Write-Verbose -Message "Found script issue" -Verbose
 
 	$Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")} | ForEach-Object -Process {
-	[PSCustomObject]@{
-		Line    = $_.Line
-		Message = $_.Message
-		Path    = $_.ScriptPath
-	}
+		[PSCustomObject]@{
+			Line    = $_.Line
+			Message = $_.Message
+			Path    = $_.ScriptPath
+		}
 	} | Format-Table -AutoSize -Wrap
 
 	# Exit with a non-zero status to fail the job
@@ -69,6 +69,8 @@ Get-ChildItem -Path src -File -Filter *.psd1 -Recurse | ForEach-Object -Process 
 
 Write-Verbose -Message "Localizations integrity" -Verbose
 
+$Failed = $false
+
 foreach ($Folder in @(Get-ChildItem -Path src -Directory))
 {
 	# Read all scripts once per folder
@@ -83,7 +85,7 @@ foreach ($Folder in @(Get-ChildItem -Path src -Directory))
 			# "\b" prevents "Enable" from matching "EnableSecureBoot"
 			if (-not ($Content -cmatch "Localization\.$Key\b"))
 			{
-				Write-Verbose -Message "$($Locale.FullName)\Sophia.psd1 is not used in $($Folder.Name)" -Verbose
+				Write-Verbose -Message "Key $Key from $($Locale.FullName)\Sophia.psd1 is not used in $($Folder.Name)" -Verbose
 
 				$Failed = $true
 			}

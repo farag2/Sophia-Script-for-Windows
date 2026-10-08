@@ -6,7 +6,7 @@
 	Array of items to choose from
 
 	.PARAMETER Default
-	Default selected item in array
+	Zero-based index of the item selected by default. The hint line and the "Skip" item are appended after the menu items
 
 	.PARAMETER AddSkip
 	Add localized extracted "Skip" string from %SystemRoot%\System32\shell32.dll

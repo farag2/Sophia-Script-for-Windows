@@ -85,7 +85,7 @@ switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_OperatingSy
 				$Archive = "Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7"
 			}
 		}
-		elseif ((Get-CimInstance -ClassName CIM_Processor).Caption -match "ARM")
+		elseif ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Architecture -eq 12)
 		{
 			# Windows 11 Arm
 			$JSONKey = "Sophia_Script_Windows_11"
@@ -211,7 +211,7 @@ if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$($Version)_v$Lat
 	# Try to display available AVs
 	try
 	{
-		Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
+		Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Stop
 	}
 	catch
 	{

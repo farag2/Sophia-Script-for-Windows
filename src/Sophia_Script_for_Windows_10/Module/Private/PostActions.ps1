@@ -40,6 +40,13 @@ function PostActions
 	Get-Process -Name explorer | Stop-Process -Force
 	Start-Sleep -Seconds 3
 
+	# Start File Explorer if it was not restarted automatically
+	if (-not (Get-Process -Name explorer -ErrorAction Ignore))
+	{
+		Start-Process -FilePath "$env:SystemRoot\explorer.exe"
+		Start-Sleep -Seconds 3
+	}
+
 	# Restoring closed folders
 	if (Get-Variable -Name OpenedFolders -Scope Global -ErrorAction Ignore)
 	{
@@ -106,7 +113,7 @@ function PostActions
 	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
 	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
 
-	# Import policies back from LGPO.txt to re-build database database because gpedit.msc relies in its own database
+	# Import policies back from LGPO.txt to rebuild the database because gpedit.msc relies on its own database
 	if (Test-Path -Path "$env:TEMP\LGPO.txt")
 	{
 		# Find and close gpedit.msc by its argument
@@ -127,7 +134,7 @@ function PostActions
 			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
 		}
 
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
 		Get-Item -Path "$env:TEMP\LGPO.txt" -Force | Remove-Item -Force
 	}

@@ -110,12 +110,12 @@
 * Налаштування Windows AI
 * Налаштування приватності, безпеки та персоналізації Windows
 * Доступний через Scoop, Chocolatey та WinGet
-* Підтримка ARM64
+* Підтримка Arm64
 * Підтримка PowerShell 7
 * Не конфліктує з [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
-* Видалення UWP-додатків, що відображають назви пакетів
+* Видалення UWP-додатків з відображенням локалізованих назв пакетів
   * Скрипт генерує список встановлених UWP-додатків [динамічно](#скріншоти)
-* Застосовані політики реєстру будуть відображатися в оснащенні редагування групових політик (gpedit.msc)
+* Застосовані політики реєстру будуть відображатися в оснастці редагування групових політик (gpedit.msc)
 * Встановити на вибір наступні DNS-провайдери, використовуючи DNS-over-HTTPS
   * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
   * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
@@ -126,7 +126,7 @@
   * [Wikimedia DNS](https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions)
 * Видалення OneDrive
 * Інтерактивні [підказки та спливаючі вікна](#скріншоти)
-* <kbd>TAB</kbd> [доповнення](#як-запустити-певну-функціюї) для функцій та їх аргументів (Використовуючи Import-TabCompletion.ps1)
+* <kbd>TAB</kbd> [доповнення](#як-запустити-певну-функціюї) для функцій та їх аргументів (використовуючи Import-TabCompletion.ps1)
 * Змінити розташування папок користувача (без переміщення файлів користувача) за допомогою інтерактивного меню
   * Робочий стіл
   * Документи
@@ -136,11 +136,11 @@
   * Відео
 * Встановлення безкоштовних (світлий та темний) курсорів "Windows 11 Cursors Concept v2" від [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) на льоту
   * Архів був завантажений у папку [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors), за допомогою [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml)
-* Реєстрація програми, розрахунок хешу та встановлення за замовчуванням для певного розширення без спливаючого вікна `Як ви хочете відкрити це`
-* Експортувати та імпортувати всі асоціації в Windows. Необхідно встановити всі програми відповідно до експортованого файлу JSON, щоб відновити асоціації.
+* Встановити програму за замовчуванням для певного розширення без спливаючого вікна `Як ви хочете відкрити це`
+* Експортувати та імпортувати всі асоціації в Windows. Необхідно встановити всі програми відповідно до експортованого файлу JSON, щоб відновити асоціації
+* Встановити дистрибутив Linux через WSL за допомогою спливаючого [вікна](#скріншоти), використовуючи зрозумілі назви дистрибутивів
 * Створити завдання в Планувальнику завдань з [нативним тостовим повідомленням](#скріншоти)
-  * Створити завдання з нативним тостовим повідомленням, де ви зможете запустити або скасувати [виконання](#скріншоти) завдання
-  * Створити завдання `Windows Cleanup` и `Windows Cleanup Notification` для очищення Windows від невикористовуваних файлів та оновлень
+  * Створити завдання `Windows Cleanup` та `Windows Cleanup Notification` для очищення Windows від невикористовуваних файлів та оновлень
   * Створити завдання `SoftwareDistribution` для очищення `%SystemRoot%\SoftwareDistribution\Download`
   * Створити завдання `Temp` для очищення тимчасових папок і файлів
     * `%SystemDrive%\$WinREAgent`
@@ -164,9 +164,11 @@
 * [Як завантажити](#як-завантажити)
 * [Як використовувати](#як-використовувати)
   * [Як запустити певну функцію(ї)](#як-запустити-певну-функціюї)
+* [Wrapper](#wrapper)
 * [Системні вимоги](#системні-вимоги)
 * [Скріншоти](#скріншоти)
 * [Як перекласти](#як-перекласти)
+* [Медіа](#медіа)
 * [SophiApp 2.0](#sophiapp-20-c--winui-3)
 
 ## Як завантажити
@@ -360,7 +362,7 @@ scoop uninstall sophia-script --purge
 * Клацніть правою кнопкою миші на кнопці `Windows` і відкрийте Термінал (PowerShell) від імені адміністратора та вставте скопійований шлях
 
 ```batch
-  cd путь\до\папки
+  cd шлях\до\папки
 ```
 
 * Встановіть політику виконання, щоб можна було виконувати скрипти в поточній сесії PowerShell
@@ -376,14 +378,14 @@ scoop uninstall sophia-script --purge
 <https://github.com/user-attachments/assets/d70150d6-af8c-4933-9ec5-b2cf3bb1dd34>
 
 * Повторіть усі кроки з розділу [Як використовувати](#як-використовувати) і зупиніться на кроці встановлення політики виконання скриптів у `PowerShell`
-* Для запуску певної функції(й) [запустити](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) необхідно запустити файл `Import-TabCompletion.ps1`:
+* Спочатку завантажте файл `Import-TabCompletion.ps1` через [дот-сорсинг](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-):
 
 ```powershell
 # З крапкою на початку
 . .\Import-TabCompletion.ps1
 ```
 
-* Викличте будь-яку функцію зі скрипта з використанням автопродовження імені за допомогою <kbd>TAB</kbd>.
+* Викличте будь-яку функцію зі скрипта з використанням автодоповнення імені за допомогою <kbd>TAB</kbd>
 
 ```powershell
 Sophia -Functions<TAB>
@@ -399,7 +401,7 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 <img src="./img/Wrapper.png" width='600'>
 
-Wrapper — це сторонній лончер із закритим вихідним кодом для `Sophia Script for Windows`. Проект повністю підтримується [@BenchTweakGaming](https://github.com/BenchTweakGaming).
+Wrapper — це сторонній лончер із закритим вихідним кодом для `Sophia Script for Windows`. Проєкт повністю підтримується [@BenchTweakGaming](https://github.com/BenchTweakGaming).
 
 Детальніше [тут](./Wrapper/README.md)
 
@@ -411,13 +413,13 @@ Wrapper — це сторонній лончер із закритим вихі�
 [Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
 [Windows-11-25h2]: https://support.microsoft.com/topic/windows-11-version-25h2-update-history-99c7f493-df2a-4832-bd2d-6706baa0dec0
 
-|                Версія                    |                 Збiрка                    |       Видання       |
+|                Версія                    |                 Збірка                    |       Видання       |
 |:-----------------------------------------|:-----------------------------------------:|:-------------------:|
 | Windows 11 25H2+                         | [Остання стабільна][Windows-11-25h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Остання стабільна][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Остання стабільна][Windows-11-LTSC-2024] | Enterprise          |
-| Windows 10 21H2 Enterprise LTSC 2021     | [Остання стабільна][Windows-10-LTSC-2021] | Enterprise          |
-| Windows 10 x64 1809 Enterprise LTSC 2019 | [Остання стабільн][Windows-10-LTSC-2019]  | Enterprise          |
+| Windows 10 1H2 Enterprise LTSC 2021      | [Остання стабільна][Windows-10-LTSC-2021] | Enterprise          |
+| Windows 10 x64 1809 Enterprise LTSC 2019 | [Остання стабільна][Windows-10-LTSC-2019] | Enterprise          |
 
 ## Скріншоти
 
@@ -431,7 +433,7 @@ Wrapper — це сторонній лончер із закритим вихі�
 ## Як перекласти
 
 * Виконайте команду `$PSUICulture` в PowerShell, щоб визначити мову інтерфейсу
-* Створіть папку з назвою Вашої мови інтерфейсу (наприклад, `uk-UA`)
+* Створіть папку з назвою вашої мови інтерфейсу (наприклад, `uk-UA`)
 * Помістіть ваш локалізований файл SophiaScript.psd1 в цю папку
 
 ## Медіа
@@ -456,7 +458,7 @@ Wrapper — це сторонній лончер із закритим вихі�
 
 <a href="https://habr.com/company/skillfactory/blog/553800">Habr</a>
 
-<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)">Deskmodder.de</a>
+<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">Deskmodder.de</a>
 
 <a href="https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15">Ru-Board</a>
 
@@ -469,7 +471,7 @@ Wrapper — це сторонній лончер із закритим вихі�
 
 ## SophiApp 2.0 (C# + WinUI 3)
 
-[SophiApp](https://github.com/Sophia-Community/SophiApp) перебуває в активній розробці. 🚀
+[SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) перебуває в активній розробці. 🚀
 
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.png)
 ![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)

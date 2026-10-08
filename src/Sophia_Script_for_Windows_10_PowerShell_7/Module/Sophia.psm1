@@ -40,7 +40,7 @@
 #>
 
 #region Protection
-# Enable script logging. The log will be being recorded into the script root folder
+# Enable script logging. The log will be recorded into the script root folder
 # To stop logging just close the console or type "Stop-Transcript"
 function Logging
 {
@@ -96,7 +96,7 @@ function CreateRestorePoint
 	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function DiagTrackService
 {
@@ -247,7 +247,7 @@ function DiagnosticDataLevel
 	ErrorReporting -Enable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function ErrorReporting
 {
@@ -280,7 +280,7 @@ function ErrorReporting
 
 		$Global:Failed = $true
 
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
 		Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
@@ -319,7 +319,7 @@ function ErrorReporting
 	Change the feedback frequency to "Never"
 
 	.PARAMETER Automatically
-	Change feedback frequency to "Automatically"
+	Change the feedback frequency to "Automatically"
 
 	.EXAMPLE
 	FeedbackFrequency -Never
@@ -388,7 +388,7 @@ function FeedbackFrequency
 	ScheduledTasks -Enable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function ScheduledTasks
 {
@@ -441,8 +441,7 @@ function ScheduledTasks
 		"Enable"
 		{
 			$State         = "Disabled"
-			# Extract localized "Enable" string from %SystemRoot%\System32\shell32.dll
-			$ButtonContent = [WinAPI.GetStrings]::GetString(51472)
+			$ButtonContent = $Localization.Enable
 		}
 		"Disable"
 		{
@@ -621,7 +620,7 @@ function SigninInfo
 			{
 				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 1 -Force
 		}
 		"Enable"
 		{
@@ -639,7 +638,7 @@ function SigninInfo
 	Do not let websites provide locally relevant content by accessing my language list
 
 	.PARAMETER Enable
-	Let websites provide locally relevant content by accessing language my list
+	Let websites provide locally relevant content by accessing my language list
 
 	.EXAMPLE
 	LanguageListAccess -Disable
@@ -687,10 +686,10 @@ function LanguageListAccess
 	The permission for apps to use advertising ID
 
 	.PARAMETER Disable
-	Do not allow apps to use advertising ID to make ads more interresting to you based on your app usage
+	Do not allow apps to use advertising ID to make ads more interesting to you based on your app usage
 
 	.PARAMETER Enable
-	Let apps use advertising ID to make ads more interresting to you based on your app usage
+	Let apps use advertising ID to make ads more interesting to you based on your app usage
 
 	.EXAMPLE
 	AdvertisingID -Disable
@@ -795,13 +794,13 @@ function WindowsWelcomeExperience
 
 <#
 	.SYNOPSIS
-	Getting tip and suggestions when I use Windows
+	Getting tips and suggestions when I use Windows
 
 	.PARAMETER Enable
-	Get tip and suggestions when using Windows
+	Get tips and suggestions when using Windows
 
 	.PARAMETER Disable
-	Do not get tip and suggestions when I use Windows
+	Do not get tips and suggestions when I use Windows
 
 	.EXAMPLE
 	WindowsTips -Disable
@@ -1205,7 +1204,7 @@ function ThisPC
 	Do not use item check boxes
 
 	.PARAMETER Enable
-	Use check item check boxes
+	Use item check boxes
 
 	.EXAMPLE
 	CheckBoxes -Disable
@@ -2108,6 +2107,9 @@ function QuickAccessFrequentFolders
 	.PARAMETER SearchIcon
 	Show the search icon on the taskbar
 
+	.PARAMETER SearchIconLabel
+	Show the search icon and label on the taskbar
+
 	.PARAMETER SearchBox
 	Show the search box on the taskbar
 
@@ -2228,7 +2230,7 @@ function SearchHighlights
 	{
 		"Hide"
 		{
-			# Check whether "Web search in Windows Search" was disabled. It also disable Search Highlights automatically
+			# Check whether "Web search in Windows Search" was disabled. It also disables Search Highlights automatically
 			$DisableSearchBoxSuggestions = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null))
 			if ($DisableSearchBoxSuggestions -eq 1)
 			{
@@ -2324,7 +2326,7 @@ function CortanaButton
 	Hide the Task View button on the taskbar
 
 	.PARAMETER Show
-	Show the Task View button on the taskbar
+	Show the Task view button on the taskbar
 
 	.EXAMPLE
 	TaskViewButton -Hide
@@ -2436,7 +2438,7 @@ public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int ou
 		Add-Type @Signature
 	}
 
-	# We cannot set a value to EnShellFeedsTaskbarViewMode, having called any of APIs, except of copying powershell.exe (or any other tricks) with a different name, due to a UCPD driver tracks all executables to block the access to the registry
+	# We cannot set a value to EnShellFeedsTaskbarViewMode, having called any of APIs, except of copying powershell.exe (or any other tricks) with a different name, because the UCPD driver tracks all executables to block the access to the registry
 	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -2584,7 +2586,7 @@ function WindowsInkWorkspace
 
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\WindowsInkWorkspace -Name AllowWindowsInkWorkspace -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name HideSCAMeetNow
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\WindowsInkWorkspace -Name AllowWindowsInkWorkspace
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
@@ -2787,7 +2789,7 @@ function TaskbarCombine
 	Unpin Microsoft Edge shortcut from the taskbar
 
 	.PARAMETER Store
-	Unpin Microsoft Store from the taskbar
+	Unpin Microsoft Store shortcut from the taskbar
 
 	.PARAMETER Mail
 	Unpin the "Mail" shortcut from the taskbar
@@ -2861,7 +2863,7 @@ function UnpinTaskbarShortcuts
 	View the Control Panel icons by large icons
 
 	.PARAMETER SmallIcons
-	View the Control Panel icons by Small icons
+	View the Control Panel icons by small icons
 
 	.EXAMPLE
 	ControlPanelView -Category
@@ -3107,7 +3109,7 @@ function NewAppInstalledNotification
 	FirstLogonAnimation -Enable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function FirstLogonAnimation
 {
@@ -3434,10 +3436,10 @@ function AppsLanguageSwitch
 	Title bar window shake
 
 	.PARAMETER Enable
-	When I grab a windows's title bar and shake it, minimize all other windows
+	When I grab a window's title bar and shake it, minimize all other windows
 
 	.PARAMETER Disable
-	When I grab a windows's title bar and shake it, don't minimize all other windows
+	When I grab a window's title bar and shake it, don't minimize all other windows
 
 	.EXAMPLE
 	AeroShaking -Enable
@@ -3688,7 +3690,7 @@ function Install-Cursors
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force
+			Remove-Item -Path "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force -ErrorAction Ignore
 		}
 		"Default"
 		{
@@ -3710,11 +3712,11 @@ function Install-Cursors
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_nwse.cur" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_ew.cur" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_up.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_up.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\cursors\aero_busy.ani" -Force
 		}
 	}
 
-	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, $null, 0)
+	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, [IntPtr]::Zero, 0)
 }
 
 <#
@@ -3722,10 +3724,10 @@ function Install-Cursors
 	Files and folders grouping in the Downloads folder
 
 	.PARAMETER None
-	Do not group files and folder in the Downloads folder
+	Do not group files and folders in the Downloads folder
 
 	.PARAMETER Default
-	Group files and folder by date modified in the Downloads folder
+	Group files and folders by date modified in the Downloads folder
 
 	.EXAMPLE
 	FolderGroupBy -None
@@ -3910,10 +3912,10 @@ function RecentlyAddedStartApps
 	Most used apps on Start
 
 	.PARAMETER Hide
-	Hide most used Apps on Start
+	Hide most used apps on Start
 
 	.PARAMETER Show
-	Show most used Apps on Start
+	Show most used apps on Start
 
 	.EXAMPLE
 	MostUsedStartApps -Hide
@@ -4199,7 +4201,7 @@ function PinToStart
 		$DevicesPrinters = [WinAPI.GetStrings]::GetString(30493)
 
 		# Check whether an argument is "DevicesPrinters". The Devices and Printers's AppID attribute can be retrieved only if the shortcut was created
-		if (((Get-Command -Name PinToStart).Parametersets.Parameters | Where-Object -FilterScript {$null -eq $_.Attributes.AliasNames}).Attributes.ValidValues | Where-Object -FilterScript {$_ -match "DevicesPrinters"})
+		if ($Tiles -contains "DevicesPrinters")
 		{
 			# Create old-style "Devices and Printers" shortcut on Start
 			$Shell                 = New-Object -ComObject Wscript.Shell
@@ -4240,7 +4242,7 @@ function PinToStart
 		$ValidColumns = @(0, 2, 4)
 		[string]$StartLayoutNS = "http://schemas.microsoft.com/Start/2014/StartLayout"
 
-		# Add pre-configured hastable to XML
+		# Add pre-configured hashtable to XML
 		function Add-Tile
 		{
 			param
@@ -4361,10 +4363,10 @@ function PinToStart
 	Uninstall OneDrive
 
 	.PARAMETER Install
-	Install OneDrive depending which installer is triggered
+	Install OneDrive depending on which installer is triggered
 
 	.PARAMETER Install -AllUsers
-	Install OneDrive for all users to %ProgramFiles% depending which installer is triggered
+	Install OneDrive for all users to %ProgramFiles% depending on which installer is triggered
 
 	.EXAMPLE
 	OneDrive -Uninstall
@@ -4485,7 +4487,7 @@ function OneDrive
 
 			Remove-Item -Path $OneDriveFolder -Force -Recurse -ErrorAction Ignore
 
-			# We need to wait for a few seconds to let explore launch unless it will fail to do so
+			# We need to wait for a few seconds to let explorer launch, otherwise it will fail to do so
 			Start-Process -FilePath "$env:SystemRoot\explorer.exe"
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -4689,7 +4691,7 @@ function StorageSense
 	Not recommended to turn off for laptops
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function Hibernation
 {
@@ -4771,7 +4773,7 @@ function Win32LongPathsSupport
 		"Disable"
 		{
 			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 0 -Force
-			Add-Policy -Scope Computer -Path SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Type DWORD -Value 0
+			Remove-Policy -Scope Computer -Path SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
 		}
 	}
 }
@@ -4784,7 +4786,7 @@ function Win32LongPathsSupport
 	Display Stop error code when BSoD occurs
 
 	.PARAMETER Disable
-	Do not display stop error code when BSoD occurs
+	Do not display Stop error code when BSoD occurs
 
 	.EXAMPLE
 	BSoDStopError -Enable
@@ -4906,7 +4908,7 @@ function AdminApprovalMode
 	DeliveryOptimization -Enable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function DeliveryOptimization
 {
@@ -5015,7 +5017,7 @@ function WindowsManageDefaultPrinter
 	WindowsFeatures -Enable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function WindowsFeatures
 {
@@ -5208,7 +5210,7 @@ function WindowsFeatures
 	WindowsCapabilities -Install
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function WindowsCapabilities
 {
@@ -5424,7 +5426,7 @@ function WindowsCapabilities
 	UpdateMicrosoftProducts -Disable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function UpdateMicrosoftProducts
 {
@@ -5585,7 +5587,7 @@ function RestartDeviceAfterUpdate
 	Automatically adjust active hours for me based on daily usage
 
 	.PARAMETER Manually
-	Manually adjust active hours for me based on daily usage
+	Manually adjust active hours
 
 	.EXAMPLE
 	ActiveHours -Automatically
@@ -5714,7 +5716,7 @@ function WindowsLatestUpdate
 	Not recommended to turn on for laptops
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function PowerPlan
 {
@@ -5877,8 +5879,8 @@ function NetworkAdaptersSavePower
 		}
 	}
 
-	# All network adapters are turned into "Disconnected" for few seconds, so we need to wait a bit to let them up
-	# Otherwise functions below will indicate that there is no the Internet connection
+	# All network adapters are turned into "Disconnected" for a few seconds, so we need to wait a bit to let them come up
+	# Otherwise functions below will indicate that there is no Internet connection
 	$Attempt = 0
 	while
 	(
@@ -5960,7 +5962,7 @@ function InputMethod
 
 <#
 	.SYNOPSIS
-	Change User folders location
+	Change user folders location
 
 	.PARAMETER Root
 	Change user folders location to the root of any drive using an interactive menu
@@ -6036,7 +6038,7 @@ function Set-UserShellFolderLocation
 	$Global:UserFolderGUIDs = @{
 		"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
 		"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
-		"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5404642AF1E4}"
+		"Downloads" = "{7d83ee9b-2244-4e70-b1f5-5393042af1e4}"
 		"Music"     = "{A0C69A99-21C8-4671-8703-7934162FCF1D}"
 		"Pictures"  = "{0DDD015D-B06C-45D5-8C4C-F59713854639}"
 		"Videos"    = "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
@@ -6464,7 +6466,7 @@ function FoldersLaunchSeparateProcess
 	ReservedStorage -Enable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function ReservedStorage
 {
@@ -6509,7 +6511,7 @@ function ReservedStorage
 
 <#
 	.SYNOPSIS
-	Help look up via F1
+	Help lookup via F1
 
 	.PARAMETER Disable
 	Disable help lookup via F1
@@ -6671,10 +6673,10 @@ function CapsLock
 	The shortcut to start Sticky Keys
 
 	.PARAMETER Disable
-	Do not allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times
+	Do not allow the shortcut key to start Sticky Keys when pressing the Shift key 5 times
 
 	.PARAMETER Enable
-	Allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times
+	Allow the shortcut key to start Sticky Keys when pressing the Shift key 5 times
 
 	.EXAMPLE
 	StickyShift -Disable
@@ -6882,10 +6884,7 @@ function SaveRestartableApps
 	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
 
 	.PARAMETER ProgramPath
-	Path to program to associate an extension with
-
-	.PARAMETER ProgramPath
-	Protocol (ProgId)
+	Path to a program to associate an extension with or its ProgId
 
 	.PARAMETER Extension
 	Extension type
@@ -6970,7 +6969,7 @@ function Set-Association
 
 	[array]$RegisteredProgIDs = @()
 
-	# Microsoft has blocked write access to UserChoice key for .pdf extention and http/https protocols with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+	# Microsoft has blocked write access to UserChoice key for .pdf extension and http/https protocols with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass UCPD driver restrictions
 	# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
 	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
@@ -7040,7 +7039,7 @@ function Set-Association
 				Start-Sleep -Seconds (60 - (Get-Date).Second)
 			}
 
-			# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+			# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass UCPD driver restrictions
 			# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
 				param ($Path, $ProgId)
@@ -7280,8 +7279,8 @@ function Import-Associations
 	if ($DialogResult -ne "OK")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.FunctionSkipped -f $MyInvocation.Line.Trim() -Verbose
-		Write-Error -Message $Localization.FunctionSkipped -f $MyInvocation.Line.Trim() -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -Verbose
+		Write-Error -Message ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -7322,7 +7321,7 @@ function Import-Associations
 
 <#
 	.SYNOPSIS
-	Install the latest Microsoft Visual C++ Redistributable Packages 2017—2026 (x86/x64)
+	Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)
 
 	.EXAMPLE
 	Install-VCRedist
@@ -7360,19 +7359,12 @@ function Install-VCRedist
 
 	foreach ($Architecture in @("x64", "x86"))
 	{
-		# Check whether vc_redist builds installed
-		if (Test-Path -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe")
-		{
-			# Choose the first item if user has more than one package installed
-			$CurrentVCredistVersion = (Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe" | Select-Object -First 1).VersionInfo.FileVersion
-		}
-		else
-		{
-			$CurrentVCredistVersion = "0.0"
-		}
+		# Get the installed vc_redist with the highest version
+		$CurrentVCRedist = Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe" -ErrorAction Ignore |
+			Sort-Object -Property {[System.Version]$_.VersionInfo.FileVersion} -Descending | Select-Object -First 1
 
-		# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
-		if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCredistVersion) -or ($CurrentVCredistVersion -eq "0.0"))
+		# Proceed if redistributable is not installed or the installed build is lower than the available one
+		if ((-not $CurrentVCRedist) -or ([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCRedist.VersionInfo.FileVersion))
 		{
 			try
 			{
@@ -7395,12 +7387,12 @@ function Install-VCRedist
 			}
 
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Item) $LatestVCRedistVersion") -Verbose
+			Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Architecture) $LatestVCRedistVersion") -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Architecture).exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			# https://github.com/PowerShell/PowerShell/issues/21070
 			$Paths = @(
 				"$DownloadsFolder\vc_redist.$($Architecture).exe",
@@ -7411,8 +7403,8 @@ function Install-VCRedist
 		else
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -7531,7 +7523,7 @@ function Install-DotNetRuntimes
 			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -ErrorAction SilentlyContinue
 		}
 
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
 		$Paths = @(
 			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log",
@@ -7672,7 +7664,7 @@ function PreventEdgeShortcutCreation
 
 <#
 	.SYNOPSIS
-	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
+	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup task in the Task Scheduler to manage subsequent backups
 
 	.PARAMETER Enable
 	Back up the system registry to %SystemRoot%\System32\config\RegBack folder
@@ -7744,7 +7736,7 @@ function Install-WSL
 	try
 	{
 		# https://github.com/microsoft/WSL/blob/main/distributions/DistributionInfo.json
-		# wsl --list --online relies on Internet connection too, so it's much convenient to parse DistributionInfo.json, rather than parse a cmd output
+		# wsl --list --online relies on Internet connection too, so it's much more convenient to parse DistributionInfo.json, rather than parse a cmd output
 		$Parameters = @{
 			Uri                      = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
 			UseBasicParsing          = $true
@@ -7859,7 +7851,7 @@ function Install-WSL
 	Uninstall UWP apps
 
 	.PARAMETER AllUsers
-	"AllUsers" argument sets a checkbox to unistall packages for all users
+	"AllUsers" argument sets a checkbox to uninstall packages for all users
 
 	.EXAMPLE
 	Uninstall-UWPApps
@@ -8024,6 +8016,7 @@ function Uninstall-UWPApps
 		"ELANMicroelectronicsCorpo.TrackPoint"
 	)
 
+	#region XAML Markup
 	[xml]$XAML = @"
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
@@ -8609,7 +8602,7 @@ function XBOXGameTips
 	Only with a dedicated GPU and WDDM version is 2.7 or higher. Restart needed
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function GPUScheduling
 {
@@ -8684,9 +8677,6 @@ function GPUScheduling
 
 	.NOTES
 	A native interactive toast notification pops up every 30 days
-
-	.NOTES
-	Windows Script Host has to be enabled
 
 	.NOTES
 	Current user
@@ -8979,7 +8969,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1",
 				"Registry::HKEY_CLASSES_ROOT\WindowsCleanup"
 			)
-			Remove-Item -Path $Paths -Force -ErrorAction Ignore
+			Remove-Item -Path $Paths -Recurse -Force -ErrorAction Ignore
 
 			# Remove folder in Task Scheduler if there is no tasks left there
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
@@ -9014,9 +9004,6 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 
 	.NOTES
 	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
-
-	.NOTES
-	Windows Script Host has to be enabled
 
 	.NOTES
 	Current user
@@ -9236,9 +9223,6 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 	Only files older than one day will be deleted. The task runs every 60 days
 
 	.NOTES
-	Windows Script Host has to be enabled
-
-	.NOTES
 	Current user
 #>
 function TempTask
@@ -9353,7 +9337,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 
 # Unnecessary folders to remove
 `$Paths = @(
-	# Get "C:\$WinREAgent" path because we need to open brackets for $env:SystemDrive but not for $WinREAgent
+	# Get "C:\`$WinREAgent" path because we need to expand `$env:SystemDrive but not `$WinREAgent
 	(-join ("`$env:SystemDrive\", '`$WinREAgent')),
 	(-join ("`$env:SystemDrive\", '`$SysReset')),
 	(-join ("`$env:SystemDrive\", '`$Windows.~WS')),
@@ -9476,7 +9460,7 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 	NetworkProtection -Disable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function NetworkProtection
 {
@@ -9536,7 +9520,7 @@ function NetworkProtection
 	PUAppsDetection -Disable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function PUAppsDetection
 {
@@ -9647,7 +9631,7 @@ function DefenderSandbox
 	Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
 
 	.PARAMETER Disable
-	Disable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
+	Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from the Event Viewer
 
 	.EXAMPLE
 	EventViewerCustomView -Enable
@@ -9748,7 +9732,10 @@ function EventViewerCustomView
 		}
 		"Disable"
 		{
-			# Remove the "Process Creation" custom view in the Event Viewer
+			# Disable events auditing generated when a process is created (starts)
+			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
+
+			# Do not include command line in process creation events
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
 			Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled
 
@@ -9761,6 +9748,7 @@ function EventViewerCustomView
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Force -ErrorAction Ignore
 			Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging
 
+			# Remove the "Process Creation" custom view in the Event Viewer
 			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction Ignore
 		}
 	}
@@ -9831,10 +9819,10 @@ function AppsSmartScreen
 	The Attachment Manager
 
 	.PARAMETER Disable
-	Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe
+	Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
 
 	.PARAMETER Enable
-	Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe
+	Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
 
 	.EXAMPLE
 	SaveZoneInformation -Disable
@@ -9905,7 +9893,7 @@ function SaveZoneInformation
 	WindowsSandbox -Disable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function WindowsSandbox
 {
@@ -9941,7 +9929,7 @@ function WindowsSandbox
 		"Enable"
 		{
 			# Check whether x86 virtualization is enabled in the firmware
-			$VirtualizationEnabled = (Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent
+			$VirtualizationEnabled = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem).HypervisorPresent
 			if (-not $VirtualizationEnabled)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -9970,7 +9958,7 @@ function WindowsSandbox
 	.PARAMETER Show
 	Show the "Extract all" item in the Windows Installer (.msi) context menu
 
-	.PARAMETER Remove
+	.PARAMETER Hide
 	Hide the "Extract all" item from the Windows Installer (.msi) context menu
 
 	.EXAMPLE
@@ -10167,7 +10155,7 @@ function UseStoreOpenWith
 	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
 
 	.NOTES
-	Machine-wide user
+	Machine-wide
 	Current user
 #>
 function ScanRegistryPolicies

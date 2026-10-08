@@ -4,7 +4,7 @@
   <metadata>
     <id>sophia</id>
     <version>SophiaScriptVersion</version>
-    <packageSourceUrl>https://github.com/farag2/Sophia-Script-for-Windows/tree/main/chocolatey</packageSourceUrl>
+    <packageSourceUrl>https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Scripts/Chocolatey</packageSourceUrl>
     <owners>Team Sophia</owners>
     <title>Sophia Script for Windows</title>
     <authors>Team Sophia</authors>

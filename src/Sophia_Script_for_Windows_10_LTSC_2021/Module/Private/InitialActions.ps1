@@ -16,13 +16,6 @@
 #>
 function InitialActions
 {
-	param
-	(
-		[Parameter(Mandatory = $false)]
-		[switch]
-		$Warning
-	)
-
 	Clear-Host
 	$Global:Error.Clear()
 
@@ -79,12 +72,12 @@ function InitialActions
 	})
 	if (-not $ScriptFiles)
 	{
-		Write-Warning -Message "Required files are missing. Please, do not download the whole code from the repository, but download archive from release page for you system."
+		Write-Warning -Message "Required files are missing. Please, do not download the whole code from the repository, but download the archive from the release page for your system."
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "In case you have a question, raise issue on GitHub or ask the community." -Verbose
+		Write-Verbose -Message "In case you have a question, open an issue on GitHub or ask the community." -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -138,7 +131,7 @@ function InitialActions
 		# Display available AVs
 		try
 		{
-			Get-CimInstance -ClassName AntiVirusProduct -Namespace root/SecurityCenter2 -ErrorAction Stop
+			Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Stop
 		}
 		catch {}
 
@@ -195,7 +188,7 @@ function InitialActions
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		$MandatoryPSVersion = (Import-PowershellDataFile -Path "$PSScriptRoot\..\Manifest\SophiaScript.psd1").PowerShellVersion
+		$MandatoryPSVersion = (Import-PowerShellDataFile -Path "$PSScriptRoot\..\Manifest\SophiaScript.psd1").PowerShellVersion
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor, $MandatoryPSVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
@@ -260,8 +253,11 @@ function InitialActions
 
 	# Check whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
-	$LoginUserName = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_Process -Filter "name='explorer.exe'" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
-	if ($CurrentUserName -ne $LoginUserName)
+	# Take explorer.exe from the current session only
+	$SessionId = (Get-Process -Id $PID).SessionId
+	$LoginUserName = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_Process -Filter "Name = 'explorer.exe' AND SessionId = $SessionId" | Invoke-CimMethod -MethodName GetOwner | Select-Object -First 1).User
+	# Skip the check if explorer.exe is not running or its owner cannot be determined
+	if ($LoginUserName -and ($CurrentUserName -ne $LoginUserName))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message ($Localization.LoggedInUserNotAdmin -f $CurrentUserName, $LoginUserName)
@@ -533,17 +529,15 @@ function InitialActions
 		until ($Choice -ne $KeyboardArrows)
 	}
 
+	# Windows 10 Enterprise LTSC 2021
 	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	if (-not (($WINDOWS_LONG -match "Windows 10") -and ($WINDOWS_LONG -match "LTSC")))
+	if ($WINDOWS_LONG -notmatch "Windows 10")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-
-		# Windows 10 Pro
-		$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
 		# e.g. 21H2
-		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
+		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
 
-		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $Windows_Long, $DisplayVersion)
+		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $WINDOWS_LONG, $DisplayVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
@@ -584,21 +578,20 @@ function InitialActions
 		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
 	}
 
-	# Detect Windows build version
-	switch ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber)
+	# Windows 10 Enterprise LTSC 2021
+	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+	# e.g. 22H2
+	$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
+	# Check Windows minor build version
+	$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name CurrentBuild
+	$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR
+
+	switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber)
 	{
 		{$_ -ne 19044}
 		{
-			# Check Windows minor build version
-			$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
-			$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-			# Windows 10 Enterprise LTSC
-			$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-			# e.g. 21H2
-			$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
-
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.UpdateWindowsBuild -f 19044, $LatestSupportedMinorBuild, $Windows_Long, $DisplayVersion, $CurrentBuild, $UBR)
+			Write-Warning -Message ($Localization.UpdateWindowsBuild -f 19044, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message $Localization.AskQuestion -Verbose
@@ -620,21 +613,13 @@ function InitialActions
 
 			exit
 		}
-		"19044"
+		19044
 		{
-			# We may use Test-Path -Path variable:LatestSupportedBuild
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR) -lt $LatestSupportedMinorBuild)
+			# We may use Test-Path -Path variable:LatestSupportedMinorBuild
+			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -lt $LatestSupportedMinorBuild)
 			{
-				# Check Windows minor build version
-				$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name CurrentBuild
-				$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name UBR
-				# Windows 10 Enterprise LTSC
-				$Windows_Long = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-				# e.g. 21H2
-				$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows nt\CurrentVersion" -Name DisplayVersion
-
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message ($Localization.UpdateWindowsBuild -f 19044, $LatestSupportedMinorBuild, $Windows_Long, $DisplayVersion, $CurrentBuild, $UBR)
+				Write-Warning -Message ($Localization.UpdateWindowsBuild -f 19044, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
 				Write-Information -MessageData "" -InformationAction Continue
 
 				Write-Verbose -Message $Localization.AskQuestion -Verbose
@@ -662,7 +647,7 @@ function InitialActions
 	# If you do not use old applications, there's no need to force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework, HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore
 
-	# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+	# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 	# https://github.com/PowerShell/PowerShell/issues/21070
 	Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
@@ -689,38 +674,43 @@ function InitialActions
 	Write-Information -MessageData "" -InformationAction Continue
 
 	# Display a warning message about whether a user has customized the preset file
-	# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+	# Get the name of a preset (e.g. Sophia.ps1) regardless of how it was named
 	[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")}).File
-	Write-Verbose -Message ($Localization.CheckSophiaScriptPreset -f $PresetName) -Verbose
 
-	do
+	# Do not ask if the function was called from Import-TabCompletion.ps1: there is no preset file to customize
+	if ((Split-Path -Path $PresetName -Leaf) -ne "Import-TabCompletion.ps1")
 	{
-		$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+		Write-Verbose -Message ($Localization.CheckSophiaScriptPreset -f $PresetName) -Verbose
 
-		switch ($Choice)
+		do
 		{
-			$Yes
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+			switch ($Choice)
 			{
-				continue
+				$Yes
+				{
+					continue
+				}
+				$No
+				{
+					Invoke-Item -Path $PresetName
+
+					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use" -Verbose
+
+					Write-Verbose -Message $Localization.AskQuestion -Verbose
+					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+					Write-Verbose -Message "https://t.me/sophianews" -Verbose
+					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+					$Global:Failed = $true
+
+					exit
+				}
+				$KeyboardArrows {}
 			}
-			$No
-			{
-				Invoke-Item -Path $PresetName
-
-				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use" -Verbose
-
-				Write-Verbose -Message $Localization.AskQuestion -Verbose
-				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-				Write-Verbose -Message "https://t.me/sophianews" -Verbose
-				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-				$Global:Failed = $true
-
-				exit
-			}
-			$KeyboardArrows {}
 		}
+		until ($Choice -ne $KeyboardArrows)
 	}
-	until ($Choice -ne $KeyboardArrows)
 }

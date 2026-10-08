@@ -14,7 +14,7 @@
 	.LINK
 	https://github.com/farag2/Sophia-Script-for-Windows
 #>
-function Get-Hash
+function Global:Get-Hash
 {
 	[CmdletBinding()]
 	[OutputType([string])]

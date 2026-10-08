@@ -139,10 +139,10 @@ $Parameters.Body = $SyncRequest
 $SyncResult = $SyncXml.Envelope.Body.SyncUpdatesResponse.SyncUpdatesResult
 $IDs        = $SyncResult.ExtendedUpdateInfo.Updates.Update.ID
 
-# SyncUpdates returns several versions of the package (and may return its dependencies), so take the latest HEVC one
+# SyncUpdates returns several versions of the package (and may return its dependencies), so take the lowest HEVC branch
 $Packages = foreach ($Update in ($SyncResult.NewUpdates.UpdateInfo | Where-Object -FilterScript {($_.ID -in $IDs) -and $_.Xml.Properties.SecuredFragment}))
 {
-	# Microsoft.HEVCVideoExtension_2.5.33.0_neutral_~_8wekyb3d8bbwe
+	# Microsoft.HEVCVideoExtension_2.4
 	$Moniker = ($Update.Xml.GetElementsByTagName("AppxMetadata") | Where-Object -FilterScript {$_.PackageMoniker} | Select-Object -First 1).PackageMoniker
 
 	if ($Moniker -and $Moniker.StartsWith("Microsoft.HEVCVideoExtension_"))
@@ -159,7 +159,9 @@ $Packages = foreach ($Update in ($SyncResult.NewUpdates.UpdateInfo | Where-Objec
 # Show all available versions in the log
 $Packages | Sort-Object -Property Version -Descending | Format-Table -Property Moniker, Version -AutoSize
 
-$Package = $Packages | Sort-Object -Property Version -Descending | Select-Object -First 1
+# SyncUpdates returns several branches (e.g. 2.4.x and 2.5.x). Take the lowest branch and the latest build within it
+$Branch  = $Packages | Group-Object -Property {"{0}.{1}" -f $_.Version.Major, $_.Version.Minor} | Sort-Object -Property {[version]$_.Name} | Select-Object -First 1
+$Package = $Branch.Group | Sort-Object -Property Version -Descending | Select-Object -First 1
 
 # Get direct URL
 $FileRequest = @"

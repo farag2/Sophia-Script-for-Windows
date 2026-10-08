@@ -280,7 +280,7 @@ function ErrorReporting
 
 		$Global:Failed = $true
 
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
 		Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 
@@ -632,7 +632,7 @@ function SigninInfo
 			{
 				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Force
 			}
-			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -PropertyType DWord -Value 1 -Force
 		}
 		"Enable"
 		{
@@ -2087,7 +2087,7 @@ function SearchHighlights
 			# Check whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
 			$BingSearchEnabled = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search", "BingSearchEnabled", $null))
 			$DisableSearchBoxSuggestions = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null))
-			if (($BingSearchEnabled -eq 1) -or ($DisableSearchBoxSuggestions -eq 1))
+			if (($BingSearchEnabled -eq 0) -or ($DisableSearchBoxSuggestions -eq 1))
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message ($Localization.SearchHighlightsDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -4230,7 +4230,7 @@ function Win32LongPathsSupport
 		"Disable"
 		{
 			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -PropertyType DWord -Value 0 -Force
-			Add-Policy -Scope Computer -Path SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled -Type DWORD -Value 0
+			Remove-Policy -Scope Computer -Path SYSTEM\CurrentControlSet\Control\FileSystem -Name LongPathsEnabled
 		}
 	}
 }
@@ -5495,7 +5495,7 @@ function Set-UserShellFolderLocation
 	$Global:UserFolderGUIDs = @{
 		"Desktop"   = "{754AC886-DF64-4CBA-86B5-F7FBF4FBCEF5}"
 		"Documents" = "{F42EE2D3-909F-4907-8871-4C22FC0BF756}"
-		"Downloads" = "{7D83EE9B-2244-4E70-B1F5-5404642AF1E4}"
+		"Downloads" = "{7d83ee9b-2244-4e70-b1f5-5393042af1e4}"
 		"Music"     = "{A0C69A99-21C8-4671-8703-7934162FCF1D}"
 		"Pictures"  = "{0DDD015D-B06C-45D5-8C4C-F59713854639}"
 		"Videos"    = "{35286A68-3C57-41A1-BBB1-0EAE73D76C95}"
@@ -6898,19 +6898,12 @@ function Install-VCRedist
 
 	foreach ($Architecture in @("x64", "x86"))
 	{
-		# Check whether vc_redist builds installed
-		if (Test-Path -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe")
-		{
-			# Choose the first item if user has more than one package installed
-			$CurrentVCredistVersion = (Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe" | Select-Object -First 1).VersionInfo.FileVersion
-		}
-		else
-		{
-			$CurrentVCredistVersion = "0.0"
-		}
+		# Get the installed vc_redist with the highest version
+		$CurrentVCRedist = Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe" -ErrorAction Ignore |
+			Sort-Object -Property {[System.Version]$_.VersionInfo.FileVersion} -Descending | Select-Object -First 1
 
-		# Proceed if currently installed build is lower than available from Microsoft or json file is unreachable, or redistributable is not installed
-		if (([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCredistVersion) -or ($CurrentVCredistVersion -eq "0.0"))
+		# Proceed if redistributable is not installed or the installed build is lower than the available one
+		if ((-not $CurrentVCRedist) -or ([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCRedist.VersionInfo.FileVersion))
 		{
 			try
 			{
@@ -6933,12 +6926,12 @@ function Install-VCRedist
 			}
 
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Item) $LatestVCRedistVersion") -Verbose
+			Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Architecture) $LatestVCRedistVersion") -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Architecture).exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			# https://github.com/PowerShell/PowerShell/issues/21070
 			$Paths = @(
 				"$DownloadsFolder\vc_redist.$($Architecture).exe",
@@ -6949,8 +6942,8 @@ function Install-VCRedist
 		else
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -7069,7 +7062,7 @@ function Install-DotNetRuntimes
 			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -ErrorAction SilentlyContinue
 		}
 
-		# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
 		$Paths = @(
 			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log",
@@ -7306,11 +7299,14 @@ function WindowsAI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsAI -Name AllowRecallEnablement -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot, HKCU:\Software\Policies\Microsoft\Windows\WindowsCopilot -Name TurnOffWindowsCopilot -Force -ErrorAction Ignore
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\PolicyManager\default\WindowsAI\DisableAIDataAnalysis -Name value -PropertyType DWord -Value 0 -Force
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\WindowsStore, HKCU:\SOFTWARE\Policies\Microsoft\WindowsStore -Name RemoveWindowsStore -Force -ErrorAction Ignore
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsAI -Name DisableAIDataAnalysis
 	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\WindowsAI -Name DisableAIDataAnalysis
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsAI -Name AllowRecallEnablement
 	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\WindowsCopilot -Name TurnOffWindowsCopilot
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\WindowsCopilot -Name TurnOffWindowsCopilot
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\WindowsStore -Name RemoveWindowsStore
+	Remove-Policy -Scope User -Path Software\Policies\Microsoft\WindowsStore -Name RemoveWindowsStore
 
 	if (-not (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_PnPEntity | Where-Object -FilterScript {($null -ne $_.ClassGuid) -and ($_.PNPClass -eq "ComputeAccelerator")}))
 	{
@@ -8368,7 +8364,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1",
 				"Registry::HKEY_CLASSES_ROOT\WindowsCleanup"
 			)
-			Remove-Item -Path $Paths -Force -ErrorAction Ignore
+			Remove-Item -Path $Paths -Recurse -Force -ErrorAction Ignore
 
 			# Remove folder in Task Scheduler if there is no tasks left there
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
@@ -9330,7 +9326,7 @@ function WindowsSandbox
 		"Enable"
 		{
 			# Check whether x86 virtualization is enabled in the firmware
-			$VirtualizationEnabled = (Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent
+			$VirtualizationEnabled = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem).HypervisorPresent
 			if (-not $VirtualizationEnabled)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -9620,7 +9616,7 @@ function LocalSecurityAuthority
 		"Enable"
 		{
 			# Check whether x86 virtualization is enabled in the firmware
-			$VirtualizationEnabled = (Get-CimInstance -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -ClassName CIM_ComputerSystem).HypervisorPresent
+			$VirtualizationEnabled = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem).HypervisorPresent
 			if (-not $VirtualizationEnabled)
 			{
 				Write-Information -MessageData "" -InformationAction Continue

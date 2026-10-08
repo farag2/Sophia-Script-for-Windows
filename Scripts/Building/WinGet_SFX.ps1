@@ -8,5 +8,11 @@ $Latest_Release_Windows_11 = (Get-Content -Path "Sophia_Script_Releases.json" -R
 
 (Get-Content -Path "Scripts\WinGet\WinGet_SFX_config.txt" -Encoding utf8NoBOM -Raw).Replace("SophiaScriptVersion", $Latest_Release_Windows_11) | Set-Content -Path "Scripts\WinGet\WinGet_SFX_config.txt" -Encoding utf8NoBOM -Force
 
+# WinGet downloads it from https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/WinGet
+New-Item -Path "WinGet" -ItemType Directory -Force
+
+# Remove SFX archives of previous versions to keep only the latest one in the repo
+Get-ChildItem -Path "WinGet" -Filter "*_WinGet.exe" -File -Force | Remove-Item -Force
+
 # Create SFX archive
-& "$env:ProgramFiles\WinRAR\RAR.exe" a -sfx -z"Scripts\WinGet\WinGet_SFX_config.txt" -ep1 -r "Sophia_Script\Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11)_WinGet.exe" "Sophia_Script\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11)\*"
+& "$env:ProgramFiles\WinRAR\RAR.exe" a -sfx -z"Scripts\WinGet\WinGet_SFX_config.txt" -ep1 -r "WinGet\Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11)_WinGet.exe" "Sophia_Script\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11)\*"

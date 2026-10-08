@@ -1,7 +1,7 @@
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 # https://jepricreations.com/products/w11-cursor-concept-free
 
-# We cannot automate downlaoding archive using Deviant Art's API due to limitations as it requires a human interection
+# We cannot automate downloading archive using DeviantArt's API due to limitations as it requires a human interaction
 # https://www.deviantart.com/team/status-update/An-adjustments-being-made-to-1307747979
 
 Get-Process -Name msedgedriver, msedge -ErrorAction Ignore | Stop-Process -Force -ErrorAction Ignore
@@ -21,7 +21,7 @@ $Parameters = @{
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-Invoke-Webrequest @Parameters
+Invoke-WebRequest @Parameters
 
 & "$env:SystemRoot\System32\tar.exe" -xvf "Cursors\edgedriver_win64.zip" -C "Cursors" "msedgedriver.exe"
 
@@ -85,7 +85,7 @@ do
 
 	if (-not $ZIP)
 	{
-		Write-Verbose -Message "Waiting for archive to be downloaded..."
+		Write-Verbose -Message "Waiting for archive to be downloaded..." -Verbose
 		Get-ChildItem -Path $DownloadsFolder -File
 		Start-Sleep -Seconds 5
 	}

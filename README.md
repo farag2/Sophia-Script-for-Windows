@@ -110,7 +110,7 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * Configure Windows AI
 * Configure Windows privacy, security, personalization
 * Available via Scoop, Chocolatey, and WinGet
-* ARM64 support
+* Arm64 support
 * PowerShell 7 support
 * Has no conflict with [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
 * Uninstall UWP apps displaying their localized packages names
@@ -164,9 +164,11 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * [How to download](#how-to-download)
 * [How to use](#how-to-use)
   * [How to run the specific function(s)](#how-to-run-the-specific-functions)
+* [Wrapper](#wrapper)
 * [System Requirements](#system-requirements)
 * [Screenshots](#screenshots)
 * [How to translate](#how-to-translate)
+* [Media](#media)
 * [SophiApp 2.0](#sophiapp-20-c--winui-3)
 
 ## How to download
@@ -369,7 +371,7 @@ scoop uninstall sophia-script --purge
   Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 ```
 
-* Type `.\Sophia.ps1`and press <kbd>Enter</kbd>
+* Type `.\Sophia.ps1` and press <kbd>Enter</kbd>
 
 ### How to run the specific function(s)
 
@@ -456,7 +458,7 @@ Read more [here](./Wrapper/README.md)
 
 <a href="https://habr.com/company/skillfactory/blog/553800">Habr</a>
 
-<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)">Deskmodder.de</a>
+<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">Deskmodder.de</a>
 
 <a href="https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15">Ru-Board</a>
 

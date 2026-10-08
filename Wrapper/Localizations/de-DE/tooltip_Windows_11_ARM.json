@@ -1335,7 +1335,7 @@
   {
     "Region": "System",
     "Function": "Install-VCRedist",
-    "ToolTip": "Installieren Sie die neueste Microsoft Visual C++ Redistributable Packages 2017–2026 (ARM64)",
+    "ToolTip": "Installieren Sie die neueste Microsoft Visual C++ Redistributable Packages 2017–2026 (Arm64)",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1346,7 +1346,7 @@
   {
     "Region": "System",
     "Function": "Install-DotNetRuntimes -Runtimes",
-    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 8, 9, 10 (ARM64). Internetverbindung erforderlich.",
+    "ToolTip": "Installieren Sie die neueste .NET Desktop Runtime 8, 9, 10 (Arm64). Internetverbindung erforderlich.",
     "Arg": {
       "Zero": {
         "Tag": "NET8",

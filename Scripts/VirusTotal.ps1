@@ -22,7 +22,7 @@ foreach ($File in @(Get-ChildItem -Path Sophia_Script -File))
 {
 	if ($File.Length -gt 32MB)
 	{
-		Write-Verbose -Message "$($File.Name) is large than 32MB. Use upload_url endpoint endpoint" -Verbose
+		Write-Verbose -Message "$($File.Name) is larger than 32 MB. Use upload_url endpoint" -Verbose
 
 		# Exit with a non-zero status to fail the job
 		exit 1
@@ -96,6 +96,7 @@ foreach ($File in @(Get-ChildItem -Path Sophia_Script -File))
 				Headers            = $Headers
 				StatusCodeVariable = "ReportCode"
 				SkipHttpErrorCheck = $true
+				UseBasicParsing    = $true
 				Verbose            = $true
 			}
 
@@ -118,6 +119,14 @@ foreach ($File in @(Get-ChildItem -Path Sophia_Script -File))
 			until ($ReportCode -eq 200)
 
 			$Stats = $Response.data.attributes.last_analysis_stats
+		}
+		# E.g. 401 (wrong API key) or 429 (quota exceeded): without this branch the report would contain empty stats
+		default
+		{
+			Write-Verbose -Message "VirusTotal returned HTTP $StatusCode for $($File.Name)" -Verbose
+
+			# Exit with a non-zero status to fail the job
+			exit 1
 		}
 	}
 

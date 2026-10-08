@@ -5,16 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## 6.3.0 | 7.3.0 — 05.08.2026
+## 6.3.0 | 7.3.0 — 05.09.2026
 
 * Code refactoring
 * Updated `Set-Association` function
-  * All WinAPI releated internal functions rewritten
+  * All WinAPI related internal functions rewritten
 * Add new DNS provider `Wikimedia` to `DNSoverHTTPS` function
   * DNSoverHTTPS -Wikimedia
   * https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions
 * Merged `PowerShellModulesLogging`, `PowerShellScriptsLogging`, and `EventViewerCustomView` into one `EventViewerCustomView` function
-  * Custom Event Viewer now catches `EventID 400, 403 800, 4103 and 4104` to help user identify arguments for all launched apps
+  * Custom Event Viewer now catches `EventID 400, 403, 800, 4103 and 4104` to help users identify arguments for all launched apps
   * Please reapply `EventViewerCustomView -Enable` to add new functionality
 * The following functions were removed as unnecessary ones
   * Windows 11
@@ -79,15 +79,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## 6.1.5 | 7.1.5 — 14.04.2026
 
-* Added support for `Windows 11 Enterprise LTSC PowerShell 7`
+* Added support for `Windows 11 Enterprise LTSC 2024 PowerShell 7`
   * Closes #720
 * Added notification for Windows 10 to enroll in Consumer Extended Security Updates (ESU) program to receive updates until 2028 using TSforge from Microsoft Activation Scripts (MAS)
   * https://support.microsoft.com/windows/windows-10-support-has-ended-on-october-14-2025-2ca8b313-1946-43d3-b55c-2b95b107f281
   * https://learn.microsoft.com/lifecycle/faq/extended-security-updates
 * Updated CI/CD scripts
-* Removed `StartLayout` function for `Windows 11` only and `AntizapretProxy`
+* Removed `AntizapretProxy` function and `StartLayout` function (for `Windows 11` only)
 * Updated localizations
-* Added `DNSoverHTTPS -OpenDNS` to setup `OpenDNS` DNS-over-HTTPS from Cisco
+* Added `DNSoverHTTPS -OpenDNS` to set up `OpenDNS` DNS-over-HTTPS from Cisco
   * <https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html>
 * Minor changes and fixes
 * Several news sites published small articles about `Sophia Script for Windows`
@@ -114,14 +114,14 @@ This is a service update to fix Chocolatey building script.
 ## 6.1.1 | 7.1.1 — 13.02.2026
 
 * Code refactoring
-* Added a new argument `AdGuard` for `DNSoverHTTPS` function to enable DNS-over-HTTPS using AdGuard DNS. Now function allow to set DNS records using DNS-over-HTTPS for these providers
+* Added a new argument `AdGuard` for `DNSoverHTTPS` function to enable DNS-over-HTTPS using AdGuard DNS. Now the function allows setting DNS records using DNS-over-HTTPS for these providers
   * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
   * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
   * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
   * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
 
-```powershel
+```powershell
 DNSoverHTTPS -Cloudflare
 DNSoverHTTPS -Google
 DNSoverHTTPS -Quad9
@@ -130,7 +130,7 @@ DNSoverHTTPS -AdGuard
 ```
 
 * Fix for `Set-UserShellFolderLocation` function
-* Changed `DELETE` argument in `Set-Policy` function to `CLEAR` in order set `Not configured` in gpedit.msc snap-in
+* Changed `DELETE` argument in `Set-Policy` function to `CLEAR` in order to set `Not configured` in gpedit.msc snap-in
 * Updated Readme
 * Minor changes and improvements
 
@@ -143,13 +143,13 @@ Fix for #706
   * Initial checks simplified
   * [RemoveWindowsAI](https://github.com/zoicware/RemoveWindowsAI) is now marked as a harmful utility which makes Windows instable
   * `DNSoverHTTPS` function re-written
-    * Now function allow to set DNS records using DNS-over-HTTPS for these providers
+    * Now the function allows setting DNS records using DNS-over-HTTPS for these providers
       * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
       * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
       * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
       * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
 
-```powershel
+```powershell
 DNSoverHTTPS -Cloudflare
 DNSoverHTTPS -Google
 DNSoverHTTPS -Quad9
@@ -241,11 +241,11 @@ Thanks to @agadiffe and Ganiest.
 
 * Support new file structure
 * Add your own translations by editing JSONs
-* Fixed Windows 11 ARM comparison to online
+* Fixed Windows 11 Arm comparison to online
 * Detect import preset incompatibility
 * Refactor
 
-## 5.21.3 | 6.9.3 — 21.10.2025 
+## 5.21.3 | 6.9.3 — 21.10.2025
 
 * Improved localizations and wording;
 * Improve startup checks & updated readmes
@@ -292,7 +292,7 @@ Thanks to @lowl1f3
 * Minor improvements.
 
 ## Wrapper 2.8.6
-- ARM support added
+- Arm support added
 - Fixed Windows 10 LTSC 2019 support
 - Some refactoring
 
@@ -473,7 +473,7 @@ Happy New Year. Team Sophia wishes you the best in the coming year. Hopefully, i
 
 Thanks to A5, l1ghtovskiy, DirtBikeChad, and Rahul Setia.
 
-# Wrapper 2.7.7
+## Wrapper 2.7.7
 
 * Code refactoring;
 * Renamed variable for messagebox saying imported ps1 script needs to be in Sophia Script folder;
@@ -809,7 +809,7 @@ Thanks to frost_tg for bug reporting
 * Fixed bug in `Export-Associations`;
   * Reported by @lowl1f3.
 * Closed #494;
-  * Now `TaskbarChat` function except hiding the iсon also prevents `Microsoft Teams` from installing for new users by creating a special registry key as `NT SERVICE\TrustedInstaller`;
+  * Now `TaskbarChat` function except hiding the icon also prevents `Microsoft Teams` from installing for new users by creating a special registry key as `NT SERVICE\TrustedInstaller`;
 * Fixed `Cursors` function.
   * If you encountered with a wrong cursor applied, please re-apply the function.
 
@@ -1061,9 +1061,9 @@ Diff from v6.1.3
 
 * We opened our official [Discord](https://discord.gg/sSryhaEv79) channel! Feel free to chat and talk! [![Discord](https://discordapp.com/api/guilds/1006179075263561779/widget.png?style=shield)](https://discord.gg/sSryhaEv79)
 * Improved Defender checks;
-  * Now they're skipped for `Windows 10 Enteprise G`;
+  * Now they're skipped for `Windows 10 Enterprise G`;
   * Closes #379.
-* Now all all `.ps1, .psm1, .psd1` files are signed in cloud via GitHub Actions by a self-issued certificates;
+* Now all `.ps1, .psm1, .psd1` files are signed in cloud via GitHub Actions by a self-issued certificates;
   * <https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/Sign.ps1>
   * <https://github.com/farag2/Sophia-Script-for-Windows/blob/63de3f5896fba014d7f6bb0493d4934b221fe1ef/.github/workflows/Sophia.yml#L17>
 * Removed unnecessary `BitLockerContext` function;
@@ -1315,10 +1315,10 @@ Diff from v6.1.3
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
 * Added support for Windows 10 Enterprise LTSC 2021;
-* Added the `UninstallPCHealthCheck` funtion;
+* Added the `UninstallPCHealthCheck` function;
   * This application is installed with the [KB5005463](https://support.microsoft.com/en-us/topic/kb5005463-pc-health-check-application-e33cf4e2-49e2-4727-b913-f3c5b1ee0e56) update to check if PC meets the system requirements of Windows 11;
   * For Windows 10 only.
-* Added the `InstallVCRedist` funtion;
+* Added the `InstallVCRedist` function;
   * Install the latest supported Microsoft Visual C++ Redistributable 2015—2022 x64;
   * <https://docs.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist>;
 * Added the `UnpinAllStartApps` function to provide a feature to unpin all Start apps;
@@ -1338,7 +1338,7 @@ Diff from v6.1.3
 
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2019
 
-* The `NotificationAreaIcons`, `TaskbarSize`, `RecentlyAddedAppsAdded` funtions were removed due to lack of necessity;
+* The `NotificationAreaIcons`, `TaskbarSize`, `RecentlyAddedAppsAdded` functions were removed due to lack of necessity;
 * Fixed typo in `FileExplorerCompactMode`;
   * The values for `Disable` and `Enable` were switched places by mistake;
 * Fixed bug in `UpdateMicrosoftProducts`;
@@ -1507,7 +1507,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
   * Disable the Internet Protocol Version 6 (TCP/IPv6) component for all network connections. Before invoking the function, a check will be run whether your ISP supports the IPv6 protocol using <https://ipv6-test.com>
 * Added the `AeroShaking -Enable`, `AeroShaking -Disable` functions;
   * When I grab a windows's title bar and shake it, minimize all other windows
-* @Inestic has re-writen the `WSL` functions into one with a `WPF form` with list of supported Linux distributions to install. Microsoft has allowed the supported Windows 10 versions to install Linux distributions with [one command](https://devblogs.microsoft.com/commandline/install-wsl-with-a-single-command-now-available-in-windows-10-version-2004-and-higher/) `wsl --install`;
+* @Inestic has re-written the `WSL` functions into one with a `WPF form` with list of supported Linux distributions to install. Microsoft has allowed the supported Windows 10 versions to install Linux distributions with [one command](https://devblogs.microsoft.com/commandline/install-wsl-with-a-single-command-now-available-in-windows-10-version-2004-and-higher/) `wsl --install`;
   * Windows 10 `19041.1151` (Windows 11) build is minimum needed;
   * ![Image](https://i.imgur.com/j2KLZm0.png)
 * The `XboxGameBar` function removed;
@@ -1625,7 +1625,7 @@ Diff from v5.10.8
 [5.10.8...5.11](https://github.com/farag2/Windows-10-Sophia-Script/compare/5.10.8...5.11)
 
 * Updated descriptions;
-* Expanded the `Checks` funtion functionality;
+* Expanded the `Checks` function functionality;
 * Updated the `OneDrive` function;
 * Functions removed as not wanted
   * `ShareAcrossDevices`
@@ -2652,7 +2652,7 @@ DISM.exe /Online /English /Cleanup-Image /StartComponentCleanup /NoRestart
 * "Turn off diagnostics tracking scheduled tasks" section
   * Now the "FODCleanupTask" task, related to Windows Hello, does not turn off if device is a laptop
 * "Remove Windows capabilities" section
-  * Now the "Hello.Face*" сapabilities, related to Windows Hello, does not removed if device is a laptop
+  * Now the "Hello.Face*" capabilities, related to Windows Hello, are not removed if device is a laptop
 * "Save screenshots by pressing Win+PrtScr to the Desktop" section
 * "Set "High performance" in graphics performance preference for apps" section
 * "Uninstall all UWP apps from all accounts" section
@@ -2752,7 +2752,7 @@ DISM.exe /Online /English /Cleanup-Image /StartComponentCleanup /NoRestart
 * Rewritten "Pin to Start the shortcuts" section;
   * Now using [syspin.exe](http://www.technosys.net/products/utils/pintotaskbar) to pin shortcuts
   * Hash (SHA256): 6967E7A3C2251812DD6B3FA0265FB7B61AADC568F562A98C50C345908C6E827
-  * Shorcuts pinned by default:
+  * Shortcuts pinned by default:
     * Control Panel;
     * Devices and Printers;
     * Command Prompt.
@@ -2830,7 +2830,7 @@ DISM.exe /Online /English /Cleanup-Image /StartComponentCleanup /NoRestart
 * Updated "Uninstall OneDrive" section;
 * Minor changes.
 
-## 4.0.17 * 10.02.2020
+## 4.0.17 — 10.02.2020
 
 * Now using "switch" operator in the interactive prompts;
 * Comments;
@@ -2895,7 +2895,7 @@ DISM.exe /Online /English /Cleanup-Image /StartComponentCleanup /NoRestart
 * "Enable System Restore" section redone into "Remove Shadow copies (restoration points)"
 * Minor changes.
 
-## 4.0.11 * 05.11.2019
+## 4.0.11 — 05.11.2019
 
 "Uninstall UWP apps" section.
 

@@ -35,11 +35,6 @@ function Global:Write-ExtensionKeys
 
 	# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 	$OrigProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null)
-	if ($OrigProgID)
-	{
-		# Save ProgIds history with extensions or protocols for the system ProgId
-		$Global:RegisteredProgIDs += $OrigProgID
-	}
 
 	# Save possible ProgIds history with extension: the full ProgId and its leaf (they differ for "Applications\app.exe" style ProgIds)
 	$ToastNames = @("$($ProgId)_$($Extension)", ("{0}_{1}" -f (Split-Path -Path $ProgId -Leaf), $Extension)) | Sort-Object -Unique
@@ -82,7 +77,7 @@ function Global:Write-ExtensionKeys
 		Start-Sleep -Seconds (60 - (Get-Date).Second)
 	}
 
-	# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+	# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass UCPD driver restrictions
 	# UCPD driver tracks all executables to block the access to the registry so all UserChoice records will be made within powershell_temp.exe
 	$SubKey = "Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\$Extension\UserChoice"
 	$Path   = "HKCU:\$SubKey"

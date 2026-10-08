@@ -5,7 +5,7 @@
 	Author                = 'Team Sophia'
 	Copyright             = '(c) 2014—2026 Team Sophia'
 	Description           = 'The most powerful PowerShell module for fine-tuning Windows on GitHub'
-	PowerShellVersion     = '7.5'
+	PowerShellVersion     = '7.6'
 	ProcessorArchitecture = 'AMD64'
 	FunctionsToExport     = '*'
 
