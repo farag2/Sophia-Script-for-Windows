@@ -6,6 +6,11 @@ on:
 permissions:
   contents: write
 
+# Do not push from several workflows at the same time
+concurrency:
+  group: update-repository-files
+  cancel-in-progress: false
+
 jobs:
   download-cursors:
     runs-on: windows-latest
@@ -31,4 +36,5 @@ jobs:
 
           git add Cursors/w11-cursor-concept-free.zip
           git commit -m "Update w11-cursor-concept-free.zip archive"
+          git pull --rebase
           git push

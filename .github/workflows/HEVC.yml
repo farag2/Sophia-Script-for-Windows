@@ -6,6 +6,11 @@ on:
 permissions:
   contents: write
 
+# Do not push from several workflows at the same time
+concurrency:
+  group: update-repository-files
+  cancel-in-progress: false
+
 jobs:
   download-hevc:
     runs-on: windows-latest
@@ -27,4 +32,5 @@ jobs:
           git add HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle
           git add HEVC/HEVC_version.txt
           git commit -m "Update Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle"
+          git pull --rebase
           git push
