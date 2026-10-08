@@ -33,7 +33,6 @@ function Global:Set-KnownFolderPath
 		Namespace        = "WinAPI"
 		Name             = "KnownFolders"
 		Language         = "CSharp"
-		CompilerOptions  = $CompilerParameters
 		MemberDefinition = @"
 [DllImport("shell32.dll")]
 public extern static int SHSetKnownFolderPath(ref Guid folderId, uint flags, IntPtr token, [MarshalAs(UnmanagedType.LPWStr)] string path);

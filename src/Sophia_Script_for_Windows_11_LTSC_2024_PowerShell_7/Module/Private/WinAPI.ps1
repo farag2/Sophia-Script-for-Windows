@@ -1,15 +1,9 @@
-﻿# https://github.com/PowerShell/PowerShell/issues/21070
-$Global:CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-$Global:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-$Global:CompilerParameters.GenerateInMemory = $true
-
-# Extract localized strings from %SystemRoot%\System32\shell32.dll
+﻿# Extract localized strings from %SystemRoot%\System32\shell32.dll
 $Signature = @{
 	Namespace        = "WinAPI"
 	Name             = "GetStrings"
 	Language         = "CSharp"
 	UsingNamespace   = "System.Text"
-	CompilerOptions  = $CompilerParameters
 	MemberDefinition = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
@@ -83,7 +77,6 @@ $Signature = @{
 	Namespace        = "WinAPI"
 	Name             = "ForegroundWindow"
 	Language         = "CSharp"
-	CompilerOptions  = $CompilerParameters
 	MemberDefinition = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
@@ -123,7 +116,6 @@ $Signature = @{
 	Namespace        = "WinAPI"
 	Name             = "Winbrand"
 	Language         = "CSharp"
-	CompilerOptions  = $CompilerParameters
 	MemberDefinition = @"
 [DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
 public extern static string BrandingFormatString(string sFormat);
@@ -158,7 +150,6 @@ $Signature = @{
 	Namespace        = "WinAPI"
 	Name             = "Cursor"
 	Language         = "CSharp"
-	CompilerOptions  = $CompilerParameters
 	MemberDefinition = @"
 [DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
 public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
@@ -176,7 +167,6 @@ $Signature = @{
 	Name             = "Action"
 	Language         = "CSharp"
 	UsingNamespace   = "Microsoft.Win32"
-	CompilerOptions  = $CompilerParameters
 	MemberDefinition = @"
 [DllImport("advapi32.dll", CharSet = CharSet.Unicode, EntryPoint = "RegOpenKeyExW", ExactSpelling = true)]
 private static extern int RegOpenKeyEx(IntPtr hKey, string lpSubKey, int ulOptions, int samDesired, out IntPtr phkResult);
@@ -248,7 +238,6 @@ $Signature = @{
 	Namespace        = "WinAPI"
 	Name             = "UpdateEnvironment"
 	Language         = "CSharp"
-	CompilerOptions  = $CompilerParameters
 	MemberDefinition = @"
 private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
 private const int WM_SETTINGCHANGE = 0x1a;

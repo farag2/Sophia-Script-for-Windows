@@ -28,7 +28,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.5
+#Requires -Version 7.6
 
 $Global:Failed = $false
 

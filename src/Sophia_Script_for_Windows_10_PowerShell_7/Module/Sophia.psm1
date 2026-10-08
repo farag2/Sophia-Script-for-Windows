@@ -1,4 +1,4 @@
-<#
+﻿<#
 	.SYNOPSIS
 	Sophia Script is a PowerShell module for fine-tuning Windows and automating routine tasks
 
@@ -2426,7 +2426,6 @@ function NewsInterests
 		Namespace        = "WinAPI"
 		Name             = "Signature"
 		Language         = "CSharp"
-		CompilerOptions  = $CompilerOptions
 		MemberDefinition = @"
 [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
 public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int outputLen);
@@ -3564,8 +3563,8 @@ function Install-Cursors
 		catch [System.Net.Http.HttpRequestException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -4579,8 +4578,8 @@ function OneDrive
 				catch [System.Net.Http.HttpRequestException]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.NoConnectionEstablished -f "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -5382,8 +5381,8 @@ function WindowsCapabilities
 		catch [System.Net.Http.HttpRequestException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -7351,21 +7350,21 @@ function Install-VCRedist
 	catch [System.Net.Http.HttpRequestException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
 
 	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 
-	foreach ($Item in @("x64", "x86"))
+	foreach ($Architecture in @("x64", "x86"))
 	{
 		# Check whether vc_redist builds installed
-		if (Test-Path -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Item).exe")
+		if (Test-Path -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe")
 		{
 			# Choose the first item if user has more than one package installed
-			$CurrentVCredistVersion = (Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Item).exe" | Select-Object -First 1).VersionInfo.FileVersion
+			$CurrentVCredistVersion = (Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe" | Select-Object -First 1).VersionInfo.FileVersion
 		}
 		else
 		{
@@ -7378,8 +7377,8 @@ function Install-VCRedist
 			try
 			{
 				$Parameters = @{
-					Uri                      = "https://aka.ms/vc14/vc_redist.$($Item).exe"
-					OutFile                  = "$DownloadsFolder\vc_redist.$($Item).exe"
+					Uri                      = "https://aka.ms/vc14/vc_redist.$($Architecture).exe"
+					OutFile                  = "$DownloadsFolder\vc_redist.$($Architecture).exe"
 					UseBasicParsing          = $true
 					ConnectionTimeoutSeconds = 5
 					Verbose                  = $true
@@ -7389,8 +7388,8 @@ function Install-VCRedist
 			catch [System.Net.Http.HttpRequestException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.$($Item).exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.$($Item).exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -7399,12 +7398,12 @@ function Install-VCRedist
 			Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Item) $LatestVCRedistVersion") -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Item).exe" -ArgumentList "/install /passive /norestart" -Wait
+			Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Architecture).exe" -ArgumentList "/install /passive /norestart" -Wait
 
 			# PowerShell 5.1 (7.5 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			# https://github.com/PowerShell/PowerShell/issues/21070
 			$Paths = @(
-				"$DownloadsFolder\vc_redist.$($Item).exe",
+				"$DownloadsFolder\vc_redist.$($Architecture).exe",
 				"$env:TEMP\dd_vcredist_*.log"
 			)
 			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
@@ -7489,8 +7488,8 @@ function Install-DotNetRuntimes
 		catch [System.Net.Http.HttpRequestException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -7513,8 +7512,8 @@ function Install-DotNetRuntimes
 			catch [System.Net.Http.HttpRequestException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-x64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -7757,8 +7756,8 @@ function Install-WSL
 	catch [System.Net.Http.HttpRequestException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -8296,8 +8295,8 @@ function Install-HEVC
 	catch [System.Net.Http.HttpRequestException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/HEVC/HEVC_version.txt"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/HEVC/HEVC_version.txt"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -8320,8 +8319,8 @@ function Install-HEVC
 		catch [System.Net.Http.HttpRequestException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -8963,8 +8962,8 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 
 			$Global:ScheduledTasks = $true
 
-			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Windows Cleanup"), $Localization.CleanupTaskCLIDescription -join " ")
-			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Windows Cleanup"), $Localization.CleanupTaskCLIDescription -join " ") -ErrorAction SilentlyContinue
+			Write-Warning -Message $Localization.CleanupTaskCLIDescription
+			Write-Error -Message $Localization.CleanupTaskCLIDescription -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -9191,8 +9190,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 
 			$Global:ScheduledTasks = $true
 
-			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "SoftwareDistribution"), ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -join " ")
-			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "SoftwareDistribution"), ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -join " ") -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download")
+			Write-Error -Message ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -9432,8 +9431,8 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 
 			$Global:ScheduledTasks = $true
 
-			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -join " ")
-			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -join " ") -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)")
+			Write-Error -Message ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{

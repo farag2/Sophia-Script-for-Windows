@@ -46,7 +46,6 @@ function Get-Hash
 		Namespace        = "WinAPI"
 		Name             = "PatentHash"
 		Language         = "CSharp"
-		CompilerOptions  = $CompilerParameters
 		MemberDefinition = @"
 // Secret static string stored in %SystemRoot%\System32\shell32.dll
 private const string UserExperience = "User Choice set via Windows User Experience {D18B6DD5-6124-4341-9318-804003BAFA0B}";

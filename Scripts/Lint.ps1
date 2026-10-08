@@ -71,27 +71,30 @@ Write-Verbose -Message "Localizations integrity" -Verbose
 
 foreach ($Folder in @(Get-ChildItem -Path src -Directory))
 {
-	Import-LocalizedData -BindingVariable Localization -UICulture $PSUICulture -BaseDirectory "$($Folder.FullName)\Module\Localizations" -FileName Sophia
+	# Read all scripts once per folder
+	$Content = Get-ChildItem -Path $Folder.FullName -Include *.ps1, *.psm1 -Recurse -File | Get-Content -Raw
 
-	foreach ($Key in $Localization.Keys)
+	foreach ($Locale in @(Get-ChildItem -Path "$($Folder.FullName)\Module\Localizations" -Directory))
 	{
-		$Paths = @(
-			"$($Folder.FullName)\Module\Sophia.psm1",
-			"$($Folder.FullName)\Module\Private\InitialActions.ps1",
-			"$($Folder.FullName)\Module\Private\PostActions.ps1",
-			"$($Folder.FullName)\Module\Private\Set-UserShellFolder.ps1",
-			"$($Folder.FullName)\Module\Private\Show-Menu.ps1",
-			"$($Folder.FullName)\Module\Private\WinAPI.ps1",
-			"$($Folder.FullName)\Import-TabCompletion.ps1"
-		)
+		Import-LocalizedData -BindingVariable Localization -UICulture $Locale.Name -BaseDirectory "$($Folder.FullName)\Module\Localizations" -FileName Sophia
 
-		if (-not ((Get-Content -Path $Paths -Raw) -match $Key))
+		foreach ($Key in $Localization.Keys)
 		{
-			Write-Verbose -Message "$($Key) was not found in $($Folder.FullName) folder" -Verbose
-			# Exit with a non-zero status to fail the job
-			exit 1
+			# "\b" prevents "Enable" from matching "EnableSecureBoot"
+			if (-not ($Content -cmatch "Localization\.$Key\b"))
+			{
+				Write-Verbose -Message "$($Locale.FullName)\Sophia.psd1 is not used in $($Folder.Name)" -Verbose
+
+				$Failed = $true
+			}
 		}
 	}
+}
+
+if ($Failed)
+{
+	# Exit with a non-zero status to fail the job
+	exit 1
 }
 
 Write-Verbose -Message "Localizations integrity within psm1 modules" -Verbose

@@ -188,8 +188,8 @@ function InitialActions
 	}
 	catch [System.Net.Http.HttpRequestException]
 	{
-		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json")
-		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
 	}
 
 	# Check whether the script was run via PowerShell 7
@@ -552,6 +552,7 @@ function InitialActions
 	# Check whether BitLocker drive encryption is off, despite drive is encrypted
 	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
 
@@ -622,8 +623,8 @@ function InitialActions
 		# https://learn.microsoft.com/en-us/windows/release-health/windows10-release-information
 		$LatestSupportedMinorBuild = $JSON.Windows_10_Minor
 
-		Write-Warning -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Windows_Builds.json")
-		Write-Error -Message ($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Windows_Builds.json") -ErrorAction SilentlyContinue
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
 	}
 
 	# Detect Windows build version
@@ -766,41 +767,38 @@ function InitialActions
 	Write-Information -MessageData "" -InformationAction Continue
 
 	# Display a warning message about whether a user has customized the preset file
-	if ($Warning)
+	# Get the name of a preset (e.g Sophia.ps1) regardless it was named
+	[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")}).File
+	Write-Verbose -Message ($Localization.CheckSophiaScriptPreset -f $PresetName) -Verbose
+
+	do
 	{
-		# Get the name of a preset (e.g Sophia.ps1) regardless it was named
-		[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")}).File
-		Write-Verbose -Message ($Localization.CheckSophiaScriptPreset -f $PresetName) -Verbose
+		$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
 
-		do
+		switch ($Choice)
 		{
-			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-			switch ($Choice)
+			$Yes
 			{
-				$Yes
-				{
-					continue
-				}
-				$No
-				{
-					Invoke-Item -Path $PresetName
-
-					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use" -Verbose
-
-					Write-Verbose -Message $Localization.AskQuestion -Verbose
-					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-					Write-Verbose -Message "https://t.me/sophianews" -Verbose
-					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-					$Global:Failed = $true
-
-					exit
-				}
-				$KeyboardArrows {}
+				continue
 			}
+			$No
+			{
+				Invoke-Item -Path $PresetName
+
+				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use" -Verbose
+
+				Write-Verbose -Message $Localization.AskQuestion -Verbose
+				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+				Write-Verbose -Message "https://t.me/sophianews" -Verbose
+				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+				$Global:Failed = $true
+
+				exit
+			}
+			$KeyboardArrows {}
 		}
-		until ($Choice -ne $KeyboardArrows)
 	}
+	until ($Choice -ne $KeyboardArrows)
 }

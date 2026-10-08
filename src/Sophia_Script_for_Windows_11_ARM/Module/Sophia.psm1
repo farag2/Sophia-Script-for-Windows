@@ -2982,8 +2982,8 @@ function Install-Cursors
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/Cursors/w11-cursor-concept-free.zip"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -3356,7 +3356,7 @@ function UnpinAllStartTiles
 
 	Start-Sleep -Seconds 3
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name ConfigureStartPins, ConfigureStartPinsJSON -Force -ErrorAction Ignore
-	Remove-Item -Path "$env:TEMP\Nopins.json" -Force -ErrorAction Ignore
+	Get-Item -Path "$env:TEMP\Nopins.json" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
 }
 
 <#
@@ -3966,8 +3966,8 @@ function OneDrive
 				catch [System.Net.WebException]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
-					Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.NoConnectionEstablished -f "https://g.live.com/1rewlive5skydrive/OneDriveProductionV2"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+					Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+					Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 					return
 				}
@@ -4772,8 +4772,8 @@ function WindowsCapabilities
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "http://tlu.dl.delivery.mp.microsoft.com"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6817,8 +6817,8 @@ function Install-VCRedist
 	catch [System.Net.WebException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -6853,8 +6853,8 @@ function Install-VCRedist
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.arm64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://aka.ms/vc14/vc_redist.arm64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6952,8 +6952,8 @@ function Install-DotNetRuntimes
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6976,8 +6976,8 @@ function Install-DotNetRuntimes
 			catch [System.Net.WebException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -7300,8 +7300,8 @@ function Install-WSL
 	catch [System.Net.WebException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -8267,8 +8267,8 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 
 			$Global:ScheduledTasks = $true
 
-			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Windows Cleanup"), $Localization.CleanupTaskCLIDescription -join " ")
-			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Windows Cleanup"), $Localization.CleanupTaskCLIDescription -join " ") -ErrorAction SilentlyContinue
+			Write-Warning -Message $Localization.CleanupTaskCLIDescription
+			Write-Error -Message $Localization.CleanupTaskCLIDescription -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -8495,8 +8495,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 
 			$Global:ScheduledTasks = $true
 
-			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "SoftwareDistribution"), ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -join " ")
-			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "SoftwareDistribution"), ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -join " ") -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download")
+			Write-Error -Message ($Localization.SoftwareDistributionTaskCLIDescription -f "$env:SystemRoot\SoftwareDistribution\Download") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
@@ -8736,8 +8736,8 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 
 			$Global:ScheduledTasks = $true
 
-			Write-Warning -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -join " ")
-			Write-Error -Message (($Localization.ScheduledTaskCreatedNotification -f "Temp"), ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -join " ") -ErrorAction SilentlyContinue
+			Write-Warning -Message ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)")
+			Write-Error -Message ($Localization.TempTaskCLIDescription -f "$((Get-Item -Path $env:TEMP).FullName)") -ErrorAction SilentlyContinue
 		}
 		"Delete"
 		{
