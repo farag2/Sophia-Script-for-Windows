@@ -204,7 +204,7 @@ catch
 # tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemDrive\Sophia_Script_Temp folder
 & "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\Sophia.Script.zip" -C $env:SystemDrive\Sophia_Script_Temp
 
-if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$Version_v$LatestRelease"))
+if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$($Version)_v$LatestRelease"))
 {
 	Write-Verbose -Message "Archive cannot be expanded. Probably, this was caused by your antivirus. Please update its definitions and try again." -Verbose
 
@@ -235,7 +235,7 @@ if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$Version_v$Latest
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 $Parameters = @{
-	Path        = "$env:SystemDrive\Sophia_Script_Temp\$Version_v$LatestRelease"
+	Path        = "$env:SystemDrive\Sophia_Script_Temp\$($Version)_v$LatestRelease"
 	Destination = $DownloadsFolder
 	Recurse     = $true
 	Force       = $true
@@ -244,8 +244,8 @@ Copy-Item @Parameters
 
 Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
-Invoke-Item -Path "$DownloadsFolder\$Version_v$LatestRelease"
-Set-Location -Path "$DownloadsFolder\$Version_v$LatestRelease"
+Invoke-Item -Path "$DownloadsFolder\$($Version)_v$LatestRelease"
+Set-Location -Path "$DownloadsFolder\$($Version)_v$LatestRelease"
 
 $Signature = @{
 	Namespace          = "WinAPI"
@@ -274,7 +274,7 @@ if (-not ("WinAPI.ForegroundWindow" -as [type]))
 
 Start-Sleep -Seconds 1
 
-Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "$Version_v$LatestRelease"} | ForEach-Object -Process {
+Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "$($Version)_v$LatestRelease"} | ForEach-Object -Process {
 	# Show window, if minimized
 	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
 
