@@ -138,7 +138,28 @@ $Parameters.Body = $SyncRequest
 
 $SyncResult = $SyncXml.Envelope.Body.SyncUpdatesResponse.SyncUpdatesResult
 $IDs        = $SyncResult.ExtendedUpdateInfo.Updates.Update.ID
-$Package    = ($SyncResult.NewUpdates.UpdateInfo | Where-Object -FilterScript {($_.ID -in $IDs) -and $_.Xml.Properties.SecuredFragment} | Select-Object -First 1).Xml.UpdateIdentity
+
+# SyncUpdates returns several versions of the package (and may return its dependencies), so take the latest HEVC one
+$Packages = foreach ($Update in ($SyncResult.NewUpdates.UpdateInfo | Where-Object -FilterScript {($_.ID -in $IDs) -and $_.Xml.Properties.SecuredFragment}))
+{
+	# Microsoft.HEVCVideoExtension_2.5.33.0_neutral_~_8wekyb3d8bbwe
+	$Moniker = ($Update.Xml.GetElementsByTagName("AppxMetadata") | Where-Object -FilterScript {$_.PackageMoniker} | Select-Object -First 1).PackageMoniker
+
+	if ($Moniker -and $Moniker.StartsWith("Microsoft.HEVCVideoExtension_"))
+	{
+		[PSCustomObject]@{
+			Moniker        = $Moniker
+			Version        = [version]$Moniker.Split("_")[1]
+			UpdateID       = $Update.Xml.UpdateIdentity.UpdateID
+			RevisionNumber = $Update.Xml.UpdateIdentity.RevisionNumber
+		}
+	}
+}
+
+# Show all available versions in the log
+$Packages | Sort-Object -Property Version -Descending | Format-Table -Property Moniker, Version -AutoSize
+
+$Package = $Packages | Sort-Object -Property Version -Descending | Select-Object -First 1
 
 # Get direct URL
 $FileRequest = @"
@@ -169,7 +190,7 @@ $FileRequest = @"
 
 $Parameters.Uri  = "$Uri/secured"
 $Parameters.Body = $FileRequest
-$TempURL = ((Invoke-RestMethod @Parameters).Envelope.Body.GetExtendedUpdateInfo2Response.GetExtendedUpdateInfo2Result.FileLocations.FileLocation | Where-Object -FilterScript {$_.Url.Contains("tlu")}).Url
+$TempURL = ((Invoke-RestMethod @Parameters).Envelope.Body.GetExtendedUpdateInfo2Response.GetExtendedUpdateInfo2Result.FileLocations.FileLocation | Where-Object -FilterScript {$_.Url.Contains("tlu")} | Select-Object -First 1).Url
 
 if (-not (Test-Path -Path HEVC))
 {
@@ -184,3 +205,5 @@ $Parameters = @{
 	Verbose         = $true
 }
 Invoke-WebRequest @Parameters
+
+Set-Content -Path "HEVC\HEVC_version.txt" -Value $Package.Version.ToString() -Encoding utf8 -Force
