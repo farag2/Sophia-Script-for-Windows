@@ -8297,8 +8297,8 @@ function Install-HEVC
 		{
 			$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
 			$Parameters = @{
-				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
-				OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx"
+				Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/refs/heads/main/HEVC/Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle"
+				OutFile         = "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle"
 				UseBasicParsing = $true
 				TimeoutSec      = 5
 				Verbose         = $true
@@ -8318,8 +8318,8 @@ function Install-HEVC
 		Write-Verbose -Message $Localization.HEVCInstallingApplication -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Verbose
-		Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appx" -Force
+		Add-AppxPackage -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle" -Verbose
+		Remove-Item -Path "$DownloadsFolder\Microsoft.HEVCVideoExtension_8wekyb3d8bbwe.appxbundle" -Force
 	}
 }
 
