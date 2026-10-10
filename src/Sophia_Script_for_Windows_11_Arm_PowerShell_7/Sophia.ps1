@@ -26,7 +26,7 @@
 	iwr sl.sophia.team -useb | iex
 
 	.NOTES
-	Supports Windows 11 25H2+ for Arm64
+	Supports Windows 11 25H2+ for Arm Home/Pro/Enterprise
 
 	.NOTES
 	You may dot source Import-TabCompletion.ps1 to call functions if you do not know their names:
@@ -870,8 +870,8 @@ DefaultTerminalApp -WindowsTerminal
 # Установить Windows Console Host как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки (значение по умолчанию)
 # DefaultTerminalApp -ConsoleHost
 
-# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (Arm64/x86). Internet connection required
-# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (Arm64/x86). Требуется соединение с интернетом
+# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (Arm64). Internet connection required
+# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (Arm64). Требуется соединение с интернетом
 Install-VCRedist
 
 # Install the latest .NET Desktop Runtime 8, 9, 10 (Arm64). Internet connection required

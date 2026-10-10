@@ -3052,6 +3052,7 @@ function Install-Cursors
 		}
 	}
 
+	# Reload cursors on-the-fly
 	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, [IntPtr]::Zero, 0)
 }
 

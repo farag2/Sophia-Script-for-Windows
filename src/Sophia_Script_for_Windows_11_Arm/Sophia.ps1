@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Default preset file for "Sophia Script for Windows"
+	Default preset file for "Sophia Script for Windows 11 (Arm)"
 
 	.VERSION
 	7.3.0
@@ -26,7 +26,7 @@
 	iwr sl.sophia.team -useb | iex
 
 	.NOTES
-	Supports Windows 11 25H2+ for Arm64
+	Supports Windows 11 25H2+ for Arm Home/Pro/Enterprise
 
 	.NOTES
 	You may dot source Import-TabCompletion.ps1 to call functions if you do not know their names:

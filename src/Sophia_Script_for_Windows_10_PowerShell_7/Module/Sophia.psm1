@@ -4413,9 +4413,8 @@ function OneDrive
 	{
 		"Uninstall"
 		{
-			# {$_.Meta.Attributes["UninstallString"]} is broken
-			[xml]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.SwidTagText}
-			[string]$UninstallString = $UninstallString.SoftwareIdentity.Meta.UninstallString
+			# Get OneDrive's uninstall string
+			$UninstallString = ([xml](Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore).SwidTagText).SoftwareIdentity.Meta.UninstallString
 			if (-not $UninstallString)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -5845,7 +5844,7 @@ function NetworkAdaptersSavePower
 
 		# Get the WLAN profile name by SSID, since they may differ
 		$WLANProfile = Get-ChildItem -Path "$env:ProgramData\Microsoft\Wlansvc\Profiles\Interfaces" -Filter *.xml -Recurse -ErrorAction Ignore | ForEach-Object -Process {
-			([xml](Get-Content -Path $_.FullName -Raw -Encoding UTF8)).WLANProfile
+			([xml](Get-Content -Path $_.FullName -Raw -Encoding utf8)).WLANProfile
 		} | Where-Object -FilterScript {$_.SSIDConfig.SSID.name -eq $SSID} | Select-Object -First 1
 
 		if ($WLANProfile)
@@ -7160,7 +7159,7 @@ function Export-Associations
 	# ProgIds registered by packaged (UWP) apps
 	$AppxProgIds = @((Get-ChildItem -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\ProgIDs").PSChildName)
 
-	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding UTF8 -Raw
+	[xml]$XML = Get-Content -Path "$env:TEMP\Application_Associations.xml" -Encoding utf8 -Raw
 
 	$ClassesRoots = @(
 		"HKEY_CURRENT_USER\Software\Classes",
@@ -7287,7 +7286,7 @@ function Import-Associations
 
 	try
 	{
-		$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding UTF8 -Raw | ConvertFrom-Json
+		$JSON = Get-Content -Path $OpenFileDialog.FileName -Encoding utf8 -Raw | ConvertFrom-Json
 	}
 	catch
 	{
@@ -7911,14 +7910,10 @@ function Uninstall-UWPApps
 		# XBOX Console Companion
 		"Microsoft.XboxApp",
 
-		# XBOX
-		"Microsoft.GamingApp",
-		"Microsoft.GamingServices",
-
 		# XBOX TCUI
 		"Microsoft.Xbox.TCUI",
 
-		# XBOX Speech To Text Overlay
+		# XBOX Game Speech Window
 		"Microsoft.XboxSpeechToTextOverlay",
 
 		# XBOX Game Bar
@@ -8125,7 +8120,10 @@ function Uninstall-UWPApps
 			"MSTeams",
 
 			# Microsoft Edge Game Assist
-			"Microsoft.Edge.GameAssist"
+			"Microsoft.Edge.GameAssist",
+
+			# Xbox Game UI
+			"Microsoft.XboxGameCallableUI"
 		)
 		foreach ($Package in $Packages)
 		{
@@ -10169,7 +10167,7 @@ function ScanRegistryPolicies
 	$ADMXPolicies = @{}
 	foreach ($ADMX in (Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Filter *.admx -Force))
 	{
-		[xml]$XML = Get-Content -Path $ADMX.FullName -Encoding UTF8 -Raw
+		[xml]$XML = Get-Content -Path $ADMX.FullName -Encoding utf8 -Raw
 
 		foreach ($Policy in $XML.policyDefinitions.policies.policy)
 		{

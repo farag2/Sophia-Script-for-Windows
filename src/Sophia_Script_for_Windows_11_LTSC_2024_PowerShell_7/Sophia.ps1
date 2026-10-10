@@ -19,10 +19,10 @@
 	.EXAMPLE Run the whole script
 	.\Sophia.ps1
 
-	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according which Windows and PowerShell versions it is run on
+	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according to which Windows and PowerShell versions it is run on
 	iwr script.sophia.team -useb | iex
 
-	.EXAMPLE The command will download and expand the latest Sophia Script archive (without running) from the last commit available according which Windows and PowerShell versions it is run on
+	.EXAMPLE The command will download and expand the latest Sophia Script archive (without running) from the last commit available according to which Windows and PowerShell versions it is run on
 	iwr sl.sophia.team -useb | iex
 
 	.NOTES
@@ -68,7 +68,7 @@ $Global:Failed = $false
 Get-ChildItem -Path function: | Where-Object -FilterScript {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
 Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
 Import-Module -Name $PSScriptRoot\Module\Manifest\SophiaScript.psd1 -PassThru -Force
-Get-ChildItem -Path $PSScriptRoot\Module\private | ForEach-Object -Process {. $_.FullName}
+Get-ChildItem -Path $PSScriptRoot\Module\Private | ForEach-Object -Process {. $_.FullName}
 
 InitialActions
 
@@ -86,7 +86,7 @@ if ($Global:Failed)
 
 #region Protection
 # Enable script logging. Log will be recorded into the script folder. To stop logging just close console or type "Stop-Transcript"
-# Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логгирование, закройте консоль или наберите "Stop-Transcript"
+# Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логирование, закройте консоль или наберите "Stop-Transcript"
 # Logging
 
 # Create a restore point
@@ -99,13 +99,13 @@ CreateRestorePoint
 	Disable the "Connected User Experiences and Telemetry" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic
 	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
 
-	Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и блокировать соединение для исходящего трафик клиента единой телеметрии
+	Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и блокировать соединение для исходящего трафика клиента единой телеметрии
 	Отключение службы "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) может привести к тому, что вы больше не сможете получать достижения XBOX, а также влияет на работу Feedback Hub
 #>
 DiagTrackService -Disable
 
 # Enable the "Connected User Experiences and Telemetry" service (DiagTrack), and allow the connection for the Unified Telemetry Client Outbound Traffic (default value)
-# Включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и разрешить подключение для исходящего трафик клиента единой телеметрии (значение по умолчанию)
+# Включить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и разрешить подключение для исходящего трафика клиента единой телеметрии (значение по умолчанию)
 # DiagTrackService -Enable
 
 # Set the diagnostic data collection to minimum
@@ -141,7 +141,7 @@ ScheduledTasks -Disable
 # ScheduledTasks -Enable
 
 # Do not use sign-in info to automatically finish setting up device after an update
-# Не использовать данные для входа для автоматического завершения настройки устройства после перезапуска
+# Не использовать данные для входа для автоматического завершения настройки устройства после обновления
 SigninInfo -Disable
 
 # Use sign-in info to automatically finish setting up device after an update (default value)
@@ -173,11 +173,11 @@ WindowsWelcomeExperience -Hide
 # WindowsWelcomeExperience -Show
 
 # Get tips and suggestions when I use Windows (default value)
-# Получать советы и предложения при использованию Windows (значение по умолчанию)
+# Получать советы и предложения при использовании Windows (значение по умолчанию)
 WindowsTips -Enable
 
 # Do not get tips and suggestions when I use Windows
-# Не получать советы и предложения при использованию Windows
+# Не получать советы и предложения при использовании Windows
 # WindowsTips -Disable
 
 # Hide from me suggested content in the Settings app
@@ -205,7 +205,7 @@ WhatsNewInWindows -Disable
 # WhatsNewInWindows -Enable
 
 # Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
-# Не разрешать корпорации Майкрософт использовать диагностические данные персонализированных советов, рекламы и рекомендаций
+# Не разрешать корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций
 TailoredExperiences -Disable
 
 # Let Microsoft use your diagnostic data for personalized tips, ads, and recommendations (default value)
@@ -227,14 +227,14 @@ BingSearch -Disable
 ThisPC -Show
 
 # Hide "This PC" icon on Desktop (default value)
-# Скрыть "Этот компьютер" на рабочем столе (значение по умолчанию)
+# Скрыть значок "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
 # Do not use item check boxes
 # Не использовать флажки для выбора элементов
 CheckBoxes -Disable
 
-# Use check item check boxes (default value)
+# Use item check boxes (default value)
 # Использовать флажки для выбора элементов (значение по умолчанию)
 # CheckBoxes -Enable
 
@@ -251,7 +251,7 @@ HiddenItems -Enable
 FileExtensions -Show
 
 # Hide file name extensions (default value)
-# Скрывать расширения имён файлов файлов (значение по умолчанию)
+# Скрывать расширения имён файлов (значение по умолчанию)
 # FileExtensions -Hide
 
 # Show folder merge conflicts
@@ -319,7 +319,7 @@ QuickAccessRecentFiles -Hide
 # QuickAccessRecentFiles -Show
 
 # Hide frequently used folders in Quick access
-# Скрыть недавно используемые папки на панели быстрого доступа
+# Скрыть часто используемые папки на панели быстрого доступа
 QuickAccessFrequentFolders -Hide
 
 # Show frequently used folders in Quick access (default value)
@@ -375,11 +375,11 @@ SecondsInSystemClock -Show
 # SecondsInSystemClock -Hide
 
 # Show time in Notification Center
-# Показывать секунды в центре уведомлений
+# Показывать время в центре уведомлений
 ClockInNotificationCenter -Show
 
 # Hide time in Notification Center (default value)
-# Скрыть секунды в центре уведомлений (значение по умолчанию)
+# Скрыть время в центре уведомлений (значение по умолчанию)
 # ClockInNotificationCenter -Hide
 
 # Combine taskbar buttons and always hide labels (default value)
@@ -447,11 +447,11 @@ JPEGWallpapersQuality -Max
 # JPEGWallpapersQuality -Default
 
 # Do not add the "- Shortcut" suffix to the file name of created shortcuts
-# Нe дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков
+# Не добавлять "- ярлык" к имени создаваемых ярлыков
 ShortcutsSuffix -Disable
 
 # Add the "- Shortcut" suffix to the file name of created shortcuts (default value)
-# Дoбaвлять "- яpлык" к имени coздaвaeмых яpлыков (значение по умолчанию)
+# Добавлять "- ярлык" к имени создаваемых ярлыков (значение по умолчанию)
 # ShortcutsSuffix -Enable
 
 # Use the Print screen button to open screen snipping
@@ -470,11 +470,11 @@ AppsLanguageSwitch -Enable
 # Не использовать метод ввода для каждого окна (значение по умолчанию)
 # AppsLanguageSwitch -Disable
 
-# When I grab a windows's title bar and shake it, minimize all other windows
+# When I grab a window's title bar and shake it, minimize all other windows
 # При захвате заголовка окна и встряхивании сворачиваются все остальные окна
 AeroShaking -Enable
 
-# When I grab a windows's title bar and shake it, don't minimize all other windows (default value)
+# When I grab a window's title bar and shake it, don't minimize all other windows (default value)
 # При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
 # AeroShaking -Disable
 
@@ -490,14 +490,14 @@ Install-Cursors -Dark
 
 # Set default cursors
 # Установить курсоры по умолчанию
-# Cursors -Default
+# Install-Cursors -Default
 
-# Do not group files and folder in the Downloads folder
+# Do not group files and folders in the Downloads folder
 # Не группировать файлы и папки в папке Загрузки
 FolderGroupBy -None
 
-# Group files and folder by date modified in the Downloads folder (default value)
-# Группировать файлы и папки по дате изменения (значение по умолчанию)
+# Group files and folders by date modified in the Downloads folder (default value)
+# Группировать файлы и папки по дате изменения в папке Загрузки (значение по умолчанию)
 # FolderGroupBy -Default
 
 # Do not expand to open folder on navigation pane (default value)
@@ -536,24 +536,24 @@ StartLayout -ShowMorePins
 # Не показывать наиболее часто используемые приложения на начальном экране (значение по умолчанию)
 MostUsedStartApps -Hide
 
-# Show most used Apps on Start
+# Show most used apps on Start
 # Показывать наиболее часто используемые приложения на начальном экране
 # MostUsedStartApps -Show
 
-# Remove Recommended section on Start
-# Удалить раздел "Рекомендуем" на начальном экране
+# Hide Recommended section on Start
+# Скрыть раздел "Рекомендуем" на начальном экране
 StartRecommendedSection -Hide
 
 # Show Recommended section on Start (default value)
-# Показывать раздел "Рекомендуем" на начальном экране
+# Показывать раздел "Рекомендуем" на начальном экране (значение по умолчанию)
 # StartRecommendedSection -Show
 
 # Hide recommendations for tips, shortcuts, new apps, and more on Start
-# Не показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране
+# Не показывать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране
 StartRecommendationsTips -Hide
 
 # Show recommendations for tips, shortcuts, new apps, and more on Start (default value)
-# Показать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране (значение по умолчанию)
+# Показывать рекомендации с советами, сочетаниями клавиш, новыми приложениями и т. д. на начальном экране (значение по умолчанию)
 # StartRecommendationsTips -Show
 
 # Hide Microsoft account-related notifications on Start
@@ -578,7 +578,7 @@ StorageSense -Enable
 # Отключить режим гибернации. Не рекомендуется для ноутбуков
 Hibernation -Disable
 
-# Enable hibernate (default value)
+# Enable hibernation (default value)
 # Включить режим гибернации (значение по умолчанию)
 # Hibernation -Enable
 
@@ -594,7 +594,7 @@ Win32LongPathsSupport -Enable
 # Отображать код Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display stop error code when BSoD occurs (default value)
+# Do not display Stop error code when BSoD occurs (default value)
 # Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
@@ -656,7 +656,7 @@ UpdateMicrosoftProducts -Enable
 RestartNotification -Show
 
 # Do not notify me when a restart is required to finish updating (default value)
-# Не yведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
+# Не уведомлять меня о необходимости перезагрузки для завершения обновления (значение по умолчанию)
 # RestartNotification -Hide
 
 # Restart as soon as possible to finish updating
@@ -671,8 +671,8 @@ RestartDeviceAfterUpdate -Enable
 # Автоматически изменять период активности для этого устройства на основе действий
 ActiveHours -Automatically
 
-# Manually adjust active hours for me based on daily usage (default value)
-# Вручную изменять период активности для этого устройства на основе действий (значение по умолчанию)
+# Manually adjust active hours (default value)
+# Вручную изменять период активности для этого устройства (значение по умолчанию)
 # ActiveHours -Manually
 
 # Do not get the latest updates as soon as they're available (default value)
@@ -680,7 +680,7 @@ ActiveHours -Automatically
 WindowsLatestUpdate -Disable
 
 # Get the latest updates as soon as they're available
-# Получайте последние обновления, как только они будут доступны
+# Получать последние обновления, как только они будут доступны
 # WindowsLatestUpdate -Enable
 
 # Set power plan on "High performance". Not recommended for laptops
@@ -708,7 +708,7 @@ InputMethod -English
 # InputMethod -Default
 
 # Change location of user folders to the root of any drive using the interactive menu. User files or folders won't be moved to a new location
-# Изменить расположение пользовательских папки в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение
+# Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение
 Set-UserShellFolderLocation -Root
 
 # Select location of user folders manually using a folder browser dialog. User files or folders won't be moved to a new location
@@ -724,7 +724,7 @@ Set-UserShellFolderLocation -Root
 WinPrtScrFolder -Desktop
 
 # Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S (default value)
-# Cохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S в папку "Изображения" (значение по умолчанию)
+# Сохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
 <#
@@ -738,7 +738,7 @@ RecommendedTroubleshooting -Automatically
 
 <#
 	Ask me before running troubleshooter (default value)
-	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data"
+	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
 
 	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
 	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
@@ -777,11 +777,11 @@ NumLock -Enable
 # Включить Caps Lock (значение по умолчанию)
 # CapsLock -Enable
 
-# Turn off pressing the Shift key 5 times to turn Sticky keys
+# Turn off pressing the Shift key 5 times to turn on Sticky keys
 # Выключить залипание клавиши Shift после 5 нажатий
 StickyShift -Disable
 
-# Turn on pressing the Shift key 5 times to turn Sticky keys (default value)
+# Turn on pressing the Shift key 5 times to turn on Sticky keys (default value)
 # Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
@@ -801,11 +801,11 @@ ThumbnailCacheRemoval -Disable
 # Включить удаление кэша миниатюр (значение по умолчанию)
 # ThumbnailCacheRemoval -Enable
 
-# Automatically saving my restartable apps and restart them when I sign back in
+# Automatically save my restartable apps and restart them when I sign back in
 # Автоматически сохранять мои перезапускаемые приложения из системы и перезапускать их при повторном входе
 SaveRestartableApps -Enable
 
-# Turn off automatically saving my restartable apps and restart them when I sign back in (default value)
+# Turn off automatically saving my restartable apps and restarting them when I sign back in (default value)
 # Выключить автоматическое сохранение моих перезапускаемых приложений из системы и перезапускать их при повторном входе (значение по умолчанию)
 # SaveRestartableApps -Disable
 
@@ -823,20 +823,20 @@ RestorePreviousFolders -Disable
 
 	Set-Association -ProgramPath 'C:\SumatraPDF.exe' -Extension .pdf -Icon '%SystemRoot%\System32\shell32.dll,100'
 	Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'
-	Set-Association -ProgramPath MSEdgeMHT -Extension .html
+	Set-Association -ProgramPath MSEdgeHTM -Extension .html
 #>
 # Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'
 
-# Экспортировать все ассоциации в Windows в корень папки в виде файла Application_Associations.json
 # Export all Windows associations into Application_Associations.json file to script root folder
+# Экспортировать все ассоциации в Windows в корень папки в виде файла Application_Associations.json
 # Export-Associations
 
 <#
-	Импортировать все ассоциации в Windows из файла Application_Associations.json
-	Вам необходимо установить все приложения согласно экспортированному файлу Application_Associations.json, чтобы восстановить все ассоциации
-
 	Import all Windows associations from an Application_Associations.json file
 	You need to install all apps according to an exported Application_Associations.json file to restore all associations
+
+	Импортировать все ассоциации в Windows из файла Application_Associations.json
+	Вам необходимо установить все приложения согласно экспортированному файлу Application_Associations.json, чтобы восстановить все ассоциации
 #>
 # Import-Associations
 
@@ -856,7 +856,7 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
 # PreventEdgeShortcutCreation -Disable
 
-# Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups
+# Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup task in the Task Scheduler to manage subsequent backups
 # Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
 RegistryBackup -Enable
 
@@ -889,10 +889,10 @@ GPUScheduling -Enable
 #region Scheduled tasks
 <#
 	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
-	A native interactive toast notification pops up every 30 days. You have to enable Windows Script Host in order to make the function work
+	A native interactive toast notification pops up every 30 days
 
 	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
-	Задание выполняется каждые 30 дней. Необходимо включить Windows Script Host для того, чтобы работала функция
+	Задание выполняется каждые 30 дней
 #>
 CleanupTask -Register
 
@@ -902,10 +902,10 @@ CleanupTask -Register
 
 <#
 	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running. The task runs every 90 days. You have to enable Windows Script Host in order to make the function work
+	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
-	Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней. Необходимо включить Windows Script Host для того, чтобы работала функция
+	Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
@@ -915,10 +915,10 @@ SoftwareDistributionTask -Register
 
 <#
 	Create "Temp" scheduled task for cleaning up the %TEMP% folder
-	Only files older than one day will be deleted. The task runs every 60 days. You have to enable Windows Script Host in order to make the function work
+	Only files older than one day will be deleted. The task runs every 60 days
 
 	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%
-	Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней. Необходимо включить Windows Script Host для того, чтобы работала функция
+	Удаляться будут только файлы старше одного дня. Задание выполняется каждые 60 дней
 #>
 TempTask -Register
 
@@ -956,24 +956,24 @@ DefenderSandbox -Enable
 # Включить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление "Создание процесса" в Просмотре событий
 EventViewerCustomView -Enable
 
-# Disable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer (default value)
-# Выключить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление "Создание процесса" в Просмотре событий (значение по умолчанию)
+# Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from the Event Viewer (default value)
+# Выключить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также удалить настраиваемое представление "Создание процесса" из Просмотра событий (значение по умолчанию)
 # EventViewerCustomView -Disable
 
-# Microsoft Defender SmartScreen marks downloaded files from the Internet as unsafe (default value)
-# Microsoft Defender SmartScreen помечает скачанные файлы из интернета как небезопасные (значение по умолчанию)
+# Enable apps and files checking within Microsoft Defender SmartScreen (default value)
+# Включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender (значение по умолчанию)
 AppsSmartScreen -Enable
 
-# Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe
-# Microsoft Defender SmartScreen не помечает скачанные файлы из интернета как небезопасные
+# Disable apps and files checking within Microsoft Defender SmartScreen
+# Выключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 # AppsSmartScreen -Disable
 
 # Disable the Attachment Manager marking files that have been downloaded from the Internet as unsafe
-# Выключить проверку Диспетчером вложений файлов, скачанных из интернета, как небезопасные
+# Выключить отметку Диспетчером вложений файлов, скачанных из интернета, как небезопасных
 SaveZoneInformation -Disable
 
 # Enable the Attachment Manager marking files that have been downloaded from the Internet as unsafe (default value)
-# Включить проверку Диспетчера вложений файлов, скачанных из интернета как небезопасные (значение по умолчанию)
+# Включить отметку Диспетчером вложений файлов, скачанных из интернета, как небезопасных (значение по умолчанию)
 # SaveZoneInformation -Enable
 
 # Enable Windows Sandbox
@@ -1023,7 +1023,7 @@ DNSoverHTTPS -Cloudflare
 
 #region Context menu
 # Show the "Extract all" item in the Windows Installer (.msi) context menu
-# Отобразить пункт "Извлечь все" в контекстное меню Windows Installer (.msi)
+# Отобразить пункт "Извлечь все" в контекстном меню Windows Installer (.msi)
 MSIExtractContext -Show
 
 # Hide the "Extract all" item from the Windows Installer (.msi) context menu (default value)
@@ -1031,7 +1031,7 @@ MSIExtractContext -Show
 # MSIExtractContext -Hide
 
 # Show the "Install" item in the Cabinet (.cab) filenames extensions context menu
-# Отобразить пункт "Установить" в контекстное меню .cab архивов
+# Отобразить пункт "Установить" в контекстном меню .cab архивов
 CABInstallContext -Show
 
 # Hide the "Install" item from the Cabinet (.cab) filenames extensions context menu (default value)

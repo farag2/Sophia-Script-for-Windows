@@ -3873,7 +3873,8 @@ function OneDrive
 	{
 		"Uninstall"
 		{
-			[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+			# Get OneDrive's uninstall string
+			$UninstallString = ([xml](Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore).SwidTagText).SoftwareIdentity.Meta.UninstallString
 			if (-not $UninstallString)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -6427,7 +6428,7 @@ function Set-Association
 
 	[array]$RegisteredProgIDs = @()
 
-	# Microsoft has blocked write access to UserChoice key for .pdf extension and http/https protocols with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+	# Microsoft has blocked write access to UserChoice key for .pdf extension and http/https protocols with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass UCPD driver restrictions
 	# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
 	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
@@ -6497,7 +6498,7 @@ function Set-Association
 				Start-Sleep -Seconds (60 - (Get-Date).Second)
 			}
 
-			# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass a UCPD driver restrictions
+			# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass UCPD driver restrictions
 			# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
 				param ($Path, $ProgId)
@@ -7523,7 +7524,9 @@ function Uninstall-UWPApps
 
 		# XBOX
 		"Microsoft.GamingApp",
-		"Microsoft.GamingServices",
+
+		# Xbox Game UI
+		"Microsoft.XboxGameCallableUI",
 
 		# Paint
 		"Microsoft.Paint",
@@ -7531,7 +7534,7 @@ function Uninstall-UWPApps
 		# XBOX TCUI
 		"Microsoft.Xbox.TCUI",
 
-		# XBOX Speech To Text Overlay
+		# XBOX Game Speech Window
 		"Microsoft.XboxSpeechToTextOverlay",
 
 		# XBOX Game Bar
@@ -7740,7 +7743,13 @@ function Uninstall-UWPApps
 			"MSTeams",
 
 			# Microsoft Edge Game Assist
-			"Microsoft.Edge.GameAssist"
+			"Microsoft.Edge.GameAssist",
+
+			# Xbox Game UI
+			"Microsoft.XboxGameCallableUI",
+
+			# XBOX Game Bar Plugin
+			"Microsoft.XboxGameOverlay"
 		)
 		foreach ($Package in $Packages)
 		{

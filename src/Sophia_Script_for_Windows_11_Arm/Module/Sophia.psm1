@@ -12,7 +12,7 @@
 	(c) 2014—2026 Team Sophia
 
 	.NOTES
-	Supports Windows 11 25H2+ for Arm64
+	Supports Windows 11 25H2+ for Arm64 Home/Pro/Enterprise
 
 	.LINK GitHub
 	https://github.com/farag2/Sophia-Script-for-Windows
@@ -3132,6 +3132,7 @@ function Install-Cursors
 		}
 	}
 
+	# Reload cursors on-the-fly
 	[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, [IntPtr]::Zero, 0)
 }
 
@@ -3800,7 +3801,8 @@ function OneDrive
 	{
 		"Uninstall"
 		{
-			[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+			# Get OneDrive's uninstall string
+			$UninstallString = ([xml](Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore).SwidTagText).SoftwareIdentity.Meta.UninstallString
 			if (-not $UninstallString)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -7450,7 +7452,9 @@ function Uninstall-UWPApps
 
 		# XBOX
 		"Microsoft.GamingApp",
-		"Microsoft.GamingServices",
+
+		# Xbox Game UI
+		"Microsoft.XboxGameCallableUI",
 
 		# Paint
 		"Microsoft.Paint",
@@ -7458,7 +7462,7 @@ function Uninstall-UWPApps
 		# XBOX TCUI
 		"Microsoft.Xbox.TCUI",
 
-		# XBOX Speech To Text Overlay
+		# XBOX Game Speech Window
 		"Microsoft.XboxSpeechToTextOverlay",
 
 		# XBOX Game Bar
@@ -7667,7 +7671,13 @@ function Uninstall-UWPApps
 			"MSTeams",
 
 			# Microsoft Edge Game Assist
-			"Microsoft.Edge.GameAssist"
+			"Microsoft.Edge.GameAssist",
+
+			# Xbox Game UI
+			"Microsoft.XboxGameCallableUI",
+
+			# XBOX Game Bar Plugin
+			"Microsoft.XboxGameOverlay"
 		)
 		foreach ($Package in $Packages)
 		{
@@ -9056,7 +9066,6 @@ function EventViewerCustomView
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Force -ErrorAction Ignore
 			Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging
 
-			# Remove the "Process Creation" custom view in the Event Viewer
 			Remove-Item -Path "$env:ProgramData\Microsoft\Event Viewer\Views\ProcessCreation.xml" -Force -ErrorAction Ignore
 		}
 	}
