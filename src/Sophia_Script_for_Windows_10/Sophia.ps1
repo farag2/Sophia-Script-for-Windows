@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Default preset file for "Sophia Script for Windows"
+	Default preset file for "Sophia Script for Windows 10"
 
 	.VERSION
 	6.3.0

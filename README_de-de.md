@@ -123,7 +123,6 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
   * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
   * [OpenDNS](https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html)
-  * [Wikimedia DNS](https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions)
 * OneDrive entfernen
 * Interaktive [Eingabeaufforderungen und Popups](#screenshots)
 * Die <kbd>TAB</kbd> [Autovervollständigung](#screenshots) für Funktionen und ihre Argumente (mit Import-TabCompletion.ps1)

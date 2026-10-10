@@ -123,7 +123,6 @@
   * [Comss.one DNS](https://www.comss.ru/page.php?id=7315)
   * [AdGuard DNS](https://adguard-dns.io/public-dns.html)
   * [OpenDNS](https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html)
-  * [Wikimedia DNS](https://meta.wikimedia.org/wiki/Wikimedia_DNS/Instructions)
 * Удалить OneDrive
 * Интерактивные [подсказки и всплывающие окна](#скриншоты)
 * [Автодополнение](#как-выполнить-конкретную-функциюи) функций и их аргументов с помощью <kbd>TAB</kbd> (используя Import-TabCompletion.ps1)

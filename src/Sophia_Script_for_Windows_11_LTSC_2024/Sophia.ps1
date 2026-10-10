@@ -1037,7 +1037,6 @@ CABInstallContext -Show
 # Hide the "Install" item from the Cabinet (.cab) filenames extensions context menu (default value)
 # Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
 # CABInstallContext -Hide
-
 #endregion Context menu
 
 #region Update Policies

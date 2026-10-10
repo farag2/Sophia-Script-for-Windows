@@ -4414,7 +4414,8 @@ function OneDrive
 	{
 		"Uninstall"
 		{
-			[string]$UninstallString = Get-Package -Name "Microsoft OneDrive" -ErrorAction Ignore | ForEach-Object -Process {$_.Meta.Attributes["UninstallString"]}
+			# Get OneDrive's uninstall string
+			$UninstallString = ([xml](Get-Package -Name "Microsoft OneDrive" -ProviderName Programs -ErrorAction Ignore).SwidTagText).SoftwareIdentity.Meta.UninstallString
 			if (-not $UninstallString)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -7900,14 +7901,10 @@ function Uninstall-UWPApps
 		# XBOX Console Companion
 		"Microsoft.XboxApp",
 
-		# XBOX
-		"Microsoft.GamingApp",
-		"Microsoft.GamingServices",
-
 		# XBOX TCUI
 		"Microsoft.Xbox.TCUI",
 
-		# XBOX Speech To Text Overlay
+		# XBOX Game Speech Window
 		"Microsoft.XboxSpeechToTextOverlay",
 
 		# XBOX Game Bar
@@ -7999,7 +7996,10 @@ function Uninstall-UWPApps
 		# Synaptics
 		"SynapticsIncorporated.SynapticsControlPanel",
 		"SynapticsIncorporated.241916F58D6E7",
-		"ELANMicroelectronicsCorpo.TrackPoint"
+		"ELANMicroelectronicsCorpo.TrackPoint",
+
+		# Xbox Game UI
+		"Microsoft.XboxGameCallableUI"
 	)
 
 	#region XAML Markup

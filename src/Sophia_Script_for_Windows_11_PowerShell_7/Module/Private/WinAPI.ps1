@@ -151,15 +151,14 @@ $Signature = @{
 	Name             = "Cursor"
 	Language         = "CSharp"
 	MemberDefinition = @"
-[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
-public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, uint pvParam, uint fWinIni);
+[DllImport("user32.dll", EntryPoint = "SystemParametersInfo", SetLastError = true)]
+public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 "@
 }
 if (-not ("WinAPI.Cursor" -as [type]))
 {
 	Add-Type @Signature
 }
-[WinAPI.Cursor]::SystemParametersInfo(0x0057, 0, $null, 0)
 
 # Read registry key last write time for Get-Hash (Set-Association)
 $Signature = @{

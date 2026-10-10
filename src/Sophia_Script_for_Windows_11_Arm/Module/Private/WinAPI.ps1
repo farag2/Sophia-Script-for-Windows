@@ -160,8 +160,7 @@ $Signature = @{
 	Language           = "CSharp"
 	CompilerParameters = $CompilerParameters
 	MemberDefinition   = @"
-[DllImport("user32.dll", EntryPoint = "SystemParametersInfo")]
-[return: MarshalAs(UnmanagedType.Bool)]
+[DllImport("user32.dll", EntryPoint = "SystemParametersInfo", SetLastError = true)]
 public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 "@
 }

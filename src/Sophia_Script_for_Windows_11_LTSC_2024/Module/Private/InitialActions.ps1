@@ -508,7 +508,8 @@ function InitialActions
 	# Check whether BitLocker drive encryption is off, despite drive is encrypted
 	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
-		Write-Information -MessageData "" -InformationAction Continue
+		Clear-Host
+
 		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
 
