@@ -81,6 +81,6 @@ RestartFunction                           = Пожалуйста, повторн
 NoConnectionEstablished                   = Невозможно установить соединение с {0}.
 Run                                       = Запустить
 FunctionSkipped                           = Функция "{0}" пропущена.
-DonateToastTitle                          = Вы можете пожертвовать! ❤
+DonateToastTitle                          = Вы можете пожертвовать! ♥
 DotSourceFunction                         = Пожалуйста, запустите функцию через дот-сорсинг (с точкой в начале):\n. .\\Import-TabCompletion.ps1
 '@

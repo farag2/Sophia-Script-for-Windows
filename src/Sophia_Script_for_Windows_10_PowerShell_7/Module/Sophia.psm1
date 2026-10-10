@@ -4174,7 +4174,7 @@ function PinToStart
 			return
 		}
 
-		$Global:StartLayout = "$PSScriptRoot\..\..\StartLayout.xml"
+		$Global:StartLayout = "$PSScriptRoot\StartLayout.xml"
 
 		# Unpin all Start tiles
 		if ($UnpinAll)
@@ -7914,9 +7914,6 @@ function Uninstall-UWPApps
 		# XBOX
 		"Microsoft.GamingApp",
 		"Microsoft.GamingServices",
-
-		# Paint
-		"Microsoft.MSPaint",
 
 		# XBOX TCUI
 		"Microsoft.Xbox.TCUI",

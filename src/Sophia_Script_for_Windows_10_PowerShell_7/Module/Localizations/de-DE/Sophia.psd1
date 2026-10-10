@@ -97,6 +97,6 @@ RestartFunction                           = Bitte führen Sie die Funktion "{0}"
 NoConnectionEstablished                   = Verbindung zu {0} konnte nicht hergestellt werden.
 Run                                       = Starten
 FunctionSkipped                           = Funktion "{0}" übersprungen.
-DonateToastTitle                          = Spenden sind willkommen! ❤
+DonateToastTitle                          = Spenden sind willkommen! ♥
 DotSourceFunction                         = Bitte "dot-source" die Funktion (mit einem Punkt am Anfang):\n. .\\Import-TabCompletion.ps1
 '@

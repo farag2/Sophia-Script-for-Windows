@@ -81,6 +81,6 @@ RestartFunction                           = Please rerun the "{0}" function.
 NoConnectionEstablished                   = Connection could not be established with {0}.
 Run                                       = Run
 FunctionSkipped                           = Function "{0}" skipped.
-DonateToastTitle                          = Donations welcome! ❤
+DonateToastTitle                          = Donations welcome! ♥
 DotSourceFunction                         = Please dot-source the function (with a dot at the beginning):\n. .\\Import-TabCompletion.ps1
 '@

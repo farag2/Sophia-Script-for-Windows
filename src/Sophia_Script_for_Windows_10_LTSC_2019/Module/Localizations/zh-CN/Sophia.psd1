@@ -77,6 +77,6 @@ RestartFunction                           = 请重新运行"{0}"函数。
 NoConnectionEstablished                   = 无法与 {0} 建立连接。
 Run                                       = 运行
 FunctionSkipped                           = 跳过函数"{0}"。
-DonateToastTitle                          = 欢迎捐赠！ ❤
+DonateToastTitle                          = 欢迎捐赠！ ♥
 DotSourceFunction                         = 请对该函数进行"点源"（开头加一个点）：\n. .\\Import-TabCompletion.ps1
 '@

@@ -97,6 +97,6 @@ RestartFunction                           = Lütfen "{0}" işlevini yeniden çal
 NoConnectionEstablished                   = {0} ile bağlantı kurulamadı.
 Run                                       = Başlat
 FunctionSkipped                           = "{0}" işlevi atlandı.
-DonateToastTitle                          = Bağışlarınızı bekliyoruz! ❤
+DonateToastTitle                          = Bağışlarınızı bekliyoruz! ♥
 DotSourceFunction                         = Lütfen işlevi "nokta-kaynaklı" (başında nokta olan) olarak yazın:\n. .\\Import-TabCompletion.ps1
 '@

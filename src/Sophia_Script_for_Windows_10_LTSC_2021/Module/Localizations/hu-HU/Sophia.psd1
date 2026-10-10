@@ -81,6 +81,6 @@ RestartFunction                           = Kérjük, futtassa újra a(z) "{0}" 
 NoConnectionEstablished                   = Nem hozható létre kapcsolat a {0} weboldallal.
 Run                                       = Futtatás
 FunctionSkipped                           = A(z) "{0}" funkció kihagyva.
-DonateToastTitle                          = Adományokat szívesen fogadunk! ❤
+DonateToastTitle                          = Adományokat szívesen fogadunk! ♥
 DotSourceFunction                         = Kérjük, "dot-source"-olja a függvényt (egy ponttal az elején):\n. .\\Import-TabCompletion.ps1
 '@

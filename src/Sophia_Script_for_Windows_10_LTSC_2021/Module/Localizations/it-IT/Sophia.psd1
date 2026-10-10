@@ -81,6 +81,6 @@ RestartFunction                           = Esegui nuovamente la funzione "{0}".
 NoConnectionEstablished                   = Non è stato possibile stabilire una connessione con {0}.
 Run                                       = Esegui
 FunctionSkipped                           = Funzione "{0}" saltata.
-DonateToastTitle                          = Le donazioni sono benvenute! ❤
+DonateToastTitle                          = Le donazioni sono benvenute! ♥
 DotSourceFunction                         = Esegui il "dot-source" della funzione (con un punto all'inizio):\n. .\\Import-TabCompletion.ps1
 '@

@@ -696,6 +696,8 @@ function InitialActions
 			# https://learn.microsoft.com/lifecycle/faq/extended-security-updates
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -eq $LatestSupportedMinorBuild)
 			{
+				Clear-Host
+
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Warning -Message $Localization.ESUProgramEnrollment
 				Write-Information -MessageData "" -InformationAction Continue
@@ -707,7 +709,7 @@ function InitialActions
 
 				do
 				{
-					$Choice = Show-Menu -Menu @($Yes, $No) -Default 1
+					$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
 
 					switch ($Choice)
 					{
