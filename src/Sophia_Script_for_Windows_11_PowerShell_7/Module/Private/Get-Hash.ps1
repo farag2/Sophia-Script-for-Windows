@@ -3,10 +3,10 @@
 	Calculate hash for Set-Association function
 
 	.VERSION
-	7.3.0
+	8.0.0
 
 	.DATE
-	05.09.2026
+	11.10.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
