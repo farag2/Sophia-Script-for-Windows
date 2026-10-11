@@ -1,0 +1,35 @@
+name: WinGet SFX
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Do not push from several workflows at the same time
+concurrency:
+  group: update-repository-files
+  cancel-in-progress: false
+
+jobs:
+  winget-sfx:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: SFX Archive
+        run: |
+          . "Scripts\Building\WinGet_SFX.ps1"
+
+      - name: Commit and push changes
+        run: |
+          # Save SFX archive to WinGet folder
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+          git add --all WinGet
+          git commit -m "Update SFX archive for WinGet"
+          git pull --rebase
+          git push

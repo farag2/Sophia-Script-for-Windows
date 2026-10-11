@@ -6,8 +6,13 @@ $Parameters = @{
 }
 $Latest_Release = Invoke-RestMethod @Parameters
 
+$Headers = @{
+	Accept        = "application/vnd.github+json"
+	Authorization = "Bearer $env:GITHUB_TOKEN"
+}
 $Parameters = @{
 	Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
+	Headers         = $Headers
 	UseBasicParsing = $true
 	Verbose         = $true
 }

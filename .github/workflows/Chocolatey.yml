@@ -12,6 +12,8 @@ jobs:
         uses: actions/checkout@main
 
       - name: Preparation
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           . "Scripts\Chocolatey.ps1"
 

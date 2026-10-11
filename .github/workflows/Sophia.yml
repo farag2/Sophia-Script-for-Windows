@@ -29,10 +29,6 @@ jobs:
         run: |
           . "Scripts\Building\Wrapper.ps1"
 
-      - name: SFX Archive
-        run: |
-          . "Scripts\Building\WinGet_SFX.ps1"
-
       - name: VirusTotal check
         env:
           VirusTotal_API_Key: ${{ secrets.VIRUSTOTAL_API_KEY }}
@@ -52,8 +48,6 @@ jobs:
         run: |
           $Tag   = "${{ inputs.tag }}"
           $ZIP   = @((Get-Item -Path "Sophia_Script\Sophia*.zip").FullName)
-          $EXE   = @((Get-Item -Path "Sophia_Script\Sophia*.exe").FullName)
-          $Files = $ZIP + $EXE
           $Title = $env:RELEASE_NAME
 
-          gh release create $Tag $Files --title $Title --notes-file ReleaseNotesTemplate.md
+          gh release create $Tag $ZIP --title $Title --notes-file ReleaseNotesTemplate.md
