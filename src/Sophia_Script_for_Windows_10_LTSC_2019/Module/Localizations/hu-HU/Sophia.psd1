@@ -9,7 +9,6 @@ LoggedInUserNotAdmin                      = A bejelentkezett felhasználó, "{0}
 UnsupportedHost                           = A szkript nem támogatja a(z) {0} használatával történő futtatást.
 HarmfulTweakerFound                       = A Windows operációs rendszer stabilitását veszélyeztethette a {0}.
 HostsEntriesFound                         = Harmadik féltől származó bejegyzések találhatóak a %SystemRoot%\\System32\\drivers\\etc\\hosts fájlban. Ezek blokkolhatják a szkriptben használt erőforrásokhoz való csatlakozást. Folytatni kívánja?
-UWPComponentsMissing                      = Hiányzik a "{0}" UWP-komponens.
 DefenderComponentsMissing                 = A Microsoft Defender "{0}" összetevője hiányzik.
 WindowsComponentStabilityDisrupted        = A "{0}" komponensben instabilitási problémát észleltek.
 DisableControlledFolderAccess             = A mappákhoz való hozzáférés ellenőrzése engedélyezve van. Kérjük, tiltsa le, és futtassa újra a szkriptet.

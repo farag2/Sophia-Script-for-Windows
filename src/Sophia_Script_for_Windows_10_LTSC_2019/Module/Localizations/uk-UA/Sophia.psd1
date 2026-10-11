@@ -9,7 +9,6 @@ LoggedInUserNotAdmin                      = Користувач "{0}", що у�
 UnsupportedHost                           = Скрипт не підтримує роботу через {0}.
 HarmfulTweakerFound                       = Стабільність Windows могла бути порушена використанням {0}.
 HostsEntriesFound                         = У файлі %SystemRoot%\\System32\\drivers\\etc\\hosts виявлено сторонні записи. Вони можуть блокувати з'єднання з ресурсами, що використовуються в роботі скрипту. Хочете продовжити?
-UWPComponentsMissing                      = Відсутній UWP-компонент "{0}".
 DefenderComponentsMissing                 = Відсутній компонент "{0}" для Microsoft Defender.
 WindowsComponentStabilityDisrupted        = Виявлено порушення стабільності роботи компонента "{0}".
 DisableControlledFolderAccess             = У вас увімкнено контрольований доступ до папок. Будь ласка, вимкніть його та спробуйте ще раз.

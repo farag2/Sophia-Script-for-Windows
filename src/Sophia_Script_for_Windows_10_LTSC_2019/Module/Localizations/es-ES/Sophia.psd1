@@ -9,7 +9,6 @@ LoggedInUserNotAdmin                      = El usuario "{0}" que ha iniciado ses
 UnsupportedHost                           = El script no es compatible con la ejecución a través de {0}.
 HarmfulTweakerFound                       = La estabilidad del sistema operativo Windows puede haberse visto comprometida al utilizar el {0}.
 HostsEntriesFound                         = Entradas de terceros encontradas en el archivo %SystemRoot%\\System32\\drivers\\etc\\hosts. Pueden bloquear la conexión a los recursos utilizados en el script. ¿Deseas continuar?
-UWPComponentsMissing                      = Falta el componente UWP "{0}".
 DefenderComponentsMissing                 = Falta el componente "{0}" de Microsoft Defender.
 WindowsComponentStabilityDisrupted        = Se ha detectado un problema de inestabilidad en el componente "{0}".
 DisableControlledFolderAccess             = Tienes activado el acceso controlado a carpetas. Desactívalo y vuelve a ejecutar el script.

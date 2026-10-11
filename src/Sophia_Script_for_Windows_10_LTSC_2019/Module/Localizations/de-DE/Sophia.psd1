@@ -9,7 +9,6 @@ LoggedInUserNotAdmin                      = Der angemeldete Benutzer "{0}" hat k
 UnsupportedHost                           = Das Skript unterstützt keine Ausführung über {0}.
 HarmfulTweakerFound                       = Die Stabilität des Windows-Betriebssystems kann durch die Verwendung des {0} beeinträchtigt worden sein.
 HostsEntriesFound                         = In der Datei %SystemRoot%\\System32\\drivers\\etc\\hosts wurden Einträge von Drittanbietern gefunden. Diese können die Verbindung zu den im Skript verwendeten Ressourcen blockieren. Möchten Sie fortfahren?
-UWPComponentsMissing                      = Die UWP-Komponente "{0}" fehlt.
 DefenderComponentsMissing                 = Die Komponente "{0}" von Microsoft Defender fehlt.
 WindowsComponentStabilityDisrupted        = In der Komponente "{0}" wurde ein Stabilitätsproblem festgestellt.
 DisableControlledFolderAccess             = Sie haben den kontrollierten Ordnerzugriff aktiviert. Bitte deaktivieren Sie ihn und führen Sie das Skript erneut aus.

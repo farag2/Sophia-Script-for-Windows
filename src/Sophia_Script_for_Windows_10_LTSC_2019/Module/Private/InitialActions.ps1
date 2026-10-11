@@ -380,26 +380,6 @@ function InitialActions
 		until ($Choice -ne $KeyboardArrows)
 	}
 
-	# Check whether Windows Feature Experience Pack was removed
-	if (-not (Get-AppxPackage -Name MicrosoftWindows.Client.CBS))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message (($Localization.UWPComponentsMissing -f "MicrosoftWindows.Client.CBS"), $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
 	#region Defender checks
 	# Check whether necessary Microsoft Defender components exist
 	$DefenderFiles = @(
@@ -536,9 +516,9 @@ function InitialActions
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		# e.g. 1809
-		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
+		$ReleaseId = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ReleaseId
 
-		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $WINDOWS_LONG, $DisplayVersion)
+		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $WINDOWS_LONG, $ReleaseId)
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
@@ -581,8 +561,8 @@ function InitialActions
 
 	# Windows 10 Enterprise LTSC 2019
 	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	# e.g. 22H2
-	$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
+	# e.g. 1809
+	$ReleaseId = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ReleaseId
 	# Check Windows minor build version
 	$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name CurrentBuild
 	$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR
@@ -592,7 +572,7 @@ function InitialActions
 		{$_ -ne 17763}
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.UpdateWindowsBuild -f 17763, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
+			Write-Warning -Message ($Localization.UpdateWindowsBuild -f 17763, $LatestSupportedMinorBuild, $WINDOWS_LONG, $ReleaseId, $CurrentBuild, $UBR)
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Write-Verbose -Message $Localization.AskQuestion -Verbose

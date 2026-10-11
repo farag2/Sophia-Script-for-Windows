@@ -9,7 +9,6 @@ LoggedInUserNotAdmin                      = Zalogowany użytkownik "{0}" nie ma 
 UnsupportedHost                           = Skrypt nie może być uruchamiany w {0}.
 HarmfulTweakerFound                       = Stabilność systemu Windows mogła zostać naruszona przez użycie {0}.
 HostsEntriesFound                         = W pliku %SystemRoot%\\System32\\drivers\\etc\\hosts znaleziono wpisy stron trzecich. Mogą one blokować połączenie z zasobami używanymi w skrypcie. Czy chcesz kontynuować?
-UWPComponentsMissing                      = Brakuje komponentu UWP "{0}".
 DefenderComponentsMissing                 = Brakuje komponentu "{0}" programu Microsoft Defender.
 WindowsComponentStabilityDisrupted        = W komponencie "{0}" wykryto problem związany z niestabilnością.
 DisableControlledFolderAccess             = Masz włączony kontrolowany dostęp do folderów. Wyłącz go i uruchom skrypt ponownie.

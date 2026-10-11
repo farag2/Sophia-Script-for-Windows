@@ -9,7 +9,6 @@ LoggedInUserNotAdmin                      = Oturum açan "{0}" kullanıcısını
 UnsupportedHost                           = Komut dosyası, {0} üzerinden çalıştırmayı desteklemiyor.
 HarmfulTweakerFound                       = Windows işletim sisteminin kararlılığı, {0} kullanımı nedeniyle tehlikeye atılmış olabilir.
 HostsEntriesFound                         = %SystemRoot%\\System32\\drivers\\etc\\hosts dosyasında üçüncü taraf girdileri bulundu. Bunlar, komut dosyasında kullanılan kaynaklara bağlantıyı engelleyebilir. Devam etmek istiyor musunuz?
-UWPComponentsMissing                      = "{0}" UWP bileşeni eksik.
 DefenderComponentsMissing                 = Microsoft Defender "{0}" bileşeni eksik.
 WindowsComponentStabilityDisrupted        = "{0}" bileşeninde bir kararsızlık sorunu tespit edildi.
 DisableControlledFolderAccess             = Kontrollü klasör erişimi etkinleştirilmiştir. Lütfen bunu devre dışı bırakın ve komut dosyasını tekrar çalıştırın.

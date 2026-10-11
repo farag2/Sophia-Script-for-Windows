@@ -9,7 +9,6 @@ LoggedInUserNotAdmin                      = 已登录用户"{0}"没有管理员�
 UnsupportedHost                           = 该脚本不支持通过 {0} 运行。
 HarmfulTweakerFound                       = Windows 的稳定性可能已被 {0} 所破坏。
 HostsEntriesFound                         = 在 %SystemRoot%\\System32\\drivers\\etc\\hosts 文件中发现的第三方条目。它们可能会阻止连接脚本中使用的资源。是否继续？
-UWPComponentsMissing                      = 缺少"{0}" UWP 组件。
 DefenderComponentsMissing                 = 缺少 Microsoft Defender 的"{0}"组件。
 WindowsComponentStabilityDisrupted        = 已在"{0}"组件中检测到一个不稳定问题。
 DisableControlledFolderAccess             = 您已启用受控文件夹访问功能。请将其禁用后重新运行脚本。

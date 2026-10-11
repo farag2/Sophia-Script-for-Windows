@@ -581,7 +581,7 @@ function InitialActions
 
 	# Windows 10 Enterprise LTSC 2021
 	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	# e.g. 22H2
+	# e.g. 21H2
 	$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
 	# Check Windows minor build version
 	$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name CurrentBuild
