@@ -17,8 +17,8 @@
     <docsUrl>https://github.com/farag2/Sophia-Script-for-Windows/blob/main/README.md</docsUrl>
     <bugTrackerUrl>https://github.com/farag2/Sophia-Script-for-Windows/issues</bugTrackerUrl>
     <tags>windows gui script powershell tweaks windows-10 sophia tweaker tweak debloat debloating ltsc windows-11 debloater windows-debloat sophia-script 22h2 25h2</tags>
-    <summary>The most powerful PowerShell module on GitHub for Windows 10 and Windows 11 fine-tuning and tweaking</summary>
-    <description>Sophia Script for Windows is the largest PowerShell module on GitHub for Windows 10 and Windows 11 fine-tuning and automating the routine tasks</description>
+    <summary>The most powerful PowerShell module for fine-tuning Windows on GitHub</summary>
+    <description>The most powerful PowerShell module for fine-tuning Windows on GitHub</description>
     <releaseNotes>https://github.com/farag2/Sophia-Script-for-Windows/blob/main/CHANGELOG.md</releaseNotes>
   </metadata>
   <files>
