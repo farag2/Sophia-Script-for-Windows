@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 7.0.0 | 8.0.0 — 11.10.2026
+
+* Huge code factoring
+
+<img width="775" height="239" src="https://github.com/user-attachments/assets/4c82eeed-e547-4d67-ba62-b58d3712e5b3" />
+
+* Improved localizations
+* Updated all CI/CD scripts
+* Fixed bugs, typos, and minor fixes
+* Updated Readmes
+* Close #742, #739
+
+> [!WARNING]
+> Pay attention that `DNSoverHTTPS -Wikimedia` was removed and `ForAllUsers` argument changed to `AllUsers` for `Uninstall-UWPApps` function
+
 ## 6.3.0 | 7.3.0 — 05.09.2026
 
 * Code refactoring
