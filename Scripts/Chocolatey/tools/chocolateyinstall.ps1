@@ -12,9 +12,6 @@
 	choco install sophia --params "/PS7" --force -y
 #>
 
-Clear-Host
-$Error.Clear()
-
 if ($PSVersionTable.PSVersion.Major -eq 5)
 {
 	# Progress bar can significantly impact cmdlet performance
