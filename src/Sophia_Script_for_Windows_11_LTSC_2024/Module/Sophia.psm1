@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Sophia Script is a PowerShell module for fine-tuning Windows and automating routine tasks
+	Sophia Script for Windows is the most powerful PowerShell module for fine-tuning Windows on GitHub
 
 	.VERSION
 	8.0.0
@@ -401,7 +401,7 @@ function ScheduledTasks
 		$Enable
 	)
 
-	# The following tasks will have their checkboxes checked
+	# The following scheduled tasks will be displayed with their checkboxes checked
 	[string[]]$CheckedScheduledTasks = @(
 		# Gathers Win32 application data for App Backup scenario
 		"MareBackup",
@@ -441,23 +441,17 @@ function ScheduledTasks
 	{
 		"Enable"
 		{
-			$State         = "Disabled"
-			$ButtonContent = $Localization.Enable
+			$ScheduledTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)} | Sort-Object -Property TaskName)
+			$ButtonText = $Localization.Enable
 		}
 		"Disable"
 		{
-			$State         = "Ready"
-			$ButtonContent = $Localization.Disable
+			$ScheduledTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -ne "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)} | Sort-Object -Property TaskName)
+			$ButtonText = $Localization.Disable
 		}
 	}
 
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	# Getting list of all scheduled tasks according to the conditions
-	$Tasks = Get-ScheduledTask -TaskName $CheckedScheduledTasks -ErrorAction Ignore | Where-Object -FilterScript {$_.State -eq $State}
-	if (-not $Tasks)
+	if ($ScheduledTasks.Count -eq 0)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.NoScheduledTasksFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -468,104 +462,103 @@ function ScheduledTasks
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	[xml]$XAML = @"
+[xml]$XAML = @'
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Name="Window"
-	MinHeight="450"
-	MinWidth="400"
-	SizeToContent="WidthAndHeight"
-	WindowStartupLocation="CenterScreen"
-	TextOptions.TextFormattingMode="Display"
-	SnapsToDevicePixels="True"
-	FontFamily="Candara"
-	FontSize="16"
-	ShowInTaskbar="True"
-	Background="#F1F1F1"
-	Foreground="#262626">
-
+	Width="430" Height="500" MinWidth="430" MinHeight="500"
+	WindowStartupLocation="CenterScreen" Topmost="True"
+	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
 	<Window.Resources>
 		<Style TargetType="CheckBox">
-			<Setter Property="Margin" Value="10"/>
-			<Setter Property="Padding" Value="10, 0, 0, 0"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
-			<Setter Property="IsChecked" Value="True"/>
-		</Style>
-		<Style TargetType="Button">
-			<Setter Property="Margin" Value="20"/>
-			<Setter Property="Padding" Value="10"/>
 		</Style>
 	</Window.Resources>
-
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
-		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-			<StackPanel Name="PanelContainer"/>
+		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+			<StackPanel Name="PanelTasks" Margin="16,8"/>
 		</ScrollViewer>
-		<Button Name="Button" Grid.Row="1"/>
+		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
+			<Button Name="ButtonApply" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
+		</Border>
 	</Grid>
 </Window>
-"@
+'@
 
-	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
+	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
+
+	$PanelTasks  = $Form.FindName("PanelTasks")
+	$ButtonApply = $Form.FindName("ButtonApply")
+
+	$Form.Title          = $Localization.ScheduledTasks
+	$ButtonApply.Content = $ButtonText
+
+	# Enable the button only if at least one task is checked
+	$UpdateState = {
+		$ButtonApply.IsEnabled = [bool]($PanelTasks.Children | Where-Object -FilterScript {$_.IsChecked})
 	}
 
-	$Form.Title     = $Localization.ScheduledTasks
-	$Form.MaxHeight = [System.Windows.SystemParameters]::WorkArea.Height * 0.8
-	$Button.Content = $ButtonContent
-
-	foreach ($Task in $Tasks)
+	foreach ($ScheduledTask in $ScheduledTasks)
 	{
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Content = $Task.TaskName
-		# Store the task object itself, so there is no need to search it by name later
-		$CheckBox.Tag = $Task
-		$CheckBox.Add_Click({
-			# Enable the button only if at least one task is checked
-			$Button.IsEnabled = [bool]($PanelContainer.Children | Where-Object -FilterScript {$_.IsChecked})
-		})
+		$TextBlockTaskName      = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockTaskName.Text = $ScheduledTask.TaskName
 
-		[void]$PanelContainer.Children.Add($CheckBox)
+		$TextBlockTaskPath      = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockTaskPath.Text = $ScheduledTask.TaskPath.Trim("\")
+		$TextBlockTaskPath.FontSize = 12
+		$TextBlockTaskPath.Foreground = "#808080"
+
+		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+		$StackPanel.Margin = "6,0,0,0"
+		$StackPanel.Children.Add($TextBlockTaskName) | Out-Null
+		$StackPanel.Children.Add($TextBlockTaskPath) | Out-Null
+
+		$CheckBox           = New-Object -TypeName System.Windows.Controls.CheckBox
+		$CheckBox.Margin    = "0,4"
+		$CheckBox.Content   = $StackPanel
+		$CheckBox.IsChecked = $true
+		$CheckBox.Tag       = $ScheduledTask
+		$CheckBox.Add_Click($UpdateState)
+
+		$PanelTasks.Children.Add($CheckBox) | Out-Null
 	}
 
-	# Setting DialogResult closes the modal window
-	$Button.Add_Click({$Form.DialogResult = $true})
+	& $UpdateState
+
+	$ButtonApply.Add_Click({$Form.DialogResult = $true})
+
+	$Form.ShowDialog() | Out-Null
 
 	# Emulate the Backspace key sending to prevent the console window to freeze
 	Send-ConsoleBackspace
 
-	# Force move the WPF form to the foreground
-	$Form.Add_Loaded({$Form.Activate()})
-
-	# The window was closed without pressing the button
-	if (-not $Form.ShowDialog())
+	if (-not $Form.DialogResult)
 	{
 		return
 	}
 
-	$SelectedTasks = ($PanelContainer.Children | Where-Object -FilterScript {$_.IsChecked}).Tag
+	$SelectedTasks = $PanelTasks.Children | Where-Object -FilterScript {$_.IsChecked}
 
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	$SelectedTasks | ForEach-Object -Process {Write-Verbose -Message $_.TaskName -Verbose}
-
-	switch ($PSCmdlet.ParameterSetName)
+	foreach ($CheckBox in $SelectedTasks)
 	{
-		"Enable"
-		{
-			$SelectedTasks | Enable-ScheduledTask
+		$Parameters = @{
+			InputObject = $CheckBox.Tag
 		}
-		"Disable"
+
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			$SelectedTasks | Disable-ScheduledTask
+			"Enable"
+			{
+				Enable-ScheduledTask @Parameters
+			}
+			"Disable"
+			{
+				Disable-ScheduledTask @Parameters
+			}
 		}
 	}
 }
@@ -4102,7 +4095,7 @@ function WindowsFeatures
 		$Enable
 	)
 
-	# The following Windows features will have their checkboxes checked
+	# The following optional features will be displayed with their checkboxes checked
 	[string[]]$CheckedFeatures = @(
 		# Legacy Components
 		"LegacyComponents",
@@ -4123,13 +4116,13 @@ function WindowsFeatures
 	{
 		"Enable"
 		{
-			$State         = @("Disabled", "DisablePending")
-			$ButtonContent = $Localization.Enable
+			$State      = @("Disabled", "DisablePending")
+			$ButtonText = $Localization.Enable
 		}
 		"Disable"
 		{
-			$State         = @("Enabled", "EnablePending")
-			$ButtonContent = $Localization.Disable
+			$State      = @("Enabled", "EnablePending")
+			$ButtonText = $Localization.Disable
 		}
 	}
 
@@ -4137,13 +4130,11 @@ function WindowsFeatures
 	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
-	# Getting list of all optional features according to the conditions
-	# Get-WindowsOptionalFeature -Online without -FeatureName doesn't return DisplayName and Description, so query each found feature separately
-	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -in $State) -and ($_.FeatureName -in $CheckedFeatures)} | ForEach-Object -Process {
+	$Features = @(Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -in $State) -and ($_.FeatureName -in $CheckedFeatures)} | ForEach-Object -Process {
 		Get-WindowsOptionalFeature -Online -FeatureName $_.FeatureName
-	}
+	} | Sort-Object -Property DisplayName)
 
-	if (-not $Features)
+	if ($Features.Count -eq 0)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.NoWindowsFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -4154,118 +4145,126 @@ function WindowsFeatures
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	[xml]$XAML = @"
+[xml]$XAML = @'
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Name="Window"
-	MinHeight="450"
-	MinWidth="400"
-	SizeToContent="WidthAndHeight"
-	WindowStartupLocation="CenterScreen"
-	TextOptions.TextFormattingMode="Display"
-	SnapsToDevicePixels="True"
-	FontFamily="Candara"
-	FontSize="16"
-	ShowInTaskbar="True"
-	Background="#F1F1F1"
-	Foreground="#262626">
-
+	Width="450" Height="350" MinWidth="450" MinHeight="350"
+	WindowStartupLocation="CenterScreen" Topmost="True"
+	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
 	<Window.Resources>
 		<Style TargetType="CheckBox">
-			<Setter Property="Margin" Value="10"/>
-			<Setter Property="Padding" Value="10, 0, 0, 0"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
-			<Setter Property="IsChecked" Value="True"/>
-		</Style>
-		<Style TargetType="Button">
-			<Setter Property="Margin" Value="20"/>
-			<Setter Property="Padding" Value="10"/>
 		</Style>
 	</Window.Resources>
-
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
-		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-			<StackPanel Name="PanelContainer"/>
+		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+			<StackPanel Name="PanelFeatures" Margin="16,8"/>
 		</ScrollViewer>
-		<Button Name="Button" Grid.Row="1"/>
+		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
+			<Button Name="ButtonApply" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
+		</Border>
 	</Grid>
 </Window>
-"@
+'@
 
-	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
+	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
+
+	$PanelFeatures = $Form.FindName("PanelFeatures")
+	$ButtonApply   = $Form.FindName("ButtonApply")
+
+	$Form.Title          = $Localization.WindowsFeaturesTitle
+	$ButtonApply.Content = $ButtonText
+
+	# The button is enabled only when a capability is selected
+	$UpdateState = {
+		$ButtonApply.IsEnabled = [bool]($PanelFeatures.Children | Where-Object -FilterScript {$_.IsChecked})
 	}
-
-	$Form.Title     = $Localization.WindowsFeaturesTitle
-	$Form.MaxHeight = [System.Windows.SystemParameters]::WorkArea.Height * 0.8
-	$Button.Content = $ButtonContent
 
 	foreach ($Feature in $Features)
 	{
-		$CheckBox         = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Content = $Feature.DisplayName
-		$CheckBox.ToolTip = $Feature.Description
-		# Store the feature object itself, so there is no need to search it by name later
-		$CheckBox.Tag = $Feature
-		$CheckBox.Add_Click({
-			# Enable the button only if at least one feature is checked
-			$Button.IsEnabled = [bool]($PanelContainer.Children | Where-Object -FilterScript {$_.IsChecked})
-		})
+		$TextBlockDisplayName      = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockDisplayName.Text = $Feature.DisplayName
 
-		[void]$PanelContainer.Children.Add($CheckBox)
+		$TextBlockFeatureName      = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockFeatureName.Text = $Feature.FeatureName
+		$TextBlockFeatureName.FontSize = 12
+		$TextBlockFeatureName.Foreground = "#808080"
+
+		$StackPanel        = New-Object -TypeName System.Windows.Controls.StackPanel
+		$StackPanel.Margin = "6,0,0,0"
+		$StackPanel.Children.Add($TextBlockDisplayName) | Out-Null
+		$StackPanel.Children.Add($TextBlockFeatureName) | Out-Null
+
+		$CheckBox           = New-Object -TypeName System.Windows.Controls.CheckBox
+		$CheckBox.Margin    = "0,4"
+		$CheckBox.Content   = $StackPanel
+		$CheckBox.ToolTip   = $Feature.Description
+		$CheckBox.IsChecked = $Feature.FeatureName -in $CheckedFeatures
+		$CheckBox.Tag       = $Feature
+		$CheckBox.Add_Click($UpdateState)
+
+		$PanelFeatures.Children.Add($CheckBox) | Out-Null
 	}
 
-	# Setting DialogResult closes the modal window
-	$Button.Add_Click({$Form.DialogResult = $true})
+	& $UpdateState
+
+	$ButtonApply.Add_Click({$Form.DialogResult = $true})
+
+	$Form.ShowDialog() | Out-Null
 
 	# Emulate the Backspace key sending to prevent the console window to freeze
 	Send-ConsoleBackspace
 
-	# Force move the WPF form to the foreground
-	$Form.Add_Loaded({$Form.Activate()})
-
-	# The window was closed without pressing the button
-	if (-not $Form.ShowDialog())
+	if (-not $Form.DialogResult)
 	{
 		return
 	}
 
-	$SelectedFeatures = ($PanelContainer.Children | Where-Object -FilterScript {$_.IsChecked}).Tag
+	$SelectedFeatures = $PanelFeatures.Children | Where-Object -FilterScript {$_.IsChecked}
 
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	$SelectedFeatures | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
-
-	switch ($PSCmdlet.ParameterSetName)
+	foreach ($CheckBox in $SelectedFeatures)
 	{
-		"Enable"
+		Write-Verbose -Message $CheckBox.Tag.DisplayName -Verbose
+
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			Enable-WindowsOptionalFeature -Online -FeatureName $SelectedFeatures.FeatureName -All -NoRestart -Verbose
-		}
-		"Disable"
-		{
-			Disable-WindowsOptionalFeature -Online -FeatureName $SelectedFeatures.FeatureName -NoRestart -Verbose
+			"Enable"
+			{
+				$Parameters = @{
+					Online        = $true
+					FeatureName   = $CheckBox.Tag.FeatureName
+					All           = $true
+					NoRestart     = $true
+				}
+				Enable-WindowsOptionalFeature @Parameters
+			}
+			"Disable"
+			{
+				$Parameters = @{
+					Online        = $true
+					FeatureName   = $CheckBox.Tag.FeatureName
+					NoRestart     = $true
+				}
+				Disable-WindowsOptionalFeature @Parameters
+			}
 		}
 	}
 }
 
 <#
 	.SYNOPSIS
-	Optional features
+	Install or uninstall Windows capabilities
 
 	.PARAMETER Uninstall
-	Uninstall optional features
+	Uninstall Windows capabilities
 
 	.PARAMETER Install
-	Install optional features
+	Install Windows capabilities
 
 	.EXAMPLE
 	WindowsCapabilities -Uninstall
@@ -4295,7 +4294,7 @@ function WindowsCapabilities
 		$Install
 	)
 
-	# The following optional features will have their checkboxes checked
+	# The following capabilities will be displayed with their checkboxes checked
 	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
 		"App.StepsRecorder*",
@@ -4308,17 +4307,59 @@ function WindowsCapabilities
 		"Media.WindowsMediaPlayer*"
 	)
 
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Servicing -Name LocalSourcePath, UseWindowsUpdate, RepairContentServerSource -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate -Name DoNotConnectToWindowsUpdateInternetLocations, DisableWindowsUpdateAccess -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\WindowsUpdate\AU -Name UseWUServer -Force -ErrorAction Ignore
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Install"
 		{
-			$State         = "NotPresent"
-			$ButtonContent = $Localization.Install
+			# Any HTTP response, even an error status, means the server is reachable. Only a connection failure means it isn't
+			$Parameters = @{
+				Uri             = "https://fe3cr.delivery.mp.microsoft.com/ClientWebService/client.asmx"
+				Method          = "Head"
+				UseBasicParsing = $true
+				TimeoutSec      = 5
+			}
+			try
+			{
+				Invoke-WebRequest @Parameters
+
+				$IsReachable = $true
+			}
+			catch
+			{
+				# WebException in PowerShell 5.1 and HttpResponseException in PowerShell 7 have the Response property when the server responded
+				# HttpRequestException and TaskCanceledException in PowerShell 7 have no such property, so check it via PSObject due to Set-StrictMode
+				$IsReachable = ($_.Exception.PSObject.Properties.Name -contains "Response") -and ($null -ne $_.Exception.Response)
+
+				# The web service answers HEAD with "(400) Bad Request", which only means it's reachable, so remove this record from the list
+				if ($IsReachable)
+				{
+					$Global:Error.RemoveAt(0)
+				}
+			}
+
+			if (-not $IsReachable)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			$State           = "NotPresent"
+			$ButtonText      = $Localization.Install
+			$OperationFailed = $Localization.WindowsCapabilitiesInstallFailed
 		}
 		"Uninstall"
 		{
-			$State         = "Installed"
-			$ButtonContent = $Localization.Uninstall
+			$State           = "Installed"
+			$ButtonText      = $Localization.Uninstall
+			$OperationFailed = $Localization.WindowsCapabilitiesUninstallFailed
 		}
 	}
 
@@ -4326,96 +4367,96 @@ function WindowsCapabilities
 	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
-	# Getting list of all capabilities
-	$WindowsCapability = Get-WindowsCapability -Online
-	$Capabilities = foreach ($Pattern in $CheckedCapabilities)
+	# Get-WindowsCapability without -Name doesn't return DisplayName and Description, so query each found capability separately
+	$WindowsCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {$_.State -eq $State}
+	$Capabilities = @($(foreach ($Pattern in $CheckedCapabilities)
 	{
-		$WindowsCapability | Where-Object -FilterScript {($_.State -eq $State) -and ($_.Name -like $Pattern)} | ForEach-Object -Process {
+		$WindowsCapabilities | Where-Object -FilterScript {$_.Name -like $Pattern} | ForEach-Object -Process {
 			Get-WindowsCapability -Online -Name $_.Name
 		}
-	}
+	}) | Sort-Object -Property DisplayName)
 
-	if (-not $Capabilities)
+	if ($Capabilities.Count -eq 0)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.NoOptionalFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.NoOptionalFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message ($Localization.NoWindowsCapabilitiesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message ($Localization.NoWindowsCapabilitiesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
 
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	[xml]$XAML = @"
+	[xml]$XAML = @'
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Name="Window"
-	MinHeight="450"
-	MinWidth="400"
-	SizeToContent="WidthAndHeight"
-	WindowStartupLocation="CenterScreen"
-	TextOptions.TextFormattingMode="Display"
-	SnapsToDevicePixels="True"
-	FontFamily="Candara"
-	FontSize="16"
-	ShowInTaskbar="True"
-	Background="#F1F1F1"
-	Foreground="#262626">
-
+	Width="550" Height="250" MinWidth="550" MinHeight="250"
+	WindowStartupLocation="CenterScreen" Topmost="True"
+	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
 	<Window.Resources>
 		<Style TargetType="CheckBox">
-			<Setter Property="Margin" Value="10"/>
-			<Setter Property="Padding" Value="10, 0, 0, 0"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
-			<Setter Property="IsChecked" Value="True"/>
-		</Style>
-		<Style TargetType="Button">
-			<Setter Property="Margin" Value="20"/>
-			<Setter Property="Padding" Value="10"/>
 		</Style>
 	</Window.Resources>
-
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
-		<ScrollViewer Grid.Row="0" HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
-			<StackPanel Name="PanelContainer"/>
+		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+			<StackPanel Name="PanelCapabilities" Margin="16,8"/>
 		</ScrollViewer>
-		<Button Name="Button" Grid.Row="1"/>
+		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
+			<Button Name="ButtonApply" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
+		</Border>
 	</Grid>
 </Window>
-"@
+'@
 
-	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
+	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
+
+	$PanelCapabilities = $Form.FindName("PanelCapabilities")
+	$ButtonApply       = $Form.FindName("ButtonApply")
+
+	$Form.Title          = $Localization.WindowsCapabilitiesTitle
+	$ButtonApply.Content = $ButtonText
+
+	# The button is enabled only when at least one capability is checked
+	$UpdateState = {
+		$ButtonApply.IsEnabled = [bool]($PanelCapabilities.Children | Where-Object -FilterScript {$_.IsChecked})
 	}
-
-	$Form.Title = $Localization.OptionalFeaturesTitle
-	# Limit the window height to the screen work area, so the capabilities list becomes scrollable
-	$Form.MaxHeight = [System.Windows.SystemParameters]::WorkArea.Height * 0.8
-	$Button.Content = $ButtonContent
 
 	foreach ($Capability in $Capabilities)
 	{
-		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Content = $Capability.DisplayName
-		$CheckBox.ToolTip = $Capability.Description
-		# Store the capability object itself, so there is no need to search it by name later
-		$CheckBox.Tag = $Capability
-		$CheckBox.Add_Click({
-			# Enable the button only if at least one capability is checked
-			$Button.IsEnabled = [bool]($PanelContainer.Children | Where-Object -FilterScript {$_.IsChecked})
-		})
+		$TextBlockDisplayName = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockDisplayName.Text = $Capability.DisplayName
 
-		[void]$PanelContainer.Children.Add($CheckBox)
+		$TextBlockName = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockName.Text = $Capability.Name
+		$TextBlockName.FontSize = 12
+		$TextBlockName.Foreground = "#808080"
+
+		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+		$StackPanel.Margin = "6,0,0,0"
+		$StackPanel.Children.Add($TextBlockDisplayName) | Out-Null
+		$StackPanel.Children.Add($TextBlockName) | Out-Null
+
+		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
+		$CheckBox.Margin = "0,4"
+		$CheckBox.Content = $StackPanel
+		# Localized capability description in the tooltip
+		$CheckBox.ToolTip = $Capability.Description
+		$CheckBox.IsChecked = $true
+		$CheckBox.Tag = $Capability
+		$CheckBox.Add_Click($UpdateState)
+
+		$PanelCapabilities.Children.Add($CheckBox) | Out-Null
 	}
 
-	# Setting DialogResult closes the modal window
-	$Button.Add_Click({$Form.DialogResult = $true})
+	& $UpdateState
+
+	$ButtonApply.Add_Click({$Form.DialogResult = $true})
 
 	# Emulate the Backspace key sending to prevent the console window to freeze
 	Send-ConsoleBackspace
@@ -4429,46 +4470,36 @@ function WindowsCapabilities
 		return
 	}
 
-	$SelectedCapabilities = ($PanelContainer.Children | Where-Object -FilterScript {$_.IsChecked}).Tag
-
-	if ($Install)
+	$SelectedCapabilities = $PanelCapabilities.Children | Where-Object -FilterScript {$_.IsChecked}
+	foreach ($CheckBox in $SelectedCapabilities)
 	{
-		# We cannot catch DISM exceptions other ways
+		Write-Verbose -Message $CheckBox.Tag.DisplayName -Verbose
+
+		$Parameters = @{
+			Online      = $true
+			Name        = $CheckBox.Tag.Name
+			ErrorAction = "Stop"
+		}
+
 		try
 		{
-			$Parameters = @{
-				Uri             = "https://www.google.com"
-				UseBasicParsing = $true
-				TimeoutSec      = 5
-				Verbose         = $true
+			switch ($PSCmdlet.ParameterSetName)
+			{
+				"Install"
+				{
+					Add-WindowsCapability @Parameters
+				}
+				"Uninstall"
+				{
+					Remove-WindowsCapability @Parameters
+				}
 			}
-			$null = Invoke-WebRequest @Parameters
 		}
-		catch [System.Net.WebException]
+		catch
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-			return
-		}
-	}
-
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	$SelectedCapabilities | ForEach-Object -Process {Write-Verbose -Message $_.DisplayName -Verbose}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Install"
-		{
-			$SelectedCapabilities | Add-WindowsCapability -Online
-		}
-		"Uninstall"
-		{
-			$SelectedCapabilities | Remove-WindowsCapability -Online -ErrorAction Stop
+			Write-Verbose -Message (($OperationFailed -f $CheckBox.Tag.DisplayName, $_.Exception.Message), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($OperationFailed -f $CheckBox.Tag.DisplayName, $_.Exception.Message), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -6318,6 +6349,7 @@ function Export-Associations
 function Import-Associations
 {
 	Add-Type -AssemblyName System.Windows.Forms
+
 	$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 	$OpenFileDialog.Filter = "*.json|*.json|{0} (*.*)|*.*" -f $Localization.AllFilesFilter
 	$OpenFileDialog.InitialDirectory = $PSScriptRoot
@@ -6788,10 +6820,9 @@ function Install-WSL
 {
 	try
 	{
-		# https://github.com/microsoft/WSL/blob/main/distributions/DistributionInfo.json
-		# wsl --list --online relies on Internet connection too, so it's much more convenient to parse DistributionInfo.json, rather than parse a cmd output
+		# https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json
 		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/microsoft/WSL/main/distributions/DistributionInfo.json"
+			Uri             = "https://raw.githubusercontent.com/microsoft/WSL/refs/heads/master/distributions/DistributionInfo.json"
 			UseBasicParsing = $true
 			TimeoutSec      = 5
 			Verbose         = $true
@@ -6807,73 +6838,80 @@ function Install-WSL
 		return
 	}
 
+	# ModernDistributions is an object of distribution families, each containing an array of distributions. ForEach-Object unrolls the arrays into a flat list
+	$Distributions = $Distributions.ModernDistributions.PSObject.Properties | ForEach-Object -Process {$_.Value}
+
+	# Distributions already installed for the current user
+	$InstalledDistributions = @(Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Lxss -ErrorAction Ignore | ForEach-Object -Process {$_.GetValue("DistributionName")})
+
 	Add-Type -AssemblyName PresentationCore, PresentationFramework
 
-	[xml]$XAML = @"
+	[xml]$XAML = @'
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Name="Window"
-	MinHeight="460"
-	MinWidth="350"
-	SizeToContent="WidthAndHeight"
-	WindowStartupLocation="CenterScreen"
-	TextOptions.TextFormattingMode="Display"
-	SnapsToDevicePixels="True"
-	FontFamily="Candara"
-	FontSize="16"
-	ShowInTaskbar="True"
-	Background="#F1F1F1"
-	Foreground="#262626">
-
+	Width="480" Height="640" MinWidth="400" MinHeight="400"
+	WindowStartupLocation="CenterScreen" Topmost="True"
+	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
 	<Window.Resources>
 		<Style TargetType="RadioButton">
-			<Setter Property="Margin" Value="10"/>
 			<Setter Property="VerticalContentAlignment" Value="Center"/>
 		</Style>
-		<Style TargetType="Button">
-			<Setter Property="Margin" Value="20"/>
-			<Setter Property="Padding" Value="10"/>
-			<Setter Property="IsEnabled" Value="False"/>
-		</Style>
 	</Window.Resources>
-
 	<Grid>
 		<Grid.RowDefinitions>
 			<RowDefinition Height="*"/>
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-			<StackPanel Name="PanelContainer"/>
+			<StackPanel Name="PanelDistributions" Margin="16,8"/>
 		</ScrollViewer>
-		<Button Name="ButtonInstall" Grid.Row="1"/>
+		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
+			<Button Name="ButtonInstall" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
+		</Border>
 	</Grid>
 </Window>
-"@
+'@
 
-	$Form = [Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-	$XAML.SelectNodes("//*[@*[contains(translate(name(.),'n','N'),'Name')]]") | ForEach-Object -Process {
-		Set-Variable -Name $_.Name -Value $Form.FindName($_.Name)
-	}
+	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
+
+	$PanelDistributions = $Form.FindName("PanelDistributions")
+	$ButtonInstall      = $Form.FindName("ButtonInstall")
 
 	$Form.Title            = "WSL"
-	$Form.MaxHeight        = [System.Windows.SystemParameters]::WorkArea.Height * 0.6
 	$ButtonInstall.Content = $Localization.Install
 
-	foreach ($Distribution in $Distributions.ModernDistributions.PSObject.Properties.Value)
-	{
-		$RadioButton         = New-Object -TypeName System.Windows.Controls.RadioButton
-		$RadioButton.Content = $Distribution.FriendlyName
-		$RadioButton.Tag     = $Distribution.Name
-		$RadioButton.Add_Checked({
-			$ButtonInstall.Tag       = $_.OriginalSource.Tag
-			$ButtonInstall.IsEnabled = $true
-		})
-
-		$PanelContainer.Children.Add($RadioButton) | Out-Null
+	# The button is enabled only when a distribution is selected
+	$UpdateState = {
+		$ButtonInstall.IsEnabled = [bool]($PanelDistributions.Children | Where-Object -FilterScript {$_.IsChecked})
 	}
 
-	# Setting DialogResult closes the modal window without blocking the UI thread
+	foreach ($Distribution in $Distributions)
+	{
+		$TextBlockFriendlyName = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockFriendlyName.Text = $Distribution.FriendlyName
+
+		$TextBlockName = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockName.Text = $Distribution.Name
+		$TextBlockName.FontSize = 12
+		$TextBlockName.Foreground = "#808080"
+
+		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+		$StackPanel.Margin = "6,0,0,0"
+		$StackPanel.Children.Add($TextBlockFriendlyName) | Out-Null
+		$StackPanel.Children.Add($TextBlockName) | Out-Null
+
+		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
+		$RadioButton.Margin = "0,4"
+		$RadioButton.Content = $StackPanel
+		$RadioButton.Tag = $Distribution
+		# Already installed distributions are shown but cannot be selected
+		$RadioButton.IsEnabled = $Distribution.Name -notin $InstalledDistributions
+		$RadioButton.Add_Checked($UpdateState)
+
+		$PanelDistributions.Children.Add($RadioButton) | Out-Null
+	}
+
 	$ButtonInstall.Add_Click({$Form.DialogResult = $true})
 
 	# Emulate the Backspace key sending to prevent the console window to freeze
@@ -6888,7 +6926,11 @@ function Install-WSL
 		return
 	}
 
-	Start-Process -FilePath $env:SystemRoot\System32\wsl.exe -ArgumentList "--install --distribution $($ButtonInstall.Tag)" -Wait
+	$SelectedDistribution = ($PanelDistributions.Children | Where-Object -FilterScript {$_.IsChecked}).Tag
+
+	Write-Verbose -Message $SelectedDistribution.FriendlyName -Verbose
+
+	Start-Process -FilePath "$env:SystemRoot\System32\wsl.exe" -ArgumentList @("--install", "--distribution", $SelectedDistribution.Name) -Wait
 
 	# Receive updates for other Microsoft products when you update Windows
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force | Out-Null

@@ -685,7 +685,7 @@ function InitialActions
 	{
 		# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information
 		$LatestSupportedMinorBuild = 9168
-		$LatestSupportedMajorBuild = 26200
+		$LatestSupportedMajorBuild = 26300
 
 		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
 		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
@@ -701,7 +701,7 @@ function InitialActions
 
 	switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber)
 	{
-		{$_ -lt 26200}
+		{$_ -lt 26300}
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message ($Localization.UpdateWindowsBuild -f $LatestSupportedMajorBuild, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
@@ -729,7 +729,7 @@ function InitialActions
 
 			exit
 		}
-		26200
+		26300
 		{
 			# We may use Test-Path -Path variable:LatestSupportedMinorBuild
 			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -lt $LatestSupportedMinorBuild)

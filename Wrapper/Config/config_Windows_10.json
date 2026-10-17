@@ -1794,22 +1794,6 @@
         "WindowsDefault": "1"
     },
     {
-        "Region": "UWP apps",
-        "Control": "cmb",
-        "Required": "false",
-        "Function": "BackgroundUWPApps",
-        "Arg": {
-            "0": {
-                "Tag": "Disable"
-            },
-            "1": {
-                "Tag": "Enable"
-            }
-        },
-        "Preset": "0",
-        "WindowsDefault": "1"
-    },
-    {
         "Region": "Gaming",
         "Control": "cmb",
         "Required": "false",

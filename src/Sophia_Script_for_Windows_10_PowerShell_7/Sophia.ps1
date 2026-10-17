@@ -944,14 +944,6 @@ CortanaAutostart -Disable
 # Enable Cortana autostarting (default value)
 # Включить автозагрузку Кортана (значение по умолчанию)
 # CortanaAutostart -Enable
-
-# Do not let UWP apps run in the background
-# Не разрешать UWP-приложениям работать в фоновом режиме
-BackgroundUWPApps -Disable
-
-# Let all UWP apps run in the background (default value)
-# Разрешить всем UWP-приложениям работать в фоновом режиме (значение по умолчанию)
-# BackgroundUWPApps -Enable
 #endregion UWP apps
 
 #region Gaming

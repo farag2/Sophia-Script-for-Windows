@@ -1477,20 +1477,6 @@
     }
   },
   {
-    "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Do not let all UWP apps run in the background."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Let all UWP apps run in the background (default value)."
-      }
-    }
-  },
-  {
     "Region": "Gaming",
     "Function": "XboxGameBar",
     "Arg": {

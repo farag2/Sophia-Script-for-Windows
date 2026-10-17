@@ -1477,20 +1477,6 @@
     }
   },
   {
-    "Region": "UWP apps",
-    "Function": "BackgroundUWPApps",
-    "Arg": {
-      "Zero": {
-        "Tag": "Disable",
-        "ToolTip": "Не разрешать UWP-приложениям работать в фоновом режиме."
-      },
-      "One": {
-        "Tag": "Enable",
-        "ToolTip": "Разрешить всем UWP-приложениям работать в фоновом режиме (значение по умолчанию)."
-      }
-    }
-  },
-  {
     "Region": "Gaming",
     "Function": "XboxGameBar",
     "Arg": {
