@@ -29,6 +29,10 @@ jobs:
         run: |
           . "Scripts\Building\Wrapper.ps1"
 
+      - name: WinGet SFX
+        run: |
+          . "Scripts\Building\WinGet_SFX.ps1"
+
       - name: VirusTotal check
         env:
           VirusTotal_API_Key: ${{ secrets.VIRUSTOTAL_API_KEY }}

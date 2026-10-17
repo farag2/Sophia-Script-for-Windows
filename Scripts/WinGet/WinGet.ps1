@@ -65,7 +65,7 @@ $Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11
 # SFX archive isn't attached to release, it's stored in the WinGet folder of the repo
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/Building/WinGet_SFX.ps1
 $Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/WinGet/Sophia.Script.for.Windows.11.v$($Version)_WinGet.exe"
+	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($Version)/Sophia.Script.for.Windows.11.v$($Version)_WinGet.exe"
 	UseBasicParsing = $true
 	Verbose         = $true
 }
