@@ -4,12 +4,8 @@
     "Function": "InitialActions",
     "Arg": {
       "Zero": {
-        "Tag": "Warning",
-        "ToolTip": "The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument."
-      },
-      "One": {
         "Tag": "",
-        "ToolTip": "The mandatory checks. No argument therefore no warning message about whether you've customized the preset file."
+        "ToolTip": "The mandatory checks."
       }
     }
   },
@@ -29,7 +25,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Create a restore point."
+        "ToolTip": "Create restore point."
       }
     }
   },
@@ -39,7 +35,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub and affects Feedback Hub."
+        "ToolTip": "Disable the \"Connected User Experiences and Telemetry\" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic. Disabling the \"Connected User Experiences and Telemetry\" service (DiagTrack) can cause you not being able to get Xbox achievements anymore and affects Feedback Hub."
       },
       "One": {
         "Tag": "Enable",
@@ -267,7 +263,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Use check item check boxes (default value)."
+        "ToolTip": "Use item check boxes (default value)."
       }
     }
   },
@@ -427,15 +423,37 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "TaskbarPosition",
+    "Arg": {
+      "Zero": {
+        "Tag": "Bottom",
+        "ToolTip": "Set taskbar position to the bottom of the screen (default value)."
+      },
+      "One": {
+        "Tag": "Top",
+        "ToolTip": "Set taskbar position to the top of the screen."
+      },
+      "Two": {
+        "Tag": "Left",
+        "ToolTip": "Set taskbar position to the left side of the screen."
+      },
+      "Three": {
+        "Tag": "Right",
+        "ToolTip": "Set taskbar position to the right side of the screen."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "TaskbarAlignment",
     "Arg": {
       "Zero": {
         "Tag": "Left",
-        "ToolTip": "Set the taskbar alignment to the left."
+        "ToolTip": "Set taskbar alignment to the left."
       },
       "One": {
         "Tag": "Center",
-        "ToolTip": "Set the taskbar alignment to the center (default value)."
+        "ToolTip": "Set taskbar alignment to the center (default value)."
       }
     }
   },
@@ -445,11 +463,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Hide",
-        "ToolTip": "Hide the widgets icon on the taskbar."
+        "ToolTip": "Hide widgets icon on the taskbar."
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show the widgets icon on the taskbar (default value)."
+        "ToolTip": "Show widgets icon on the taskbar (default value)."
       }
     }
   },
@@ -652,7 +670,7 @@
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to default."
+        "ToolTip": "Set the quality factor of the JPEG desktop wallpapers to default (default value)."
       }
     }
   },
@@ -704,11 +722,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "When I grab a windows's title bar and shake it, minimize all other windows."
+        "ToolTip": "When I grab a window's title bar and shake it, minimize all other windows."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "When I grab a windows's title bar and shake it, don't minimize all other windows (default value)."
+        "ToolTip": "When I grab a window's title bar and shake it, don't minimize all other windows (default value)."
       }
     }
   },
@@ -721,12 +739,12 @@
         "ToolTip": "Set default cursors."
       },
       "One": {
-        "Tag": "Light",
-        "ToolTip": "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
-      },
-      "Two": {
         "Tag": "Dark",
         "ToolTip": "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
+      },
+      "Two": {
+        "Tag": "Light",
+        "ToolTip": "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
       }
     }
   },
@@ -736,11 +754,11 @@
     "Arg": {
       "Zero": {
         "Tag": "None",
-        "ToolTip": "Do not group files and folder in the Downloads folder."
+        "ToolTip": "Do not group files and folders in the Downloads folder."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Group files and folder by date modified in the Downloads folder."
+        "ToolTip": "Group files and folders by date modified in the Downloads folder (default value)."
       }
     }
   },
@@ -778,7 +796,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Unpin all Start tiles"
+        "ToolTip": "Unpin all Start tiles."
       }
     }
   },
@@ -810,7 +828,7 @@
       },
       "One": {
         "Tag": "Show",
-        "ToolTip": "Show most used Apps in Start."
+        "ToolTip": "Show most used apps in Start."
       }
     }
   },
@@ -880,7 +898,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Uninstall OneDrive. OneDrive user folder won't be removed if any file found there."
+        "ToolTip": "Uninstall OneDrive. OneDrive user folder won't be removed if any files are found there."
       },
       "One": {
         "Tag": "Install",
@@ -894,7 +912,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Install OneDrive all users to %ProgramFiles%. Internet connection required."
+        "ToolTip": "Install OneDrive for all users to %ProgramFiles%. Internet connection required."
       }
     }
   },
@@ -922,7 +940,7 @@
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable hibernate (default value)."
+        "ToolTip": "Enable hibernation (default value)."
       }
     }
   },
@@ -932,11 +950,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable Windows long paths support which is limited for 260 characters by default."
+        "ToolTip": "Enable Windows long paths support which is limited to 260 characters by default."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable Windows long paths support which is limited for 260 characters by default (default value)."
+        "ToolTip": "Disable Windows long paths support which is limited to 260 characters by default (default value)."
       }
     }
   },
@@ -950,7 +968,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Do not display stop error code when BSoD occurs (default value)."
+        "ToolTip": "Do not display Stop error code when BSoD occurs (default value)."
       }
     }
   },
@@ -1002,11 +1020,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Disable the Windows features using the pop-up dialog box."
+        "ToolTip": "Disable Windows features."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Enable the Windows features using the pop-up dialog box."
+        "ToolTip": "Enable Windows features."
       }
     }
   },
@@ -1016,11 +1034,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Uninstall",
-        "ToolTip": "Uninstall optional features using the pop-up dialog box."
+        "ToolTip": "Uninstall Windows capabilities."
       },
       "One": {
         "Tag": "Install",
-        "ToolTip": "Install optional features using the pop-up dialog box."
+        "ToolTip": "Install Windows capabilities."
       }
     }
   },
@@ -1076,7 +1094,7 @@
       },
       "One": {
         "Tag": "Manually",
-        "ToolTip": "Manually adjust active hours for me based on daily usage (default value)."
+        "ToolTip": "Manually adjust active hours (default value)."
       }
     }
   },
@@ -1100,11 +1118,11 @@
     "Arg": {
       "Zero": {
         "Tag": "High",
-        "ToolTip": "Set power plan on \"High performance\". Not recommended for laptops."
+        "ToolTip": "Set power plan to \"High performance\". Not recommended for laptops."
       },
       "One": {
         "Tag": "Balanced",
-        "ToolTip": "Set power plan on \"Balanced\" (default value)."
+        "ToolTip": "Set power plan to \"Balanced\" (default value)."
       }
     }
   },
@@ -1174,11 +1192,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Automatically",
-        "ToolTip": "Run troubleshooter automatically, then notify. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on."
+        "ToolTip": "Run troubleshooter automatically, then notify. In order for this feature to work, the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on."
       },
       "One": {
         "Tag": "Default",
-        "ToolTip": "Ask me before running troubleshooters. In order this feature to work the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)."
+        "ToolTip": "Ask me before running troubleshooters. In order for this feature to work, the OS level of diagnostic data gathering will be set to \"Optional diagnostic data\" and the error reporting feature will be turned on (default value)."
       }
     }
   },
@@ -1244,11 +1262,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times."
+        "ToolTip": "Do not allow the shortcut key to start Sticky Keys when pressing the Shift key 5 times."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times (default value)."
+        "ToolTip": "Allow the shortcut key to start Sticky Keys when pressing the Shift key 5 times (default value)."
       }
     }
   },
@@ -1286,11 +1304,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Automatically saving my restartable apps and restart them when I sign back in."
+        "ToolTip": "Automatically save my restartable apps and restart them when I sign back in."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Turn off automatically saving my restartable apps and restart them when I sign back in (default value)."
+        "ToolTip": "Turn off automatically saving my restartable apps and restarting them when I sign back in (default value)."
       }
     }
   },
@@ -1364,7 +1382,7 @@
   {
     "Region": "System",
     "Function": "Install-VCRedist",
-    "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)",
+    "ToolTip": "Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64).",
     "Arg": {
       "Zero": {
         "Tag": "",
@@ -1396,8 +1414,8 @@
     "Function": "PreventEdgeShortcutCreation",
     "Arg": {
       "Zero": {
-        "Tag": "Channels Stable, Beta, Dev, Canary",
-        "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its' update."
+        "Tag": "Channels",
+        "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its update."
       },
       "One": {
         "Tag": "Disable",
@@ -1411,7 +1429,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups."
+        "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create RegIdleBackup task in the Task Scheduler to manage subsequent backups."
       },
       "One": {
         "Tag": "Disable",
@@ -1439,7 +1457,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. Internet connection required."
+        "ToolTip": "Enable Windows Subsystem for Linux (WSL) and install the latest WSL Linux kernel version."
       }
     }
   },
@@ -1449,7 +1467,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box."
+        "ToolTip": "Uninstall UWP apps."
       }
     }
   },
@@ -1459,7 +1477,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Uninstall UWP apps using the pop-up dialog box. If the \"For all users\" is checked apps packages will not be installed for new users. The \"AllUsers\" argument sets a checkbox to unistall packages for all users."
+        "ToolTip": "Uninstall UWP apps for all users."
       }
     }
   },
@@ -1497,7 +1515,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Turn on hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM verion is 2.7 or higher."
+        "ToolTip": "Turn on hardware-accelerated GPU scheduling. Restart needed. Only if you have a dedicated GPU and WDDM version is 2.7 or higher."
       },
       "One": {
         "Tag": "Disable",
@@ -1511,11 +1529,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create \"Windows Cleanup\" (main task) and \"Windows Cleanup Notification\" (task to generate a pop-up notification) tasks to clean up unused files and Windows updates in the Task Scheduler in the Sophia folder. A native notification prompting you to run the task will pop up before the cleanup begins. The task runs every 30 days. Windows Script Host must be enabled for the task to run."
+        "ToolTip": "Create \"Windows Cleanup\" scheduled task for cleaning up Windows unused files and updates."
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Delete the \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates."
+        "ToolTip": "Delete \"Windows Cleanup\" and \"Windows Cleanup Notification\" scheduled tasks for cleaning up Windows unused files and updates."
       }
     }
   },
@@ -1525,11 +1543,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create a \"SoftwareDistribution\" task to clean up the %SystemRoot%\\SoftwareDistribution\\Download folder where the installation files for all Windows updates are downloaded, in the Sophia folder in the  Task Scheduler. The task will wait until the Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run."
+        "ToolTip": "Create \"SoftwareDistribution\" scheduled task for cleaning up %SystemRoot%\\SoftwareDistribution\\Download folder."
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Delete the \"SoftwareDistribution\" scheduled task for cleaning up the %SystemRoot%\\SoftwareDistribution\\Download folder."
+        "ToolTip": "Delete \"SoftwareDistribution\" scheduled task for cleaning up %SystemRoot%\\SoftwareDistribution\\Download folder."
       }
     }
   },
@@ -1539,11 +1557,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create a \"Temp\" task in the Task Scheduler to clean up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run."
+        "ToolTip": "Create \"Temp\" task in the Task Scheduler to clean up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run."
       },
       "One": {
         "Tag": "Delete",
-        "ToolTip": "Delete the \"Temp\" scheduled task for cleaning up the %TEMP% folder."
+        "ToolTip": "Delete \"Temp\" scheduled task for cleaning up %TEMP% folder."
       }
     }
   },
@@ -1571,7 +1589,7 @@
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable detection for potentially unwanted applications and block them (default value)."
+        "ToolTip": "Disable detection for potentially unwanted applications (default value)."
       }
     }
   },
@@ -1595,11 +1613,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom \"Process Creation\" view in the Event Viewer."
+        "ToolTip": "Enable logging of running processes, including their arguments, and PowerShell scripts, and Create custom \"Process Creation\" view in the Event Viewer."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable logging of running processes, including their arguments, and PowerShell scripts, and create a custom \"Process Creation\" view in the Event Viewer (default value)."
+        "ToolTip": "Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom \"Process Creation\" view from the Event Viewer (default value)."
       }
     }
   },
@@ -1609,7 +1627,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Microsoft Defender SmartScreen doesn't marks downloaded files from the Internet as unsafe."
+        "ToolTip": "Microsoft Defender SmartScreen doesn't mark downloaded files from the Internet as unsafe."
       },
       "One": {
         "Tag": "Enable",

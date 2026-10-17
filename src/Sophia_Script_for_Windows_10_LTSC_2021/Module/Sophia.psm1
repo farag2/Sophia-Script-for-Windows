@@ -48,7 +48,7 @@ function Logging
 	Start-Transcript -Path $PSScriptRoot\..\$TranscriptFilename.txt -Force
 }
 
-# Create a restore point for the system drive
+# Create restore point for the system drive
 function CreateRestorePoint
 {
 	# Check whether system protection is turned on
@@ -4468,6 +4468,7 @@ function WindowsCapabilities
 				Method          = "Head"
 				UseBasicParsing = $true
 				TimeoutSec      = 5
+				Verbose         = $true
 			}
 			try
 			{
@@ -4478,7 +4479,6 @@ function WindowsCapabilities
 			catch
 			{
 				# WebException in PowerShell 5.1 and HttpResponseException in PowerShell 7 have the Response property when the server responded
-				# HttpRequestException and TaskCanceledException in PowerShell 7 have no such property, so check it via PSObject due to Set-StrictMode
 				$IsReachable = ($_.Exception.PSObject.Properties.Name -contains "Response") -and ($null -ne $_.Exception.Response)
 
 				# The web service answers HEAD with "(400) Bad Request", which only means it's reachable, so remove this record from the list
@@ -6897,7 +6897,7 @@ function PreventEdgeShortcutCreation
 
 <#
 	.SYNOPSIS
-	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup task in the Task Scheduler to manage subsequent backups
+	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create RegIdleBackup task in the Task Scheduler to manage subsequent backups
 
 	.PARAMETER Enable
 	Back up the system registry to %SystemRoot%\System32\config\RegBack folder
@@ -7174,7 +7174,7 @@ function GPUScheduling
 	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 
 	.PARAMETER Delete
-	Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+	Delete  "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 
 	.EXAMPLE
 	CleanupTask -Register
@@ -7495,13 +7495,13 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 
 <#
 	.SYNOPSIS
-	The "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	The "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Register
-	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Create "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Delete
-	Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Delete  "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.EXAMPLE
 	SoftwareDistributionTask -Register
@@ -7712,13 +7712,13 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 
 <#
 	.SYNOPSIS
-	The "Temp" scheduled task for cleaning up the %TEMP% folder
+	The "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.PARAMETER Register
-	Create "Temp" scheduled task for cleaning up the %TEMP% folder
+	Create "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.PARAMETER Delete
-	Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
+	Delete  "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.EXAMPLE
 	TempTask -Register
@@ -8135,7 +8135,7 @@ function DefenderSandbox
 	"Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
+	Enable logging of running processes, including their arguments, and PowerShell scripts, and Create custom "Process Creation" view in the Event Viewer
 
 	.PARAMETER Disable
 	Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from the Event Viewer

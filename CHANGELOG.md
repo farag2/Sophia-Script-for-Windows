@@ -686,7 +686,7 @@ Thanks to @lowl1f3 for bug reporting.
 * Improved initial checks;
 * Extended harmful tweakers list checks;
 * Improved HEVC package downloading function;
-* Added `RegistryBackup` function to back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups;
+* Added `RegistryBackup` function to back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create RegIdleBackup in the Task Scheduler task to manage subsequent backups;
 * Fixed typos;
 * Minor changes.
 
@@ -1585,11 +1585,11 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
   * `FileExplorerCompactMode -Disable`
 * Show snap layouts when I hover over a windows's maximaze button
   * `SnapAssistFlyout -Disable`
-* Set the taskbar alignment to the left
+* Set taskbar alignment to the left
   * `TaskbarAlignment -Left`
 * Hide the search button from the taskbar
   * `TaskbarSearch -Hide`
-* Hide the widgets icon on the taskbar
+* Hide widgets icon on the taskbar
   * `TaskbarWidgets -Hide`
 * Hide the Chat icon (Microsoft Teams) on the taskbar
   * `TaskbarChat -Hide`
@@ -2490,7 +2490,7 @@ Diff from v4.4.1
   * Turn off background apps, except the followings...;
   * Turn off and delete reserved storage after the next update installation;
   * Hide the "Edit with Photos" item from the context menu;
-  * Hide the "Create a new video" item from the context menu;
+  * Hide the "Create new video" item from the context menu;
   * Hide the "Edit" item from the images context menu;
   * Remove the "Bitmap image" item from the "New" context menu;
   * Remove the "Rich Text Document" item from the "New" context menu.
@@ -2603,7 +2603,7 @@ Diff from v4.2.1
 
 * Now the script will not be executed by PowerShell ISE;
 * Moved from the "Read-Host" cmdlet to $Host.UI.PromptForChoice();
-* Updated "Create a task in the Task Scheduler to start Windows cleaning up";
+* Updated "Create task in the Task Scheduler to start Windows cleaning up";
   * A [toast notification](https://docs.microsoft.com/ru-ru/windows/uwp/design/shell/tiles-and-notifications/adaptive-interactive-toasts) will be activated before starting cleaning up;
   * Now cleanmgr.exe window starts minimized;
   * Now using DISM to clean up unused Windows updates instead of cleanmgr.exe
@@ -2623,7 +2623,7 @@ DISM.exe /Online /English /Cleanup-Image /StartComponentCleanup /NoRestart
 
 ## 4.0.34 — 28.04.2020
 
-* Added the "Create a restore point" section (#14);
+* Added the "Create restore point" section (#14);
 * Updated "Include command line in process creation events" section;
 * Minor changes;
 * Comments.

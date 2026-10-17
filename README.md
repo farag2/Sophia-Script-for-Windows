@@ -140,8 +140,8 @@ Made with <img src="./img/heart.svg" height="17px"/> of Windows
 * Install WSL Linux distribution with [pop-up](#screenshots) using friendly distro names
 * Create scheduled tasks with a [native toast notification](#screenshots)
   * Create `Windows Cleanup` and `Windows Cleanup Notification` scheduled tasks for cleaning up Windows of unused files and Windows updates files
-  * Create a `SoftwareDistribution` scheduled task for cleaning up `%SystemRoot%\SoftwareDistribution\Download`
-  * Create a `Temp` scheduled task for cleaning up temp folders and files
+  * Create `SoftwareDistribution` scheduled task for cleaning up `%SystemRoot%\SoftwareDistribution\Download`
+  * Create `Temp` scheduled task for cleaning up temp folders and files
     * `%SystemDrive%\$WinREAgent`
     * `%SystemDrive%\$SysReset`
     * `%SystemDrive%\$Windows.~WS`

@@ -7,9 +7,6 @@
         "Function": "InitialActions",
         "Arg": {
             "0": {
-                "Tag": "Warning"
-            },
-            "1": {
                 "Tag": ""
             }
         },
@@ -200,7 +197,7 @@
             }
         },
         "Preset": "1",
-        "WindowsDefault": "1"
+        "WindowsDefault": "0"
     },
     {
         "Region": "Privacy & Telemetry",
@@ -719,7 +716,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1"
+        "WindowsDefault": "0"
     },
     {
         "Region": "UI & Personalization",
@@ -942,7 +939,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1"
+        "WindowsDefault": "0"
     },
     {
         "Region": "UI & Personalization",
@@ -1091,7 +1088,7 @@
                 "Tag": "DevicesPrinters"
             }
         },
-        "Preset": "012",
+        "Preset": "01",
         "WindowsDefault": ""
     },
     {
@@ -1139,7 +1136,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": ""
+        "WindowsDefault": "1"
     },
     {
         "Region": "System",

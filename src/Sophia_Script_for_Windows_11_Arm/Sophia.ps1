@@ -89,7 +89,7 @@ if ($Global:Failed)
 # Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логирование, закройте консоль или наберите "Stop-Transcript"
 # Logging
 
-# Create a restore point
+# Create restore point
 # Создать точку восстановления
 CreateRestorePoint
 #endregion Protection
@@ -326,19 +326,35 @@ QuickAccessFrequentFolders -Hide
 # Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
-# Set the taskbar alignment to the center (default value)
+# Set taskbar position to the bottom (default value)
+# Установить выравнивание панели задач по центру (значение по умолчанию)
+TaskbarPosition -Bottom
+
+# Set taskbar position to the top
+# Установить выравнивание панели задач по левому краю
+# TaskbarPosition -Top
+
+# Set taskbar position to the left
+# Установить выравнивание панели задач по центру
+# TaskbarPosition -Left
+
+# Set taskbar position to the right
+# Установить выравнивание панели задач по левому краю
+# TaskbarPosition -Right
+
+# Set taskbar alignment to the center (default value)
 # Установить выравнивание панели задач по центру (значение по умолчанию)
 TaskbarAlignment -Center
 
-# Set the taskbar alignment to the left
+# Set taskbar alignment to the left
 # Установить выравнивание панели задач по левому краю
 # TaskbarAlignment -Left
 
-# Hide the widgets icon on the taskbar
+# Hide widgets icon on the taskbar
 # Скрыть кнопку "Мини-приложения" с панели задач
 TaskbarWidgets -Hide
 
-# Show the widgets icon on the taskbar (default value)
+# Show widgets icon on the taskbar (default value)
 # Отобразить кнопку "Мини-приложения" на панели задач (значение по умолчанию)
 # TaskbarWidgets -Show
 
@@ -886,7 +902,7 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
 # PreventEdgeShortcutCreation -Disable
 
-# Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup task in the Task Scheduler to manage subsequent backups
+# Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create RegIdleBackup task in the Task Scheduler to manage subsequent backups
 # Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
 RegistryBackup -Enable
 
@@ -970,12 +986,12 @@ GPUScheduling -Enable
 #>
 CleanupTask -Register
 
-# Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+# Delete  "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 # Удалить задания "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
 <#
-	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Create "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
 
 	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
@@ -983,12 +999,12 @@ CleanupTask -Register
 #>
 SoftwareDistributionTask -Register
 
-# Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+# Delete  "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 # Удалить задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
 # SoftwareDistributionTask -Delete
 
 <#
-	Create "Temp" scheduled task for cleaning up the %TEMP% folder
+	Create "Temp" scheduled task for cleaning up %TEMP% folder
 	Only files older than one day will be deleted. The task runs every 60 days
 
 	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%
@@ -996,7 +1012,7 @@ SoftwareDistributionTask -Register
 #>
 TempTask -Register
 
-# Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
+# Delete  "Temp" scheduled task for cleaning up %TEMP% folder
 # Удалить задание "Temp" по очистке папки %TEMP% из Планировщика заданий
 # TempTask -Delete
 #endregion Scheduled tasks
@@ -1026,7 +1042,7 @@ DefenderSandbox -Enable
 # Выключить песочницу для Microsoft Defender (значение по умолчанию)
 # DefenderSandbox -Disable
 
-# Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
+# Enable logging of running processes, including their arguments, and PowerShell scripts, and Create custom "Process Creation" view in the Event Viewer
 # Включить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление "Создание процесса" в Просмотре событий
 EventViewerCustomView -Enable
 

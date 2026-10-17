@@ -50,8 +50,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $Tag   = "${{ inputs.tag }}"
-          $ZIP   = @((Get-Item -Path "Sophia_Script\Sophia*.zip").FullName)
-          $Title = $env:RELEASE_NAME
+          $Tag    = "${{ inputs.tag }}"
+          $Assets = @((Get-Item -Path "Sophia_Script\Sophia*.zip", "Sophia_Script\Sophia*_WinGet.exe").FullName)
+          $Title  = $env:RELEASE_NAME
 
-          gh release create $Tag $ZIP --title $Title --notes-file ReleaseNotesTemplate.md
+          gh release create $Tag $Assets --title $Title --notes-file ReleaseNotesTemplate.md

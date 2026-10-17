@@ -4,12 +4,8 @@
     "Function": "InitialActions",
     "Arg": {
       "Zero": {
-        "Tag": "Warning",
-        "ToolTip": "Obligatorische Kontrollen. Um die Warnung bei der Einrichtung der Voreinstellungsdatei zu deaktivieren, löschen Sie das Argument \"-Warning\"."
-      },
-      "One": {
         "Tag": "",
-        "ToolTip": "Obligatorische Kontrollen. Keine Warnmeldung, wenn eine voreingestellte Datei eingestellt wurde."
+        "ToolTip": "Obligatorische Kontrollen."
       }
     }
   },
@@ -515,6 +511,20 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "PeopleTaskbar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "\"Personen\" in der Taskleiste ausblenden.."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "\"Personen\" in der Taskleiste anzeigen (Standardwert)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "WindowsInkWorkspace",
     "Arg": {
       "Zero": {
@@ -532,12 +542,12 @@
     "Function": "NotificationAreaIcons",
     "Arg": {
       "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Immer alle Symbole im Infobereich der Taskleiste anzeigen."
-      },
-      "One": {
         "Tag": "Hide",
         "ToolTip": "Alle Symbole im Infobereich der Taskleiste ausblenden (Standardwert)."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Immer alle Symbole im Infobereich der Taskleiste anzeigen."
       }
     }
   },
@@ -700,11 +710,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Das Suffix \"-Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen anhängen."
+        "ToolTip": "Das Suffix \" -Verknüpfung\" nicht an den Dateinamen der erstellten Verknüpfungen anhängen."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Das Suffix \"-Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anhängen (Standardwert)."
+        "ToolTip": "Das Suffix \" -Verknüpfung\" an den Dateinamen der erstellten Verknüpfungen anhängen (Standardwert)."
       }
     }
   },
@@ -759,12 +769,12 @@
         "ToolTip": "Standard-Cursor einstellen."
       },
       "One": {
-        "Tag": "Light",
-        "ToolTip": "Lädt und installiert die kostenlosen leichten \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
-      },
-      "Two": {
         "Tag": "Dark",
         "ToolTip": "Lädt und installiert die kostenlosen dunklen \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
+      },
+      "Two": {
+        "Tag": "Light",
+        "ToolTip": "Lädt und installiert die kostenlosen leichten \"Windows 11 Cursors Concept v2\" Cursors von Jepri Creations."
       }
     }
   },
@@ -882,12 +892,12 @@
     "Function": "UserFolders",
     "Arg": {
       "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Benutzerordner in \"Dieser PC\" anzeigen."
-      },
-      "One": {
         "Tag": "Hide",
         "ToolTip": "Benutzerordner in \"Dieser PC\" ausblenden."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Benutzerordner in \"Dieser PC\" anzeigen."
       }
     }
   },
@@ -1163,7 +1173,7 @@
       },
       "One": {
         "Tag": "Custom",
-        "ToolTip": "Wählen Sie  den Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
+        "ToolTip": "Wählen Sie den Ordner für Benutzerordner manuell über einen Ordner-Browser-Dialog aus. Benutzerdateien oder -ordner werden nicht an einen neuen Speicherort verschoben. Verschieben Sie sie manuell. Sie befinden sich standardmäßig in dem Ordner %USERPROFILE%."
       },
       "Two": {
         "Tag": "Default",

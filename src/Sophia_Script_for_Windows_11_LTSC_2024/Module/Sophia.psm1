@@ -48,7 +48,7 @@ function Logging
 	Start-Transcript -Path $PSScriptRoot\..\$TranscriptFilename.txt -Force
 }
 
-# Create a restore point for the system drive
+# Create restore point for the system drive
 function CreateRestorePoint
 {
 	# Check whether system protection is turned on
@@ -1813,13 +1813,103 @@ function QuickAccessFrequentFolders
 
 <#
 	.SYNOPSIS
+	Taskbar position
+
+	.PARAMETER Bottom
+	Set taskbar position to the bottom 
+
+	.PARAMETER Top
+	Set taskbar position to the top
+
+	.PARAMETER Left
+	Set taskbar position to the left
+
+	.PARAMETER Right
+	Set taskbar position to the right
+
+	.EXAMPLE
+	TaskbarPosition -Bottom
+
+	.EXAMPLE
+	askbarPosition -Top
+
+	.EXAMPLE
+	TaskbarPosition -Left
+
+	.EXAMPLE
+	TaskbarPosition -Right
+
+	.NOTES
+	Current user
+#>
+function TaskbarPosition
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Bottom"
+		)]
+		[switch]
+		$Bottom,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Top"
+		)]
+		[switch]
+		$Top,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Left"
+		)]
+		[switch]
+		$Left,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Right"
+		)]
+		[switch]
+		$Right
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableTaskbarPosition -Force -ErrorAction Ignore
+	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableTaskbarPosition
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableTaskbarPosition
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Bottom"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 3 -Force
+		}
+		"Top"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 1 -Force
+		}
+		"Left"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 0 -Force
+		}
+		"Right"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 2 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Taskbar alignment
 
 	.PARAMETER Left
-	Set the taskbar alignment to the left
+	Set taskbar alignment to the left
 
 	.PARAMETER Center
-	Set the taskbar alignment to the center
+	Set taskbar alignment to the center
 
 	.EXAMPLE
 	TaskbarAlignment -Center
@@ -4322,6 +4412,7 @@ function WindowsCapabilities
 				Method          = "Head"
 				UseBasicParsing = $true
 				TimeoutSec      = 5
+				Verbose         = $true
 			}
 			try
 			{
@@ -4332,7 +4423,6 @@ function WindowsCapabilities
 			catch
 			{
 				# WebException in PowerShell 5.1 and HttpResponseException in PowerShell 7 have the Response property when the server responded
-				# HttpRequestException and TaskCanceledException in PowerShell 7 have no such property, so check it via PSObject due to Set-StrictMode
 				$IsReachable = ($_.Exception.PSObject.Properties.Name -contains "Response") -and ($null -ne $_.Exception.Response)
 
 				# The web service answers HEAD with "(400) Bad Request", which only means it's reachable, so remove this record from the list
@@ -6749,7 +6839,7 @@ function PreventEdgeShortcutCreation
 
 <#
 	.SYNOPSIS
-	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create a RegIdleBackup task in the Task Scheduler to manage subsequent backups
+	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create RegIdleBackup task in the Task Scheduler to manage subsequent backups
 
 	.PARAMETER Enable
 	Back up the system registry to %SystemRoot%\System32\config\RegBack folder
@@ -7026,7 +7116,7 @@ function GPUScheduling
 	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 
 	.PARAMETER Delete
-	Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+	Delete  "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 
 	.EXAMPLE
 	CleanupTask -Register
@@ -7347,13 +7437,13 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 
 <#
 	.SYNOPSIS
-	The "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	The "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Register
-	Create "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Create "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Delete
-	Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	Delete  "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.EXAMPLE
 	SoftwareDistributionTask -Register
@@ -7564,13 +7654,13 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 
 <#
 	.SYNOPSIS
-	The "Temp" scheduled task for cleaning up the %TEMP% folder
+	The "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.PARAMETER Register
-	Create "Temp" scheduled task for cleaning up the %TEMP% folder
+	Create "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.PARAMETER Delete
-	Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
+	Delete  "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.EXAMPLE
 	TempTask -Register
@@ -7987,7 +8077,7 @@ function DefenderSandbox
 	"Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom "Process Creation" view in the Event Viewer
+	Enable logging of running processes, including their arguments, and PowerShell scripts, and Create custom "Process Creation" view in the Event Viewer
 
 	.PARAMETER Disable
 	Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from the Event Viewer

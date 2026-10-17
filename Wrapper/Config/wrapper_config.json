@@ -13,7 +13,6 @@
         "windowScalePreset": "100",
         "toolTipScalePreset": "13",
         "fontScalePreset": "14",
-        "lineToFindInPS1ToGetTopOfScriptTopLine": "Get-ChildItem -Path $PSScriptRoot\\Module\\private | Foreach-Object -Process {. $_.FullName}",
         "lineToFindInPS1ToGetTopOfScriptTopLine": "Get-ChildItem -Path $PSScriptRoot\\Module\\private -Filter *.ps1 | Foreach-Object -Process {. $_.FullName}",
         "lineToFindInPS1ToGetTopOfScriptBottomLine": "# Global variable if checks failed",
         "startLineRegionInitialActions": "#region Initial Actions",

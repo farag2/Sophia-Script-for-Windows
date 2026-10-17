@@ -8,7 +8,7 @@
             "menuAutosave": "Автосохранение",
             "menuPresets": "Пресеты",
             "menuOpposite": "Противоположные значения",
-            "menuOppositeTab": "Противоположное значение",
+            "menuOppositeTab": "Противоположные значения для вкладки",
             "menuOppositeEverything": "Противоположные значения у всего",
             "menuClear": "Очистить",
             "menuClearTab": "Очистить вкладку",
@@ -20,7 +20,7 @@
             "menuAccessibility": "Доступность",
             "menuWindowScale": "Масштаб окна",
             "menuFontScale": "Масштаб шрифта",
-            "menuScaleUp": "Масштабирование",
+            "menuScaleUp": "Увеличить масштаб",
             "menuScale": "Масштаб",
             "menuScaleDown": "Уменьшить масштаб",
             "menuAbout": "О программе",
@@ -62,7 +62,7 @@
         "Id": "StatusBar",
         "Options": {
             "statusBarHover": "Наведите курсором на функции, чтобы увидеть подсказки по каждой опции",
-            "statusBarPresetLoaded": "Модуль загружен!",
+            "statusBarPresetLoaded": "пресет загружен!",
             "statusBarSophiaPreset": "Загружен пресет Sophia!",
             "statusBarWindowsDefaultPreset": "Загружен пресет по умолчанию!",
             "statusBarPowerShellScriptCreatedFromSelections": "Скрипт для PowerShell создан из ваших выбранных элементов. Можете запустить и сохранить его.",
@@ -81,13 +81,13 @@
         "Options": {
             "messageBoxNewWrapperFound": "Обнаружена новая версия Wrapper.\nОткрыть страницу GitHub?",
             "messageBoxNewSophiaFound": "Обнаружена новая версия Sophia Script.\nОткрыть страницу GitHub?",
-            "messageBoxPS1FileHasToBeInFolder": "Пресет-файлл Sophia.ps1 должен находиться в папке Sophia Script.",
+            "messageBoxPS1FileHasToBeInFolder": "Пресет-файл Sophia.ps1 должен находиться в папке Sophia Script.",
             "messageBoxDoesNotExist": "не существует.",
             "messageBoxPresetNotComp": "Пресет несовместим!",
             "messageBoxFilesMissingClose": "Отсутствуют необходимые файлы Sophia Script Wrapper. Программа будет закрыта.",
-            "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вышему выбору.",
+            "messageBoxConsoleEmpty": "Консоль пуста.\nНажмите кнопку \"Обновить консоль\", чтобы создать скрипт согласно вашему выбору.",
             "messageBoxPowerShellVersionNotInstalled": "Выбранная вами версия PowerShell не установлена.",
-			"messageBoxPresetDoesNotMatchOS": "Предварительно заданные параметры не соответствуют текущей версии ОС."
+            "messageBoxPresetDoesNotMatchOS": "Предварительно заданные параметры не соответствуют текущей версии ОС."
         }
     },
     {

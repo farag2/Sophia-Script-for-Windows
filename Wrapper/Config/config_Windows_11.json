@@ -7,9 +7,6 @@
         "Function": "InitialActions",
         "Arg": {
             "0": {
-                "Tag": "Warning"
-            },
-            "1": {
                 "Tag": ""
             }
         },
@@ -200,7 +197,7 @@
             }
         },
         "Preset": "1",
-        "WindowsDefault": "1"
+        "WindowsDefault": "0"
     },
     {
         "Region": "Privacy & Telemetry",
@@ -392,7 +389,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1"
+        "WindowsDefault": "0"
     },
     {
         "Region": "UI & Personalization",
@@ -489,6 +486,28 @@
         },
         "Preset": "0",
         "WindowsDefault": "1"
+    },
+    {
+        "Region": "UI & Personalization",
+        "Control": "cmb",
+        "Required": "false",
+        "Function": "TaskbarPosition",
+        "Arg": {
+            "0": {
+                "Tag": "Bottom"
+            },
+            "1": {
+                "Tag": "Top"
+            },
+            "2": {
+                "Tag": "Left"
+            },
+            "3": {
+                "Tag": "Right"
+            }
+        },
+        "Preset": "0",
+        "WindowsDefault": "0"
     },
     {
         "Region": "UI & Personalization",
@@ -801,7 +820,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1"
+        "WindowsDefault": "0"
     },
     {
         "Region": "UI & Personalization",
@@ -887,7 +906,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "0"
+        "WindowsDefault": "1"
     },
     {
         "Region": "UI & Personalization",
@@ -954,7 +973,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "0"
+        "WindowsDefault": "1"
     },
     {
         "Region": "UI & Personalization",
@@ -970,7 +989,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "0"
+        "WindowsDefault": "1"
     },
     {
         "Region": "UI & Personalization",
@@ -986,7 +1005,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "0"
+        "WindowsDefault": "1"
     },
     {
         "Region": "OneDrive",
@@ -1020,7 +1039,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": ""
+        "WindowsDefault": "1"
     },
     {
         "Region": "System",
@@ -1474,7 +1493,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1"
+        "WindowsDefault": "0"
     },
     {
         "Region": "System",
@@ -1921,7 +1940,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1"
+        "WindowsDefault": "6"
     },
     {
         "Region": "Microsoft Defender & Security",

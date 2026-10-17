@@ -6,21 +6,6 @@ $LocalManifest = $String -split " " | Select-Object -Last 1
 # https://github.com/microsoft/winget-cli/tree/master/schemas/JSON/manifests
 # https://github.com/microsoft/winget-pkgs/tree/master/doc/manifest/schema
 
-<#
-$Token = $env:GITHUB_TOKEN
-$Headers = @{
-	Accept        = "application/vnd.github+json"
-	Authorization = "Bearer $Token"
-}
-$Parameters = @{
-	Uri             = "https://api.github.com/repos/microsoft/winget-pkgs/contents/doc/manifest/schema"
-	Headers         = $Headers
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-$LatestManifest = (Invoke-RestMethod @Parameters).name | Sort-Object -Property {[System.Version]$_} | Select-Object -Last 1
-#>
-
 $Parameters = @{
 	Uri             = "https://raw.githubusercontent.com/microsoft/winget-pkgs/refs/heads/master/Tools/YamlCreate.ps1"
 	UseBasicParsing = $true

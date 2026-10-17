@@ -7,9 +7,6 @@
         "Function": "InitialActions",
         "Arg": {
             "0": {
-                "Tag": "Warning"
-            },
-            "1": {
                 "Tag": ""
             }
         },
@@ -689,7 +686,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1",
+        "WindowsDefault": "0",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -917,7 +914,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1",
+        "WindowsDefault": "0",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -995,7 +992,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "1",
+        "WindowsDefault": "0",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1118,7 +1115,7 @@
             }
         },
         "Preset": "0",
-        "WindowsDefault": "",
+        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },
@@ -1353,7 +1350,6 @@
         },
         "Preset": "0",
         "WindowsDefault": "0",
-        "WindowsDefault": "1",
         "LTSC2019": "false",
         "LTSC2021": "true"
     },
@@ -1663,7 +1659,6 @@
         },
         "Preset": "",
         "WindowsDefault": "",
-        "WindowsDefault": "1",
         "LTSC2019": "true",
         "LTSC2021": "true"
     },

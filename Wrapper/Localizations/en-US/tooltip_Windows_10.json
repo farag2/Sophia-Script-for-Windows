@@ -4,12 +4,8 @@
     "Function": "InitialActions",
     "Arg": {
       "Zero": {
-        "Tag": "Warning",
-        "ToolTip": "The mandatory checks. If you want to disable a warning message about whether the preset file was customized, remove the \"-Warning\" argument."
-      },
-      "One": {
         "Tag": "",
-        "ToolTip": "The mandatory checks. No argument therefore no warning message about whether you've customized the preset file."
+        "ToolTip": "The mandatory checks."
       }
     }
   },
@@ -29,7 +25,7 @@
     "Arg": {
       "Zero": {
         "Tag": "",
-        "ToolTip": "Create a restore point."
+        "ToolTip": "Create restore point."
       }
     }
   },
@@ -515,6 +511,20 @@
   },
   {
     "Region": "UI & Personalization",
+    "Function": "PeopleTaskbar",
+    "Arg": {
+      "Zero": {
+        "Tag": "Hide",
+        "ToolTip": "Hide People on the taskbar."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Show People on the taskbar (default value)."
+      }
+    }
+  },
+  {
+    "Region": "UI & Personalization",
     "Function": "WindowsInkWorkspace",
     "Arg": {
       "Zero": {
@@ -532,12 +542,12 @@
     "Function": "NotificationAreaIcons",
     "Arg": {
       "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Always show all icons in the notification area."
-      },
-      "One": {
         "Tag": "Hide",
         "ToolTip": "Hide all icons in the notification area (default value)."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Always show all icons in the notification area."
       }
     }
   },
@@ -565,7 +575,7 @@
       },
       "One": {
         "Tag": "Full",
-        "ToolTip": "Combine taskbar buttons and hide labels when taskbar is full"
+        "ToolTip": "Combine taskbar buttons and hide labels when taskbar is full."
       },
       "Two": {
         "Tag": "Never",
@@ -759,12 +769,12 @@
         "ToolTip": "Set default cursors."
       },
       "One": {
-        "Tag": "Light",
-        "ToolTip": "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
-      },
-      "Two": {
         "Tag": "Dark",
         "ToolTip": "Download and install free dark \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
+      },
+      "Two": {
+        "Tag": "Light",
+        "ToolTip": "Download and install free light \"Windows 11 Cursors Concept v2\" cursors from Jepri Creations."
       }
     }
   },
@@ -882,12 +892,12 @@
     "Function": "UserFolders",
     "Arg": {
       "Zero": {
-        "Tag": "Show",
-        "ToolTip": "Show user folders in \"This PC\"."
-      },
-      "One": {
         "Tag": "Hide",
         "ToolTip": "Hide user folders in \"This PC\"."
+      },
+      "One": {
+        "Tag": "Show",
+        "ToolTip": "Show user folders in \"This PC\"."
       }
     }
   },
@@ -1275,11 +1285,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Disable",
-        "ToolTip": "Do not allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times."
+        "ToolTip": "Do not allow the shortcut key to Start Sticky Keys when pressing the Shift key 5 times."
       },
       "One": {
         "Tag": "Enable",
-        "ToolTip": "Allow the shortcut key to Start Sticky Keys when pressing the the Shift key 5 times (default value)."
+        "ToolTip": "Allow the shortcut key to Start Sticky Keys when pressing the Shift key 5 times (default value)."
       }
     }
   },
@@ -1400,7 +1410,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Channels",
-        "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its' update."
+        "ToolTip": "List Microsoft Edge channels to prevent desktop shortcut creation upon its update."
       },
       "One": {
         "Tag": "Disable",
@@ -1414,7 +1424,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create a RegIdleBackup in the Task Scheduler task to manage subsequent backups."
+        "ToolTip": "Back up the system registry to %SystemRoot%\\System32\\config\\RegBack folder when PC restarts and create RegIdleBackup in the Task Scheduler task to manage subsequent backups."
       },
       "One": {
         "Tag": "Disable",
@@ -1538,7 +1548,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create a \"SoftwareDistribution\" task to clean up the %SystemRoot%\\SoftwareDistribution\\Download folder where the installation files for all Windows updates are downloaded, in the Sophia folder in the  Task Scheduler. The task will wait until the Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run."
+        "ToolTip": "Create \"SoftwareDistribution\" task to clean up the %SystemRoot%\\SoftwareDistribution\\Download folder where the installation files for all Windows updates are downloaded, in the Sophia folder in the Task Scheduler. The task will wait until the Windows Update service has finished running. The task runs every 90 days. Windows Script Host must be enabled for the task to run."
       },
       "One": {
         "Tag": "Delete",
@@ -1552,7 +1562,7 @@
     "Arg": {
       "Zero": {
         "Tag": "Register",
-        "ToolTip": "Create a \"Temp\" task in the Task Scheduler to clean up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run."
+        "ToolTip": "Create \"Temp\" task in the Task Scheduler to clean up the %TEMP% folder. Only files older than one day will be deleted. The task runs every 60 days. Windows Script Host must be enabled for the task to run."
       },
       "One": {
         "Tag": "Delete",
@@ -1608,11 +1618,11 @@
     "Arg": {
       "Zero": {
         "Tag": "Enable",
-        "ToolTip": "Enable logging of running processes, including their arguments, and PowerShell scripts, and create a custom \"Process Creation\" view in the Event Viewer."
+        "ToolTip": "Enable logging of running processes, including their arguments, and PowerShell scripts, and Create custom \"Process Creation\" view in the Event Viewer."
       },
       "One": {
         "Tag": "Disable",
-        "ToolTip": "Disable logging of running processes, including their arguments, and PowerShell scripts, and create a custom \"Process Creation\" view in the Event Viewer (default value)."
+        "ToolTip": "Disable logging of running processes, including their arguments, and PowerShell scripts, and Create custom \"Process Creation\" view in the Event Viewer (default value)."
       }
     }
   },

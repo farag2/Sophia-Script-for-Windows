@@ -8,16 +8,16 @@
             "menuAutosave": "Automatisches Speichern",
             "menuPresets": "Voreinstellungen",
             "menuOpposite": "Alle umkehren",
-            "menuOppositeTab": "Gegenüberliegende Registerkarte",
-            "menuOppositeEverything": "Gegen alles",
+            "menuOppositeTab": "Registerkarte umkehren",
+            "menuOppositeEverything": "Alles umkehren",
             "menuClear": "Löschen",
             "menuClearTab": "Registerkarte löschen",
             "menuClearEverything": "Alles löschen",
-            "menuTheme": "Thema",
+            "menuTheme": "Design",
             "menuThemeDark": "Dunkel",
             "menuThemeLight": "Hell",
             "menuLanguage": "Sprache",
-            "menuAccessibility": "Zugänglichkeit",
+            "menuAccessibility": "Barrierefreiheit",
             "menuWindowScale": "Fensterskalierung",
             "menuFontScale": "Schriftgröße",
             "menuScaleUp": "Vergrößern",
@@ -43,7 +43,7 @@
             "tabScheduledTasks": "Geplante Aufgaben",
             "tabDefenderSecurity": "Defender & Security",
             "tabContextMenu": "Kontextmenü",
-            "tabUpdatePolicies": "Aktualisieren Sie die Richtlinien",
+            "tabUpdatePolicies": "Richtlinien aktualisieren",
             "tabConsoleOutput": "Konsolenausgabe"
         }
     },
@@ -52,10 +52,10 @@
         "Options": {
             "btnRefreshConsoleOutputPowerShell": "Konsole aktualisieren",
             "btnRunPowerShell": "PowerShell ausführen",
-            "btnOpen": "Offen",
+            "btnOpen": "Öffnen",
             "btnSave": "Speichern",
             "btnSearch": "Suchen",
-            "btnClear": "Klar"
+            "btnClear": "Leeren"
         }
     },
     {
@@ -85,7 +85,7 @@
             "messageBoxDoesNotExist": "existiert nicht.",
             "messageBoxPresetNotComp": "Voreinstellung ist nicht kompatibel!",
             "messageBoxFilesMissingClose": "Die erforderlichen Sophia Script Wrapper-Dateien fehlen. Das Programm wird geschlossen.",
-            "messageBoxConsoleEmpty": "Die Konsole ist leer.\n Drücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen.",
+            "messageBoxConsoleEmpty": "Die Konsole ist leer.\nDrücken Sie die Schaltfläche Konsole aktualisieren, um ein Skript entsprechend Ihrer Auswahl zu erstellen.",
             "messageBoxPowerShellVersionNotInstalled": "Die von Ihnen ausgewählte PowerShell-Version ist nicht installiert.",
             "messageBoxPresetDoesNotMatchOS": "Die Voreinstellung stimmte nicht mit der aktuellen Betriebssystemversion überein."
         }
