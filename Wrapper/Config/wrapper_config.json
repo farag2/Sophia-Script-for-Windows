@@ -5,7 +5,7 @@
         "psm1Filename": "Sophia.psm1",
         "folderPsm1Filename": "Module",
         "functionControlsPerColumn": "100",
-        "urlSophiaScriptVersionsJson": "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json",
+        "urlSophiaScriptVersionsJson": "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/sophia_script_versions.json",
         "urlLatestSophiaScriptDownloads": "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest",
         "autosaveFilename": "autosave.ps1",
         "autosaveIntervalInSeconds": "300",
