@@ -1,9 +1,8 @@
 [
     {
         "Region": "Initial Actions",
-        "Control": "cmb",
-        "Required": "true",
-        "RequiredIndex": "0",
+        "Control": "chk",
+        "Required": "false",
         "Function": "InitialActions",
         "Arg": {
             "0": {

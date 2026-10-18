@@ -1,9 +1,8 @@
 [
     {
         "Region": "Initial Actions",
-        "Control": "cmb",
-        "Required": "true",
-        "RequiredIndex": "0",
+        "Control": "chk",
+        "Required": "false",
         "Function": "InitialActions",
         "Arg": {
             "0": {
@@ -525,16 +524,20 @@
         "Function": "TaskbarPosition",
         "Arg": {
             "0": {
-                "Tag": "Bottom"
+                "Tag": "Bottom",
+                "Opposite": "1"
             },
             "1": {
-                "Tag": "Top"
+                "Tag": "Top",
+                "Opposite": "0"
             },
             "2": {
-                "Tag": "Left"
+                "Tag": "Left",
+                "Opposite": "3"
             },
             "3": {
-                "Tag": "Right"
+                "Tag": "Right",
+                "Opposite": "2"
             }
         },
         "Preset": "0",
