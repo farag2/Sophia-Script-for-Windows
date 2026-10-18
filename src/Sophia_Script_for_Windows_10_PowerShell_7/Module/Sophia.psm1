@@ -2224,7 +2224,7 @@ function SearchHighlights
 		"Hide"
 		{
 			# Check whether "Web search in Windows Search" was disabled. It also disables Search Highlights automatically
-			$DisableSearchBoxSuggestions = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null))
+			$DisableSearchBoxSuggestions = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null)
 			if ($DisableSearchBoxSuggestions -eq 1)
 			{
 				Write-Information -MessageData "" -InformationAction Continue

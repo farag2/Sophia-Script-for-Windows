@@ -2090,8 +2090,8 @@ function SearchHighlights
 		"Hide"
 		{
 			# Check whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
-			$BingSearchEnabled = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search", "BingSearchEnabled", $null))
-			$DisableSearchBoxSuggestions = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null))
+			$BingSearchEnabled = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search", "BingSearchEnabled", $null)
+			$DisableSearchBoxSuggestions = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null)
 			if (($BingSearchEnabled -eq 0) -or ($DisableSearchBoxSuggestions -eq 1))
 			{
 				Write-Information -MessageData "" -InformationAction Continue
