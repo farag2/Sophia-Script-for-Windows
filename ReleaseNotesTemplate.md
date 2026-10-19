@@ -216,22 +216,4 @@ Diff from vOldVersion
       </a>
     </td>
   </tr>
-  <tr>
-    <td align="center" colspan="3">
-      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/download/NewVersion/Sophia.Script.Wrapper.vSophia_Script_Wrapper.zip">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
-          <img src="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
-        </picture>
-      </a>
-    </td>
-    <td align="left">
-      <a href="https://www.virustotal.com/gui/file/SHA256_Sophia_Script_Wrapper">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=dark">
-          <img src="https://shieldcn.dev/badge/VirusTotal.svg?logo=virustotal&amp;variant=outline&amp;size=sm&amp;mode=light">
-        </picture>
-      </a>
-    </td>
-  </tr>
 </table>

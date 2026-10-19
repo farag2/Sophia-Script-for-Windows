@@ -163,7 +163,6 @@
 * [Як завантажити](#як-завантажити)
 * [Як використовувати](#як-використовувати)
   * [Як запустити певну функцію(ї)](#як-запустити-певну-функціюї)
-* [Wrapper](#wrapper)
 * [Системні вимоги](#системні-вимоги)
 * [Скріншоти](#скріншоти)
 * [Як перекласти](#як-перекласти)
@@ -269,16 +268,6 @@
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=light">
-        </picture>
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" colspan="2">
-      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
-          <img src="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
         </picture>
       </a>
     </td>
@@ -395,14 +384,6 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 
 Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
-
-## Wrapper
-
-<img src="./img/Wrapper.png" width='600'>
-
-Wrapper — це сторонній лончер із закритим вихідним кодом для `Sophia Script for Windows`. Проєкт повністю підтримується [@BenchTweakGaming](https://github.com/BenchTweakGaming).
-
-Детальніше [тут](./Wrapper/README.md)
 
 ## Системні вимоги
 

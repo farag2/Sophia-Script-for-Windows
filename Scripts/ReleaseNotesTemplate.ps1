@@ -31,7 +31,6 @@ $Archives = [ordered]@{
 	"Sophia_Script_Windows_11_LTSC_2024_PowerShell_7"   = "Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7.v$($JSON.Sophia_Script_Windows_11_LTSC_2024).zip"
 	"Sophia_Script_Windows_11_Arm_PowerShell_5_1"       = "Sophia.Script.for.Windows.11.Arm.v$($JSON.Sophia_Script_Windows_11).zip"
 	"Sophia_Script_Windows_11_Arm_PowerShell_7"         = "Sophia.Script.for.Windows.11.Arm.PowerShell.7.v$($JSON.Sophia_Script_Windows_11).zip"
-	"Sophia_Script_Wrapper"                             = "Sophia.Script.Wrapper.v$($JSON.Sophia_Script_Wrapper).zip"
 }
 
 $Hashes = [ordered]@{}
@@ -56,7 +55,6 @@ foreach ($Token in $Archives.Keys)
 	-replace "SHA256_Sophia_Script_Windows_11_Arm_PowerShell_7",         $Hashes.Sophia_Script_Windows_11_Arm_PowerShell_7 `
 	-replace "SHA256_Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1", $Hashes.Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1 `
 	-replace "SHA256_Sophia_Script_Windows_11_LTSC_2024_PowerShell_7",   $Hashes.Sophia_Script_Windows_11_LTSC_2024_PowerShell_7 `
-	-replace "SHA256_Sophia_Script_Wrapper",                             $Hashes.Sophia_Script_Wrapper `
 	-replace "NewVersion", $env:INPUT_TAG `
 	-replace "OldVersion", $OldTag `
 	-replace "Sophia_Script_Windows_10_PowerShell_5_1",           $JSON.Sophia_Script_Windows_10 `
@@ -69,7 +67,6 @@ foreach ($Token in $Archives.Keys)
 	-replace "Sophia_Script_Windows_11_Arm_PowerShell_7",         $JSON.Sophia_Script_Windows_11 `
 	-replace "Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1", $JSON.Sophia_Script_Windows_11_LTSC_2024 `
 	-replace "Sophia_Script_Windows_11_LTSC_2024_PowerShell_7",   $JSON.Sophia_Script_Windows_11_LTSC_2024 `
-	-replace "Sophia_Script_Wrapper",                             $JSON.Sophia_Script_Wrapper
 } | Set-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Force
 
 # https://trstringer.com/github-actions-multiline-strings/

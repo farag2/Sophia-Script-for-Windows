@@ -20,7 +20,6 @@ body:
       required: true
     - label: I did not tweak Windows before that could cause system instability;
       required: false
-    - label: If your issue concerns the Wrapper, please mention @BenchTweakGaming in issue
     - label: Upload you Sophia.ps1 preset file
 - type: textarea
   attributes:

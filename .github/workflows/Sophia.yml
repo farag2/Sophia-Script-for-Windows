@@ -25,10 +25,6 @@ jobs:
         run: |
           . "Scripts\Building\Build.ps1"
 
-      - name: Sophia Script Wrapper
-        run: |
-          . "Scripts\Building\Wrapper.ps1"
-
       - name: WinGet SFX
         run: |
           . "Scripts\Building\WinGet_SFX.ps1"

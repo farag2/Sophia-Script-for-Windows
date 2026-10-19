@@ -163,7 +163,6 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
 * [Wie kann man herunterladen](#wie-kann-man-herunterladen)
 * [Wie zu verwenden](#wie-zu-verwenden)
   * [Verwendung von spezifischen Funktionen](#verwendung-von-spezifischen-funktionen)
-* [Wrapper](#wrapper)
 * [System-Voraussetzungen](#system-voraussetzungen)
 * [Screenshots](#screenshots)
 * [Wie man übersetzt](#wie-man-übersetzt)
@@ -269,16 +268,6 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
         <picture>
           <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=dark">
           <img src="https://shieldcn.dev/badge/PowerShell%207.svg?label=Windows%2011%20Arm&amp;variant=outline&amp;size=sm&amp;mode=light">
-        </picture>
-      </a>
-    </td>
-  </tr>
-  <tr>
-    <td align="center" colspan="2">
-      <a href="https://github.com/farag2/Sophia-Script-for-Windows/releases/latest">
-        <picture>
-          <source media="(prefers-color-scheme: dark)" srcset="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=dark&amp;logo=false">
-          <img src="https://shieldcn.dev/badge/Sophia%20Script%20Wrapper.svg?variant=outline&amp;size=sm&amp;mode=light&amp;logo=false">
         </picture>
       </a>
     </td>
@@ -395,14 +384,6 @@ Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", U
 
 Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
-
-## Wrapper
-
-<img src="./img/Wrapper.png" width='600'>
-
-Wrapper ist ein Closed-Source-Wrapper eines Drittanbieters für `Sophia Script for Windows`. Er wird vollständig von [@BenchTweakGaming](https://github.com/BenchTweakGaming) gepflegt.
-
-Lesen Sie [hier mehr dazu](./Wrapper/README.md)
 
 ## System-Voraussetzungen
 

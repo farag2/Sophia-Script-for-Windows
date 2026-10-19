@@ -19,22 +19,6 @@ if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Sev
 	exit 1
 }
 
-Write-Verbose -Message "JSONs validity" -Verbose
-
-# Check JSONs
-$JSONs = [Array]::TrueForAll((@(Get-ChildItem -Path Wrapper -File -Recurse -Filter *.json).FullName),
-[Predicate[string]]{
-	param($JSON)
-
-	Test-Json -Path $JSON -ErrorAction Ignore
-})
-if (-not $JSONs)
-{
-	Write-Verbose -Message "Found JSON issue" -Verbose
-	# Exit with a non-zero status to fail the job
-	exit 1
-}
-
 Write-Verbose -Message "Check psd1 files" -Verbose
 
 # Check psd1 files
