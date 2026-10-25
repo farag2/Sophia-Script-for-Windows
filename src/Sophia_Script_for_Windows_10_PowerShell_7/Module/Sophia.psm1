@@ -7763,7 +7763,7 @@ function Install-WSL
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Width="480" Height="640" MinWidth="400" MinHeight="400"
+	Width="300" Height="600" MinWidth="300" MinHeight="400"
 	WindowStartupLocation="CenterScreen" Topmost="True"
 	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
 	<Window.Resources>

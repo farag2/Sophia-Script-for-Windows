@@ -1,4 +1,4 @@
-🌐 [English](/README.md) | [Deutsche](/README_de-de.md) | [Русский](/README_ru-ru.md) | [Українська](/README_uk-ua.md)
+🌐 [English](/README.md) | [Deutsch](/README_de-de.md) | [Русский](/README_ru-ru.md) | [Українська](/README_uk-ua.md)
 
 <div align="center">
 
@@ -98,25 +98,30 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
 
 <img src="./img/SophiaScript.svg" width='800'>
 
+<a href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/api/badge/trendshift/repositories/17603/daily?language=PowerShell" width="250" height="55"/></a><a
+href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/api/badge/trendshift/repositories/17603/weekly?language=PowerShell" width="250" height="55"/></a><br><a
+href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/api/badge/trendshift/repositories/17603/monthly?language=PowerShell" width="250" height="55"/></a><a
+href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/api/badge/trendshift/repositories/17603/yearly?language=PowerShell" width="250" height="55"/></a>
+
 </div>
 
-## Haupt-Features
+## Hauptfunktionen
 
 * `Sophia Script for Windows` achtet auf die Stabilität Ihres Windows-Systems und informiert Sie, wenn ein Problem festgestellt wird
-* Mehr als 150 einzigartige Funktionen zur Konfiguration von Windows unter Verwendung der offiziell von Microsoft dokumentierten Methoden, ohne das System zu beschädigen.
-  * Für jede Änderung in der Voreinstellungsdatei gibt es eine entsprechende Funktion zum Wiederherstellen der Standardeinstellungen
-* Konfigurieren Sie Windows AI
-* Konfigurieren Sie die Privatsphäre, Sicherheit und Personalisierung von Windows
+* Mehr als 150 einzigartige Funktionen zur Konfiguration von Windows unter Verwendung der offiziell von Microsoft dokumentierten Methoden, ohne das System zu beschädigen
+  * Für jede Änderung gibt es eine entsprechende Funktion zum Wiederherstellen der Standardeinstellungen
+* Windows AI konfigurieren
+* Datenschutz, Sicherheit und Personalisierung von Windows konfigurieren
 * Vollständig quelloffenes Projekt
   * Alle Archive werden mit [GitHub Actions](https://github.com/farag2/Sophia-Script-for-Windows/actions) erstellt und hochgeladen
 * Verfügbar über Scoop, Chocolatey und WinGet
 * Arm64-Unterstützung
 * PowerShell 7-Unterstützung
-* Es besteht kein Konflikt mit [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
-* Deinstallieren Sie UWP-Anwendungen, mithilfe der Paketnamen
-  * Skript generiert Liste der installierten UWP-Apps [dynamisch](#screenshots)
-* Angewandte Registrierungsrichtlinien werden im Snap-In Lokaler Gruppenrichtlinien-Editor (gpedit.msc) angezeigt
-* Aktivieren Sie DNS-over-HTTPS mit
+* Kompatibel mit [VAC](https://help.steampowered.com/faqs/view/571A-97DA-70E9-FF74#whatisvac)
+* UWP-Apps deinstallieren, mit Anzeige der lokalisierten Paketnamen
+  * Die Liste der installierten UWP-Apps wird [dynamisch](#screenshots) erstellt
+* Angewandte Registrierungsrichtlinien werden im Snap-In „Editor für lokale Gruppenrichtlinien“ (gpedit.msc) angezeigt
+* DNS-over-HTTPS aktivieren mit
   * [Cloudflare DNS](https://developers.cloudflare.com/1.1.1.1/setup/windows/)
   * [Google Public DNS](https://developers.google.com/speed/public-dns/docs/using)
   * [Quad9 DNS](https://quad9.net/service/service-addresses-and-features/)
@@ -125,23 +130,23 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
   * [OpenDNS](https://www.cisco.com/c/en/us/support/docs/security/umbrella/224705-configure-dns-over-https-doh-with.html)
 * OneDrive entfernen
 * Interaktive [Eingabeaufforderungen und Popups](#screenshots)
-* Die <kbd>TAB</kbd> [Autovervollständigung](#screenshots) für Funktionen und ihre Argumente (mit Import-TabCompletion.ps1)
-* Ändern Sie den Speicherort der Benutzerordner (ohne die Benutzerdateien zu verschieben) mithilfe eines interaktiven Menüs
+* <kbd>TAB</kbd>-[Autovervollständigung](#bestimmte-funktionen-ausführen) für Funktionen und ihre Argumente (mit Import-TabCompletion.ps1)
+* Speicherort der Benutzerordner (ohne die Benutzerdateien zu verschieben) über ein interaktives Menü ändern
   * Desktop
   * Dokumente
   * Downloads
   * Musik
   * Bilder
   * Videos
-* Installieren Sie den kostenlosen (helle und dunkle) "Windows 11 Cursors Concept v2" Cursor von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on-the-fly
-  * Das Archiv wurde mit der [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml) in den Ordner  [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors) heruntergeladen
+* Die kostenlosen Cursor `Windows 11 Cursors Concept v2` (hell und dunkel) von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) im laufenden Betrieb installieren
+  * Das Archiv wurde mit der [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml) in den Ordner [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors) heruntergeladen
 * Eine App als Standard für eine bestimmte Dateiendung festlegen, ohne dass das Popup-Fenster `Wie möchten Sie diese Datei öffnen?` angezeigt wird
-* Exportieren und importieren Sie alle Windows-Zuordnungen. Sie müssen alle Apps gemäß der exportierten JSON-Datei installieren, um alle Zuordnungen wiederherzustellen
-* Installieren Sie die WSL-Linux-Distribution mit [Popup-Fenster](#screenshots) unter Verwendung benutzerfreundlicher Distributionsnamen
-* Erstellen Sie geplante Aufgaben mit einer [nativen Toast-Benachrichtigung](#screenshots)
-  * Erstellen Sie die geplanten Aufgaben `Windows Cleanup` und `Windows Cleanup Notification`, um Windows von nicht mehr benötigten Dateien und Windows-Update-Dateien zu bereinigen
-  * Erstellen Sie eine geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download`
-  * Erstellen Sie eine geplante Aufgabe namens `Temp`, um temporäre Ordner und Dateien zu bereinigen
+* Alle Windows-Dateizuordnungen exportieren und importieren. Um die Zuordnungen wiederherzustellen, müssen zuvor alle Apps aus der exportierten JSON-Datei installiert sein
+* WSL-Linux-Distributionen über ein [Popup-Fenster](#screenshots) mit verständlichen Distributionsnamen installieren
+* Geplante Aufgaben mit einer [nativen Toast-Benachrichtigung](#screenshots) erstellen
+  * Geplante Aufgaben `Windows Cleanup` und `Windows Cleanup Notification` zum Bereinigen nicht mehr benötigter Dateien und Windows-Update-Dateien erstellen
+  * Geplante Aufgabe `SoftwareDistribution` zur Bereinigung von `%SystemRoot%\SoftwareDistribution\Download` erstellen
+  * Geplante Aufgabe `Temp` zur Bereinigung temporärer Ordner und Dateien erstellen
     * `%SystemDrive%\$WinREAgent`
     * `%SystemDrive%\$SysReset`
     * `%SystemDrive%\$Windows.~WS`
@@ -153,25 +158,25 @@ Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
     * `%LOCALAPPDATA%\CrashDumps`
     * `%SystemDrive%\Recovery`
     * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
-* Installieren Sie die neueste bereitgestellte Version von Microsoft Visual C++ 2015–2026 x86/x64
-* Installieren Sie die neueste bereitgestellte Version von .NET Desktop Runtime 8, 9, 10 x64
+* Neueste Version von Microsoft Visual C++ 2015–2026 x86/x64 installieren
+* Neueste Version von .NET Desktop Runtime 8, 9, 10 x64 installieren
 * Viele weitere Optimierungen für den Datei-Explorer und das Kontextmenü
 
 ## Inhaltsverzeichnis
 
-* [Haupt-Features](#haupt-features)
-* [Wie kann man herunterladen](#wie-kann-man-herunterladen)
-* [Wie zu verwenden](#wie-zu-verwenden)
-  * [Verwendung von spezifischen Funktionen](#verwendung-von-spezifischen-funktionen)
-* [System-Voraussetzungen](#system-voraussetzungen)
+* [Hauptfunktionen](#hauptfunktionen)
+* [Herunterladen](#herunterladen)
+* [Verwendung](#verwendung)
+  * [Bestimmte Funktionen ausführen](#bestimmte-funktionen-ausführen)
+* [Systemanforderungen](#systemanforderungen)
 * [Screenshots](#screenshots)
-* [Wie man übersetzt](#wie-man-übersetzt)
+* [Übersetzen](#übersetzen)
 * [Medien](#medien)
 * [SophiApp 2.0](#sophiapp-20-c--winui-3)
 
-## Wie kann man herunterladen
+## Herunterladen
 
-### Von der GitHub-Versionsseite
+### Von der Release-Seite
 
 <table>
   <tr>
@@ -319,13 +324,13 @@ winget install --id TeamSophia.SophiaScript --location $DownloadsFolder --accept
 ```
 
 ```powershell
-# Deinstallieren Sie Sophia Script for Windows
+# Sophia Script for Windows deinstallieren
 winget uninstall --id TeamSophia.SophiaScript --force
 ```
 
 ### Scoop
 
-Laden Sie die neueste Version von `Sophia Script for Windows` für Windows 11 für PowerShell 5.1 herunter und entpacken Sie sie in den Ordner Downloads.
+Laden Sie die neueste Version von `Sophia Script for Windows` für Windows 11 und PowerShell 5.1 herunter und entpacken Sie sie in den Ordner Downloads.
 
 ```powershell
 # scoop bucket rm extras
@@ -334,46 +339,46 @@ scoop install sophia-script --no-cache
 ```
 
 ```powershell
-# Deinstallieren Sie Sophia Script for Windows
+# Sophia Script for Windows deinstallieren
 scoop uninstall sophia-script --purge
 ```
 
-## Wie zu verwenden
+## Verwendung
 
 <https://github.com/user-attachments/assets/5af5c234-5fb5-4e7e-a3d0-ae496a89e6ba>
 
-* Laden Sie das Archiv für Ihr System herunter und entpacken Sie es.
-* Schauen Sie sich die Datei `Sophia.ps1` an, um die Funktionen zu konfigurieren, die Sie ausführen möchten
+* Laden Sie das Archiv für Ihr System herunter und entpacken Sie es
+* Öffnen Sie die Datei `Sophia.ps1` und wählen Sie die Funktionen aus, die ausgeführt werden sollen
   * Setzen Sie das `#`-Zeichen vor die Funktion, wenn Sie nicht möchten, dass sie ausgeführt wird
   * Entfernen Sie das `#`-Zeichen vor der Funktion, wenn sie ausgeführt werden soll
-* Kopieren Sie den Pfad zum heruntergeladenen Ordner `Sophia Script for Windows`
-* Klicken Sie mit der rechten Maustaste auf die Schaltfläche `Windows`, öffnen Sie das Terminal (PowerShell) als Administrator und fügen Sie den kopierten Pfad zum Ordner ein
+* Kopieren Sie den Pfad zum entpackten Ordner `Sophia Script for Windows`
+* Klicken Sie mit der rechten Maustaste auf die Schaltfläche `Start`, öffnen Sie das Terminal (PowerShell) als Administrator und wechseln Sie in den kopierten Ordner
 
-```batch
-  cd pfad\zum\ordner
+```powershell
+cd pfad\zum\ordner
 ```
 
 * Legen Sie die Ausführungsrichtlinie so fest, dass Skripte nur in der aktuellen PowerShell-Sitzung ausgeführt werden können
 
 ```powershell
-  Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
+Set-ExecutionPolicy -ExecutionPolicy Bypass -Scope Process -Force
 ```
 
 * Geben Sie `.\Sophia.ps1` ein und drücken Sie <kbd>Enter</kbd>
 
-### Verwendung von spezifischen Funktionen
+### Bestimmte Funktionen ausführen
 
 <https://github.com/user-attachments/assets/d70150d6-af8c-4933-9ec5-b2cf3bb1dd34>
 
-* Führen Sie alle Schritte aus dem Abschnitt [Wie zu verwenden](#wie-zu-verwenden) aus und stoppen Sie bei den Einstellungen der Ausführungsrichtlinie in PowerShell.
-* Um spezifische Funktionen auszuführen [dot source](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-) die `Import-TabCompletion.ps1` datei zuerst:
+* Führen Sie die Schritte aus dem Abschnitt [Verwendung](#verwendung) bis einschließlich zum Festlegen der Ausführungsrichtlinie aus, ohne `Sophia.ps1` zu starten
+* Laden Sie zuerst die Datei `Import-TabCompletion.ps1` per [Dot-Sourcing](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_operators#dot-sourcing-operator-):
 
 ```powershell
 # Mit einem Punkt am Anfang
 . .\Import-TabCompletion.ps1
 ```
 
-* Rufen Sie jede Skriptfunktion mit Namensautokomplettierung über die <kbd>TAB</kbd>-Taste auf.
+* Rufen Sie beliebige Skriptfunktionen mit Namensvervollständigung über die <kbd>TAB</kbd>-Taste auf
 
 ```powershell
 Sophia -Functions<TAB>
@@ -382,10 +387,10 @@ Sophia -Functions unin<TAB>
 Sophia -Functions uwp<TAB>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
 
-Uninstall-UWPApps, "PinToStart -UnpinAll"
+Sophia -Functions Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
 
-## System-Voraussetzungen
+## Systemanforderungen
 
 [Windows-10]: https://support.microsoft.com/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562
 [Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
@@ -403,55 +408,61 @@ Uninstall-UWPApps, "PinToStart -UnpinAll"
 
 ## Screenshots
 
-<div class="row">
-  <img src="./img/uwpapps.png" width='314'>
-  <img src="./img/WSL.png" width='350'>
-</div>
+<table>
+  <tr>
+    <td align="center">
+      <img src="./img/UWP.png" width="400" alt="Entfernen von UWP-Apps"><br>
+      <sub>UWP-Apps</sub>
+    </td>
+    <td align="center">
+      <img src="./img/Tasks.png" width="400" alt="Geplante Aufgaben"><br>
+      <sub>Geplante Aufgaben</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="./img/WSL.png" width="400" alt="WSL-Installation"><br>
+      <sub>WSL</sub>
+    </td>
+    <td align="center">
+      <img src="./img/Toasts.png" width="400" alt="Toast-Benachrichtigungen"><br>
+      <sub>Toast-Benachrichtigungen</sub>
+    </td>
+  </tr>
+</table>
 
-<img src="./img/Toasts.png" width='400'>
-
-## Wie man übersetzt
+## Übersetzen
 
 * Führen Sie `$PSUICulture` in PowerShell aus, um Ihre UI-Sprache zu ermitteln
 * Erstellen Sie einen Ordner mit dem Namen der UI-Sprache (z. B. `de-DE`)
-* Legen Sie Ihre lokalisierte Datei SophiaScript.psd1 in diesem Ordner ab
+* Legen Sie Ihre lokalisierte Datei `SophiaScript.psd1` in diesem Ordner ab
 
-## Media
+## Medien
 
 <details>
+<summary>Artikel und Erwähnungen</summary>
 
-<a href="https://www.comss.ru/page.php?id=19917">Comss.ru</a>
+* [Comss.ru](https://www.comss.ru/page.php?id=19917)
+* [Windows Central](https://www.windowscentral.com/microsoft/windows-11/how-to-fine-tune-your-pc-with-the-sophia-script-for-windows-11)
+* [XDA](https://www.xda-developers.com/sophia-script-returns-control-windows-11)
+* [Neowin](https://www.neowin.net/news/this-script-is-the-ultimate-tool-to-control-and-customize-windows-11)
+* [Neowin 2](https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs)
+* [4sysops](https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/)
+* [gHacks](https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/)
+* [Comss.ru 2](https://www.comss.ru/page.php?id=8019)
+* [Habr](https://habr.com/company/skillfactory/blog/553800)
+* [Deskmodder.de](https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/)
+* [Ru-Board](https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15)
+* [rutracker](https://rutracker.org/forum/viewtopic.php?t=5996011)
+* [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 
-<a href="https://www.windowscentral.com/microsoft/windows-11/how-to-fine-tune-your-pc-with-the-sophia-script-for-windows-11">Windows Central</a>
-
-<a href="https://www.xda-developers.com/sophia-script-returns-control-windows-11">XDA</a>
-
-<a href="https://www.neowin.net/news/this-script-is-the-ultimate-tool-to-control-and-customize-windows-11">Neowin</a>
-
-<a href="https://www.neowin.net/news/this-windows-10-setup-script-lets-you-fine-tune-around-150-functions-for-new-installs">Neowin 2</a>
-
-<a href="https://4sysops.com/archives/windows-10-sophia-script-powershell-functions-for-windows-10-fine-tuning-and-automating-routine-configuration-tasks/">4sysops</a>
-
-<a href="https://www.ghacks.net/2020/09/27/windows-10-setup-script-has-a-new-name-and-is-now-easier-to-use/">gHacks</a>
-
-<a href="https://www.comss.ru/page.php?id=8019">Comss.ru 2</a>
-
-<a href="https://habr.com/company/skillfactory/blog/553800">Habr</a>
-
-<a href="https://www.deskmodder.de/blog/2021/08/07/sophia-script-for-windows-jetzt-fuer-windows-11-und-10/">Deskmodder.de</a>
-
-<a href="https://forum.ru-board.com/topic.cgi?forum=62&topic=30617#15">Ru-Board</a>
-
-<a href="https://rutracker.org/forum/viewtopic.php?t=5996011">rutracker</a>
-
-<a href="https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/">My Digital Life</a>
 </details>
 
 ***
 
 ## SophiApp 2.0 (C# + WinUI 3)
 
-[SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) befindet sich in der Entwicklung. 🚀
+[SophiApp 2.0](https://github.com/Sophia-Community/SophiApp) befindet sich in aktiver Entwicklung. 🚀
 
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Privacy.png)
-![Image](https://github.com/farag2/Sophia-Script-for-Windows/raw/main/img/Settings.png)
+![SophiApp — Datenschutz](./img/Privacy.png)
+![SophiApp — Einstellungen](./img/Settings.png)
