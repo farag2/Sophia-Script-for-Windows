@@ -93,9 +93,6 @@ function CreateRestorePoint
 	DiagTrackService -Enable
 
 	.NOTES
-	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
-
-	.NOTES
 	Machine-wide
 #>
 function DiagTrackService
@@ -131,7 +128,6 @@ function DiagTrackService
 		"Disable"
 		{
 			# Connected User Experiences and Telemetry
-			# Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
 			Get-Service -Name DiagTrack | Stop-Service -Force -PassThru
 			Get-Service -Name DiagTrack | Set-Service -StartupType Disabled -PassThru
 
@@ -533,7 +529,7 @@ function ScheduledTasks
 
 	$Form.ShowDialog() | Out-Null
 
-	# Emulate the Backspace key sending to prevent the console window to freeze
+	# Emulate sending the Backspace key to prevent the console window from freezing
 	Send-ConsoleBackspace
 
 	if (-not $Form.DialogResult)
@@ -791,7 +787,7 @@ function WindowsWelcomeExperience
 	Getting tips and suggestions when I use Windows
 
 	.PARAMETER Enable
-	Get tips and suggestions when using Windows
+	Get tips and suggestions when I use Windows
 
 	.PARAMETER Disable
 	Do not get tips and suggestions when I use Windows
@@ -846,7 +842,7 @@ function WindowsTips
 	Show me suggested content in the Settings app
 
 	.PARAMETER Hide
-	Hide from me suggested content in the Settings app
+	Do not show me suggested content in the Settings app
 
 	.PARAMETER Show
 	Show me suggested content in the Settings app
@@ -898,13 +894,13 @@ function SettingsSuggestedContent
 
 <#
 	.SYNOPSIS
-	Automatic installing suggested apps
+	Automatic installation of suggested apps
 
 	.PARAMETER Disable
-	Turn off automatic installing suggested apps
+	Turn off automatic installation of suggested apps
 
 	.PARAMETER Enable
-	Turn on automatic installing suggested apps
+	Turn on automatic installation of suggested apps
 
 	.EXAMPLE
 	AppsSilentInstalling -Disable
@@ -1813,6 +1809,96 @@ function QuickAccessFrequentFolders
 
 <#
 	.SYNOPSIS
+	Taskbar position
+
+	.PARAMETER Bottom
+	Set taskbar position to the bottom
+
+	.PARAMETER Top
+	Set taskbar position to the top
+
+	.PARAMETER Left
+	Set taskbar position to the left
+
+	.PARAMETER Right
+	Set taskbar position to the right
+
+	.EXAMPLE
+	TaskbarPosition -Bottom
+
+	.EXAMPLE
+	TaskbarPosition -Top
+
+	.EXAMPLE
+	TaskbarPosition -Left
+
+	.EXAMPLE
+	TaskbarPosition -Right
+
+	.NOTES
+	Current user
+#>
+function TaskbarPosition
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Bottom"
+		)]
+		[switch]
+		$Bottom,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Top"
+		)]
+		[switch]
+		$Top,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Left"
+		)]
+		[switch]
+		$Left,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Right"
+		)]
+		[switch]
+		$Right
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\Software\Policies\Microsoft\Windows\Explorer -Name DisableTaskbarPosition -Force -ErrorAction Ignore
+	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableTaskbarPosition
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableTaskbarPosition
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Bottom"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 3 -Force
+		}
+		"Top"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 1 -Force
+		}
+		"Left"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 0 -Force
+		}
+		"Right"
+		{
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced" -Name TaskbarLocation -PropertyType DWord -Value 2 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Taskbar alignment
 
 	.PARAMETER Left
@@ -1999,7 +2085,7 @@ function SearchHighlights
 	{
 		"Hide"
 		{
-			# Check whether "Ask Copilot" and "Find results in Web" were disabled. They also disable Search Highlights automatically
+			# Check whether "Ask Copilot" and "Find results in Web" are disabled. Disabling them also disables Search Highlights automatically
 			$BingSearchEnabled = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Search", "BingSearchEnabled", $null)
 			$DisableSearchBoxSuggestions = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null)
 			if (($BingSearchEnabled -eq 0) -or ($DisableSearchBoxSuggestions -eq 1))
@@ -2017,11 +2103,12 @@ function SearchHighlights
 		}
 		"Show"
 		{
-			# Enable "Ask Copilot" and "Find results in Web" icons in Windows Search in order to enable Search Highlights
+			# Enable "Ask Copilot" and "Find results in Web" in Windows Search in order to enable Search Highlights
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name BingSearchEnabled -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 1 -Force
 			Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions
+
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SearchSettings -Name IsDynamicSearchBoxEnabled -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2937,7 +3024,7 @@ function Install-Cursors
 			{
 				New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 			}
-			[string[]]$Schemes = (
+			$Schemes = @(
 				"%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur",
 				"%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur",
 				"%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani",
@@ -2996,7 +3083,7 @@ function Install-Cursors
 			{
 				New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 			}
-			[string[]]$Schemes = (
+			$Schemes = @(
 				"%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur",
 				"%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur",
 				"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
@@ -3708,7 +3795,7 @@ function StorageSense
 			# Turn on Storage Sense
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 1 -Force
 
-			# Turn on automatic cleaning up temporary system and app files
+			# Turn on automatic cleanup of temporary system and app files
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 1 -Force
 
 			# Run Storage Sense every month
@@ -3719,7 +3806,7 @@ function StorageSense
 			# Turn off Storage Sense
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 01 -PropertyType DWord -Value 0 -Force
 
-			# Turn off automatic cleaning up temporary system and app files
+			# Turn off automatic cleanup of temporary system and app files
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\StorageSense\Parameters\StoragePolicy -Name 04 -PropertyType DWord -Value 0 -Force
 
 			# Run Storage Sense during low free disk space
@@ -3787,10 +3874,10 @@ function Hibernation
 	Windows 260 character paths support limit
 
 	.PARAMETER Enable
-	Enable Windows long paths support which is limited for 260 characters by default
+	Enable Windows long paths support which is limited to 260 characters by default
 
 	.PARAMETER Disable
-	Disable Windows long paths support which is limited for 260 characters by default
+	Disable Windows long paths support which is limited to 260 characters by default
 
 	.EXAMPLE
 	Win32LongPathsSupport -Enable
@@ -4180,7 +4267,7 @@ function WindowsFeatures
 	$Form.Title          = $Localization.WindowsFeaturesTitle
 	$ButtonApply.Content = $ButtonText
 
-	# The button is enabled only when a capability is selected
+	# The button is enabled only when at least one feature is checked
 	$UpdateState = {
 		$ButtonApply.IsEnabled = [bool]($PanelFeatures.Children | Where-Object -FilterScript {$_.IsChecked})
 	}
@@ -4217,7 +4304,7 @@ function WindowsFeatures
 
 	$Form.ShowDialog() | Out-Null
 
-	# Emulate the Backspace key sending to prevent the console window to freeze
+	# Emulate sending the Backspace key to prevent the console window from freezing
 	Send-ConsoleBackspace
 
 	if (-not $Form.DialogResult)
@@ -4458,14 +4545,16 @@ function WindowsCapabilities
 
 	$ButtonApply.Add_Click({$Form.DialogResult = $true})
 
-	# Emulate the Backspace key sending to prevent the console window to freeze
-	Send-ConsoleBackspace
-
 	# Force move the WPF form to the foreground
 	$Form.Add_Loaded({$Form.Activate()})
 
+	$Form.ShowDialog() | Out-Null
+
+	# Emulate sending the Backspace key to prevent the console window from freezing
+	Send-ConsoleBackspace
+
 	# The window was closed without pressing the button
-	if (-not $Form.ShowDialog())
+	if (-not $Form.DialogResult)
 	{
 		return
 	}
@@ -4506,13 +4595,13 @@ function WindowsCapabilities
 
 <#
 	.SYNOPSIS
-	Receive updates for other Microsoft products
+	Updates for other apps and services together with Windows updates
 
 	.PARAMETER Enable
-	Receive updates for other Microsoft products
+	Get updates for other apps and services together with Windows updates
 
 	.PARAMETER Disable
-	Do not receive updates for other Microsoft products
+	Do not get updates for other apps and services together with Windows updates
 
 	.EXAMPLE
 	UpdateMicrosoftProducts -Enable
@@ -4793,10 +4882,10 @@ function WindowsLatestUpdate
 	Power plan
 
 	.PARAMETER High
-	Set power plan on "High performance"
+	Set power plan to "High performance"
 
 	.PARAMETER Balanced
-	Set power plan on "Balanced"
+	Set power plan to "Balanced"
 
 	.EXAMPLE
 	PowerPlan -High
@@ -4866,7 +4955,7 @@ function PowerPlan
 	Not recommended to turn off for laptops
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function NetworkAdaptersSavePower
 {
@@ -4888,6 +4977,7 @@ function NetworkAdaptersSavePower
 	)
 
 	# Turn on desktop apps access to location
+	# "netsh wlan" requires location permission to get the connected Wi-Fi network SSID
 	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Allow -Force
 	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location -Name Value -PropertyType String -Value Allow -Force
 	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\CapabilityAccessManager\ConsentStore\location\NonPackaged))
@@ -5084,7 +5174,6 @@ function InputMethod
 	.NOTES
 	Current user
 #>
-
 function Set-UserShellFolderLocation
 {
 	param
@@ -5213,7 +5302,7 @@ IconIndex=-238
 	{
 		"Root"
 		{
-			# Store all fixed disks' letters except C drive to call with Show-Menu function
+			# Store all fixed disks' letters except the system drive to call with Show-Menu function
 			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype
 			$DriveLetters = @((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_LogicalDisk | Where-Object -FilterScript {($_.DriveType -eq 3) -and ($_.Name -ne $env:SystemDrive)}).DeviceID | Sort-Object)
 			if (-not $DriveLetters)
@@ -5420,7 +5509,7 @@ function WinPrtScrFolder
 	RecommendedTroubleshooting -Default
 
 	.NOTES
-	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data" and the error reporting feature will be turned on
+	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
 
 	.NOTES
 	Machine-wide
@@ -6352,7 +6441,8 @@ function Import-Associations
 
 	$OpenFileDialog = New-Object -TypeName System.Windows.Forms.OpenFileDialog
 	$OpenFileDialog.Filter = "*.json|*.json|{0} (*.*)|*.*" -f $Localization.AllFilesFilter
-	$OpenFileDialog.InitialDirectory = $PSScriptRoot
+	# Export-Associations saves Application_Associations.json into the script root folder
+	$OpenFileDialog.InitialDirectory = Split-Path -Path $PSScriptRoot -Parent
 	$OpenFileDialog.Multiselect = $false
 
 	# Force move the open file dialog to the foreground
@@ -6658,7 +6748,7 @@ function PreventEdgeShortcutCreation
 		$Disable
 	)
 
-	if (-not (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore))
+	if (-not (Get-Package -Name "Microsoft Edge" -ProviderName Programs -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.PackageNotInstalled -f "Microsoft Edge"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -6678,19 +6768,16 @@ function PreventEdgeShortcutCreation
 		{
 			Stable
 			{
-				if (Get-Package -Name "Microsoft Edge" -ErrorAction Ignore)
+				New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -PropertyType DWord -Value 0 -Force
+				# msedgeupdate.admx is not a default ADMX template
+				if (Test-Path -Path "$env:SystemRoot\PolicyDefinitions\msedgeupdate.admx")
 				{
-					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -PropertyType DWord -Value 0 -Force
-					# msedgeupdate.admx is not a default ADMX template
-					if (Test-Path -Path "$env:SystemRoot\PolicyDefinitions\msedgeupdate.admx")
-					{
-						Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 0
-					}
+					Add-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{56EB18F8-B008-4CBD-B6D2-8C97FE7E9062}" -Type DWORD -Value 0
 				}
 			}
 			Beta
 			{
-				if (Get-Package -Name "Microsoft Edge Beta" -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Beta" -ProviderName Programs -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{2CD8A007-E189-409D-A2C8-9AF4EF3C72AA}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -6702,7 +6789,7 @@ function PreventEdgeShortcutCreation
 			}
 			Dev
 			{
-				if (Get-Package -Name "Microsoft Edge Dev" -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Dev" -ProviderName Programs -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{0D50BFEC-CD6A-4F9A-964C-C7416E3ACB10}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -6714,7 +6801,7 @@ function PreventEdgeShortcutCreation
 			}
 			Canary
 			{
-				if (Get-Package -Name "Microsoft Edge Canary" -ErrorAction Ignore)
+				if (Get-Package -Name "Microsoft Edge Canary" -ProviderName Programs -ErrorAction Ignore)
 				{
 					New-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\EdgeUpdate -Name "CreateDesktopShortcut{65C35B14-6C1D-4122-AC46-7148CC9D6497}" -PropertyType DWord -Value 0 -Force
 					# msedgeupdate.admx is not a default ADMX template
@@ -6805,9 +6892,9 @@ function RegistryBackup
 #region WSL
 <#
 	.SYNOPSIS
-	Windows Subsystem for Linux (WSL)
+	Install Windows Subsystem for Linux (WSL) and a Linux distribution selected in a pop-up form
 
-	.EXAMPLE Enable Windows Subsystem for Linux (WSL) and install the latest WSL Linux kernel version
+	.EXAMPLE
 	Install-WSL
 
 	.NOTES
@@ -6914,14 +7001,16 @@ function Install-WSL
 
 	$ButtonInstall.Add_Click({$Form.DialogResult = $true})
 
-	# Emulate the Backspace key sending to prevent the console window to freeze
-	Send-ConsoleBackspace
-
 	# Force move the WPF form to the foreground
 	$Form.Add_Loaded({$Form.Activate()})
 
+	$Form.ShowDialog() | Out-Null
+
+	# Emulate sending the Backspace key to prevent the console window from freezing
+	Send-ConsoleBackspace
+
 	# The window was closed without choosing a distribution
-	if (-not $Form.ShowDialog())
+	if (-not $Form.DialogResult)
 	{
 		return
 	}
@@ -7026,7 +7115,7 @@ function GPUScheduling
 	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
 
 	.PARAMETER Delete
-	Delete  "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+	Delete "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 
 	.EXAMPLE
 	CleanupTask -Register
@@ -7125,6 +7214,7 @@ function CleanupTask
 			}
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "(default)" -PropertyType String -Value "URL:WindowsCleanup" -Force
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name "URL Protocol" -PropertyType String -Value "" -Force
+			# https://learn.microsoft.com/en-us/windows/win32/api/shlwapi/ne-shlwapi-filetypeattributeflags
 			New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\WindowsCleanup -Name EditFlags -PropertyType DWord -Value 2162688 -Force
 
 			# Start the "Windows Cleanup" task if the "Run" button clicked
@@ -7170,8 +7260,7 @@ Start-Sleep -Seconds 3
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
+			$Principal  = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -LogonType Interactive -RunLevel Highest
 			$Parameters = @{
 				TaskName    = "Windows Cleanup"
 				TaskPath    = "Sophia"
@@ -7183,8 +7272,9 @@ Start-Sleep -Seconds 3
 			Register-ScheduledTask @Parameters -Force
 
 			# Set author for scheduled task
-			$Task = Get-ScheduledTask -TaskName "Windows Cleanup"
+			$Task = Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup"
 			$Task.Author = "Team Sophia"
+			$Task.Principal.UserId = "$env:COMPUTERNAME\$env:USERNAME"
 			$Task | Set-ScheduledTask
 
 			$ToastNotificationPS = @"
@@ -7210,21 +7300,6 @@ private static extern uint NtQueryWnfStateData(
 	out int Buffer,
 	ref uint BufferSize
 );
-
-[StructLayout(LayoutKind.Sequential)]
-public struct WNF_STATE_NAME
-{
-	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-	public uint[] Data;
-
-	public WNF_STATE_NAME(uint Data1, uint Data2) : this()
-	{
-		uint[] newData = new uint[2];
-		newData[0] = Data1;
-		newData[1] = Data2;
-		Data = newData;
-	}
-}
 
 // WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED
 public static int GetState()
@@ -7290,8 +7365,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
+			$Principal  = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -LogonType Interactive -RunLevel Highest
 			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 30 -At 9pm
 			$Parameters = @{
 				TaskName    = "Windows Cleanup Notification"
@@ -7305,8 +7379,9 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 			Register-ScheduledTask @Parameters -Force
 
 			# Set author for scheduled task
-			$Task = Get-ScheduledTask -TaskName "Windows Cleanup Notification"
+			$Task = Get-ScheduledTask -TaskPath "\Sophia\" -TaskName "Windows Cleanup Notification"
 			$Task.Author = "Team Sophia"
+			$Task.Principal.UserId = "$env:COMPUTERNAME\$env:USERNAME"
 			$Task | Set-ScheduledTask
 
 			$Global:ScheduledTasks = $true
@@ -7322,7 +7397,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 				Remove-ItemProperty -Path $_.PsPath -Name StateFlags1337 -Force -ErrorAction Ignore
 			}
 
-			# Remove files first unless we cannot remove folder if there's no more tasks there
+			# Remove files first, otherwise the folder cannot be removed if there are no tasks left in it
 			$Paths = @(
 				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1",
 				"$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1",
@@ -7330,13 +7405,13 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 			)
 			Remove-Item -Path $Paths -Recurse -Force -ErrorAction Ignore
 
-			# Remove folder in Task Scheduler if there is no tasks left there
+			# Remove folder in Task Scheduler if there are no tasks left in it
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
 			{
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 
-				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | ForEach-Object -Process {$_.Name}).Count -eq 0)
+				if ($ScheduleService.GetFolder("Sophia").GetTasks(0).Count -eq 0)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
@@ -7353,7 +7428,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 	Create "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Delete
-	Delete  "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
+	Delete "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 
 	.EXAMPLE
 	SoftwareDistributionTask -Register
@@ -7435,21 +7510,6 @@ private static extern uint NtQueryWnfStateData(
 	ref uint BufferSize
 );
 
-[StructLayout(LayoutKind.Sequential)]
-public struct WNF_STATE_NAME
-{
-	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-	public uint[] Data;
-
-	public WNF_STATE_NAME(uint Data1, uint Data2) : this()
-	{
-		uint[] newData = new uint[2];
-		newData[0] = Data1;
-		newData[1] = Data2;
-		Data = newData;
-	}
-}
-
 // WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED
 public static int GetState()
 {
@@ -7515,8 +7575,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
+			$Principal  = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -LogonType Interactive -RunLevel Highest
 			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 90 -At 9pm
 			$Parameters = @{
 				TaskName    = "SoftwareDistribution"
@@ -7530,8 +7589,9 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 			Register-ScheduledTask @Parameters -Force
 
 			# Set author for scheduled task
-			$Task = Get-ScheduledTask -TaskName "SoftwareDistribution"
+			$Task = Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution
 			$Task.Author = "Team Sophia"
+			$Task.Principal.UserId = "$env:COMPUTERNAME\$env:USERNAME"
 			$Task | Set-ScheduledTask
 
 			$Global:ScheduledTasks = $true
@@ -7541,19 +7601,19 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 		}
 		"Delete"
 		{
-			# Remove files first unless we cannot remove folder if there's no more tasks there
+			# Remove files first, otherwise the folder cannot be removed if there are no tasks left in it
 			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Force -ErrorAction Ignore
 
 			# Removing current task
 			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution -Confirm:$false -ErrorAction Ignore
 
-			# Remove folder in Task Scheduler if there is no tasks left there
+			# Remove folder in Task Scheduler if there are no tasks left in it
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
 			{
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 
-				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | ForEach-Object -Process {$_.Name}).Count -eq 0)
+				if ($ScheduleService.GetFolder("Sophia").GetTasks(0).Count -eq 0)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
@@ -7570,7 +7630,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 	Create "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.PARAMETER Delete
-	Delete  "Temp" scheduled task for cleaning up %TEMP% folder
+	Delete "Temp" scheduled task for cleaning up %TEMP% folder
 
 	.EXAMPLE
 	TempTask -Register
@@ -7652,21 +7712,6 @@ private static extern uint NtQueryWnfStateData(
 	ref uint BufferSize
 );
 
-[StructLayout(LayoutKind.Sequential)]
-public struct WNF_STATE_NAME
-{
-	[MarshalAs(UnmanagedType.ByValArray, SizeConst = 2)]
-	public uint[] Data;
-
-	public WNF_STATE_NAME(uint Data1, uint Data2) : this()
-	{
-		uint[] newData = new uint[2];
-		newData[0] = Data1;
-		newData[1] = Data2;
-		Data = newData;
-	}
-}
-
 // WNF_SHEL_QUIETHOURS_ACTIVE_PROFILE_CHANGED
 public static int GetState()
 {
@@ -7708,7 +7753,7 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_
 	"`$env:LOCALAPPDATA\CrashDumps"
 )
 
-if ((Get-ChildItem -Path `$env:SystemDrive\Recovery -Force | Where-Object -FilterScript {`$_.Name -eq "ReAgentOld.xml"}).FullName)
+if (Test-Path -Path `$env:SystemDrive\Recovery\ReAgentOld.xml)
 {
 	`$Paths += "`$env:SystemDrive\Recovery"
 }
@@ -7753,8 +7798,7 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
-			$SID        = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
-			$Principal  = New-ScheduledTaskPrincipal -UserId $SID -RunLevel Highest
+			$Principal  = New-ScheduledTaskPrincipal -UserId "$env:COMPUTERNAME\$env:USERNAME" -LogonType Interactive -RunLevel Highest
 			$Trigger    = New-ScheduledTaskTrigger -Daily -DaysInterval 60 -At 9pm
 			$Parameters = @{
 				TaskName    = "Temp"
@@ -7763,13 +7807,14 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 				Settings    = $Settings
 				Principal   = $Principal
 				Trigger     = $Trigger
-				Description = $Localization.TempTaskDescription -f "$((Get-Item -Path $env:TEMP).FullName)"
+				Description = ($Localization.TempTaskDescription -f "$((Get-Item -Path $env:TEMP).FullName)"), ($Localization.ScheduledTaskLoggedInUserNotification -f $env:USERNAME) -join " "
 			}
 			Register-ScheduledTask @Parameters -Force
 
 			# Set author for scheduled task
-			$Task = Get-ScheduledTask -TaskName "Temp"
+			$Task = Get-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp
 			$Task.Author = "Team Sophia"
+			$Task.Principal.UserId = "$env:COMPUTERNAME\$env:USERNAME"
 			$Task | Set-ScheduledTask
 
 			$Global:ScheduledTasks = $true
@@ -7779,19 +7824,19 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 		}
 		"Delete"
 		{
-			# Remove files first unless we cannot remove folder if there's no more tasks there
+			# Remove files first, otherwise the folder cannot be removed if there are no tasks left in it
 			Remove-Item -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Force -ErrorAction Ignore
 
 			# Removing current task
 			Unregister-ScheduledTask -TaskPath "\Sophia\" -TaskName Temp -Confirm:$false -ErrorAction Ignore
 
-			# Remove folder in Task Scheduler if there is no tasks left there
+			# Remove folder in Task Scheduler if there are no tasks left in it
 			if (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Schedule\TaskCache\Tree\Sophia")
 			{
 				$ScheduleService = New-Object -ComObject Schedule.Service
 				$ScheduleService.Connect()
 
-				if (($ScheduleService.GetFolder("Sophia").GetTasks(0) | ForEach-Object -Process {$_.Name}).Count -eq 0)
+				if ($ScheduleService.GetFolder("Sophia").GetTasks(0).Count -eq 0)
 				{
 					$ScheduleService.GetFolder("\").DeleteFolder("Sophia", $null)
 				}
@@ -7870,7 +7915,7 @@ function NetworkProtection
 	Enable detection for potentially unwanted applications and block them
 
 	.PARAMETER Disable
-	Disable detection for potentially unwanted applications and block them
+	Disable detection for potentially unwanted applications
 
 	.EXAMPLE
 	PUAppsDetection -Enable
@@ -7987,7 +8032,7 @@ function DefenderSandbox
 	"Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Enable logging of running processes, including their arguments, and PowerShell scripts, and Create custom "Process Creation" view in the Event Viewer
+	Enable logging of running processes, including their arguments, and PowerShell scripts, and create custom "Process Creation" view in the Event Viewer
 
 	.PARAMETER Disable
 	Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from the Event Viewer
@@ -8021,10 +8066,10 @@ function EventViewerCustomView
 	)
 
 	# Find and close eventvwr.msc by its argument
-	$eventvwr_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
-	if ($eventvwr_Process_ID)
+	$EventvwrProcessID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
+	if ($EventvwrProcessID)
 	{
-		Get-Process -Id $eventvwr_Process_ID | Stop-Process -Force
+		Get-Process -Id $EventvwrProcessID | Stop-Process -Force
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -8032,7 +8077,7 @@ function EventViewerCustomView
 		"Enable"
 		{
 			# Enable events auditing generated when a process is created (starts)
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
+			& "$env:SystemRoot\System32\auditpol.exe" /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
 
 			# Include command line in process creation events
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -PropertyType DWord -Value 1 -Force
@@ -8092,7 +8137,7 @@ function EventViewerCustomView
 		"Disable"
 		{
 			# Disable events auditing generated when a process is created (starts)
-			auditpol /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
+			& "$env:SystemRoot\System32\auditpol.exe" /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:disable /failure:disable
 
 			# Do not include command line in process creation events
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System\Audit -Name ProcessCreationIncludeCmdLine_Enabled -Force -ErrorAction Ignore
@@ -8316,7 +8361,7 @@ function WindowsSandbox
 	Enable DNS-over-HTTPS using AdGuard DNS
 
 	.PARAMETER OpenDNS
-	Enable DNS-over-HTTPS using OpenDNS DNS
+	Enable DNS-over-HTTPS using OpenDNS
 
 	.PARAMETER Reset
 	Set default ISP's DNS records
@@ -8404,14 +8449,13 @@ function DNSoverHTTPS
 	)
 
 	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DoHPolicy -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DohPolicySetting -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DotPolicySetting -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DoHPolicy, DohPolicySetting, DotPolicySetting -Force -ErrorAction Ignore
 	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DoHPolicy
 	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DohPolicySetting
 	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\DNSClient" -Name DotPolicySetting
 
 	# Get settings of currently used network adapter
+	$Adapter = $null
 	$Route = Find-NetRoute -RemoteIPAddress "1.1.1.1" -ErrorAction Ignore | Select-Object -First 1
 	if ($Route)
 	{
@@ -8649,13 +8693,13 @@ function MSIExtractContext
 
 <#
 	.SYNOPSIS
-	The "Install" item for the Cabinet (.cab) filenames extensions context menu
+	The "Install" item in the Cabinet (.cab) file context menu
 
 	.PARAMETER Show
-	Show the "Install" item in the Cabinet (.cab) filenames extensions context menu
+	Show the "Install" item in the Cabinet (.cab) file context menu
 
 	.PARAMETER Hide
-	Hide the "Install" item from the Cabinet (.cab) filenames extensions context menu
+	Hide the "Install" item from the Cabinet (.cab) file context menu
 
 	.EXAMPLE
 	CABInstallContext -Show
@@ -8692,7 +8736,7 @@ function CABInstallContext
 			if
 			(
 				([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice", "ProgId", $null) -eq "CABFolder") -or
-				(-not (Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice -ErrorAction Ignore))
+				(-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts\.cab\UserChoice))
 			)
 			{
 				if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\CABFolder\Shell\runas\Command))

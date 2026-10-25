@@ -9,7 +9,7 @@
 	Registry key path
 
 	.PARAMETER Name
-	Registry key name
+	Registry value name
 
 	.EXAMPLE
 	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop -Name NoComponents

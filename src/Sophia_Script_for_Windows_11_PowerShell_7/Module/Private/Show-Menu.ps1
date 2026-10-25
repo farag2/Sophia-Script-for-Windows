@@ -6,7 +6,7 @@
 	Array of items to choose from
 
 	.PARAMETER Default
-	Default selected item in array
+	Zero-based index of the item selected by default. The hint line and the "Skip" item are appended after the menu items
 
 	.PARAMETER AddSkip
 	Add localized extracted "Skip" string from %SystemRoot%\System32\shell32.dll
@@ -38,7 +38,7 @@ function Global:Show-Menu
 
 	Write-Information -MessageData "" -InformationAction Continue
 
-	# Add "Please use the arrow keys 🠕 and 🠗 on your keyboard to select your answer" to menu
+	# Add "Please use the arrow keys ↑ and ↓ on your keyboard to select your answer" to menu
 	$Menu += $Localization.KeyboardArrows -f [char]0x2191, [char]0x2193
 
 	if ($AddSkip)

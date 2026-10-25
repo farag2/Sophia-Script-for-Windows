@@ -1,6 +1,10 @@
-<#
+﻿<#
 	.SYNOPSIS
-	Initial checks before proceeding to module execution
+	Load the module and private functions, and run initial checks before proceeding to module execution
+
+	.DESCRIPTION
+	The preset file only dot-sources this file and calls InitialActions
+	Private functions are dot-sourced inside InitialActions, so all of them have to be declared as Global
 
 	.VERSION
 	7.0.0
@@ -18,6 +22,7 @@ function InitialActions
 {
 	Clear-Host
 	$Global:Error.Clear()
+	$Global:Failed = $false
 
 	Set-StrictMode -Version Latest
 
@@ -72,7 +77,7 @@ function InitialActions
 	})
 	if (-not $ScriptFiles)
 	{
-		Write-Warning -Message "Required files are missing. Please, do not download the whole code from the repository, but download the archive from the release page for your system."
+		Write-Warning -Message "Required files are missing. Please do not download the whole code from the repository, but download the archive from the release page for your system."
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
@@ -97,6 +102,35 @@ function InitialActions
 		# If there's no folder with current localization ID ($PSUICulture), then import en-US localization
 		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\Localizations -FileName Sophia
 	}
+
+	# Check whether the script was run via PowerShell 7
+	if ($PSVersionTable.PSVersion.Major -ne 7)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		$MandatoryPSVersion = (Import-PowerShellDataFile -Path "$PSScriptRoot\..\Manifest\SophiaScript.psd1").PowerShellVersion
+		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor, $MandatoryPSVersion)
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message $Localization.AskQuestion -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
+	}
+
+	# Unload and import private functions and module
+	Get-ChildItem -Path function: | Where-Object -FilterScript {($_.ScriptBlock.File -match "Sophia_Script_for_Windows") -and ($_.Name -ne "InitialActions")} | Remove-Item -Force
+	Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
+
+	Import-Module -Name $PSScriptRoot\..\Manifest\SophiaScript.psd1 -Global -PassThru -Force
+	Get-ChildItem -Path $PSScriptRoot -Filter *.ps1 -File | Where-Object -FilterScript {$_.Name -ne "InitialActions.ps1"} | ForEach-Object -Process {. $_.FullName}
+
+	# Compile WinAPI types
+	Import-WinAPI
 
 	# Checking Windows components: services, WMI providers and Microsoft Defender
 	try
@@ -130,11 +164,7 @@ function InitialActions
 		Write-Information -MessageData "" -InformationAction Continue
 
 		# Display available AVs
-		try
-		{
-			Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Stop
-		}
-		catch {}
+		Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore
 
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
@@ -185,30 +215,13 @@ function InitialActions
 		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
 	}
 
-	# Check whether the script was run via PowerShell 7
-	if ($PSVersionTable.PSVersion.Major -ne 7)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		$MandatoryPSVersion = (Import-PowerShellDataFile -Path "$PSScriptRoot\..\Manifest\SophiaScript.psd1").PowerShellVersion
-		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor, $MandatoryPSVersion)
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
-
 	# Check whether PowerShell 7 was installed from the Microsoft Store
 	# https://github.com/PowerShell/PowerShell/issues/21295
 	if ((Get-Process -Id $PID).Path -match "C:\\Program Files\\WindowsApps")
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message $Localization.MicrosoftStorePowerShellWarning
+		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message "https://github.com/powershell/powershell/releases/latest" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
@@ -320,7 +333,7 @@ function InitialActions
 	if (($Host.Name -match "ISE") -or ($env:TERM_PROGRAM -eq "vscode"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.Replace("Host", ""))
+		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.Replace("Host", "").Trim())
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message $Localization.AskQuestion -Verbose
@@ -473,22 +486,26 @@ function InitialActions
 	}
 
 	# Check whether Microsoft Defender is a default AV
+	$Global:DefenderDefaultAV = $true
 	$InstalledAVs = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct)
-	if (($InstalledAVs.displayName | Measure-Object).Count -gt 1)
+	if ($InstalledAVs.Count -gt 1)
 	{
-		$Global:DefenderDefaultAV = $false
 		$productState = ($InstalledAVs | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
-		$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
-		if ($DefenderState -notmatch "00|01")
+		# Defender may be absent from the list if a third-party AV replaced it
+		if (-not $productState)
 		{
-			# Defender is a default AV
-			$Global:DefenderDefaultAV = $true
+			# Defender is not a default AV
+			$Global:DefenderDefaultAV = $false
 		}
-	}
-	else
-	{
-		# Defender is a default AV
-		$Global:DefenderDefaultAV = $true
+		else
+		{
+			$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
+			if ($DefenderState -match "00|01")
+			{
+				# Defender is not a default AV
+				$Global:DefenderDefaultAV = $false
+			}
+		}
 	}
 
 	# Check whether Controlled Folder Access is enabled
@@ -552,6 +569,7 @@ function InitialActions
 
 		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
 		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
+		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
 
 		do
 		{
@@ -562,7 +580,6 @@ function InitialActions
 				$Yes
 				{
 					Disable-BitLocker -MountPoint $env:SystemDrive
-					Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
 				}
 				$No
 				{
@@ -576,7 +593,7 @@ function InitialActions
 
 	# Windows 10 Pro
 	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	if ($WINDOWS_LONG -notmatch "Windows 10")
+	if (($WINDOWS_LONG -notmatch "Windows 10") -or ($WINDOWS_LONG -match "LTSC"))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		# e.g. 22H2
@@ -625,110 +642,76 @@ function InitialActions
 
 	# Windows 10 Pro
 	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	# e.g. 22H2
-	$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
-	# Check Windows minor build version
-	$CurrentBuild = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name CurrentBuild
-	$UBR = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR
+	# Check Windows major and minor build versions
+	$LatestSupportedMajorBuild = 19045
+	$CurrentVersion            = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+	$DisplayVersion            = $CurrentVersion.DisplayVersion
+	$CurrentBuild              = [int]$CurrentVersion.CurrentBuild
+	$UBR                       = [int]$CurrentVersion.UBR
 
-	switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber)
+	if (($CurrentBuild -ne $LatestSupportedMajorBuild) -or ($UBR -lt $LatestSupportedMinorBuild))
 	{
-		{$_ -ne 19045}
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message ($Localization.UpdateWindowsBuild -f $LatestSupportedMajorBuild, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message $Localization.AskQuestion -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		# Receive updates for other Microsoft products when you update Windows
+		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+
+		# Check for UWP apps updates
+		Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
+
+		# Check for updates
+		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
+
+		# Open the "Windows Update" page
+		Start-Process -FilePath "ms-settings:windowsupdate"
+
+		$Global:Failed = $true
+
+		exit
+	}
+
+	# Offer ESU if the latest Windows 10 build is installed
+	# https://learn.microsoft.com/lifecycle/faq/extended-security-updates
+	if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -eq $LatestSupportedMinorBuild)
+	{
+		Clear-Host
+
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.ESUProgramEnrollment
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://support.microsoft.com/windows/windows-10-support-has-ended-on-october-14-2025-2ca8b313-1946-43d3-b55c-2b95b107f281" -Verbose
+		Write-Verbose -Message "https://learn.microsoft.com/lifecycle/faq/extended-security-updates" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://massgrave.dev/windows10_eol" -Verbose
+		Write-Verbose -Message "https://github.com/abbodi1406/ConsumerESU" -Verbose
+
+		do
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message ($Localization.UpdateWindowsBuild -f 19045, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
-			Write-Information -MessageData "" -InformationAction Continue
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
 
-			Write-Verbose -Message $Localization.AskQuestion -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://t.me/sophianews" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			# Receive updates for other Microsoft products when you update Windows
-			(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-			# Check for UWP apps updates
-			Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
-
-			# Check for updates
-			& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-			# Open the "Windows Update" page
-			Start-Process -FilePath "ms-settings:windowsupdate"
-
-			$Global:Failed = $true
-
-			exit
-		}
-		19045
-		{
-			# We may use Test-Path -Path variable:LatestSupportedMinorBuild
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -lt $LatestSupportedMinorBuild)
+			switch ($Choice)
 			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message ($Localization.UpdateWindowsBuild -f 19045, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
-				Write-Information -MessageData "" -InformationAction Continue
-
-				Write-Verbose -Message $Localization.AskQuestion -Verbose
-				Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-				Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-				Write-Verbose -Message "https://t.me/sophianews" -Verbose
-				Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-				# Receive updates for other Microsoft products when you update Windows
-				(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-				# Check for UWP apps updates
-				Get-CimInstance -Namespace root/CIMV2/mdm/dmmap -ClassName MDM_EnterpriseModernAppManagement_AppManagement01 | Invoke-CimMethod -MethodName UpdateScanMethod
-
-				# Check for updates
-				& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-				# Open the "Windows Update" page
-				Start-Process -FilePath "ms-settings:windowsupdate"
-
-				$Global:Failed = $true
-
-				exit
-			}
-
-			# Offer ESU
-			# https://learn.microsoft.com/lifecycle/faq/extended-security-updates
-			if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name UBR) -eq $LatestSupportedMinorBuild)
-			{
-				Clear-Host
-
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Warning -Message $Localization.ESUProgramEnrollment
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message "https://support.microsoft.com/windows/windows-10-support-has-ended-on-october-14-2025-2ca8b313-1946-43d3-b55c-2b95b107f281" -Verbose
-				Write-Verbose -Message "https://learn.microsoft.com/lifecycle/faq/extended-security-updates" -Verbose
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message "https://massgrave.dev/windows10_eol" -Verbose
-				Write-Verbose -Message "https://github.com/abbodi1406/ConsumerESU" -Verbose
-
-				do
+				$Yes
 				{
-					$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-					switch ($Choice)
-					{
-						$Yes
-						{
-							Start-Process -FilePath "https://massgrave.dev/windows10_eol"
-							Start-Process -FilePath "https://github.com/abbodi1406/ConsumerESU"
-						}
-						$No
-						{
-							continue
-						}
-						$KeyboardArrows {}
-					}
+					Start-Process -FilePath "https://massgrave.dev/windows10_eol"
+					Start-Process -FilePath "https://github.com/abbodi1406/ConsumerESU"
 				}
-				until ($Choice -ne $KeyboardArrows)
+				$No
+				{
+					continue
+				}
+				$KeyboardArrows {}
 			}
 		}
+		until ($Choice -ne $KeyboardArrows)
 	}
 
 	# If you do not use old applications, there's no need to force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1
@@ -761,11 +744,13 @@ function InitialActions
 	Write-Information -MessageData "" -InformationAction Continue
 
 	# Display a warning message about whether a user has customized the preset file
-	# Get the name of a preset (e.g. Sophia.ps1) regardless of how it was named
-	[string]$PresetName = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")}).File
+	# Get the full path to a preset (e.g. Sophia.ps1) regardless of how it was named
+	$PresetPath = ((Get-PSCallStack).Position | Where-Object -FilterScript {($_.Text -match "InitialActions") -and ($_.Text -notmatch "Get-PSCallStack")} | Select-Object -First 1).File
+	# e.g. Sophia.ps1
+	$PresetName = Split-Path -Path $PresetPath -Leaf
 
 	# Do not ask if the function was called from Import-TabCompletion.ps1: there is no preset file to customize
-	if ((Split-Path -Path $PresetName -Leaf) -ne "Import-TabCompletion.ps1")
+	if ($PresetName -ne "Import-TabCompletion.ps1")
 	{
 		Write-Verbose -Message ($Localization.CheckSophiaScriptPreset -f $PresetName) -Verbose
 
@@ -781,7 +766,7 @@ function InitialActions
 				}
 				$No
 				{
-					Invoke-Item -Path $PresetName
+					Invoke-Item -Path $PresetPath
 
 					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use" -Verbose
 

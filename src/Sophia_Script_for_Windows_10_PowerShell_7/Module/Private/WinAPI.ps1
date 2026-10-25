@@ -1,43 +1,65 @@
-﻿$Signature = @{
-	Namespace          = "WinAPI"
-	Name               = "Signature"
-	Language           = "CSharp"
-	MemberDefinition   = @"
+﻿<#
+	.SYNOPSIS
+	Compile WinAPI types used by the module and private functions
+
+	.EXAMPLE
+	Import-WinAPI
+
+	.VERSION
+	7.0.0
+
+	.DATE
+	11.10.2026
+
+	.COPYRIGHT
+	(c) 2014—2026 Team Sophia
+
+	.LINK
+	https://github.com/farag2/Sophia-Script-for-Windows
+#>
+function Import-WinAPI
+{
+	# Calculate the hash for the EnShellFeedsTaskbarViewMode value in the NewsInterests function
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "Signature"
+		Language           = "CSharp"
+		MemberDefinition   = @"
 [DllImport("Shlwapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true, SetLastError = false)]
 public static extern int HashData(byte[] pbData, int cbData, byte[] piet, int outputLen);
 "@
-}
-if (-not ("WinAPI.Signature" -as [type]))
-{
-	try
-	{
-		Add-Type @Signature -ErrorAction Stop
 	}
-	catch
+	if (-not ("WinAPI.Signature" -as [type]))
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
+		try
+		{
+			Add-Type @Signature -ErrorAction Stop
+		}
+		catch
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+			Write-Verbose -Message $Localization.AskQuestion -Verbose
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = $true
+			$Global:Failed = $true
 
-		exit
+			exit
+		}
 	}
-}
 
-# Extract localized strings from %SystemRoot%\System32\shell32.dll
-$Signature = @{
-	Namespace        = "WinAPI"
-	Name             = "GetStrings"
-	Language         = "CSharp"
-	UsingNamespace   = "System.Text"
-	MemberDefinition = @"
+	# Extract localized strings from %SystemRoot%\System32\shell32.dll
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "GetStrings"
+		Language           = "CSharp"
+		UsingNamespace     = "System.Text"
+		MemberDefinition   = @"
 [DllImport("kernel32.dll", CharSet = CharSet.Auto)]
 public static extern IntPtr GetModuleHandle(string lpModuleName);
 
@@ -79,38 +101,38 @@ public static string GetIndirectString(string indirectString)
 	}
 }
 "@
-}
-
-if (-not ("WinAPI.GetStrings" -as [type]))
-{
-	try
-	{
-		Add-Type @Signature -ErrorAction Stop
 	}
-	catch
+
+	if (-not ("WinAPI.GetStrings" -as [type]))
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
+		try
+		{
+			Add-Type @Signature -ErrorAction Stop
+		}
+		catch
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+			Write-Verbose -Message $Localization.AskQuestion -Verbose
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = $true
+			$Global:Failed = $true
 
-		exit
+			exit
+		}
 	}
-}
 
-# Move window to foreground
-$Signature = @{
-	Namespace        = "WinAPI"
-	Name             = "ForegroundWindow"
-	Language         = "CSharp"
-	MemberDefinition = @"
+	# Move window to foreground
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "ForegroundWindow"
+		Language           = "CSharp"
+		MemberDefinition   = @"
 [DllImport("user32.dll")]
 public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 
@@ -118,87 +140,87 @@ public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
 [return: MarshalAs(UnmanagedType.Bool)]
 public static extern bool SetForegroundWindow(IntPtr hWnd);
 "@
-}
-
-if (-not ("WinAPI.ForegroundWindow" -as [type]))
-{
-	try
-	{
-		Add-Type @Signature -ErrorAction Stop
 	}
-	catch
+
+	if (-not ("WinAPI.ForegroundWindow" -as [type]))
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
+		try
+		{
+			Add-Type @Signature -ErrorAction Stop
+		}
+		catch
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+			Write-Verbose -Message $Localization.AskQuestion -Verbose
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = $true
+			$Global:Failed = $true
 
-		exit
+			exit
+		}
 	}
-}
 
-# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
-$Signature = @{
-	Namespace        = "WinAPI"
-	Name             = "Winbrand"
-	Language         = "CSharp"
-	MemberDefinition = @"
+	# Get the real Windows version like %SystemRoot%\system32\winver.exe relies on
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "Winbrand"
+		Language           = "CSharp"
+		MemberDefinition   = @"
 [DllImport("Winbrand.dll", CharSet = CharSet.Unicode)]
 public extern static string BrandingFormatString(string sFormat);
 "@
-}
-if (-not ("WinAPI.Winbrand" -as [type]))
-{
-	try
-	{
-		Add-Type @Signature -ErrorAction Stop
 	}
-	catch
+	if (-not ("WinAPI.Winbrand" -as [type]))
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
-		Write-Information -MessageData "" -InformationAction Continue
+		try
+		{
+			Add-Type @Signature -ErrorAction Stop
+		}
+		catch
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+			Write-Verbose -Message $Localization.AskQuestion -Verbose
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-		$Global:Failed = $true
+			$Global:Failed = $true
 
-		exit
+			exit
+		}
 	}
-}
 
-# Reload cursor on-the-fly for Install-Cursors function
-$Signature = @{
-	Namespace        = "WinAPI"
-	Name             = "Cursor"
-	Language         = "CSharp"
-	MemberDefinition = @"
+	# Reload cursor on-the-fly for Install-Cursors function
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "Cursor"
+		Language           = "CSharp"
+		MemberDefinition   = @"
 [DllImport("user32.dll", EntryPoint = "SystemParametersInfo", SetLastError = true)]
 public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 "@
-}
-if (-not ("WinAPI.Cursor" -as [type]))
-{
-	Add-Type @Signature
-}
+	}
+	if (-not ("WinAPI.Cursor" -as [type]))
+	{
+		Add-Type @Signature
+	}
 
-# Simulate pressing F5 to refresh Desktop and refresh desktop icons, environment variables, taskbar
-$Signature = @{
-	Namespace        = "WinAPI"
-	Name             = "UpdateEnvironment"
-	Language         = "CSharp"
-	MemberDefinition = @"
+	# Simulate pressing F5 to refresh Desktop and refresh desktop icons, environment variables, taskbar
+	$Signature = @{
+		Namespace          = "WinAPI"
+		Name               = "UpdateEnvironment"
+		Language           = "CSharp"
+		MemberDefinition   = @"
 private static readonly IntPtr HWND_BROADCAST = new IntPtr(0xffff);
 private const int WM_SETTINGCHANGE = 0x1a;
 private const int SMTO_ABORTIFHUNG = 0x0002;
@@ -238,8 +260,9 @@ public static void PostMessage()
 	PostMessageW(hWnd, Msg, UIntPtr, IntPtr.Zero);
 }
 "@
-}
-if (-not ("WinAPI.UpdateEnvironment" -as [type]))
-{
-	Add-Type @Signature
+	}
+	if (-not ("WinAPI.UpdateEnvironment" -as [type]))
+	{
+		Add-Type @Signature
+	}
 }

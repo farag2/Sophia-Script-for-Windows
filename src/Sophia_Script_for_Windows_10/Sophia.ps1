@@ -61,23 +61,14 @@
 #Requires -RunAsAdministrator
 #Requires -Version 5.1
 
-#region Initial Actions
-$Global:Failed = $false
-
-# Unload and import private functions and module
-Get-ChildItem -Path function: | Where-Object -FilterScript {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
-Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Module\Manifest\SophiaScript.psd1 -PassThru -Force
-Get-ChildItem -Path $PSScriptRoot\Module\Private | ForEach-Object -Process {. $_.FullName}
-
+# Import the module and private functions, and run initial checks
+. $PSScriptRoot\Module\Private\InitialActions.ps1
 InitialActions
 
-# Global variable if checks failed
 if ($Global:Failed)
 {
 	exit
 }
-#endregion Initial Actions
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Preset configuration starts here                                    #
@@ -85,7 +76,7 @@ if ($Global:Failed)
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #region Protection
-# Enable script logging. Log will be recorded into the script folder. To stop logging just close console or type "Stop-Transcript"
+# Enable script logging. The log will be recorded into the script folder. To stop logging, just close the console or type "Stop-Transcript"
 # Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логирование, закройте консоль или наберите "Stop-Transcript"
 # Logging
 
@@ -97,7 +88,7 @@ CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	Disable the "Connected User Experiences and Telemetry" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic
-	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) can cause you not being able to get XBOX achievements anymore and affects Feedback Hub
+	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) may prevent you from getting XBOX achievements and affects Feedback Hub
 
 	Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и блокировать соединение для исходящего трафика клиента единой телеметрии
 	Отключение службы "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) может привести к тому, что вы больше не сможете получать достижения XBOX, а также влияет на работу Feedback Hub
@@ -140,12 +131,12 @@ ScheduledTasks -Disable
 # Включить задания диагностического отслеживания (значение по умолчанию)
 # ScheduledTasks -Enable
 
-# Do not use sign-in info to automatically finish setting up device and reopen apps after an update or restart
-# Не использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления
+# Do not use sign-in info to automatically finish setting up device after an update
+# Не использовать данные для входа для автоматического завершения настройки устройства после обновления
 SigninInfo -Disable
 
-# Use sign-in info to automatically finish setting up device and reopen apps after an update or restart (default value)
-# Использовать данные для входа для автоматического завершения настройки устройства и открытия приложений после перезапуска или обновления (значение по умолчанию)
+# Use sign-in info to automatically finish setting up device after an update (default value)
+# Использовать данные для входа, чтобы автоматически завершить настройку после обновления (значение по умолчанию)
 # SigninInfo -Enable
 
 # Do not let websites provide locally relevant content by accessing language list
@@ -153,15 +144,15 @@ SigninInfo -Disable
 LanguageListAccess -Disable
 
 # Let websites provide locally relevant content by accessing language list (default value)
-# Позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
+# Позволить веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
 # LanguageListAccess -Enable
 
-# Do not allow apps to use advertising ID to make ads more interesting to you based on your app usage
-# Не разрешать приложениям использовать идентификатор рекламы
+# Do not let apps show me personalized ads by using my advertising ID
+# Не разрешать приложениям показывать персонализированную рекламу с помощью моего идентификатора рекламы
 AdvertisingID -Disable
 
-# Let apps use advertising ID to make ads more interesting to you based on your app usage (default value)
-# Разрешить приложениям использовать идентификатор рекламы (значение по умолчанию)
+# Let apps show me personalized ads by using my advertising ID (default value)
+# Разрешить приложениям показывать персонализированную рекламу с помощью моего идентификатора рекламы (значение по умолчанию)
 # AdvertisingID -Enable
 
 # Hide the Windows welcome experiences after updates and occasionally when I sign in to highlight what's new and suggested
@@ -172,15 +163,15 @@ WindowsWelcomeExperience -Hide
 # Показывать экран приветствия Windows после обновлений и иногда при входе, чтобы сообщить о новых функциях и предложениях (значение по умолчанию)
 # WindowsWelcomeExperience -Show
 
-# Get tips, tricks, and suggestions as you use Windows (default value)
-# Получать советы, подсказки и рекомендации при использовании Windows (значение по умолчанию)
+# Get tips and suggestions when I use Windows (default value)
+# Получать советы и предложения при использовании Windows (значение по умолчанию)
 WindowsTips -Enable
 
-# Do not get tips, tricks, and suggestions as you use Windows
-# Не получать советы, подсказки и рекомендации при использовании Windows
+# Do not get tips and suggestions when I use Windows
+# Не получать советы и предложения при использовании Windows
 # WindowsTips -Disable
 
-# Hide from me suggested content in the Settings app
+# Do not show me suggested content in the Settings app
 # Скрывать рекомендуемое содержимое в приложении "Параметры"
 SettingsSuggestedContent -Hide
 
@@ -188,28 +179,28 @@ SettingsSuggestedContent -Hide
 # Показывать рекомендуемое содержимое в приложении "Параметры" (значение по умолчанию)
 # SettingsSuggestedContent -Show
 
-# Turn off automatic installing suggested apps
+# Turn off automatic installation of suggested apps
 # Отключить автоматическую установку рекомендованных приложений
 AppsSilentInstalling -Disable
 
-# Turn on automatic installing suggested apps (default value)
+# Turn on automatic installation of suggested apps (default value)
 # Включить автоматическую установку рекомендованных приложений (значение по умолчанию)
 # AppsSilentInstalling -Enable
 
-# Do not suggest ways I can finish setting up my device to get the most out of Windows
-# Не предлагать способы завершения настройки устройства для максимально эффективного использования Windows
+# Do not suggest ways to get the most out of Windows and finish setting up this device
+# Не предлагать способы завершения настройки этого устройства для наиболее эффективного использования Windows
 WhatsNewInWindows -Disable
 
-# Suggest ways I can finish setting up my device to get the most out of Windows (default value)
-# Предлагать способы завершения настройки устройства для максимально эффективного использования Windows (значение по умолчанию)
+# Suggest ways to get the most out of Windows and finish setting up this device (default value)
+# Предложить способы завершения настройки этого устройства для наиболее эффективного использования Windows (значение по умолчанию)
 # WhatsNewInWindows -Enable
 
-# Do not let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen
-# Не разрешать корпорации Майкрософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт
+# Don't let Microsoft use your diagnostic data for personalized tips, ads, and recommendations
+# Не разрешать корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций
 TailoredExperiences -Disable
 
-# Let Microsoft offer you tailored experiences based on the diagnostic data setting you have chosen (default value)
-# Разрешить корпорации Майкрософт использовать ваши диагностические данные для предоставления вам персонализированных советов, рекламы и рекомендаций, чтобы улучшить работу со службами Майкрософт (значение по умолчанию)
+# Let Microsoft use your diagnostic data for personalized tips, ads, and recommendations (default value)
+# Разрешить корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # TailoredExperiences -Enable
 
 # Disable Bing search in Start Menu
@@ -404,11 +395,11 @@ NotificationAreaIcons -Show
 # NotificationAreaIcons -Hide
 
 # Show seconds on the taskbar clock
-# Отобразить секунды в системных часах на панели задач
+# Показывать секунды на часах на панели задач
 SecondsInSystemClock -Show
 
 # Hide seconds on the taskbar clock (default value)
-# Скрыть секунды в системных часах на панели задач (значение по умолчанию)
+# Скрыть секунды на часах на панели задач (значение по умолчанию)
 # SecondsInSystemClock -Hide
 
 # Combine taskbar buttons and always hide labels (default value)
@@ -630,11 +621,11 @@ Hibernation -Disable
 # Включить режим гибернации (значение по умолчанию)
 # Hibernation -Enable
 
-# Enable Windows long paths support which is limited for 260 characters by default
+# Enable Windows long paths support which is limited to 260 characters by default
 # Включить поддержку длинных путей, ограниченных по умолчанию 260 символами
 Win32LongPathsSupport -Enable
 
-# Disable Windows long paths support which is limited for 260 characters by default (default value)
+# Disable Windows long paths support which is limited to 260 characters by default (default value)
 # Отключить поддержку длинных путей, ограниченных по умолчанию 260 символами (значение по умолчанию)
 # Win32LongPathsSupport -Disable
 
@@ -683,20 +674,20 @@ WindowsFeatures -Disable
 # Включить компоненты Windows, используя всплывающее диалоговое окно
 # WindowsFeatures -Enable
 
-# Uninstall optional features using pop-up dialog box
-# Удалить дополнительные компоненты, используя всплывающее диалоговое окно
+# Uninstall optional features
+# Удалить дополнительные компоненты
 WindowsCapabilities -Uninstall
 
-# Install optional features using pop-up dialog box
-# Установить дополнительные компоненты, используя всплывающее диалоговое окно
+# Install optional features. Internet connection required
+# Установить дополнительные компоненты. Требуется соединение с интернетом
 # WindowsCapabilities -Install
 
-# Receive updates for other Microsoft products when you update Windows
-# При обновлении Windows получать обновления для других продуктов Майкрософт
+# Get updates for other apps and services together with Windows updates
+# Получать обновления для других приложений и служб с обновлениями Windows
 UpdateMicrosoftProducts -Enable
 
-# Do not receive updates for other Microsoft products when you update Windows (default value)
-# При обновлении Windows не получать обновления для других продуктов Майкрософт (значение по умолчанию)
+# Do not get updates for other apps and services together with Windows updates (default value)
+# Не получать обновления для других приложений и служб с обновлениями Windows (значение по умолчанию)
 # UpdateMicrosoftProducts -Disable
 
 # Notify me when a restart is required to finish updating
@@ -731,11 +722,11 @@ WindowsLatestUpdate -Disable
 # Получать последние обновления, как только они будут доступны
 # WindowsLatestUpdate -Enable
 
-# Set power plan on "High performance". Not recommended for laptops
+# Set power plan to "High performance". Not recommended for laptops
 # Установить схему управления питанием на "Высокая производительность". Не рекомендуется для ноутбуков
 PowerPlan -High
 
-# Set power plan on "Balanced" (default value)
+# Set power plan to "Balanced" (default value)
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
 # PowerPlan -Balanced
 
@@ -777,7 +768,7 @@ WinPrtScrFolder -Desktop
 
 <#
 	Run troubleshooter automatically, then notify me
-	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
+	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
 
 	Автоматически запускать средства устранения неполадок, а затем уведомлять
 	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
@@ -786,7 +777,7 @@ RecommendedTroubleshooting -Automatically
 
 <#
 	Ask me before running troubleshooter (default value)
-	In order this feature to work Windows level of diagnostic data gathering will be set to "Optional diagnostic data", and the error reporting feature will be turned on
+	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
 
 	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
 	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
@@ -833,12 +824,12 @@ NumLock -Enable
 # Включить Caps Lock (значение по умолчанию)
 # CapsLock -Enable
 
-# Do not allow the shortcut key to start Sticky Keys when pressing the Shift key 5 times
-# Не разрешать включение залипания клавиши Shift после 5 нажатий
+# Turn off pressing the Shift key 5 times to turn on Sticky keys
+# Выключить залипание клавиши Shift после 5 нажатий
 StickyShift -Disable
 
-# Allow the shortcut key to start Sticky Keys when pressing the Shift key 5 times (default value)
-# Разрешать включение залипания клавиши Shift после 5 нажатий (значение по умолчанию)
+# Turn on pressing the Shift key 5 times to turn on Sticky keys (default value)
+# Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
 # Don't use AutoPlay for all media and devices
@@ -857,12 +848,12 @@ ThumbnailCacheRemoval -Disable
 # Включить удаление кэша миниатюр (значение по умолчанию)
 # ThumbnailCacheRemoval -Enable
 
-# Automatically saving my restartable apps when signing out and restart them after signing in
-# Автоматически сохранять мои перезапускаемые приложения при выходе из системы и перезапускать их при повторном входе
+# Automatically save my restartable apps and restart them when I sign back in
+# Автоматически сохранять мои перезапускаемые приложения и перезапускать их при повторном входе
 SaveRestartableApps -Enable
 
-# Turn off automatically saving my restartable apps when signing out and restart them after signing in (default value)
-# Выключить автоматическое сохранение моих перезапускаемых приложений при выходе из системы и их перезапуск при повторном входе (значение по умолчанию)
+# Turn off automatically saving my restartable apps and restarting them when I sign back in (default value)
+# Выключить автоматическое сохранение моих перезапускаемых приложений и их перезапуск при повторном входе (значение по умолчанию)
 # SaveRestartableApps -Disable
 
 <#
@@ -1036,7 +1027,7 @@ NetworkProtection -Enable
 # Включить обнаружение потенциально нежелательных приложений и блокировать их
 PUAppsDetection -Enable
 
-# Disable detection for potentially unwanted applications and block them (default value)
+# Disable detection for potentially unwanted applications (default value)
 # Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
 # PUAppsDetection -Disable
 
@@ -1048,7 +1039,7 @@ DefenderSandbox -Enable
 # Выключить песочницу для Microsoft Defender (значение по умолчанию)
 # DefenderSandbox -Disable
 
-# Enable logging of running processes, including their arguments, and PowerShell scripts, and Create custom "Process Creation" view in the Event Viewer
+# Enable logging of running processes, including their arguments, and PowerShell scripts, and create custom "Process Creation" view in the Event Viewer
 # Включить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление "Создание процесса" в Просмотре событий
 EventViewerCustomView -Enable
 
@@ -1090,11 +1081,11 @@ MSIExtractContext -Show
 # Скрыть пункт "Извлечь все" из контекстного меню Windows Installer (.msi) (значение по умолчанию)
 # MSIExtractContext -Hide
 
-# Show the "Install" item in the Cabinet (.cab) filenames extensions context menu
+# Show the "Install" item in the Cabinet (.cab) file context menu
 # Отобразить пункт "Установить" в контекстном меню .cab архивов
 CABInstallContext -Show
 
-# Hide the "Install" item from the Cabinet (.cab) filenames extensions context menu (default value)
+# Hide the "Install" item from the Cabinet (.cab) file context menu (default value)
 # Скрыть пункт "Установить" из контекстного меню .cab архивов (значение по умолчанию)
 # CABInstallContext -Hide
 

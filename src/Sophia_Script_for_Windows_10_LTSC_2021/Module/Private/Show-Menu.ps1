@@ -38,7 +38,7 @@ function Global:Show-Menu
 
 	Write-Information -MessageData "" -InformationAction Continue
 
-	# Add "Please use the arrow keys 🠕 and 🠗 on your keyboard to select your answer" to menu
+	# Add "Please use the arrow keys ↑ and ↓ on your keyboard to select your answer" to menu
 	$Menu += $Localization.KeyboardArrows -f [char]0x2191, [char]0x2193
 
 	if ($AddSkip)

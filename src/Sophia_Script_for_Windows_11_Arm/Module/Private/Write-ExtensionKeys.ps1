@@ -33,7 +33,6 @@ function Global:Write-ExtensionKeys
 		$Extension
 	)
 
-	# We have to use GetValue() due to "Set-StrictMode -Version Latest"
 	$OrigProgID = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Classes\$Extension", "", $null)
 
 	# Save possible ProgIds history with extension: the full ProgId and its leaf (they differ for "Applications\app.exe" style ProgIds)

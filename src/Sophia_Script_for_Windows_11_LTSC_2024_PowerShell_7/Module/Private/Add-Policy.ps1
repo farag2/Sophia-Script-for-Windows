@@ -9,13 +9,13 @@
 	Registry key path
 
 	.PARAMETER Name
-	Registry key name
+	Registry value name
 
 	.PARAMETER Type
-	Registry key type
+	Registry value type
 
 	.PARAMETER Value
-	Registry key value
+	Registry value data
 
 	.EXAMPLE
 	Add-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop -Name NoComponents -Type DWORD -Value 1

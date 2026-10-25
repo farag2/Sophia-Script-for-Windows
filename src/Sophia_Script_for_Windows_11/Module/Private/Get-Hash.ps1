@@ -150,7 +150,7 @@ public static string Get(string extension, string sid, string progId, string sub
 			b2 += b1 + v2;
 		}
 
-		// Little-endian: low DWORD = o1 xor, high DWORD = o2 xor
+		// Little-endian: low DWORD = a1 xor b1, high DWORD = a2 xor b2
 		byte[] hash = new byte[8];
 		BitConverter.GetBytes(a1 ^ b1).CopyTo(hash, 0);
 		BitConverter.GetBytes(a2 ^ b2).CopyTo(hash, 4);

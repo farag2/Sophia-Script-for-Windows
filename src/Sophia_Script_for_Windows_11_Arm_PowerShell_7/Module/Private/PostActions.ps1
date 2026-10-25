@@ -1,4 +1,4 @@
-<#
+﻿<#
 	.SYNOPSIS
 	Post actions
 
@@ -14,7 +14,7 @@
 	.LINK
 	https://github.com/farag2/Sophia-Script-for-Windows
 #>
-function PostActions
+function Global:PostActions
 {
 	# Simulate pressing F5 to refresh the desktop
 	[WinAPI.UpdateEnvironment]::PostMessage()
@@ -52,16 +52,16 @@ function PostActions
 	if ($Global:ScheduledTasks)
 	{
 		# Find and close taskschd.msc by its argument
-		$taskschd_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "taskschd.msc")}).Handle
-		if ($taskschd_Process_ID)
+		$TaskschdProcessID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "taskschd.msc")}).Handle
+		if ($TaskschdProcessID)
 		{
-			Get-Process -Id $taskschd_Process_ID | Stop-Process -Force
+			Get-Process -Id $TaskschdProcessID | Stop-Process -Force
 		}
 
 		# Open Task Scheduler
 		Start-Process -FilePath taskschd.msc
 
-		Get-ScheduledTask -TaskName SoftwareDistribution, Temp, "Windows Cleanup Notification" -ErrorAction Ignore | Start-ScheduledTask
+		Get-ScheduledTask -TaskPath "\Sophia\" -TaskName SoftwareDistribution, Temp, "Windows Cleanup Notification" -ErrorAction Ignore | Start-ScheduledTask
 
 		$Global:ScheduledTasks = $false
 	}
@@ -70,10 +70,10 @@ function PostActions
 	if ($Global:EventViewerCustomView)
 	{
 		# Find and close eventvwr.msc by its argument
-		$eventvwr_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
-		if ($eventvwr_Process_ID)
+		$EventvwrProcessID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
+		if ($EventvwrProcessID)
 		{
-			Get-Process -Id $eventvwr_Process_ID | Stop-Process -Force
+			Get-Process -Id $EventvwrProcessID | Stop-Process -Force
 		}
 
 		# Open Event Viewer
@@ -106,12 +106,12 @@ function PostActions
 	if (Test-Path -Path "$env:TEMP\LGPO.txt")
 	{
 		# Find and close gpedit.msc by its argument
-		$gpedit_Process_ID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {
+		$gpeditProcessID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {
 			($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "gpedit.msc")
 		}).Handle
-		if ($gpedit_Process_ID)
+		if ($gpeditProcessID)
 		{
-			Get-Process -Id $gpedit_Process_ID | Stop-Process -Force
+			Get-Process -Id $gpeditProcessID | Stop-Process -Force
 		}
 
 		# Nothing to import if all policies were removed
@@ -149,7 +149,7 @@ function PostActions
 	$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
 	$ToastXml.LoadXml($ToastTemplate.OuterXml)
 
-	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXML)
+	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXml)
 	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
 	#endregion Toast notifications
 
@@ -168,7 +168,7 @@ function PostActions
 	Write-Warning -Message $Localization.RestartWarning
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Get how much restore points on C drive take up in GB
+	# Get how much space restore points on the system drive take up in GB
 	$DeviceID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_Volume | Where-Object -FilterScript {$_.BootVolume}).DeviceID
 	$ShadowStorage = Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_ShadowStorage | Where-Object -FilterScript {$_.Volume.DeviceID -eq $DeviceID}
 	# There's no shadow storage, if System Protection has never been enabled

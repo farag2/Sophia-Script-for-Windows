@@ -1,6 +1,6 @@
-<#
+﻿<#
 	.SYNOPSIS
-	Enable tab completion to invoke for functions if you do not know function name
+	Enable tab completion to invoke functions if you do not know their names
 
 	.VERSION
 	8.0.0
@@ -30,7 +30,7 @@
 #Requires -RunAsAdministrator
 #Requires -Version 7.6
 
-# Import localizations before dot-sourcing private functions: WinAPI.ps1 needs them to display warnings
+# Import localizations to display the warning below if the script was not dot-sourced. InitialActions imports them again
 try
 {
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture $PSUICulture -BaseDirectory $PSScriptRoot\Module\Localizations -FileName Sophia -ErrorAction Stop
@@ -41,7 +41,7 @@ catch
 	Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\Module\Localizations -FileName Sophia -ErrorAction Ignore
 }
 
-# Check whether script wasn't dot-sourced, but called explicitly. Must go before importing the module
+# Check whether script wasn't dot-sourced, but called explicitly. Must go before running InitialActions
 if ($MyInvocation.InvocationName -ne ".")
 {
 	Write-Warning -Message $Localization.DotSourceFunction
@@ -54,24 +54,10 @@ if ($MyInvocation.InvocationName -ne ".")
 	return
 }
 
-$Global:Failed = $false
-
-# Unload and import private functions and module
-Get-ChildItem -Path function: | Where-Object -FilterScript {$_.ScriptBlock.File -match "Sophia_Script_for_Windows"} | Remove-Item -Force
-Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
-Import-Module -Name $PSScriptRoot\Module\Manifest\SophiaScript.psd1 -PassThru -Force
-Get-ChildItem -Path $PSScriptRoot\Module\Private | ForEach-Object -Process {. $_.FullName}
-
-# Global variable if WinAPI.ps1 failed to compile the code
-if ($Global:Failed)
-{
-	exit
-}
-
-# Run initial checks
+# Import the module and private functions, and run initial checks
+. $PSScriptRoot\Module\Private\InitialActions.ps1
 InitialActions
 
-# Global variable if checks failed
 if ($Global:Failed)
 {
 	exit

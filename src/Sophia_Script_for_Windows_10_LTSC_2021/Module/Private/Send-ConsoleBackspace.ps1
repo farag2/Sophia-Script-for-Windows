@@ -1,6 +1,6 @@
-<#
+﻿<#
 	.SYNOPSIS
-	Bring the Sophia Script console window to the foreground and emulate the Backspace key sending to prevent the console window to freeze
+	Bring the Sophia Script console window to the foreground and emulate sending the Backspace key to prevent the console window from freezing
 
 	.EXAMPLE
 	Send-ConsoleBackspace
@@ -24,7 +24,7 @@ function Global:Send-ConsoleBackspace
 		{
 			Start-Sleep -Seconds 1
 
-			# Emulate the Backspace key sending
+			# Emulate sending the Backspace key
 			[System.Windows.Forms.SendKeys]::SendWait("{BACKSPACE 1}")
 		}
 	}
