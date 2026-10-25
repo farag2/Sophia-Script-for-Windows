@@ -7,13 +7,15 @@ if ($Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Sev
 {
 	Write-Verbose -Message "Found script issue" -Verbose
 
+	# Format-Table drops columns that don't fit into the console width (120 characters on GitHub Actions runners), so the width is set explicitly
+	# Paths relative to the repository root keep the table narrow
 	$Results | Where-Object -FilterScript {($_.Severity -eq "Error") -or ($_.Severity -eq "ParseError")} | ForEach-Object -Process {
 		[PSCustomObject]@{
+			Path    = Resolve-Path -Path $_.ScriptPath -Relative
 			Line    = $_.Line
 			Message = $_.Message
-			Path    = $_.ScriptPath
 		}
-	} | Format-Table -AutoSize -Wrap
+	} | Format-Table -AutoSize -Wrap | Out-String -Width 4096
 
 	# Exit with a non-zero status to fail the job
 	exit 1
@@ -210,7 +212,15 @@ if ($Problems)
 			[int]("$($_."String Number")".Split(",")[0])
 		}
 	}
-	$Problems | Sort-Object -Property "Full Path", $FirstLineNumber | Format-Table -AutoSize -Wrap
+
+	# Format-Table drops columns that don't fit into the console width (120 characters on GitHub Actions runners), so the width is set explicitly
+	# Paths relative to the repository root keep the table narrow
+	$Problems | Sort-Object -Property "Full Path", $FirstLineNumber | Format-Table -Property @(
+		@{Name = "Path"; Expression = {Resolve-Path -Path $_."Full Path" -Relative}},
+		"Key",
+		"String Number",
+		"Missing In"
+	) -AutoSize -Wrap | Out-String -Width 4096
 
 	exit 1
 }
