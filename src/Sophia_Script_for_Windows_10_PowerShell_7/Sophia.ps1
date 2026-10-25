@@ -927,14 +927,6 @@ Uninstall-UWPApps
 # Download and install "HEVC Video Extensions from Device Manufacturer" to be able to open .heic and .heif formats
 # Скачать и установить "Расширения для видео HEVC от производителя устройства", чтобы иметь возможность открывать форматы .heic и .heif
 Install-HEVC
-
-# Disable Cortana autostarting
-# Выключить автозагрузку Кортана
-CortanaAutostart -Disable
-
-# Enable Cortana autostarting (default value)
-# Включить автозагрузку Кортана (значение по умолчанию)
-# CortanaAutostart -Enable
 #endregion UWP apps
 
 #region Gaming
