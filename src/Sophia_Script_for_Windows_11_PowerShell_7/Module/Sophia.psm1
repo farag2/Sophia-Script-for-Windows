@@ -45,15 +45,48 @@
 function Logging
 {
 	$TranscriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
-	Start-Transcript -Path $PSScriptRoot\..\$TranscriptFilename.txt -Force
+	Start-Transcript -Path "$PSScriptRoot\..\$TranscriptFilename.txt" -Force
 }
 
 # Create restore point for the system drive
 function CreateRestorePoint
 {
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" -Name DisableSR, DisableConfig -Force -ErrorAction Ignore
+	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" -Name DisableSR
+	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" -Name DisableConfig
+
+	try
+	{
+		Get-Service -Name VSS, swprv -ErrorAction Stop | Where-Object -FilterScript {$_.StartType -eq "Disabled"} | Set-Service -StartupType Manual -ErrorAction Stop
+	}
+	catch
+	{
+		# Get the exact string where script failed
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.TargetObject), $Localization.ReinstallWindows -join " ")
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message $Localization.AskQuestion -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
+	}
+
 	# Check whether system protection is turned on
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
-	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
+	$SystemProtection = $null
+	if ($SystemDriveUniqueID)
+	{
+		$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
+	}
 
 	# System protection is turned off
 	if (-not $SystemProtection)
@@ -62,20 +95,18 @@ function CreateRestorePoint
 		Enable-ComputerRestore -Drive $env:SystemDrive
 	}
 
-	# Never skip creating a restore point
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
-
 	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ($Localization.CreatingRestorePoint, ([WinAPI.GetStrings]::GetString(12612)) -join " ") -Verbose
 
+	# Never skip creating a restore point
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
 	Checkpoint-Computer -Description "Sophia Script for Windows" -RestorePointType MODIFY_SETTINGS
-
-	# Revert the System Restore checkpoint creation frequency to 1440 minutes
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -Force -ErrorAction Ignore
 }
 #endregion Protection
 
 #region Privacy & Telemetry
+
 <#
 	.SYNOPSIS
 	The Connected User Experiences and Telemetry (DiagTrack) service
@@ -1132,6 +1163,7 @@ function BingSearch
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
+
 <#
 	.SYNOPSIS
 	"This PC" icon on Desktop
@@ -3890,6 +3922,7 @@ function StartAccountNotifications
 #endregion UI & Personalization
 
 #region OneDrive
+
 <#
 	.SYNOPSIS
 	OneDrive
@@ -4131,6 +4164,7 @@ function OneDrive
 #endregion OneDrive
 
 #region System
+
 <#
 	.SYNOPSIS
 	Storage Sense
@@ -5938,11 +5972,32 @@ function RecommendedTroubleshooting
 		$Default
 	)
 
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -Force -ErrorAction Ignore
+	if (-not (Get-Service -Name WerSvc -ErrorAction Ignore))
+	{
+		$WerSvc = [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\wersvc.dll,-100")
 
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message (($Localization.WindowsComponentStabilityDisrupted -f $WerSvc), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.WindowsComponentStabilityDisrupted -f $WerSvc), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry
+
+	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection))
+	{
+		New-Item -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Force
+	}
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
+	}
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
 
 	# Turn on Windows Error Reporting
 	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
@@ -5952,25 +6007,26 @@ function RecommendedTroubleshooting
 	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport
 
 	Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Enable-ScheduledTask
-	Get-Service -Name WerSvc | Set-Service -StartupType Manual
-	Get-Service -Name WerSvc | Start-Service
+	Get-Service -Name WerSvc | Set-Service -StartupType Manual -PassThru
+	Get-Service -Name WerSvc | Start-Service -PassThru
+	Enable-WindowsErrorReporting
+
+
+	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
+	{
+		New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
+	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Automatically"
 		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
-			}
+			# Run troubleshooter automatically, then notify me
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
 		}
 		"Default"
 		{
-			if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
-			{
-				New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
-			}
+			# Ask me before running troubleshooter
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 2 -Force
 		}
 	}
@@ -6108,7 +6164,7 @@ function F1HelpPage
 	NumLock -Disable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function NumLock
 {
@@ -7461,6 +7517,7 @@ function WindowsAI
 #endregion System
 
 #region WSL
+
 <#
 	.SYNOPSIS
 	Install Windows Subsystem for Linux (WSL) and a Linux distribution selected in a pop-up form
@@ -7601,6 +7658,7 @@ function Install-WSL
 #endregion WSL
 
 #region UWP apps
+
 <#
 	.SYNOPSIS
 	Uninstall UWP apps
@@ -7771,6 +7829,7 @@ function Uninstall-UWPApps
 		"Microsoft.XboxGameCallableUI"
 	)
 
+	# Get all packages
 	$PackagesIds = [Windows.Management.Deployment.PackageManager]::new().FindPackages() | Select-Object -Property DisplayName -ExpandProperty Id | Select-Object -Property Name, DisplayName
 
 	# Resource packages may have an empty DisplayName, so take the first non-empty value for each package name
@@ -7966,6 +8025,7 @@ function Uninstall-UWPApps
 #endregion UWP apps
 
 #region Gaming
+
 <#
 	.SYNOPSIS
 	XBOX Game Bar
@@ -8060,13 +8120,18 @@ function XBOXGameTips
 		$Enable
 	)
 
-	if (-not (Get-AppxPackage -Name Microsoft.GamingApp))
+	if (-not (Get-AppxPackage -Name Microsoft.XboxGamingOverlay))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.PackageNotInstalled -f "XBOX"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.PackageNotInstalled -f "XBOX"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.PackageNotInstalled -f "XBOX Game Bar"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.PackageNotInstalled -f "XBOX Game Bar"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
+	}
+
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\GameBar))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\GameBar -Force
 	}
 
 	switch ($PSCmdlet.ParameterSetName)
@@ -8077,6 +8142,10 @@ function XBOXGameTips
 		}
 		"Enable"
 		{
+			# We need to turn XBOX Game Bar first
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\GameDVR -Name AppCaptureEnabled -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path HKCU:\System\GameConfigStore -Name GameDVR_Enabled -PropertyType DWord -Value 1 -Force
+
 			New-ItemProperty -Path HKCU:\Software\Microsoft\GameBar -Name ShowStartupPanel -PropertyType DWord -Value 1 -Force
 		}
 	}
@@ -8099,7 +8168,7 @@ function XBOXGameTips
 	GPUScheduling -Disable
 
 	.NOTES
-	Only with a dedicated GPU and WDDM version is 2.7 or higher. Restart needed
+	Only with a dedicated GPU and WDDM version is 2.7 or higher
 
 	.NOTES
 	Machine-wide
@@ -8127,28 +8196,40 @@ function GPUScheduling
 	{
 		"Enable"
 		{
-			# Checking whether PC has an external graphics card
-			$AdapterDACType = Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)}
 			# Checking whether Windows is not installed on a virtual machine
 			$ComputerSystemModel = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem).Model
-			$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
-			# Checking whether WDDM version is 2.7 or higher
-			if ($AdapterDACType -and ($ComputerSystemModel -notmatch "Virtual") -and ($WddmVersion_Min -ge 2700))
+			if ($ComputerSystemModel -match "Virtual")
 			{
-				New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers -Name HwSchMode -PropertyType DWord -Value 2 -Force
-			}
-			else
-			{
-				if ($WddmVersion_Min -lt 2700)
-				{
-					Write-Information -MessageData "" -InformationAction Continue
-					$WddmVersion_Min = ($WddmVersion_Min / 1000).ToString("0.0", [System.Globalization.CultureInfo]::InvariantCulture)
-					Write-Verbose -Message (($Localization.WDDMVersionUnsupported -f $WddmVersion_Min), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-					Write-Error -Message (($Localization.WDDMVersionUnsupported -f $WddmVersion_Min), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.VirtualMachineDetected, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.VirtualMachineDetected, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
-					return
-				}
+				return
 			}
+
+			# Checking whether PC has an external graphics card
+			$AdapterDACType = Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_VideoController | Where-Object -FilterScript {($_.AdapterDACType -ne "Internal") -and ($null -ne $_.AdapterDACType)}
+			if (-not $AdapterDACType)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.DedicatedGPUNotFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.DedicatedGPUNotFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			# Checking whether WDDM version is 2.7 or higher. $null -lt 2700 is $true, so a missing value is also unsupported
+			$WddmVersion_Min = [Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\GraphicsDrivers\FeatureSetUsage", "WddmVersion_Min", $null)
+			if ($WddmVersion_Min -lt 2700)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message (($Localization.WDDMVersionUnsupported -f $WddmVersion_Min), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.WDDMVersionUnsupported -f $WddmVersion_Min), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\GraphicsDrivers -Name HwSchMode -PropertyType DWord -Value 2 -Force
 		}
 		"Disable"
 		{
@@ -8159,6 +8240,7 @@ function GPUScheduling
 #endregion Gaming
 
 #region Scheduled tasks
+
 <#
 	.SYNOPSIS
 	The "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
@@ -8789,7 +8871,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 }
 
 # Run the task
-Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
+Get-ChildItem -Path `$env:TEMP -Recurse -Force -ErrorAction Ignore | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 # Unnecessary folders to remove
 `$Paths = @(
@@ -8899,6 +8981,7 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 #endregion Scheduled tasks
 
 #region Microsoft Defender & Security
+
 <#
 	.SYNOPSIS
 	Microsoft Defender Exploit Guard network protection
@@ -9695,6 +9778,7 @@ function LocalSecurityAuthority
 #endregion Microsoft Defender & Security
 
 #region Context menu
+
 <#
 	.SYNOPSIS
 	The "Extract all" item in the Windows Installer (.msi) context menu
@@ -9712,7 +9796,7 @@ function LocalSecurityAuthority
 	MSIExtractContext -Hide
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function MSIExtractContext
 {
@@ -9770,7 +9854,7 @@ function MSIExtractContext
 	CABInstallContext -Hide
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function CABInstallContext
 {
@@ -9976,7 +10060,7 @@ function OpenWindowsTerminalAdminContext
 	}
 
 	# Save in UTF-8 with BOM despite JSON must not have the BOM: https://datatracker.ietf.org/doc/html/rfc8259#section-8.1. Otherwise Terminal profile names which contain non-Latin characters will have "?" instead of titles
-	ConvertTo-Json -InputObject $Terminal -Depth 4 | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding utf8BOM -Force
+	ConvertTo-Json -InputObject $Terminal -Depth 100 | Set-Content -Path "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTerminal_8wekyb3d8bbwe\LocalState\settings.json" -Encoding utf8BOM -Force
 }
 #endregion Context menu
 
@@ -10068,7 +10152,8 @@ function ScanRegistryPolicies
 				}
 			}
 
-			$Value = Get-ItemPropertyValue -Path $Key.PSPath -Name $Item
+			# Get-ItemPropertyValue expands environment variables in REG_EXPAND_SZ values, so the raw value is read
+			$Value = $Key.GetValue($Item, $null, "DoNotExpandEnvironmentNames")
 
 			Write-Verbose -Message ([string]($Key.Name, "|", $Item, "|", $Value)) -Verbose
 

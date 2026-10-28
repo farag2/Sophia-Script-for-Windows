@@ -154,7 +154,7 @@ function InitialActions
 	{
 		# Get the exact string where script failed
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.TargetObject), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue

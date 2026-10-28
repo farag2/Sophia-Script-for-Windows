@@ -86,8 +86,9 @@ function Sophia
 $Completions = & {
 	# Functions with an argument that accepts a set of values
 	$ValidValuesFunctions = @{
-		"PinToStart"             = "Tiles"
-		"Install-DotNetRuntimes" = "Runtimes"
+		"PinToStart"                  = "Tiles"
+		"Install-DotNetRuntimes"      = "Runtimes"
+		"PreventEdgeShortcutCreation" = "Channels"
 	}
 
 	# Functions with several arguments, each of them accepts its own set of values
