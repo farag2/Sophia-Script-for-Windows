@@ -49,6 +49,13 @@ function Global:Set-UserShellFolder
 		Set-Content -Path "$Path\desktop.ini" -Value $DesktopINI[$UserFolder] -Encoding Unicode -Force
 		(Get-Item -Path "$Path\desktop.ini" -Force).Attributes = "Hidden", "System", "Archive"
 
+		# Make File Explorer re-read folder icon and name
+		[WinAPI.KnownFolders]::UpdateFolder($Path)
+		if (Test-Path -Path $CurrentUserFolderPath)
+		{
+			[WinAPI.KnownFolders]::UpdateFolder($CurrentUserFolderPath)
+		}
+
 		# Warn user if some files are left in an old folder
 		if (Get-ChildItem -Path $CurrentUserFolderPath -Force -ErrorAction Ignore | Select-Object -First 1)
 		{

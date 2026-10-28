@@ -45,15 +45,62 @@
 function Logging
 {
 	$TranscriptFilename = "Log-$((Get-Date).ToString("dd.MM.yyyy-HH-mm"))"
-	Start-Transcript -Path $PSScriptRoot\..\$TranscriptFilename.txt -Force
+	Start-Transcript -Path "$PSScriptRoot\..\$TranscriptFilename.txt" -Force
 }
 
 # Create restore point for the system drive
 function CreateRestorePoint
 {
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" -Name DisableSR, DisableConfig -Force -ErrorAction Ignore
+	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" -Name DisableSR
+	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows NT\SystemRestore" -Name DisableConfig
+
+	try
+	{
+		Get-Service -Name VSS, swprv -ErrorAction Stop | Where-Object -FilterScript {$_.StartType -eq "Disabled"} | Set-Service -StartupType Manual -ErrorAction Stop
+	}
+	catch
+	{
+		# Set-Service and Start-Service pass the service object, Get-Service passes the name, other cmdlets may pass nothing
+		$Component = if ($_.TargetObject -is [System.ServiceProcess.ServiceController])
+		{
+			$_.TargetObject.Name
+		}
+		elseif ($_.TargetObject)
+		{
+			$_.TargetObject
+		}
+		else
+		{
+			$_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()
+		}
+
+		# Get the exact string where script failed
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $Component), $Localization.ReinstallWindows -join " ")
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message $Localization.AskQuestion -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
+	}
+
 	# Check whether system protection is turned on
 	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
-	$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
+	$SystemProtection = $null
+	if ($SystemDriveUniqueID)
+	{
+		$SystemProtection = ((Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SPP\Clients" -ErrorAction Ignore)."{09F7EDC5-294E-4180-AF6A-FB0E6A0E9513}") | Where-Object -FilterScript {$_ -match [regex]::Escape($SystemDriveUniqueID)}
+	}
 
 	# System protection is turned off
 	if (-not $SystemProtection)
@@ -62,20 +109,18 @@ function CreateRestorePoint
 		Enable-ComputerRestore -Drive $env:SystemDrive
 	}
 
-	# Never skip creating a restore point
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
-
 	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ($Localization.CreatingRestorePoint, ([WinAPI.GetStrings]::GetString(12612)) -join " ") -Verbose
 
+	# Never skip creating a restore point
+	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 0 -Force
 	Checkpoint-Computer -Description "Sophia Script for Windows" -RestorePointType MODIFY_SETTINGS
-
-	# Revert the System Restore checkpoint creation frequency to 1440 minutes
-	New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -PropertyType DWord -Value 1440 -Force
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\SystemRestore" -Name SystemRestorePointCreationFrequency -Force -ErrorAction Ignore
 }
 #endregion Protection
 
 #region Privacy & Telemetry
+
 <#
 	.SYNOPSIS
 	The Connected User Experiences and Telemetry (DiagTrack) service
@@ -428,12 +473,12 @@ function ScheduledTasks
 	{
 		"Enable"
 		{
-			$ScheduledTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)} | Sort-Object -Property TaskName)
+			$ScheduledTasks = @(Get-ScheduledTask -TaskName $CheckedScheduledTasks -ErrorAction Ignore | Where-Object -FilterScript {$_.State -eq "Disabled"} | Sort-Object -Property TaskName)
 			$ButtonText = $Localization.Enable
 		}
 		"Disable"
 		{
-			$ScheduledTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -ne "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)} | Sort-Object -Property TaskName)
+			$ScheduledTasks = @(Get-ScheduledTask -TaskName $CheckedScheduledTasks -ErrorAction Ignore | Where-Object -FilterScript {$_.State -ne "Disabled"} | Sort-Object -Property TaskName)
 			$ButtonText = $Localization.Disable
 		}
 	}
@@ -724,6 +769,7 @@ function AdvertisingID
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
+
 <#
 	.SYNOPSIS
 	"This PC" icon on Desktop
@@ -1328,195 +1374,47 @@ function UserFolders
 		$Videos
 	)
 
-	switch ($MyInvocation.BoundParameters.Keys)
+	# Folder GUIDs in "This PC" by parameter name
+	$Folders = [ordered]@{
+		ThreeDObjects = "{31C0DD25-9439-4F12-BF41-7FF4EDA38722}"
+		Desktop       = "{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}"
+		Documents     = "{f42ee2d3-909f-4907-8871-4c22fc0bf756}"
+		Downloads     = "{7d83ee9b-2244-4e70-b1f5-5393042af1e4}"
+		Music         = "{a0c69a99-21c8-4671-8703-7934162fcf1d}"
+		Pictures      = "{0ddd015d-b06c-45d5-8c4c-f59713854639}"
+		Videos        = "{35286a68-3c57-41a1-bbb1-0eae73d76c95}"
+	}
+
+	foreach ($Folder in $Folders.Keys)
 	{
-		"ThreeDObjects"
+		# Only passed parameters are processed. Common parameters, e.g. -Verbose, aren't in $Folders
+		if (-not $PSBoundParameters.ContainsKey($Folder))
 		{
-			switch ($ThreeDObjects)
+			continue
+		}
+
+		# Both 64-bit and 32-bit views
+		$Paths = @(
+			"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\$($Folders[$Folder])\PropertyBag",
+			"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\$($Folders[$Folder])\PropertyBag"
+		)
+
+		switch ($PSBoundParameters[$Folder])
+		{
+			"Hide"
 			{
-				"Hide"
+				foreach ($Path in $Paths)
 				{
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
+					if (-not (Test-Path -Path $Path))
 					{
-						New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
+						New-Item -Path $Path -Force
 					}
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-				}
-				"Show"
-				{
-					$Paths = @(
-						"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag",
-						"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{31C0DD25-9439-4F12-BF41-7FF4EDA38722}\PropertyBag"
-					)
-					Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
+					New-ItemProperty -Path $Path -Name ThisPCPolicy -PropertyType String -Value Hide -Force
 				}
 			}
-		}
-		"Desktop"
-		{
-			switch ($Desktop)
+			"Show"
 			{
-				"Hide"
-				{
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag" -Force
-					}
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-				}
-				"Show"
-				{
-					$Paths = @(
-						"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag",
-						"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{B4BFCC3A-DB2C-424C-B029-7FE99A87C641}\PropertyBag"
-					)
-					Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
-				}
-			}
-		}
-		"Documents"
-		{
-			switch ($Documents)
-			{
-				"Hide"
-				{
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag" -Force
-					}
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-				}
-				"Show"
-				{
-					$Paths = @(
-						"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag",
-						"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{f42ee2d3-909f-4907-8871-4c22fc0bf756}\PropertyBag"
-					)
-					Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
-				}
-			}
-		}
-		"Downloads"
-		{
-			switch ($Downloads)
-			{
-				"Hide"
-				{
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag" -Force
-					}
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-				}
-				"Show"
-				{
-					$Paths = @(
-						"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag",
-						"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{7d83ee9b-2244-4e70-b1f5-5393042af1e4}\PropertyBag"
-					)
-					Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
-				}
-			}
-		}
-		"Music"
-		{
-			switch ($Music)
-			{
-				"Hide"
-				{
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag" -Force
-					}
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-				}
-				"Show"
-				{
-					$Paths = @(
-						"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag",
-						"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{a0c69a99-21c8-4671-8703-7934162fcf1d}\PropertyBag"
-					)
-					Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
-				}
-			}
-		}
-		"Pictures"
-		{
-			switch ($Pictures)
-			{
-				"Hide"
-				{
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag" -Force
-					}
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-				}
-				"Show"
-				{
-					$Paths = @(
-						"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag",
-						"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{0ddd015d-b06c-45d5-8c4c-f59713854639}\PropertyBag"
-					)
-					Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
-				}
-			}
-		}
-		"Videos"
-		{
-			switch ($Videos)
-			{
-				"Hide"
-				{
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag" -Force
-					}
-					if (-not (Test-Path -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag"))
-					{
-						New-Item -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag" -Force
-					}
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-					New-ItemProperty -Path "HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag" -Name ThisPCPolicy -PropertyType String -Value Hide -Force
-				}
-				"Show"
-				{
-					$Paths = @(
-						"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag",
-						"HKLM:\SOFTWARE\Wow6432Node\Microsoft\Windows\CurrentVersion\Explorer\FolderDescriptions\{35286a68-3c57-41a1-bbb1-0eae73d76c95}\PropertyBag"
-					)
-					Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
-				}
+				Remove-ItemProperty -Path $Paths -Name ThisPCPolicy -Force -ErrorAction Ignore
 			}
 		}
 	}
@@ -1639,9 +1537,6 @@ function QuickAccessFrequentFolders
 	.PARAMETER SearchIcon
 	Show the search icon on the taskbar
 
-	.PARAMETER SearchIconLabel
-	Show the search icon and label on the taskbar
-
 	.PARAMETER SearchBox
 	Show the search box on the taskbar
 
@@ -1688,9 +1583,9 @@ function TaskbarSearch
 	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name DisableSearch
 	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Search" -Name SearchOnTaskbarMode
 
-	# Check whether small taskbar buttons enabled
+	# The search box can't be shown with small taskbar buttons, so only -SearchBox is skipped
 	$TaskbarSmallIcons = ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "TaskbarSmallIcons", $null))
-	if ($TaskbarSmallIcons -eq 1)
+	if ($SearchBox -and ($TaskbarSmallIcons -eq 1))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.TaskbarSmallIcons, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -2159,7 +2054,7 @@ function WindowsColorMode
 	NewAppInstalledNotification -Show
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function NewAppInstalledNotification
 {
@@ -3100,6 +2995,7 @@ function AppSuggestions
 #endregion UI & Personalization
 
 #region System
+
 <#
 	.SYNOPSIS
 	Storage Sense
@@ -3649,7 +3545,8 @@ function WindowsFeatures
 		$CheckBox.Margin    = "0,4"
 		$CheckBox.Content   = $StackPanel
 		$CheckBox.ToolTip   = $Feature.Description
-		$CheckBox.IsChecked = $Feature.FeatureName -in $CheckedFeatures
+		# Only features from $CheckedFeatures are displayed
+		$CheckBox.IsChecked = $true
 		$CheckBox.Tag       = $Feature
 		$CheckBox.Add_Click($UpdateState)
 
@@ -4863,7 +4760,7 @@ function F1HelpPage
 	NumLock -Disable
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function NumLock
 {
@@ -5822,6 +5719,7 @@ function RegistryBackup
 #endregion System
 
 #region Scheduled tasks
+
 <#
 	.SYNOPSIS
 	The "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
@@ -6452,7 +6350,7 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 }
 
 # Run the task
-Get-ChildItem -Path `$env:TEMP -Recurse -Force | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force
+Get-ChildItem -Path `$env:TEMP -Recurse -Force -ErrorAction Ignore | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 # Unnecessary folders to remove
 `$Paths = @(
@@ -6562,6 +6460,7 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 #endregion Scheduled tasks
 
 #region Windows Defender & Security
+
 <#
 	.SYNOPSIS
 	Microsoft Defender Exploit Guard network protection
@@ -7059,6 +6958,7 @@ function WindowsSandbox
 #endregion Windows Defender & Security
 
 #region Context menu
+
 <#
 	.SYNOPSIS
 	The "Extract all" item in the Windows Installer (.msi) context menu
@@ -7076,7 +6976,7 @@ function WindowsSandbox
 	MSIExtractContext -Hide
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function MSIExtractContext
 {
@@ -7134,7 +7034,7 @@ function MSIExtractContext
 	CABInstallContext -Hide
 
 	.NOTES
-	Current user
+	Machine-wide
 #>
 function CABInstallContext
 {
@@ -7202,39 +7102,135 @@ function CABInstallContext
 
 	.NOTES
 	Machine-wide
-	Current user
 #>
 function ScanRegistryPolicies
 {
-	$ADMXPolicies = @{}
+	# Registry values described in ADMX files: scope -> key -> value names. "*" means any value in the key (list)
+	# Hashtables are case-insensitive, as the registry
+	$ADMXPolicies = @{
+		Computer = @{}
+		User     = @{}
+	}
+	$Scopes = @{
+		Machine = @("Computer")
+		User    = @("User")
+		Both    = @("Computer", "User")
+	}
+
 	foreach ($ADMX in (Get-ChildItem -Path "$env:SystemRoot\PolicyDefinitions" -File -Filter *.admx -Force))
 	{
-		[xml]$XML = Get-Content -Path $ADMX.FullName -Encoding UTF8 -Raw
+		[xml]$XML = Get-Content -Path $ADMX.FullName -Raw
 
 		foreach ($Policy in $XML.policyDefinitions.policies.policy)
 		{
-			$ADMXPolicies["$($Policy.key)|$($Policy.name)"] = $true
+			# Registry values of the policy
+			$Values = @()
 
+			# The policy value itself
 			if ($Policy.valueName)
 			{
-				$ADMXPolicies["$($Policy.key)|$($Policy.valueName)"] = $true
+				$Values += @{Key = $Policy.key; Name = $Policy.valueName}
+			}
+
+			# <elements>. An element may have its own key
+			foreach ($Element in @($Policy.elements.decimal) + @($Policy.elements.text) + @($Policy.elements.multiText) + @($Policy.elements.enum) + @($Policy.elements.boolean))
+			{
+				if ($Element.valueName)
+				{
+					$Key = if ($Element.key) {$Element.key} else {$Policy.key}
+					$Values += @{Key = $Key; Name = $Element.valueName}
+				}
+			}
+
+			# List value names are set by the user, so any value in the key belongs to the policy
+			foreach ($List in $Policy.elements.list)
+			{
+				$Key = if ($List.key) {$List.key} else {$Policy.key}
+				$Values += @{Key = $Key; Name = "*"}
+			}
+
+			# <item> in enabledList, disabledList, and valueList of enum items. They always have their own key
+			# .item on an array returns the array indexer, not the child nodes, so enum items are collected in a loop
+			$Items = @($Policy.enabledList.item) + @($Policy.disabledList.item)
+			foreach ($Enum in $Policy.elements.enum)
+			{
+				foreach ($EnumItem in $Enum.item)
+				{
+					$Items += $EnumItem.valueList.item
+				}
+			}
+
+			foreach ($Item in $Items)
+			{
+				if ($Item.valueName)
+				{
+					$Values += @{Key = $Item.key; Name = $Item.valueName}
+				}
+			}
+
+			foreach ($Scope in $Scopes[$Policy.class])
+			{
+				foreach ($Value in $Values)
+				{
+					if (-not $ADMXPolicies[$Scope][$Value.Key])
+					{
+						$ADMXPolicies[$Scope][$Value.Key] = @{}
+					}
+					$ADMXPolicies[$Scope][$Value.Key][$Value.Name] = $true
+				}
 			}
 		}
 	}
 
-	# Policy paths to scan recursively
+	# Policy roots, and a few ordinary settings that are also set as policies, e.g. by Win32LongPathSupport
+	# Other ordinary settings from ADMX files exist by default, and they would turn into policies
 	$Paths = @(
+		"HKLM:\SOFTWARE\Policies",
 		"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies",
-		"HKLM:\SOFTWARE\Policies\Microsoft",
-		"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies",
-		"HKCU:\Software\Policies\Microsoft"
+		"HKLM:\SYSTEM\CurrentControlSet\Policies",
+		"HKLM:\SYSTEM\CurrentControlSet\Control\FileSystem",
+		"HKCU:\Software\Policies",
+		"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies"
 	)
+
+	# Values written by Windows or apps, not by policies
+	$Exclusions = @(
+		# Windows default
+		@{
+			Scope = "User"
+			Path  = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
+			Name  = "NoDriveTypeAutoRun"
+			Value = "145"
+		},
+		# Written by Windows during TPM provisioning
+		@{
+			Scope = "Computer"
+			Path  = "SOFTWARE\Policies\Microsoft\TPM"
+			Name  = "OSManagedAuthLevel"
+			Value = "5"
+		},
+		# Microsoft Edge "IE to Edge" browser helper object
+		@{
+			Scope = "Computer"
+			Path  = "SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Ext\CLSID"
+			Name  = "{1FD49718-1D00-4B19-AF5F-070AF6D5D54C}"
+			Value = "1"
+		},
+		# LongPathsEnabled exists by default, and only the turned on policy is taken
+		@{
+			Scope = "Computer"
+			Path  = "SYSTEM\CurrentControlSet\Control\FileSystem"
+			Name  = "LongPathsEnabled"
+			Value = "0"
+		}
+	)
+
 	# Root keys themselves and all their subkeys
-	$Keys = @(Get-Item -Path $Paths -Force -ErrorAction Ignore) + @(Get-ChildItem -Path $Paths -Recurse -Force -ErrorAction Ignore)
+	$Keys = @(Get-Item -Path $Paths -ErrorAction Ignore) + @(Get-ChildItem -Path $Paths -Recurse -ErrorAction Ignore)
 
 	foreach ($Key in $Keys)
 	{
-		$Scope = if ($Key.Name -match "HKEY_LOCAL_MACHINE")
+		$Scope = if ($Key.Name -like "HKEY_LOCAL_MACHINE\*")
 		{
 			"Computer"
 		}
@@ -7243,16 +7239,24 @@ function ScanRegistryPolicies
 			"User"
 		}
 
-		# e.g. SOFTWARE\Microsoft\Windows\CurrentVersion\Policies
+		# e.g. SOFTWARE\Policies\Microsoft\Windows\DataCollection
 		$KeyPath = $Key.Name.Replace("HKEY_LOCAL_MACHINE\", "").Replace("HKEY_CURRENT_USER\", "")
+
+		# Value names described in ADMX files for this key
+		$Names = $ADMXPolicies[$Scope][$KeyPath]
+		if (-not $Names)
+		{
+			continue
+		}
 
 		foreach ($Item in $Key.Property)
 		{
-			if (($Item -eq "(default)") -or (-not $ADMXPolicies["$KeyPath|$Item"]))
+			if (($Item -eq "(default)") -or (-not ($Names[$Item] -or $Names["*"])))
 			{
 				continue
 			}
 
+			# Add-Policy supports only these types
 			$Type = switch ($Key.GetValueKind($Item))
 			{
 				"DWord"
@@ -7268,8 +7272,24 @@ function ScanRegistryPolicies
 					"SZ"
 				}
 			}
+			if (-not $Type)
+			{
+				continue
+			}
 
-			$Value = Get-ItemPropertyValue -Path $Key.PSPath -Name $Item
+			# Get-ItemPropertyValue expands environment variables in REG_EXPAND_SZ values, so the raw value is read
+			$Value = $Key.GetValue($Item, $null, "DoNotExpandEnvironmentNames")
+
+			# GetValue returns REG_DWORD as Int32, so values higher than 0x7FFFFFFF are negative, e.g. 0xFFFFFFFF is -1
+			if (($Type -eq "DWORD") -and ($Value -lt 0))
+			{
+				$Value += 4294967296
+			}
+
+			if ($Exclusions | Where-Object -FilterScript {($_.Scope -eq $Scope) -and ($_.Path -eq $KeyPath) -and ($_.Name -eq $Item) -and ($_.Value -eq "$Value")})
+			{
+				continue
+			}
 
 			Write-Verbose -Message ([string]($Key.Name, "|", $Item, "|", $Value)) -Verbose
 

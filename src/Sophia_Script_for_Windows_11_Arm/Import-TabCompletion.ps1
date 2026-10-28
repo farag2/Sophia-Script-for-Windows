@@ -92,7 +92,8 @@ $Completions = & {
 
 	# Functions with an argument that accepts a set of values
 	$ValidValuesFunctions = @{
-		"Install-DotNetRuntimes" = "Runtimes"
+		"Install-DotNetRuntimes"      = "Runtimes"
+		"PreventEdgeShortcutCreation" = "Channels"
 	}
 
 	# Only functions defined in the module itself, excluding commands re-exported from nested or imported modules

@@ -24,7 +24,6 @@ function Import-WinAPI
 	$Global:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
 	$Global:CompilerParameters.GenerateInMemory = $true
 
-
 	# Extract localized strings from %SystemRoot%\System32\shell32.dll
 	$Signature = @{
 		Namespace          = "WinAPI"
@@ -188,7 +187,26 @@ public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, IntP
 	}
 	if (-not ("WinAPI.Cursor" -as [type]))
 	{
-		Add-Type @Signature
+		try
+		{
+			Add-Type @Signature -ErrorAction Stop
+		}
+		catch
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Write-Verbose -Message $Localization.AskQuestion -Verbose
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+			$Global:Failed = $true
+
+			exit
+		}
 	}
 
 	# Simulate pressing F5 to refresh Desktop and refresh desktop icons, environment variables, taskbar
@@ -240,6 +258,25 @@ public static void PostMessage()
 	}
 	if (-not ("WinAPI.UpdateEnvironment" -as [type]))
 	{
-		Add-Type @Signature
+		try
+		{
+			Add-Type @Signature -ErrorAction Stop
+		}
+		catch
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.CodeCompilationFailed, $Localization.ReinstallWindows -join " ")
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Write-Verbose -Message $Localization.AskQuestion -Verbose
+			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+			Write-Verbose -Message "https://t.me/sophianews" -Verbose
+			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+			$Global:Failed = $true
+
+			exit
+		}
 	}
 }

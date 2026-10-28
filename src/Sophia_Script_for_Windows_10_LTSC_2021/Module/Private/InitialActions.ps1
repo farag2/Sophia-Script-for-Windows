@@ -138,7 +138,6 @@ function InitialActions
 		$null = @(
 			Get-Service -Name Windefend, SecurityHealthService, wscsvc, wdFilter -ErrorAction Stop
 			Get-Service -Name SecurityHealthService -ErrorAction Stop | Start-Service -ErrorAction Stop
-			Get-Service -Name VSS, swprv -ErrorAction Stop | Where-Object -FilterScript {$_.StartType -eq "Disabled"} | Set-Service -StartupType Manual -ErrorAction Stop
 			Get-Service -Name SysMain -ErrorAction Stop | Set-Service -StartupType Automatic -PassThru -ErrorAction Stop | Start-Service -ErrorAction Stop
 
 			Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem -ErrorAction Stop
@@ -155,9 +154,22 @@ function InitialActions
 	}
 	catch
 	{
+		$Component = if ($_.TargetObject -is [System.ServiceProcess.ServiceController])
+		{
+			$_.TargetObject.Name
+		}
+		elseif ($_.TargetObject)
+		{
+			$_.TargetObject
+		}
+		else
+		{
+			$_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()
+		}
+
 		# Get the exact string where script failed
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $_.InvocationInfo.Line.Replace(" -ErrorAction Stop", "").Trim()), $Localization.ReinstallWindows -join " ")
+		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $Component), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
@@ -440,27 +452,16 @@ function InitialActions
 	}
 
 	# Check whether Microsoft Defender is a default AV
-	$Global:DefenderDefaultAV = $true
-	$InstalledAVs = @(Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct)
-	if ($InstalledAVs.Count -gt 1)
-	{
-		$productState = ($InstalledAVs | Where-Object -FilterScript {$_.instanceGuid -eq "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}"}).productState
-		# Defender may be absent from the list if a third-party AV replaced it
-		if (-not $productState)
-		{
-			# Defender is not a default AV
-			$Global:DefenderDefaultAV = $false
-		}
-		else
-		{
-			$DefenderState = ('0x{0:x}' -f $productState).Substring(3, 2)
-			if ($DefenderState -match "00|01")
-			{
-				# Defender is not a default AV
-				$Global:DefenderDefaultAV = $false
-			}
-		}
+	# AMRunningMode is "Normal" only if Defender is the active AV. Otherwise it is "Passive Mode", "SxS Passive Mode" or "EDR Block Mode"
+	$AMRunningMode = (Get-CimInstance -Namespace root/Microsoft/Windows/Defender -ClassName MSFT_MpComputerStatus).AMRunningMode -eq "Normal"
+
+	# Check whether there's a turned on third-party AV. {D68DDC3A-831F-4fae-9E44-DA132C1ACF46} is Microsoft Defender
+	# Bits 12-15 of productState are WSC_SECURITY_PRODUCT_STATE: 0 is off, 1 is on, 2 is snoozed, 3 is expired
+	$ThirdPartyAV = Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct | Where-Object -FilterScript {
+		($_.instanceGuid -ne "{D68DDC3A-831F-4fae-9E44-DA132C1ACF46}") -and (($_.productState -band 0xF000) -eq 0x1000)
 	}
+
+	$Global:DefenderDefaultAV = $AMRunningMode -and (-not $ThirdPartyAV)	
 
 	# Check whether Controlled Folder Access is enabled
 	if ((Get-MpPreference).EnableControlledFolderAccess -eq 1)
