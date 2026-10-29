@@ -81,7 +81,7 @@ function CreateRestorePoint
 	}
 
 	# Check whether system protection is turned on
-	$SystemDriveUniqueID = (Get-Volume | Where-Object -FilterScript {$_.DriveLetter -eq "$($env:SystemDrive[0])"}).UniqueID
+	$SystemDriveUniqueID = (Get-Volume -DriveLetter "$($env:SystemDrive[0])").UniqueID
 	$SystemProtection = $null
 	if ($SystemDriveUniqueID)
 	{
@@ -151,8 +151,8 @@ function DiagTrackService
 	if (-not (Get-Service -Name DiagTrack -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.WindowsServiceNotFound -f "DiagTrack", ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.WindowsServiceNotFound -f "DiagTrack", ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.WindowsServiceNotFound -f "DiagTrack"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.WindowsServiceNotFound -f "DiagTrack"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -482,12 +482,12 @@ function ScheduledTasks
 	{
 		"Enable"
 		{
-			$ScheduledTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -eq "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)} | Sort-Object -Property TaskName)
+			$ScheduledTasks = @(Get-ScheduledTask -TaskName $CheckedScheduledTasks -ErrorAction Ignore | Where-Object -FilterScript {$_.State -eq "Disabled"} | Sort-Object -Property TaskName)
 			$ButtonText = $Localization.Enable
 		}
 		"Disable"
 		{
-			$ScheduledTasks = @(Get-ScheduledTask | Where-Object -FilterScript {($_.State -ne "Disabled") -and ($_.TaskName -in $CheckedScheduledTasks)} | Sort-Object -Property TaskName)
+			$ScheduledTasks = @(Get-ScheduledTask -TaskName $CheckedScheduledTasks -ErrorAction Ignore | Where-Object -FilterScript {$_.State -ne "Disabled"} | Sort-Object -Property TaskName)
 			$ButtonText = $Localization.Disable
 		}
 	}
@@ -650,7 +650,7 @@ function SigninInfo
 	{
 		"Disable"
 		{
-			$SID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
 			if (-not (Test-Path -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID"))
 			{
 				New-Item -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Force
@@ -659,7 +659,7 @@ function SigninInfo
 		}
 		"Enable"
 		{
-			$SID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_UserAccount | Where-Object -FilterScript {$_.Name -eq $env:USERNAME}).SID
+			$SID = [System.Security.Principal.WindowsIdentity]::GetCurrent().User.Value
 			Remove-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion\Winlogon\UserARSO\$SID" -Name OptOut -Force -ErrorAction Ignore
 		}
 	}
@@ -5731,7 +5731,7 @@ IconIndex=-238
 		{
 			# Store all fixed disks' letters except the system drive to call with Show-Menu function
 			# https://learn.microsoft.com/en-us/dotnet/api/system.io.drivetype
-			$DriveLetters = @((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_LogicalDisk | Where-Object -FilterScript {($_.DriveType -eq 3) -and ($_.Name -ne $env:SystemDrive)}).DeviceID | Sort-Object)
+			$DriveLetters = @((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_LogicalDisk -Filter "DriveType = 3" | Where-Object -FilterScript {$_.Name -ne $env:SystemDrive}).DeviceID | Sort-Object)
 			if (-not $DriveLetters)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
@@ -8348,7 +8348,7 @@ function CleanupTask
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-Get-Process -Name cleanmgr, Dism, DismHost | Stop-Process -Force
+Get-Process -Name cleanmgr, Dism, DismHost -ErrorAction Ignore | Stop-Process -Force -ErrorAction Ignore
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 `$ProcessInfo.FileName = "`$env:SystemRoot\System32\cleanmgr.exe"
@@ -8443,7 +8443,7 @@ if (-not ("WinAPI.QuietHours" -as [type]))
 	Add-Type @Signature
 }
 
-# Wait until it will be 0
+# Wait until it becomes 0
 while ([WinAPI.QuietHours]::GetState() -ne 0)
 {
 	Start-Sleep -Seconds 600
@@ -8652,17 +8652,17 @@ if (-not ("WinAPI.QuietHours" -as [type]))
 	Add-Type @Signature
 }
 
-# Wait until it will be 0
+# Wait until it becomes 0
 while ([WinAPI.QuietHours]::GetState() -ne 0)
 {
 	Start-Sleep -Seconds 600
 }
 
-# Wait until Windows Update service will stop
+# Wait until the Windows Update service stops
 (Get-Service -Name wuauserv).WaitForStatus("Stopped", "01:00:00")
-Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force | Remove-Item -Recurse -Force
+Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -Force -ErrorAction Ignore | Remove-Item -Recurse -Force -ErrorAction Ignore
 # Remove files which can be removed in a user scope only
-Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Remove-Item -Recurse
+Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse -ErrorAction Ignore | Remove-Item -Recurse -ErrorAction Ignore
 
 [Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] | Out-Null
 [Windows.Data.Xml.Dom.XmlDocument, Windows.Data.Xml.Dom.XmlDocument, ContentType = WindowsRuntime] | Out-Null
@@ -8854,14 +8854,15 @@ if (-not ("WinAPI.QuietHours" -as [type]))
 	Add-Type @Signature
 }
 
-# Wait until it will be 0
+# Wait until it becomes 0
 while ([WinAPI.QuietHours]::GetState() -ne 0)
 {
 	Start-Sleep -Seconds 600
 }
 
 # Run the task
-Get-ChildItem -Path `$env:TEMP -Recurse -Force -ErrorAction Ignore | Where-Object -FilterScript {`$_.CreationTime -lt (Get-Date).AddDays(-1)} | Remove-Item -Recurse -Force -ErrorAction Ignore
+`$Threshold = (Get-Date).AddDays(-1)
+Get-ChildItem -Path `$env:TEMP -Recurse -Force -ErrorAction Ignore | Where-Object -FilterScript {`$_.CreationTime -lt `$Threshold} | Remove-Item -Recurse -Force -ErrorAction Ignore
 
 # Unnecessary folders to remove
 `$Paths = @(
@@ -8881,7 +8882,7 @@ if (Test-Path -Path `$env:SystemDrive\Recovery\ReAgentOld.xml)
 {
 	`$Paths += "`$env:SystemDrive\Recovery"
 }
-Remove-Item -Path `$Paths -Recurse -Force
+Remove-Item -Path `$Paths -Recurse -Force -ErrorAction Ignore
 
 # C:\WINDOWS\System32\config\systemprofile\AppData\Local with garbage tw-*.tmp files
 # https://www.elevenforum.com/t/folder-c-windows-system32-config-systemprofile-app-data-local-running-full-with-empty-folders-after-latest-upgrade-to-25h2.40624/
@@ -9191,7 +9192,7 @@ function EventViewerCustomView
 	)
 
 	# Find and close eventvwr.msc by its argument
-	$EventvwrProcessID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {($_.Name -eq "mmc.exe") -and ($_.CommandLine -match "eventvwr.msc")}).Handle
+	$EventvwrProcessID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process -Filter "Name = 'mmc.exe'" | Where-Object -FilterScript {$_.CommandLine -match "eventvwr.msc"}).Handle
 	if ($EventvwrProcessID)
 	{
 		Get-Process -Id $EventvwrProcessID | Stop-Process -Force
