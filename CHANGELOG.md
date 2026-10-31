@@ -5,6 +5,39 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## 7.1.0 | 8.1.0 — 31.10.2026
+
+* Code refactoring goes on
+* `CortanaAutostart` function removed for Windows 1
+* ScheduledTasks, WindowsFeatures, WindowsCapabilities, Uninstall-UWPApps, and Install-WSL now use new UI style
+
+<table>
+  <tr>
+    <td align="center">
+      <img src="./img/UWP.png" width="400" alt="UWP apps removal"><br>
+      <sub>UWP apps</sub>
+    </td>
+    <td align="center">
+      <img src="./img/Tasks.png" width="400" alt="Scheduled tasks"><br>
+      <sub>Scheduled tasks</sub>
+    </td>
+  </tr>
+  <tr>
+    <td align="center">
+      <img src="./img/WSL.png" width="400" alt="WSL installation"><br>
+      <sub>WSL</sub>
+    </td>
+  </tr>
+</table>
+
+* Update initial checks
+* Added `TaskbarPosition` function for Windows 11 to manage taskbar position
+* The Wrapper's story has come to end: https://t.me/SophiaNews/5470
+  * The Wrapper was removed from the repository and it will stopped working
+  * @BenchTweakGaming has opened its [sources](https://github.com/BenchTweakGaming/SophiaScriptWrapper)
+* Fixed bugs, typos, and minor fixes
+* Updated Readmes
+
 ## 7.0.0 | 8.0.0 — 11.10.2026
 
 * Huge code factoring
