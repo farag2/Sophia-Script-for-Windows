@@ -3,10 +3,10 @@
 	Sophia Script for Windows is the most powerful PowerShell module for fine-tuning Windows on GitHub
 
 	.VERSION
-	7.0.0
+	7.1.0
 
 	.DATE
-	11.10.2026
+	31.10.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -110,6 +110,7 @@ function CreateRestorePoint
 	}
 
 	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message ($Localization.CreatingRestorePoint, ([WinAPI.GetStrings]::GetString(12612)) -join " ") -Verbose
 
 	# Never skip creating a restore point
@@ -8014,7 +8015,7 @@ function Uninstall-UWPApps
 			# Microsoft Teams
 			"MSTeams",
 
-			# Microsoft Edge Game Assist
+			# Microsoft Edge For Game Bar
 			"Microsoft.Edge.GameAssist",
 
 			# XBOX Game Bar

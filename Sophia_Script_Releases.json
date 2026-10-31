@@ -1,8 +1,8 @@
 {
-	"Sophia_Script_Windows_10": "7.0.0",
-	"Sophia_Script_Windows_10_LTSC_2019": "7.0.0",
-	"Sophia_Script_Windows_10_LTSC_2021": "7.0.0",
-	"Sophia_Script_Windows_11": "8.0.0",
-	"Sophia_Script_Windows_11_LTSC_2024": "8.0.0",
+	"Sophia_Script_Windows_10": "7.1.0",
+	"Sophia_Script_Windows_10_LTSC_2019": "7.1.0",
+	"Sophia_Script_Windows_10_LTSC_2021": "7.1.0",
+	"Sophia_Script_Windows_11": "8.1.0",
+	"Sophia_Script_Windows_11_LTSC_2024": "8.1.0",
 	"Sophia_Script_Wrapper": "2.8.44"
 }

@@ -7,10 +7,10 @@
 	Private functions are dot-sourced inside InitialActions, so all of them have to be declared as Global
 
 	.VERSION
-	7.0.0
+	7.1.0
 
 	.DATE
-	11.10.2026
+	31.10.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
@@ -26,7 +26,7 @@ function InitialActions
 
 	Set-StrictMode -Version Latest
 
-	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v7.0.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
+	$Host.UI.RawUI.WindowTitle = "Sophia Script for Windows 10 v7.1.0 | Made with $([System.Char]::ConvertFromUtf32(0x1F497)) of Windows | $([System.Char]0x00A9) Team Sophia, 2014$([System.Char]0x2013)2026"
 
 	# Unblock all files in the script folder by removing the Zone.Identifier alternate data stream with a value of "3"
 	Get-ChildItem -Path $PSScriptRoot\..\..\ -File -Recurse -Force | Unblock-File

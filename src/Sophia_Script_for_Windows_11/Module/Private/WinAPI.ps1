@@ -6,10 +6,10 @@
 	Import-WinAPI
 
 	.VERSION
-	8.0.0
+	8.1.0
 
 	.DATE
-	11.10.2026
+	31.10.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia

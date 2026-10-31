@@ -3,10 +3,10 @@
 	Default preset file for "Sophia Script for Windows 10 LTSC 2021"
 
 	.VERSION
-	7.0.0
+	7.1.0
 
 	.DATE
-	11.10.2026
+	31.10.2026
 
 	.COPYRIGHT
 	(c) 2014—2026 Team Sophia
