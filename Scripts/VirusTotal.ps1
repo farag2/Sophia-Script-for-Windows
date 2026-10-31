@@ -12,13 +12,85 @@ $DefenderPath = (Get-ChildItem -Path "$env:ProgramData\Microsoft\Windows Defende
 
 Get-Content -Path $env:TEMP\MpCmdRun.log
 
-$Reports = [System.Collections.Generic.List[PSCustomObject]]::new()
-
 $Headers = @{
 	"x-apikey" = $env:VirusTotal_API_Key
 }
 
-foreach ($File in @(Get-ChildItem -Path Sophia_Script -File))
+# Public API allows 4 requests per minute, so we make one request every 15 seconds. Set to 0 for a premium API key
+$RequestInterval = 15
+# How long to wait for the verdict on each file
+$TimeoutMinutes = 15
+
+$Script:LastRequest = [datetime]::MinValue
+
+function Invoke-VirusTotal
+{
+	param
+	(
+		[Parameter(Mandatory = $true)]
+		[string]
+		$Uri,
+
+		[string]
+		$Method = "Get",
+
+		[hashtable]
+		$Form
+	)
+
+	$Parameters = @{
+		Uri                = $Uri
+		Method             = $Method
+		Headers            = $Headers
+		StatusCodeVariable = "StatusCode"
+		# Suspend HTTP error to leave a raw HTTP code
+		SkipHttpErrorCheck = $true
+		UseBasicParsing    = $true
+		Verbose            = $true
+	}
+	if ($Form)
+	{
+		$Parameters.Form = $Form
+	}
+
+	# Retry if quota exceeded (HTTP 429)
+	for ($Try = 1; $Try -le 5; $Try++)
+	{
+		# Keep the interval between requests
+		$Wait = $RequestInterval - ((Get-Date) - $Script:LastRequest).TotalSeconds
+		if ($Wait -gt 0)
+		{
+			Start-Sleep -Milliseconds ([int]($Wait * 1000))
+		}
+
+		$Body = Invoke-RestMethod @Parameters
+		$Script:LastRequest = Get-Date
+
+		if ($StatusCode -ne 429)
+		{
+			break
+		}
+
+		Write-Verbose -Message "Quota exceeded. Waiting 60 seconds..." -Verbose
+		Start-Sleep -Seconds 60
+	}
+
+	# Some responses come as a raw JSON (e.g. keys differ only by case), so we need to convert them manually
+	if ($Body -is [string])
+	{
+		$Body = $Body | ConvertFrom-Json -AsHashtable
+	}
+
+	[PSCustomObject]@{
+		StatusCode = $StatusCode
+		Body       = $Body
+	}
+}
+
+$Files = @(Get-ChildItem -Path Sophia_Script -File)
+
+# Check sizes before any request to fail early
+foreach ($File in $Files)
 {
 	if ($File.Length -gt 32MB)
 	{
@@ -27,108 +99,80 @@ foreach ($File in @(Get-ChildItem -Path Sophia_Script -File))
 		# Exit with a non-zero status to fail the job
 		exit 1
 	}
+}
 
-	$Stats = $null
+$Reports = [System.Collections.Generic.List[PSCustomObject]]::new()
 
+foreach ($File in $Files)
+{
+	Write-Information -MessageData "" -InformationAction Continue
+	Write-Verbose -Message "Uploading $($File.Name)..." -Verbose
+
+	# Archives are always new, so we do not check if VirusTotal has seen them before
+	$Upload = Invoke-VirusTotal -Uri "https://www.virustotal.com/api/v3/files" -Method Post -Form @{file = $File}
+
+	# E.g. 401 (wrong API key)
+	if ($Upload.StatusCode -ne 200)
+	{
+		Write-Verbose -Message "VirusTotal returned HTTP $($Upload.StatusCode) while uploading $($File.Name)" -Verbose
+
+		# Exit with a non-zero status to fail the job
+		exit 1
+	}
+
+	# Hash is calculated locally and needed for the report URL and verdict
 	$SHA256 = (Get-FileHash -Path $File.FullName -Algorithm SHA256).Hash.ToLower()
-	$Parameters = @{
-		Uri                = "https://www.virustotal.com/api/v3/files/$SHA256"
-		Headers            = $Headers
-		StatusCodeVariable = "StatusCode"
-		# Suspend HTTP error to leave a raw HTTP code
-		SkipHttpErrorCheck = $true
-		UseBasicParsing    = $true
-		Verbose            = $true
-	}
-	$Response = Invoke-RestMethod @Parameters
 
-	# If a file was already checked it outputs a raw JSON, so we need to check this first
-	if ($Response -is [string])
+	# We do not use /analyses/{id}: it may return 404 for a long time even after a successful upload
+	# The file report is requested by the locally calculated hash instead
+	$Stats = $null
+	$Deadline = (Get-Date).AddMinutes($TimeoutMinutes)
+
+	do
 	{
-		$Response = $Response | ConvertFrom-Json -AsHashtable
-	}
-
-	switch ($StatusCode)
-	{
-		# File was already scanned
-		200
+		if ((Get-Date) -gt $Deadline)
 		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "$($File.Name) already scanned before" -Verbose
-
-			$Stats = $Response.data.attributes.last_analysis_stats
-		}
-		# File was not scanned before
-		404
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "Uploading $($File.Name)..." -Verbose
-
-			$Parameters = @{
-				Uri             = "https://www.virustotal.com/api/v3/files"
-				Method          = "Post"
-				Headers         = $Headers
-				Form            = @{file = $File}
-				UseBasicParsing = $true
-				Verbose         = $true
-			}
-			$Response = Invoke-RestMethod @Parameters
-
-			do
-			{
-				Start-Sleep -Seconds 20
-
-				$Parameters = @{
-					Uri             = "https://www.virustotal.com/api/v3/analyses/$($Response.data.id)"
-					Headers         = $Headers
-					UseBasicParsing = $true
-					Verbose         = $true
-				}
-				$Analysis = Invoke-RestMethod @Parameters
-
-				Write-Verbose -Message "Status of $($File.Name): $($Analysis.data.attributes.status)" -Verbose
-			}
-			until ($Analysis.data.attributes.status -eq "completed")
-
-			# Read the verdict from the same endpoint the 200 branch uses
-			$Parameters = @{
-				Uri                = "https://www.virustotal.com/api/v3/files/$SHA256"
-				Headers            = $Headers
-				StatusCodeVariable = "ReportCode"
-				SkipHttpErrorCheck = $true
-				UseBasicParsing    = $true
-				Verbose            = $true
-			}
-
-			do
-			{
-				Start-Sleep -Seconds 20
-
-				$Response = Invoke-RestMethod @Parameters
-
-				if ($Response -is [string])
-				{
-					$Response = $Response | ConvertFrom-Json -AsHashtable
-				}
-
-				if ($ReportCode -ne 200)
-				{
-					Write-Verbose -Message "Waiting for the verdict on $($File.Name)..." -Verbose
-				}
-			}
-			until ($ReportCode -eq 200)
-
-			$Stats = $Response.data.attributes.last_analysis_stats
-		}
-		# E.g. 401 (wrong API key) or 429 (quota exceeded): without this branch the report would contain empty stats
-		default
-		{
-			Write-Verbose -Message "VirusTotal returned HTTP $StatusCode for $($File.Name)" -Verbose
+			Write-Verbose -Message "Verdict on $($File.Name) is not available after $TimeoutMinutes minutes" -Verbose
 
 			# Exit with a non-zero status to fail the job
 			exit 1
 		}
+
+		Start-Sleep -Seconds 20
+
+		$Report = Invoke-VirusTotal -Uri "https://www.virustotal.com/api/v3/files/$SHA256"
+
+		switch ($Report.StatusCode)
+		{
+			200
+			{
+				# The file object may already exist while the analysis is still in progress
+				if ($null -ne $Report.Body.data.attributes.last_analysis_date)
+				{
+					Write-Verbose -Message "Verdict on $($File.Name) received" -Verbose
+
+					$Stats = $Report.Body.data.attributes.last_analysis_stats
+				}
+				else
+				{
+					Write-Verbose -Message "$($File.Name) is still being analyzed" -Verbose
+				}
+			}
+			# File is not processed yet
+			404
+			{
+				Write-Verbose -Message "Waiting for the verdict on $($File.Name)..." -Verbose
+			}
+			default
+			{
+				Write-Verbose -Message "VirusTotal returned HTTP $($Report.StatusCode) for report of $($File.Name)" -Verbose
+
+				# Exit with a non-zero status to fail the job
+				exit 1
+			}
+		}
 	}
+	until ($null -ne $Stats)
 
 	$Reports.Add([PSCustomObject]@{
 		Name       = $File.Name
