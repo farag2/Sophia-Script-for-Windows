@@ -30,13 +30,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   </tr>
 </table>
 
+* Fix and update `ScanRegistryPolicies` to scan all created registry policies to make them visible in `gpedit.msc`
 * Update initial checks
 * Added `TaskbarPosition` function for Windows 11 to manage taskbar position
 * The Wrapper's story has come to end: https://t.me/SophiaNews/5470
   * The Wrapper was removed from the repository and it will stopped working
   * @BenchTweakGaming has opened its [sources](https://github.com/BenchTweakGaming/SophiaScriptWrapper)
 * Fixed bugs, typos, and minor fixes
-* Updated Readmes
+* Update localizations
+* Update Readmes
 
 ## 7.0.0 | 8.0.0 — 11.10.2026
 
