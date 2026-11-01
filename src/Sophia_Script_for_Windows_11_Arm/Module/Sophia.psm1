@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Sophia Script for Windows is the most powerful PowerShell module for fine-tuning Windows on GitHub
+	Sophia Script for Windows is the most advanced PowerShell module on GitHub for fine-tuning Windows
 
 	.VERSION
 	8.1.0

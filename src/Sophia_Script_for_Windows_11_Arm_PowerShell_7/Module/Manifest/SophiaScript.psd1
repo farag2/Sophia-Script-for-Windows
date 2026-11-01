@@ -4,7 +4,7 @@
 	GUID                  = '109cc881-c42b-45af-a74a-550781989d6a'
 	Author                = 'Team Sophia'
 	Copyright             = '(c) 2014—2026 Team Sophia'
-	Description           = 'The most powerful PowerShell module for fine-tuning Windows on GitHub'
+	Description           = 'The most advanced PowerShell module on GitHub for fine-tuning Windows'
 	PowerShellVersion     = '7.6'
 	ProcessorArchitecture = 'Arm'
 	FunctionsToExport     = '*'

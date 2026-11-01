@@ -6,7 +6,7 @@
 
 # Sophia Script for Windows
 
-Das leistungsstärkste PowerShell-Modul zur Feinabstimmung von Windows auf GitHub
+Das ausgereifteste PowerShell-Modul auf GitHub zur Feinabstimmung von Windows
 
 Mit <img src="./img/heart.svg" height="17px"/> zu Windows hergestellt
 

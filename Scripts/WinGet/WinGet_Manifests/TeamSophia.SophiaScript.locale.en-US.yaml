@@ -12,8 +12,8 @@ PackageUrl: https://github.com/farag2/Sophia-Script-for-Windows
 License: MIT
 LicenseUrl: https://github.com/farag2/Sophia-Script-for-Windows/blob/main/LICENSE
 Copyright: Copyright (c) 2014—2026 Team Sophia
-ShortDescription: The most powerful PowerShell module on GitHub for Windows 10 and Windows 11 fine-tuning and tweaking
-Description: Sophia Script for Windows is the largest PowerShell module on GitHub for Windows 10 and Windows 11 fine-tuning and automating the routine tasks
+ShortDescription: The most advanced PowerShell module on GitHub for fine-tuning Windows
+Description: The most advanced PowerShell module on GitHub for fine-tuning Windows and automating routine tasks
 Moniker: sophiascript
 Tags:
 - windows
