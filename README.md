@@ -166,12 +166,14 @@ href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/
 
 * [Key features](#key-features)
 * [How to download](#how-to-download)
+* [Code signing policy](#code-signing-policy)
 * [How to use](#how-to-use)
   * [How to run the specific function(s)](#how-to-run-the-specific-functions)
 * [System Requirements](#system-requirements)
 * [Screenshots](#screenshots)
 * [How to translate](#how-to-translate)
 * [Media](#media)
+* [Acknowledgements](#acknowledgements)
 * [SophiApp 2.0](#sophiapp-20-c--winui-3)
 
 ## How to download
@@ -339,6 +341,15 @@ scoop install sophia-script --no-cache
 ```
 
 ```powershell
+# scoop bucket rm versions
+scoop bucket add versions
+# sophia-script-ltsc2019, sophia-script-ltsc2021
+# sophia-script-ltsc2024-ps7.json, sophia-script-ltsc2024
+# sophia-script-ps7, sophia-script-win10-ps7
+scoop install sophia-script-win10 --no-cache
+```
+
+```powershell
 # Uninstall Sophia Script for Windows
 scoop uninstall sophia-script --purge
 ```
@@ -457,6 +468,12 @@ Sophia -Functions Uninstall-UWPApps, "PinToStart -UnpinAll"
 * [My Digital Life](https://forums.mydigitallife.net/threads/powershell-windows-10-sophia-script.81675/)
 
 </details>
+
+## Acknowledgements
+
+Our thanks to the following organizations for providing their services at no cost:
+
+* [SignPath Foundation](https://signpath.org) & [SignPath.io](https://about.signpath.io) — code signing certificate
 
 ***
 

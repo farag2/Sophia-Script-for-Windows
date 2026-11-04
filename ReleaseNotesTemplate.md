@@ -217,3 +217,9 @@ Diff from vOldVersion
     </td>
   </tr>
 </table>
+
+### Code signing policy
+
+Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
+
+The WinGet SFX archive is signed. Read the [code signing policy](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/CODE_SIGNING_POLICY.md).
