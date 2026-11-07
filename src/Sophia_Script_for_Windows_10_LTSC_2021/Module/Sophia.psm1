@@ -4939,12 +4939,16 @@ function NetworkAdaptersSavePower
 		return
 	}
 
+	$AdapterNames = @($Adapters.Name)
 	$SSID = $null
 	$ProfileName = $null
 
-	# Check whether PC is currently connected to a Wi-Fi network
+	# Wi-Fi adapters whose power management will be changed
 	# https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/hh968170(v=vs.85)
-	if ($PhysicalAdapters | Where-Object -FilterScript {($_.Name -in $Adapters.Name) -and ($_.NdisPhysicalMedium -eq 9)})
+	$WiFiAdapters = @($PhysicalAdapters | Where-Object -FilterScript {($_.Name -in $AdapterNames) -and ($_.NdisPhysicalMedium -eq 9)})
+
+	# Check whether PC is currently connected to a Wi-Fi network
+	if ($WiFiAdapters.Count -gt 0)
 	{
 		# Get currently connected Wi-Fi network SSID
 		# Get the whole output first: Select-Object -First 1 in the same pipeline would terminate netsh
@@ -4980,6 +4984,10 @@ function NetworkAdaptersSavePower
 		}
 	}
 
+	# Check whether PC has Internet access before adapters restart
+	# If not (no Internet or NCSI active probing is disabled), we will wait only until adapters are up
+	$HadInternet = [bool](Get-NetConnectionProfile -ErrorAction Ignore | Where-Object -FilterScript {($_.IPv4Connectivity -eq "Internet") -or ($_.IPv6Connectivity -eq "Internet")})
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Disable"
@@ -5000,30 +5008,61 @@ function NetworkAdaptersSavePower
 		}
 	}
 
-	# All network adapters are turned into "Disconnected" for a few seconds, so we need to wait a bit to let them come up
-	# Otherwise functions below will indicate that there is no Internet connection
-	$Attempt = 0
-	while
-	(
-		(Get-NetAdapter -Physical -Name $Adapters.Name | Where-Object -FilterScript {($_.Status -eq "Disconnected") -and $_.MacAddress}) -and ($Attempt -lt 15)
-	)
+	Write-Information -MessageData "" -InformationAction Continue
+	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
+	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+
+	# Adapters restart asynchronously, and they stay "Up" for a few seconds after Set-NetAdapterPowerManagement
+	# Wait until at least one adapter goes down, otherwise the check below would pass before the restart
+	# Some drivers don't restart the adapter at all, so wait 10 seconds at most
+	$Timer = [System.Diagnostics.Stopwatch]::StartNew()
+	do
 	{
-		# If Wi-Fi network was used, connect to it again. Retry every 10 seconds in case the adapter was not ready
-		if ($SSID -and ($Attempt % 5 -eq 0))
+		Start-Sleep -Milliseconds 500
+
+		# An adapter may disappear while its driver is reloading, so count only adapters that are up
+		$UpAdapters = @(Get-NetAdapter -Physical -Name $AdapterNames -ErrorAction Ignore | Where-Object -FilterScript {$_.Status -eq "Up"})
+	}
+	while (($UpAdapters.Count -eq $AdapterNames.Count) -and ($Timer.Elapsed.TotalSeconds -lt 10))
+
+	# Wait until Internet access is restored, or until adapters are up if there was no Internet access before. 60 seconds at most
+	# Otherwise functions below will indicate that there is no Internet connection
+	$Timer.Restart()
+	$Attempt = 0
+	while ($Timer.Elapsed.TotalSeconds -lt 60)
+	{
+		if ($HadInternet)
 		{
-			# Connect to Wi-Fi
-			$Parameters = @{
-				FilePath     = "$env:SystemRoot\System32\netsh.exe"
-				ArgumentList = "wlan connect name=`"$ProfileName`" ssid=`"$SSID`""
-				WindowStyle  = "Hidden"
-				Wait         = $true
-			}
-			Start-Process @Parameters
+			$IsReady = [bool](Get-NetConnectionProfile -ErrorAction Ignore | Where-Object -FilterScript {($_.IPv4Connectivity -eq "Internet") -or ($_.IPv6Connectivity -eq "Internet")})
+		}
+		else
+		{
+			$UpAdapters = @(Get-NetAdapter -Physical -Name $AdapterNames -ErrorAction Ignore | Where-Object -FilterScript {$_.Status -eq "Up"})
+			$IsReady = $UpAdapters.Count -eq $AdapterNames.Count
 		}
 
-		Write-Information -MessageData "" -InformationAction Continue
-		# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-		Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
+		if ($IsReady)
+		{
+			break
+		}
+
+		# If Wi-Fi network was used and Wi-Fi adapter is not connected yet, connect to it again
+		# Retry every 10 seconds in case the adapter was not ready
+		if ($SSID -and ($Attempt % 5 -eq 0))
+		{
+			$WiFiConnected = Get-NetAdapter -Physical -Name $WiFiAdapters.Name -ErrorAction Ignore | Where-Object -FilterScript {$_.Status -eq "Up"}
+			if (-not $WiFiConnected)
+			{
+				# Connect to Wi-Fi
+				$Parameters = @{
+					FilePath     = "$env:SystemRoot\System32\netsh.exe"
+					ArgumentList = "wlan connect name=`"$ProfileName`" ssid=`"$SSID`""
+					WindowStyle  = "Hidden"
+					Wait         = $true
+				}
+				Start-Process @Parameters
+			}
+		}
 
 		Start-Sleep -Seconds 2
 		$Attempt++
@@ -5272,8 +5311,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message ($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
+							Write-Error -Message ($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5329,8 +5368,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message ($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
+							Write-Error -Message ($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -5363,8 +5402,8 @@ IconIndex=-238
 						$Skip
 						{
 							Write-Information -MessageData "" -InformationAction Continue
-							Write-Verbose -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-							Write-Error -Message (($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+							Write-Verbose -Message ($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -Verbose
+							Write-Error -Message ($Localization.UserFolderMoveSkipped -f [WinAPI.GetStrings]::GetString($LocalizedUserFolderNameIDs[$UserFolder])) -ErrorAction SilentlyContinue
 						}
 						$KeyboardArrows {}
 					}
@@ -6058,6 +6097,17 @@ function Set-Association
 		$Icon
 	)
 
+	# Function call string with actual parameter values
+	# $MyInvocation.Line contains unexpanded variables if the function is called from another function, e.g. Import-Associations
+	$Arguments = foreach ($Parameter in $PSBoundParameters.GetEnumerator())
+	{
+		if ($Parameter.Value)
+		{
+			"-{0} '{1}'" -f $Parameter.Key, $Parameter.Value.Replace("'", "''")
+		}
+	}
+	$FunctionCall = (@($MyInvocation.MyCommand.Name) + @($Arguments)) -join " "
+
 	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
 
 	# If $ProgramPath is a path to an executable
@@ -6066,8 +6116,8 @@ function Set-Association
 		if (-not (Test-Path -Path $ProgramPath))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.ProgramPathNotExists -f $ProgramPath), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.ProgramPathNotExists -f $ProgramPath), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.ProgramPathNotExists -f $ProgramPath), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
+			Write-Error -Message (($Localization.ProgramPathNotExists -f $ProgramPath), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6078,8 +6128,8 @@ function Set-Association
 		if (-not (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\$ProgramPath"))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.ProgIdNotExists -f $ProgramPath), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.ProgIdNotExists -f $ProgramPath), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.ProgIdNotExists -f $ProgramPath), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
+			Write-Error -Message (($Localization.ProgIdNotExists -f $ProgramPath), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
 
 			return
 		}
@@ -6535,8 +6585,8 @@ function Install-VCRedist
 		else
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion") -Verbose
+			Write-Error -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion") -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -6581,6 +6631,9 @@ function Install-DotNetRuntimes
 
 	foreach ($Runtime in $Runtimes)
 	{
+		# Function call string for the current runtime only, e.g. "Install-DotNetRuntimes -Runtimes NET9"
+		$FunctionCall = "{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime
+
 		switch ($Runtime)
 		{
 			"NET8"
@@ -6612,10 +6665,10 @@ function Install-DotNetRuntimes
 		catch [System.Net.WebException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
 
-			return
+			continue
 		}
 
 		# Check whether .NET installed
@@ -6636,10 +6689,10 @@ function Install-DotNetRuntimes
 			catch [System.Net.WebException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
 
-				return
+				continue
 			}
 
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6651,8 +6704,8 @@ function Install-DotNetRuntimes
 		else
 		{
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f ("{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime)) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f $FunctionCall) -join " ") -Verbose
+			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
 		}
 
 		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
