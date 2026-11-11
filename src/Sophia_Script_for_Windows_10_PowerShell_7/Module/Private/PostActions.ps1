@@ -95,28 +95,8 @@ function Global:PostActions
 		$Global:EventViewerCustomView = $false
 	}
 
-	#region Toast notifications
-	# Enable notifications
-	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\PushNotifications -Name ToastEnabled -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Windows.ActionCenter.SmartOptOut -Name Enable -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Notifications\Settings\Sophia -Name ShowBanner, ShowInActionCenter, Enabled -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\SystemSettings\AccountNotifications -Name EnableAccountNotifications -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\CurrentVersion\PushNotifications -Name NoToastApplicationNotification -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter
-	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name DisableNotificationCenter
-
-	if (-not (Test-Path -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia))
-	{
-		New-Item -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Force
-	}
-	# Register app
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name DisplayName -Value Sophia -PropertyType String -Force
-	# Determines whether the app can be seen in Settings where the user can turn notifications on or off
-	New-ItemProperty -Path Registry::HKEY_CLASSES_ROOT\AppUserModelId\Sophia -Name ShowInSettings -Value 0 -PropertyType DWord -Force
-
-	# Import policies back from LGPO.txt to rebuild the database because gpedit.msc relies on its own database
-	if (Test-Path -Path "$env:TEMP\LGPO.txt")
+	# Write policies back to Registry.pol because gpedit.msc relies on this file, not on the registry
+	if ($Global:RegistryPolicies -and ($Global:RegistryPolicies.Count -gt 0))
 	{
 		# Find and close gpedit.msc by its argument
 		$gpeditProcessID = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Process | Where-Object -FilterScript {
@@ -127,44 +107,29 @@ function Global:PostActions
 			Get-Process -Id $gpeditProcessID | Stop-Process -Force
 		}
 
-		# Nothing to import if all policies were removed
-		if (Get-Content -Path "$env:TEMP\LGPO.txt" | Where-Object -FilterScript {$_ -ne ""})
+		try
 		{
-			# Recreate Registry.pol from scratch, because LGPO.exe /t only adds and changes values
-			Remove-Item -Path "$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol", "$env:SystemRoot\System32\GroupPolicy\User\Registry.pol" -Force -ErrorAction Ignore
+			# Registry.pol is recreated from scratch, so it has the policies from the list only. If the list is empty, the file is removed
+			# Write returns true if the file was changed
+			$MachineChanged = [WinAPI.RegistryPolicy]::Write("$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol", $Global:RegistryPolicies.Computer)
+			$UserChanged    = [WinAPI.RegistryPolicy]::Write("$env:SystemRoot\System32\GroupPolicy\User\Registry.pol", $Global:RegistryPolicies.User)
 
-			& "$PSScriptRoot\..\Binaries\LGPO.exe" /t "$env:TEMP\LGPO.txt"
+			# Increase the gpt.ini version and register the Administrative Templates extension, as LGPO.exe /t did
+			if ($MachineChanged -or $UserChanged)
+			{
+				[WinAPI.RegistryPolicy]::UpdateGptIni("$env:SystemRoot\System32\GroupPolicy\gpt.ini", $MachineChanged, $UserChanged)
+			}
 		}
-
-		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-		# https://github.com/PowerShell/PowerShell/issues/21070
-		Get-Item -Path "$env:TEMP\LGPO.txt" -Force | Remove-Item -Force
+		catch
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.WindowsComponentStabilityDisrupted -f "Registry.pol")
+			Write-Error -Message $_.Exception.Message -ErrorAction SilentlyContinue
+		}
 	}
 
-	# Call toast notification
-	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\WinRT.Runtime.dll"
-	Add-Type -AssemblyName "$PSScriptRoot\..\Binaries\Microsoft.Windows.SDK.NET.dll"
-
-	[xml]$ToastTemplate = @"
-<toast duration="Long" scenario="reminder">
-	<visual>
-		<binding template="ToastGeneric">
-			<text>$($Localization.DonateToastTitle)</text>
-		</binding>
-	</visual>
-	<audio src="ms-winsoundevent:notification.default" />
-	<actions>
-		<action content="Ko-fi" arguments="https://ko-fi.com/farag" activationType="protocol"/>
-	</actions>
-</toast>
-"@
-
-	$ToastXml = [Windows.Data.Xml.Dom.XmlDocument]::New()
-	$ToastXml.LoadXml($ToastTemplate.OuterXml)
-
-	$ToastMessage = [Windows.UI.Notifications.ToastNotification]::New($ToastXml)
-	[Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier("Sophia").Show($ToastMessage)
-	#endregion Toast notifications
+	# Policies will be read again if any function is called after
+	$Global:RegistryPolicies = $null
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.AskQuestion -Verbose

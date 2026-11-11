@@ -2,7 +2,6 @@
 NewSophiaScriptFound                      = 新版本已发布：Sophia Script for Windows {0}。请更新。
 UnsupportedPowerShell                     = 您正尝试通过 PowerShell {0}.{1} 运行脚本。请在 PowerShell {2} 中运行脚本。
 CodeCompilationFailed                     = 代码编译失败。
-MicrosoftStorePowerShellWarning           = 不支持从 Microsoft Store 下载的 PowerShell。请运行 MSI 版本。
 PowerShellImportFailed                    = 从 PowerShell 5.1 导入模块失败。请关闭 PowerShell 7 控制台并重新运行脚本。
 UnsupportedWindowsBitness                 = 该脚本仅支持 64 位 Windows。
 KeyboardArrows                            = 请使用键盘上的方向键 {0} 和 {1} 选择您的答案

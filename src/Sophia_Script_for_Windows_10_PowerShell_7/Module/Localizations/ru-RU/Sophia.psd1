@@ -2,7 +2,6 @@
 NewSophiaScriptFound                      = Обнаружена новая версия: Sophia Script for Windows {0}. Пожалуйста, скачайте последнюю версию.
 UnsupportedPowerShell                     = Вы пытаетесь запустить скрипт в PowerShell {0}.{1}. Запустите скрипт в PowerShell {2}.
 CodeCompilationFailed                     = Компиляция кода завершилась с ошибкой.
-MicrosoftStorePowerShellWarning           = PowerShell, скачанный из Microsoft Store, не поддерживается. Пожалуйста, запустите MSI-версию.
 PowerShellImportFailed                    = Импорт модулей из PowerShell 5.1 завершился ошибкой. Пожалуйста, закройте консоль PowerShell 7 и запустите скрипт заново.
 UnsupportedWindowsBitness                 = Скрипт поддерживает только 64-битную версию Windows.
 KeyboardArrows                            = Для выбора используйте стрелки на клавиатуре {0} и {1}

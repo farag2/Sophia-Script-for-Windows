@@ -2,7 +2,6 @@
 NewSophiaScriptFound                      = A new version is available: Sophia Script for Windows {0}. Please update.
 UnsupportedPowerShell                     = You're trying to run script via PowerShell {0}.{1}. Please run the script in PowerShell {2}.
 CodeCompilationFailed                     = Code compilation failed.
-MicrosoftStorePowerShellWarning           = PowerShell downloaded from the Microsoft Store is not supported. Please run an MSI version.
 PowerShellImportFailed                    = Importing modules from PowerShell 5.1 failed. Please close PowerShell 7 console and rerun the script.
 UnsupportedWindowsBitness                 = The script only supports 64-bit Windows.
 KeyboardArrows                            = Please use the arrow keys {0} and {1} on your keyboard to select your answer
@@ -19,7 +18,7 @@ RebootPending                             = Your PC is waiting to be restarted.
 SystemDriveEncryptedBitLockerDisabled     = C drive is encrypted, although BitLocker is turned off. Do you want to decrypt your drive?
 WrongSophiaScriptVersion                  = Script supports only Windows 10 22H2. You're using {0} {1}. Run the script version that matches your Windows edition.
 UpdateWindowsBuild                        = Script supports Windows 10 22H2 {0}.{1} build and higher. You're using {2} {3} {4}.{5}. Run Windows Update and try again.
-ESUProgramEnrollment                      = Windows 10 reached the end of support on October 14, 2025. Your PC may be vulnerable to malicious software, trojans, and zero-day exploits. Do you want to enroll in Consumer Extended Security Updates (ESU) program to receive updates until 2028 using TSforge from Microsoft Activation Scripts (MAS)?
+ESUProgramEnrollment                      = Windows 10 reached the end of support on October 14, 2025. Your PC may be vulnerable to malicious software, trojans, and zero-day exploits. Do you want to enroll in the Consumer Extended Security Updates (ESU) program to receive updates until 2028 using TSforge from Microsoft Activation Scripts (MAS)?
 AskQuestion                               = In case you have a question, open an issue on GitHub or ask the community.
 CheckSophiaScriptPreset                   = Have you customized every function in the "{0}" preset file before running Sophia Script for Windows?
 ReinstallWindows                          = Reinstall Windows using only a genuine ISO image.

@@ -1,6 +1,6 @@
 ﻿<#
 	.SYNOPSIS
-	Add policy block from exported policies made via LGPO.exe tool
+	Add a policy to the local Group Policy object to make it visible in the Local Group Policy Editor snap-in (gpedit.msc)
 
 	.PARAMETER Scope
 	Computer or User
@@ -21,7 +21,10 @@
 	Add-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop -Name NoComponents -Type DWORD -Value 1
 
 	.NOTES
-	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
+	Policies are read from Registry.pol once, changed in memory, and written back in PostActions
+
+	.NOTES
+	https://learn.microsoft.com/previous-versions/windows/desktop/policy/registry-policy-file-format
 
 	.VERSION
 	8.1.0
@@ -63,56 +66,31 @@ function Global:Add-Policy
 		return
 	}
 
-	if (Test-Path -Path "$env:TEMP\LGPO.txt")
+	# Read all current policies once
+	if ($null -eq $Global:RegistryPolicies)
 	{
-		$Content = @(Get-Content -Path "$env:TEMP\LGPO.txt" -Force)
-	}
-	else
-	{
-		# Export all current policies
-		$Content = @()
-
-		if (Test-Path -Path "$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol")
+		try
 		{
-			$Content += & "$PSScriptRoot\..\Binaries\LGPO.exe" /parse /m "$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol"
+			$Global:RegistryPolicies = @{
+				Computer = [WinAPI.RegistryPolicy]::Read("$env:SystemRoot\System32\GroupPolicy\Machine\Registry.pol")
+				User     = [WinAPI.RegistryPolicy]::Read("$env:SystemRoot\System32\GroupPolicy\User\Registry.pol")
+			}
 		}
-
-		if (Test-Path -Path "$env:SystemRoot\System32\GroupPolicy\User\Registry.pol")
+		catch
 		{
-			$Content += & "$PSScriptRoot\..\Binaries\LGPO.exe" /parse /u "$env:SystemRoot\System32\GroupPolicy\User\Registry.pol"
-		}
-	}
+			# Registry.pol cannot be read, so it is kept as is. An empty table means that there is nothing to change and to write back
+			$Global:RegistryPolicies = @{}
 
-	# A block is 4 lines: scope, registry key, value name, and action. Comments and empty lines between blocks carry nothing and are dropped
-	# A value name is an empty line for the default value, so lines are not filtered before splitting into blocks
-	$Blocks = [System.Collections.Generic.List[string[]]]::new()
-
-	for ($i = 0; ($i + 3) -lt $Content.Count; $i++)
-	{
-		if ($Content[$i].Trim() -in @("Computer", "User"))
-		{
-			$Blocks.Add([string[]]@($Content[$i].Trim(), $Content[$i + 1], $Content[$i + 2], $Content[$i + 3]))
-			$i += 3
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message ($Localization.WindowsComponentStabilityDisrupted -f "Registry.pol")
+			Write-Error -Message $_.Exception.Message -ErrorAction SilentlyContinue
 		}
 	}
 
-	# Emit the blocks back, an empty line after each, skipping the same block if it already exists, and the new block last
-	$Lines = [System.Collections.Generic.List[string]]::new()
-
-	foreach ($Block in $Blocks)
+	if ($Global:RegistryPolicies.Count -eq 0)
 	{
-		if (($Block[0] -eq $Scope) -and ($Block[1] -eq $Path) -and ($Block[2] -eq $Name))
-		{
-			continue
-		}
-
-		$Lines.AddRange($Block)
-		$Lines.Add("")
+		return
 	}
 
-	$Lines.AddRange([string[]]@($Scope, $Path, $Name, "${Type}:$Value"))
-	$Lines.Add("")
-
-	# Save with Unicode encoding
-	Set-Content -Path "$env:TEMP\LGPO.txt" -Value $Lines -Encoding Unicode -Force
+	[WinAPI.RegistryPolicy]::Set($Global:RegistryPolicies[$Scope], $Path, $Name, $Type, $Value)
 }

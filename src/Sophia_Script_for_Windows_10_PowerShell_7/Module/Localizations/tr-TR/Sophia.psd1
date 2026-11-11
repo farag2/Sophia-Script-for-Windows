@@ -2,7 +2,6 @@
 NewSophiaScriptFound                      = Yeni bir sürüm yayınlandı: Sophia Script for Windows {0}. Lütfen güncelleyin.
 UnsupportedPowerShell                     = Komut dosyasını PowerShell {0}.{1} aracılığıyla çalıştırmaya çalışıyorsunuz. Lütfen komut dosyasını PowerShell {2} ile çalıştırın.
 CodeCompilationFailed                     = Kod derleme başarısız oldu.
-MicrosoftStorePowerShellWarning           = Microsoft Store'dan indirilen PowerShell desteklenmez. Lütfen bir MSI sürümü çalıştırın.
 PowerShellImportFailed                    = PowerShell 5.1'den modül içe aktarma işlemi başarısız oldu. Lütfen PowerShell 7 konsolunu kapatın ve komut dosyasını yeniden çalıştırın.
 UnsupportedWindowsBitness                 = Komut dosyası yalnızca 64 bit Windows'u destekler.
 KeyboardArrows                            = Lütfen cevabınızı seçmek için klavyenizdeki {0} ve {1} ok tuşlarını kullanın

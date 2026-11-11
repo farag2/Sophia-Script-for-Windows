@@ -91,7 +91,8 @@ function CreateRestorePoint
 
 		$Global:Failed = $true
 
-		exit
+		# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+		throw [System.Management.Automation.PipelineStoppedException]::new()
 	}
 
 	# Check whether system protection is turned on
@@ -163,8 +164,8 @@ function DiagTrackService
 	if (-not (Get-Service -Name DiagTrack -ErrorAction Ignore))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.WindowsServiceNotFound -f "DiagTrack", ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.WindowsServiceNotFound -f "DiagTrack", ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+		Write-Verbose -Message (($Localization.WindowsServiceNotFound -f "DiagTrack"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.WindowsServiceNotFound -f "DiagTrack"), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 		return
 	}
@@ -312,11 +313,11 @@ function ErrorReporting
 
 		$Global:Failed = $true
 
-		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-		# https://github.com/PowerShell/PowerShell/issues/21070
-		Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+		# Do not write policies back to Registry.pol
+		$Global:RegistryPolicies = $null
 
-		exit
+		# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+		throw [System.Management.Automation.PipelineStoppedException]::new()
 	}
 
 	# Remove all policies in order to make changes visible in UI
@@ -3104,7 +3105,7 @@ function FolderGroupBy
 		"None"
 		{
 			# Clear any Common Dialog views
-			Get-ChildItem -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\*\Shell" -Recurse | Where-Object -FilterScript {$_.PSChildName -eq "{885A186E-A440-4ADA-812B-DB871B942259}"} | Remove-Item -Force
+			Remove-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\*\Shell\{885A186E-A440-4ADA-812B-DB871B942259}" -Recurse -Force -ErrorAction Ignore
 
 			# https://learn.microsoft.com/en-us/windows/win32/properties/props-system-null
 			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}"))
@@ -6113,6 +6114,13 @@ function Set-Association
 	# If $ProgramPath is a path to an executable
 	if ($ProgramPath.Contains(":"))
 	{
+		# Export-Associations saves the whole command, e.g. "C:\Program Files\App\app.exe" "%1", so cut it to the path to the executable
+		$ExeIndex = $ProgramPath.IndexOf(".exe", [System.StringComparison]::OrdinalIgnoreCase)
+		if ($ExeIndex -ge 0)
+		{
+			$ProgramPath = $ProgramPath.Substring(0, $ExeIndex + 4).Trim().Trim('"')
+		}
+
 		if (-not (Test-Path -Path $ProgramPath))
 		{
 			Write-Information -MessageData "" -InformationAction Continue
@@ -6255,7 +6263,7 @@ function Set-Association
 			foreach ($AppxProgID in @($OpenWithProgids.Property | Where-Object -FilterScript {$_ -match "AppX"}))
 			{
 				# If an app is installed
-				if (Get-ItemPropertyValue -Path "HKCU:\Software\Classes\$AppxProgID\Shell\open" -Name PackageId -ErrorAction Ignore)
+				if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Classes\$AppxProgID\Shell\open", "PackageId", $null))
 				{
 					# If the specified ProgId is equal to UWP installed ProgId
 					if ($ProgId -eq $AppxProgID)
@@ -6486,7 +6494,8 @@ function Import-Associations
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 
-		if ($AppxProgIds -contains $Item.ProgId)
+		# UWP apps and ProgIds exported without a program path are set by ProgId
+		if (($AppxProgIds -contains $Item.ProgId) -or (-not $Item.ProgramPath))
 		{
 			Write-Verbose -Message ($Item.ProgId, $Item.Extension -join " | ") -Verbose
 
@@ -6593,19 +6602,16 @@ function Install-VCRedist
 
 <#
 	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 8, 9, 10
-
-	.PARAMETER NET8
-	Install the latest .NET Desktop Runtime 8
-
-	.PARAMETER NET9
-	Install the latest .NET Desktop Runtime 9
+	Install the latest .NET Desktop Runtime 10, 11
 
 	.PARAMETER NET10
 	Install the latest .NET Desktop Runtime 10
 
+	.PARAMETER NET11
+	Install the latest .NET Desktop Runtime 11
+
 	.EXAMPLE
-	Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
+	Install-DotNetRuntimes -Runtimes NET10, NET11
 
 	.LINK
 	https://dotnet.microsoft.com/en-us/download/dotnet
@@ -6622,7 +6628,7 @@ function Install-DotNetRuntimes
 			Mandatory = $true,
 			ParameterSetName = "Runtimes"
 		)]
-		[ValidateSet("NET8", "NET9", "NET10")]
+		[ValidateSet("NET10", "NET11")]
 		[string[]]
 		$Runtimes
 	)
@@ -6636,17 +6642,13 @@ function Install-DotNetRuntimes
 
 		switch ($Runtime)
 		{
-			"NET8"
-			{
-				$NET = "8.0"
-			}
-			"NET9"
-			{
-				$NET = "9.0"
-			}
 			"NET10"
 			{
 				$NET = "10.0"
+			}
+			"NET11"
+			{
+				$NET = "11.0"
 			}
 		}
 
@@ -6743,7 +6745,7 @@ function PreventEdgeShortcutCreation
 	param
 	(
 		[Parameter(
-			Mandatory = $false,
+			Mandatory = $true,
 			ParameterSetName = "Channels"
 		)]
 		[ValidateSet("Stable", "Beta", "Dev", "Canary")]
@@ -6751,7 +6753,7 @@ function PreventEdgeShortcutCreation
 		$Channels,
 
 		[Parameter(
-			Mandatory = $false,
+			Mandatory = $true,
 			ParameterSetName = "Disable"
 		)]
 		[switch]
@@ -7252,7 +7254,7 @@ function CleanupTask
 # https://github.com/farag2/Sophia-Script-for-Windows
 # https://t.me/sophia_chat
 
-Get-Process -Name cleanmgr, Dism, DismHost | Stop-Process -Force
+Get-Process -Name cleanmgr, Dism, DismHost -ErrorAction Ignore | Stop-Process -Force
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 `$ProcessInfo.FileName = "`$env:SystemRoot\System32\cleanmgr.exe"
@@ -7264,7 +7266,8 @@ Get-Process -Name cleanmgr, Dism, DismHost | Stop-Process -Force
 `$Process.StartInfo = `$ProcessInfo
 `$Process.Start() | Out-Null
 
-Start-Sleep -Seconds 3
+# Wait until Disk Cleanup is closed: DISM works with the same component store
+`$Process.WaitForExit()
 
 `$ProcessInfo = New-Object -TypeName System.Diagnostics.ProcessStartInfo
 `$ProcessInfo.FileName = "`$env:SystemRoot\System32\Dism.exe"
@@ -7347,8 +7350,8 @@ if (-not ("WinAPI.QuietHours" -as [type]))
 	Add-Type @Signature
 }
 
-# Wait until it will be 0
-while ([WinAPI.QuietHours]::GetState() -ne 0)
+# Wait until it will be 0. -1 means the state cannot be received
+while ([WinAPI.QuietHours]::GetState() -gt 0)
 {
 	Start-Sleep -Seconds 600
 }
@@ -7384,10 +7387,8 @@ while ([WinAPI.QuietHours]::GetState() -ne 0)
 "@
 
 			# Save in UTF8 with BOM
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotificationPS -Encoding UTF8 -Force
-
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup_Notification.ps1" -Value $ToastNotificationPS.Replace('@""', '@"').Replace('""@', '"@') -Encoding UTF8 -Force
 
 			# Create "Windows Cleanup Notification" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
@@ -7556,8 +7557,8 @@ if (-not ("WinAPI.QuietHours" -as [type]))
 	Add-Type @Signature
 }
 
-# Wait until it will be 0
-while ([WinAPI.QuietHours]::GetState() -ne 0)
+# Wait until it will be 0. -1 means the state cannot be received
+while ([WinAPI.QuietHours]::GetState() -gt 0)
 {
 	Start-Sleep -Seconds 600
 }
@@ -7594,10 +7595,8 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS -Encoding UTF8 -Force
-
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS.Replace('@""', '@"').Replace('""@', '"@') -Encoding UTF8 -Force
 
 			# Create "SoftwareDistribution" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
@@ -7758,8 +7757,8 @@ if (-not ("WinAPI.QuietHours" -as [type]))
 	Add-Type @Signature
 }
 
-# Wait until it will be 0
-while ([WinAPI.QuietHours]::GetState() -ne 0)
+# Wait until it will be 0. -1 means the state cannot be received
+while ([WinAPI.QuietHours]::GetState() -gt 0)
 {
 	Start-Sleep -Seconds 600
 }
@@ -7777,14 +7776,9 @@ Get-ChildItem -Path `$env:TEMP -Recurse -Force -ErrorAction Ignore | Where-Objec
 	"`$env:SystemDrive\ESD",
 	"`$env:SystemDrive\Intel",
 	"`$env:SystemDrive\PerfLogs",
-	"`$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp",
+	"`$env:SystemRoot\ServiceProfiles\NetworkService\AppData\Local\Temp\*",
 	"`$env:LOCALAPPDATA\CrashDumps"
 )
-
-if (Test-Path -Path `$env:SystemDrive\Recovery\ReAgentOld.xml)
-{
-	`$Paths += "`$env:SystemDrive\Recovery"
-}
 Remove-Item -Path `$Paths -Recurse -Force
 
 # C:\WINDOWS\System32\config\systemprofile\AppData\Local with garbage tw-*.tmp files
@@ -7817,10 +7811,8 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 			{
 				New-Item -Path $env:SystemRoot\System32\Tasks\Sophia -ItemType Directory -Force
 			}
-			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS -Encoding UTF8 -Force
-
 			# Replace here-string double quotes with single ones
-			(Get-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8).Replace('@""', '@"').Replace('""@', '"@') | Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Encoding UTF8 -Force
+			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS.Replace('@""', '@"').Replace('""@', '"@') -Encoding UTF8 -Force
 
 			# Create "Temp" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
@@ -8176,6 +8168,7 @@ function EventViewerCustomView
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name * -Force -ErrorAction Ignore
 			Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging -Name EnableModuleLogging
+			Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\PowerShell\ModuleLogging\ModuleNames -Name *
 
 			# Disable logging for all PowerShell scripts input to the Windows PowerShell event log
 			Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\PowerShell\ScriptBlockLogging -Name EnableScriptBlockLogging -Force -ErrorAction Ignore
@@ -8513,7 +8506,7 @@ function CABInstallContext
 	ScanRegistryPolicies
 
 	.NOTES
-	https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
+	https://learn.microsoft.com/previous-versions/windows/desktop/policy/registry-policy-file-format
 
 	.NOTES
 	Machine-wide
@@ -8616,6 +8609,13 @@ function ScanRegistryPolicies
 			Path  = "Software\Microsoft\Windows\CurrentVersion\Policies\Explorer"
 			Name  = "NoDriveTypeAutoRun"
 			Value = "145"
+		},
+		# Windows default
+		@{
+			Scope = "Computer"
+			Path  = "SOFTWARE\Policies\Microsoft\Windows\NetworkConnectivityStatusIndicator"
+			Name  = "UseGlobalDNS"
+			Value = "1"
 		},
 		# Written by Windows during TPM provisioning
 		@{

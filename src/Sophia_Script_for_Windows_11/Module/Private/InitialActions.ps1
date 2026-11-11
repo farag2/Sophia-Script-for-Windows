@@ -52,23 +52,21 @@ function InitialActions
 		"$PSScriptRoot\..\Localizations\uk-UA\Sophia.psd1",
 		"$PSScriptRoot\..\Localizations\zh-CN\Sophia.psd1",
 
-		"$PSScriptRoot\..\..\Module\Private\Add-Policy.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Get-Hash.ps1",
-		"$PSScriptRoot\..\..\Module\Private\InitialActions.ps1",
-		"$PSScriptRoot\..\..\Module\Private\PostActions.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Remove-Policy.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Send-ConsoleBackspace.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Set-KnownFolderPath.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Set-UserShellFolder.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Show-Menu.ps1",
-		"$PSScriptRoot\..\..\Module\Private\WinAPI.ps1",
-		"$PSScriptRoot\..\..\Module\Private\Write-ExtensionKeys.ps1",
+		"$PSScriptRoot\..\Private\Add-Policy.ps1",
+		"$PSScriptRoot\..\Private\Get-Hash.ps1",
+		"$PSScriptRoot\..\Private\InitialActions.ps1",
+		"$PSScriptRoot\..\Private\PostActions.ps1",
+		"$PSScriptRoot\..\Private\Remove-Policy.ps1",
+		"$PSScriptRoot\..\Private\Send-ConsoleBackspace.ps1",
+		"$PSScriptRoot\..\Private\Set-KnownFolderPath.ps1",
+		"$PSScriptRoot\..\Private\Set-UserShellFolder.ps1",
+		"$PSScriptRoot\..\Private\Show-Menu.ps1",
+		"$PSScriptRoot\..\Private\WinAPI.ps1",
+		"$PSScriptRoot\..\Private\Write-ExtensionKeys.ps1",
 
-		"$PSScriptRoot\..\..\Module\Sophia.psm1",
-		"$PSScriptRoot\..\Manifest\SophiaScript.psd1",
-		"$PSScriptRoot\..\..\Import-TabCompletion.ps1",
-
-		"$PSScriptRoot\..\Binaries\LGPO.exe"
+		"$PSScriptRoot\..\Sophia.psm1",
+		"$PSScriptRoot\..\SophiaScript.psd1",
+		"$PSScriptRoot\..\..\Import-TabCompletion.ps1"
 	),
 	[Predicate[string]]{
 		param($File)
@@ -103,11 +101,31 @@ function InitialActions
 		Import-LocalizedData -BindingVariable Global:Localization -UICulture en-US -BaseDirectory $PSScriptRoot\..\Localizations -FileName Sophia
 	}
 
+	# Check the language mode
+	if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message $Localization.UnsupportedLanguageMode
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Write-Verbose -Message $Localization.AskQuestion -Verbose
+		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
+		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
+		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+
+		$Global:Failed = $true
+
+		exit
+	}
+
 	# Check whether the script was run via PowerShell 5.1
 	if ($PSVersionTable.PSVersion.Major -ne 5)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		$MandatoryPSVersion = (Import-PowerShellDataFile -Path "$PSScriptRoot\..\Manifest\SophiaScript.psd1").PowerShellVersion
+		$MandatoryPSVersion = (Import-PowerShellDataFile -Path "$PSScriptRoot\..\SophiaScript.psd1").PowerShellVersion
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor, $MandatoryPSVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
@@ -126,7 +144,7 @@ function InitialActions
 	Get-ChildItem -Path function: | Where-Object -FilterScript {($_.ScriptBlock.File -match "Sophia_Script_for_Windows") -and ($_.Name -ne "InitialActions")} | Remove-Item -Force
 	Remove-Module -Name SophiaScript -Force -ErrorAction Ignore
 
-	Import-Module -Name $PSScriptRoot\..\Manifest\SophiaScript.psd1 -Global -PassThru -Force
+	Import-Module -Name "$PSScriptRoot\..\SophiaScript.psd1" -Global -PassThru -Force
 	Get-ChildItem -Path $PSScriptRoot -Filter *.ps1 -File | Where-Object -FilterScript {$_.Name -ne "InitialActions.ps1"} | ForEach-Object -Process {. $_.FullName}
 
 	# Compile WinAPI types
@@ -258,26 +276,6 @@ function InitialActions
 	$Global:KeyboardArrows = $Localization.KeyboardArrows -f [System.Char]::ConvertFromUtf32(0x2191), [System.Char]::ConvertFromUtf32(0x2193)
 	# Extract localized "Skip" string from %SystemRoot%\System32\shell32.dll
 	$Global:Skip = [WinAPI.GetStrings]::GetString(16956)
-
-	# Check the language mode
-	if ($ExecutionContext.SessionState.LanguageMode -ne "FullLanguage")
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message $Localization.UnsupportedLanguageMode
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
-
-		exit
-	}
 
 	# Check whether the logged-in user is an admin
 	$CurrentUserName = (Get-Process -Id $PID -IncludeUserName).UserName | Split-Path -Leaf
@@ -618,7 +616,7 @@ function InitialActions
 		Write-Error -Message "https://support.microsoft.com/en-us/windows/security/devicesecurity/windows-11-and-secure-boot" -ErrorAction SilentlyContinue
 	}
 
-	# e.g. Windows 11 Pro
+	# Windows 11 Pro
 	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
 	if (($WINDOWS_LONG -notmatch "Windows 11") -or ($WINDOWS_LONG -match "LTSC"))
 	{
@@ -747,9 +745,8 @@ function InitialActions
 	# If you do not use old applications, there's no need to force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\.NETFramework, HKLM:\SOFTWARE\Wow6432Node\Microsoft\.NETFramework -Name OnlyUseLatestCLR -Force -ErrorAction Ignore
 
-	# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	Get-Item -Path "$env:TEMP\LGPO.txt" -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+	# Policies are read from Registry.pol by the first Add-Policy or Remove-Policy call, changed in memory, and written back in PostActions
+	$Global:RegistryPolicies = $null
 
 	# Save all opened folders in order to restore them after File Explorer restart
 	$Global:OpenedFolders = {(New-Object -ComObject Shell.Application).Windows() | ForEach-Object -Process {$_.Document.Folder.Self.Path}}.Invoke()

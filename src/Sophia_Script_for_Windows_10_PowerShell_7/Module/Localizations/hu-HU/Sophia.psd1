@@ -2,7 +2,6 @@
 NewSophiaScriptFound                      = Elérhető egy új verzió: Sophia Script for Windows {0}. Kérjük, frissítse a programot.
 UnsupportedPowerShell                     = A PowerShell {0}.{1} segítségével próbálja futtatni a szkriptet. Kérjük, futtassa a szkriptet a PowerShell {2}-ben.
 CodeCompilationFailed                     = A kód fordítása sikertelen volt.
-MicrosoftStorePowerShellWarning           = A Microsoft Store-ból letöltött PowerShell nem támogatott. Kérjük, futtasson egy MSI verziót.
 PowerShellImportFailed                    = A modulok importálása a PowerShell 5.1-ből sikertelen volt. Zárja be a PowerShell 7 konzolt, és futtassa újra a szkriptet.
 UnsupportedWindowsBitness                 = A szkript csak a 64 bites Windows-t támogatja.
 KeyboardArrows                            = Kérjük, használja a billentyűzet {0} és {1} nyílbillentyűit a válasz kiválasztásához

@@ -59,7 +59,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.6
+#Requires -Version 7.7
 
 # Import the module and private functions, and run initial checks
 . $PSScriptRoot\Module\Private\InitialActions.ps1
@@ -881,9 +881,9 @@ DefaultTerminalApp -WindowsTerminal
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
 Install-VCRedist
 
-# Install the latest .NET Desktop Runtime 8, 9, 10 (Arm64). Internet connection required
-# Установить последнюю версию .NET Desktop Runtime 8, 9, 10 (Arm64). Требуется соединение с интернетом
-Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
+# Install the latest .NET Desktop Runtime 10, 11 x64. Internet connection required
+# Установить последнюю версию .NET Desktop Runtime 10, 11 x64. Требуется соединение с интернетом
+Install-DotNetRuntimes -Runtimes NET10, NET11
 
 # List Microsoft Edge channels to prevent desktop shortcut creation upon its update
 # Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления

@@ -1,5 +1,5 @@
 ﻿@{
-	RootModule            = '..\Sophia.psm1'
+	RootModule            = 'Sophia.psm1'
 	ModuleVersion         = '7.1.0'
 	GUID                  = '109cc881-c42b-45af-a74a-550781989d6a'
 	Author                = 'Team Sophia'

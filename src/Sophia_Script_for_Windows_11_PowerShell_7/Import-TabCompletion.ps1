@@ -28,7 +28,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.6
+#Requires -Version 7.7
 
 # Import localizations to display the warning below if the script was not dot-sourced. InitialActions imports them again
 try

@@ -59,7 +59,7 @@
 #>
 
 #Requires -RunAsAdministrator
-#Requires -Version 7.6
+#Requires -Version 7.7
 
 # Import the module and private functions, and run initial checks
 . $PSScriptRoot\Module\Private\InitialActions.ps1
