@@ -454,6 +454,7 @@ Sophia -Functions Uninstall-UWPApps, "PinToStart -UnpinAll"
 <summary>Articles and mentions</summary>
 
 * [Comss.ru](https://www.comss.ru/page.php?id=19917)
+* [CyberAxe](https://t.me/s/cybers/37228)
 * [Windows Central](https://www.windowscentral.com/microsoft/windows-11/how-to-fine-tune-your-pc-with-the-sophia-script-for-windows-11)
 * [XDA](https://www.xda-developers.com/sophia-script-returns-control-windows-11)
 * [Neowin](https://www.neowin.net/news/this-script-is-the-ultimate-tool-to-control-and-customize-windows-11)
