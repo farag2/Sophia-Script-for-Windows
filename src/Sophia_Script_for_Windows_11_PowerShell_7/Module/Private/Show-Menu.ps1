@@ -56,44 +56,71 @@ function Global:Show-Menu
 	# The last valid index is $Menu.Count - 1
 	$SelectedValueIndex = [Math]::Max([Math]::Min($Default, $Menu.Count - 1), 0)
 
-	while ($true)
+	# Drop keys that were pressed before the menu appeared, e.g. while the previous function was running
+	# Otherwise ReadKey replays them one by one, and the selection jumps between items by itself
+	while ([Console]::KeyAvailable)
 	{
-		[Console]::SetCursorPosition(0, [Console]::CursorTop - $Menu.Count)
+		[void][Console]::ReadKey($true)
+	}
 
-		for ($i = 0; $i -lt $Menu.Count; $i++)
-		{
-			if ($i -eq $SelectedValueIndex)
-			{
-				Write-Host -Object "[>] $($Menu[$i])"
-			}
-			else
-			{
-				Write-Host -Object "[ ] $($Menu[$i])"
-			}
-		}
+	# Hide the cursor while the menu is redrawn, and show it back after
+	$CursorVisible = [Console]::CursorVisible
+	[Console]::CursorVisible = $false
 
-		$Key = [Console]::ReadKey($true)
-		switch ($Key.Key)
+	try
+	{
+		while ($true)
 		{
-			"UpArrow"
+			[Console]::SetCursorPosition(0, [Console]::CursorTop - $Menu.Count)
+
+			$Lines = for ($i = 0; $i -lt $Menu.Count; $i++)
 			{
-				$SelectedValueIndex = [Math]::Max(0, $SelectedValueIndex - 1)
-			}
-			"DownArrow"
-			{
-				$SelectedValueIndex = [Math]::Min($Menu.Count - 1, $SelectedValueIndex + 1)
-			}
-			"Enter"
-			{
-				return $Menu[$SelectedValueIndex]
-			}
-			"Escape"
-			{
-				if ($AddSkip)
+				if ($i -eq $SelectedValueIndex)
 				{
-					return $Menu[-1]
+					"[>] $($Menu[$i])"
+				}
+				else
+				{
+					"[ ] $($Menu[$i])"
 				}
 			}
+
+			# One call instead of a call for each item, so the menu is redrawn faster than a held key repeats
+			Write-Host -Object ($Lines -join [System.Environment]::NewLine)
+
+			# Read the pressed key and all keys that are already waiting, then redraw the menu once
+			# Otherwise a held arrow key leaves a queue of redraws, and the selection keeps moving after the key is released
+			do
+			{
+				$Key = [Console]::ReadKey($true)
+				switch ($Key.Key)
+				{
+					"UpArrow"
+					{
+						$SelectedValueIndex = [Math]::Max(0, $SelectedValueIndex - 1)
+					}
+					"DownArrow"
+					{
+						$SelectedValueIndex = [Math]::Min($Menu.Count - 1, $SelectedValueIndex + 1)
+					}
+					"Enter"
+					{
+						return $Menu[$SelectedValueIndex]
+					}
+					"Escape"
+					{
+						if ($AddSkip)
+						{
+							return $Menu[-1]
+						}
+					}
+				}
+			}
+			while ([Console]::KeyAvailable)
 		}
+	}
+	finally
+	{
+		[Console]::CursorVisible = $CursorVisible
 	}
 }

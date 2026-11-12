@@ -85,6 +85,11 @@ namespace WinAPI
 		[DllImport("user32.dll")]
 		[return: MarshalAs(UnmanagedType.Bool)]
 		public static extern bool SetForegroundWindow(IntPtr hWnd);
+
+		// Check whether the window is minimized
+		[DllImport("user32.dll")]
+		[return: MarshalAs(UnmanagedType.Bool)]
+		public static extern bool IsIconic(IntPtr hWnd);
 	}
 
 	// Get the real Windows version like %SystemRoot%\system32\winver.exe relies on

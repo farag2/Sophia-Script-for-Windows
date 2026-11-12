@@ -12,11 +12,16 @@ function Global:Send-ConsoleBackspace
 	Add-Type -AssemblyName System.Windows.Forms
 
 	# We cannot use Get-Process -Id $PID as script might be invoked via Terminal with different $PID
-	Get-Process -Name pwsh, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows"} | ForEach-Object -Process {
-		# Show window, if minimized
-		[void][WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 10)
+	Get-Process -Name powershell, WindowsTerminal -ErrorAction Ignore | Where-Object -FilterScript {$_.MainWindowTitle -match "Sophia Script for Windows"} | ForEach-Object -Process {
+		# Restore the window only if it is minimized
+		# SW_SHOWDEFAULT (10) would also reset a maximized or resized window to its default size
+		if ([WinAPI.ForegroundWindow]::IsIconic($_.MainWindowHandle))
+		{
+			# SW_RESTORE
+			[void][WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 9)
 
-		Start-Sleep -Seconds 1
+			Start-Sleep -Seconds 1
+		}
 
 		# Force move the console window to the foreground
 		# Send the key only if the console window has got the focus, otherwise it would be sent to another window
