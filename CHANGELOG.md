@@ -8,7 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## 7.1.0 | 8.1.0 — 31.10.2026
 
 * Code refactoring goes on
-* `CortanaAutostart` function removed for Windows 1
+* `CortanaAutostart` function removed for Windows 10
 * ScheduledTasks, WindowsFeatures, WindowsCapabilities, Uninstall-UWPApps, and Install-WSL now use new UI style
 
 <table>
