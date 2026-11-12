@@ -249,7 +249,7 @@ function InitialActions
 	# Import PowerShell 5.1 modules
 	try
 	{
-		Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx, DISM -UseWindowsPowerShell -Force -ErrorAction Stop
+		Import-Module -Name Microsoft.PowerShell.Management, PackageManagement, Appx, DISM -UseWindowsPowerShell -Force -WarningAction SilentlyContinue -ErrorAction Stop
 	}
 	catch
 	{
