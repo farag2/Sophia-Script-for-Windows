@@ -136,8 +136,8 @@ if (-not $Version)
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
 Remove-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -Recurse -Force -ErrorAction Ignore
@@ -158,8 +158,8 @@ if (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp")
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
 New-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -ItemType Directory -Force
@@ -197,8 +197,8 @@ catch
 
 	Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
 # tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemDrive\Sophia_Script_Temp folder
@@ -229,8 +229,8 @@ if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$($Version)_v$Lat
 
 	Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
@@ -246,38 +246,3 @@ Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
 Invoke-Item -Path "$DownloadsFolder\$($Version)_v$LatestRelease"
 Set-Location -Path "$DownloadsFolder\$($Version)_v$LatestRelease"
-
-$Signature = @{
-	Namespace          = "WinAPI"
-	Name               = "ForegroundWindow"
-	Language           = "CSharp"
-	MemberDefinition   = @"
-[DllImport("user32.dll")]
-public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-[DllImport("user32.dll")]
-[return: MarshalAs(UnmanagedType.Bool)]
-public static extern bool SetForegroundWindow(IntPtr hWnd);
-"@
-}
-
-# PowerShell 7 compiles in memory and has no CompilerParameters argument
-# https://github.com/PowerShell/PowerShell/issues/21070
-if ($PSVersionTable.PSVersion.Major -eq 5)
-{
-	$Signature.Add("CompilerParameters", $CompilerParameters)
-}
-
-if (-not ("WinAPI.ForegroundWindow" -as [type]))
-{
-	Add-Type @Signature
-}
-
-Start-Sleep -Seconds 1
-
-Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "$($Version)_v$LatestRelease"} | ForEach-Object -Process {
-	# Show window, if minimized
-	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
-
-	# Force move the console window to the foreground
-	[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
-} | Out-Null

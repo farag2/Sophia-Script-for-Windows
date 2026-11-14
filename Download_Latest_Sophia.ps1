@@ -116,8 +116,8 @@ if (-not $Version)
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
 Remove-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -Recurse -Force -ErrorAction Ignore
@@ -138,32 +138,128 @@ if (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp")
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
 New-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -ItemType Directory -Force
 
+# Download only the needed edition folder: about 0.6 MB instead of the whole repository archive (about 12 MB)
+# If the GitHub API is unreachable or its limit of 60 requests per hour for an IP address is reached, the whole archive is downloaded as before
+$FolderDownloaded = $false
+
 try
 {
-	# https://github.com/farag2/Sophia-Script-for-Windows/archive/refs/heads/main.zip
+	# Get the SHA of the last commit. Files are downloaded by the SHA, not by the branch name:
+	# raw.githubusercontent.com caches files of a branch for several minutes, so right after a push files from different commits could be mixed
 	$Parameters = @{
-		Uri             = "https://codeload.github.com/farag2/Sophia-Script-for-Windows/zip/refs/heads/main"
-		OutFile         = "$env:SystemDrive\Sophia_Script_Temp\main.zip"
+		Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/commits/main"
+		Headers         = @{Accept = "application/vnd.github.sha"}
 		UseBasicParsing = $true
+		TimeoutSec      = 10
 		Verbose         = $true
 	}
-	Invoke-WebRequest @Parameters
+	$Commit = ([string](Invoke-RestMethod @Parameters)).Trim()
 
-	# Download LGPO
-	# https://techcommunity.microsoft.com/t5/microsoft-security-baselines/lgpo-exe-local-group-policy-object-utility-v1-0/ba-p/701045
+	if ($Commit.Length -ne 40)
+	{
+		throw "Cannot get the last commit SHA"
+	}
+
+	# Get all files and folders of the commit with one request
 	$Parameters = @{
-		Uri             = "https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip"
-		OutFile         = "$env:SystemDrive\Sophia_Script_Temp\LGPO.zip"
+		Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/git/trees/$($Commit)?recursive=1"
 		UseBasicParsing = $true
+		TimeoutSec      = 10
 		Verbose         = $true
 	}
-	Invoke-WebRequest @Parameters
+	$Tree = Invoke-RestMethod @Parameters
+
+	if ($Tree.truncated)
+	{
+		Write-Verbose -Message "GitHub returned not all files" -Verbose
+		# Stop silently
+		throw [System.Management.Automation.PipelineStoppedException]::new()
+	}
+
+	# Items of the edition folder. "type" is "tree" for a folder and "blob" for a file
+	$Items = $Tree.tree | Where-Object -FilterScript {$_.path.StartsWith("src/$Version/")}
+	$Folders = @($Items | Where-Object -FilterScript {$_.type -eq "tree"})
+	$Files = @($Items | Where-Object -FilterScript {$_.type -eq "blob"})
+
+	if ($Files.Count -eq 0)
+	{
+		Write-Verbose -Message "src/$Version not found" -Verbose
+		# Stop silently
+		throw [System.Management.Automation.PipelineStoppedException]::new()
+	}
+
+	# Paths in the repository start with "src/", e.g. src/Sophia_Script_for_Windows_11/Module/Sophia.psm1
+	New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version" -ItemType Directory -Force
+	foreach ($Folder in $Folders)
+	{
+		New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$($Folder.path.Substring(4))" -ItemType Directory -Force
+	}
+
+	# Invoke-WebRequest downloads files one by one, so HttpClient is used to download all files at the same time
+	Add-Type -AssemblyName System.Net.Http
+
+	# PowerShell 5.1 opens only 2 connections to the same server by default
+	[System.Net.ServicePointManager]::DefaultConnectionLimit = 16
+
+	# Text files are compressed by the server, so less data is downloaded
+	$HttpClientHandler = [System.Net.Http.HttpClientHandler]::new()
+	$HttpClientHandler.AutomaticDecompression = [System.Net.DecompressionMethods]::GZip -bor [System.Net.DecompressionMethods]::Deflate
+
+	$HttpClient = [System.Net.Http.HttpClient]::new($HttpClientHandler)
+	$HttpClient.Timeout = [timespan]::FromSeconds(60)
+
+	try
+	{
+		# Start all downloads. Files are kept as bytes, so encoding and BOM stay as in the repository
+		$Tasks = foreach ($File in $Files)
+		{
+			$HttpClient.GetByteArrayAsync("https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/$Commit/$($File.path)")
+		}
+
+		# Wait for all downloads. If any of them fails, an exception is thrown
+		[System.Threading.Tasks.Task]::WaitAll([System.Threading.Tasks.Task[]]$Tasks)
+
+		for ($i = 0; $i -lt $Files.Count; $i++)
+		{
+			[System.IO.File]::WriteAllBytes("$env:SystemDrive\Sophia_Script_Temp\$($Files[$i].path.Substring(4))", $Tasks[$i].Result)
+		}
+	}
+	finally
+	{
+		$HttpClient.Dispose()
+	}
+
+	Write-Verbose -Message "Downloaded $($Files.Count) files of $Version, commit $Commit" -Verbose
+
+	$FolderDownloaded = $true
+}
+catch
+{
+	Write-Verbose -Message "Cannot download the $Version folder only, so the whole archive will be downloaded: $($_.Exception.Message)" -Verbose
+
+	# Remove partially downloaded files
+	Remove-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version" -Recurse -Force -ErrorAction Ignore
+}
+
+try
+{
+	if (-not $FolderDownloaded)
+	{
+		# https://github.com/farag2/Sophia-Script-for-Windows/archive/refs/heads/main.zip
+		$Parameters = @{
+			Uri             = "https://codeload.github.com/farag2/Sophia-Script-for-Windows/zip/refs/heads/main"
+			OutFile         = "$env:SystemDrive\Sophia_Script_Temp\main.zip"
+			UseBasicParsing = $true
+			Verbose         = $true
+		}
+		Invoke-WebRequest @Parameters
+	}
 
 	if ($Version -match "PowerShell_7")
 	{
@@ -193,12 +289,15 @@ catch
 
 	Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
-# tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemDrive\Sophia_Script_Temp folder
-& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\main.zip" -C $env:SystemDrive\Sophia_Script_Temp --strip-components=2 "Sophia-Script-for-Windows-main/src/$Version"
+if (-not $FolderDownloaded)
+{
+	# tar.exe cannot extract an archive if it is located in a folder whose path includes $env:USERPROFILE path, so we download the archive to the $env:SystemDrive\Sophia_Script_Temp folder
+	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\main.zip" -C $env:SystemDrive\Sophia_Script_Temp --strip-components=2 "Sophia-Script-for-Windows-main/src/$Version"
+}
 
 if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$Version"))
 {
@@ -225,14 +324,11 @@ if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$Version"))
 
 	Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
-	pause
-	exit
+	# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
+	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
 New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" -ItemType Directory -Force
-
-# Extract LGPO.exe
-& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\LGPO.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" --strip-components=1 "LGPO_30/LGPO.exe"
 
 if ($Version -match "PowerShell_7")
 {
@@ -255,38 +351,3 @@ Remove-Item -Path $env:SystemDrive\Sophia_Script_Temp -Recurse -Force
 
 Invoke-Item -Path "$DownloadsFolder\$($Version)_Latest"
 Set-Location -Path "$DownloadsFolder\$($Version)_Latest"
-
-$Signature = @{
-	Namespace          = "WinAPI"
-	Name               = "ForegroundWindow"
-	Language           = "CSharp"
-	MemberDefinition   = @"
-[DllImport("user32.dll")]
-public static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
-[DllImport("user32.dll")]
-[return: MarshalAs(UnmanagedType.Bool)]
-public static extern bool SetForegroundWindow(IntPtr hWnd);
-"@
-}
-
-# PowerShell 7 compiles in memory and has no CompilerParameters argument
-# https://github.com/PowerShell/PowerShell/issues/21070
-if ($PSVersionTable.PSVersion.Major -eq 5)
-{
-	$Signature.Add("CompilerParameters", $CompilerParameters)
-}
-
-if (-not ("WinAPI.ForegroundWindow" -as [type]))
-{
-	Add-Type @Signature
-}
-
-Start-Sleep -Seconds 1
-
-Get-Process -Name explorer | Where-Object -FilterScript {$_.MainWindowTitle -match "$($Version)_Latest"} | ForEach-Object -Process {
-	# Show window, if minimized
-	[WinAPI.ForegroundWindow]::ShowWindowAsync($_.MainWindowHandle, 5)
-
-	# Force move the console window to the foreground
-	[WinAPI.ForegroundWindow]::SetForegroundWindow($_.MainWindowHandle)
-} | Out-Null
