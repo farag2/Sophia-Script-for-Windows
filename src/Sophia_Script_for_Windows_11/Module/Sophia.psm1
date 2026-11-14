@@ -83,13 +83,7 @@ function CreateRestorePoint
 		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		# Stop silently: "exit" would close the console if the function was called via Import-TabCompletion.ps1
 		throw [System.Management.Automation.PipelineStoppedException]::new()
@@ -322,10 +316,9 @@ function ErrorReporting
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+		Write-Information -MessageData "" -InformationAction Continue
 
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		# Do not write policies back to Registry.pol
 		$Global:RegistryPolicies = $null
@@ -2065,19 +2058,24 @@ function TaskbarWidgets
 	# We cannot set a value to TaskbarDa via any API, except by copying powershell.exe (or any other tricks) under a different name, because the UCPD driver tracks all executables to block access to the registry
 	Copy-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell.exe" -Destination "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
 
-	switch ($PSCmdlet.ParameterSetName)
+	try
 	{
-		"Hide"
+		switch ($PSCmdlet.ParameterSetName)
 		{
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force}
-		}
-		"Show"
-		{
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force}
+			"Hide"
+			{
+				& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 0 -Force}
+			}
+			"Show"
+			{
+				& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name TaskbarDa -PropertyType DWord -Value 1 -Force}
+			}
 		}
 	}
-
-	Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force
+	finally
+	{
+		Remove-Item -Path "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -Force -ErrorAction Ignore
+	}
 }
 
 <#
@@ -2223,8 +2221,8 @@ function SearchHighlights
 			if (($BingSearchEnabled -eq 0) -or ($DisableSearchBoxSuggestions -eq 1))
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.SearchHighlightsDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.SearchHighlightsDisabled, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -2480,14 +2478,8 @@ function TaskbarCombine
 	.SYNOPSIS
 	Unpin shortcuts from the taskbar
 
-	.PARAMETER Edge
-	Unpin Microsoft Edge shortcut from the taskbar
-
-	.PARAMETER Store
-	Unpin Microsoft Store shortcut from the taskbar
-
-	.PARAMETER Outlook
-	Unpin Outlook shortcut from the taskbar
+	.PARAMETER Shortcuts
+	Shortcuts to unpin from the taskbar: Edge (Microsoft Edge), Store (Microsoft Store), Outlook
 
 	.EXAMPLE
 	UnpinTaskbarShortcuts -Shortcuts Edge, Store, Outlook
@@ -3188,123 +3180,69 @@ function Install-Cursors
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Dark"
+		{$_ -in @("Dark", "Light")}
 		{
-			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free"))
+			# "Dark" or "Light"
+			$Theme = $PSCmdlet.ParameterSetName
+			# "W11 Cursor Dark Free" or "W11 Cursor Light Free"
+			$Folder = "W11 Cursor $Theme Free"
+
+			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\$Folder"))
 			{
-				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Dark Free" -ItemType Directory -Force
+				New-Item -Path "$env:SystemRoot\Cursors\$Folder" -ItemType Directory -Force
 			}
 
-			# Extract archive from "dark" folder only
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Dark Free" --strip-components=1 dark/
+			# Extract archive from "dark" or "light" folder only
+			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip" -C "$env:SystemRoot\Cursors\$Folder" --strip-components=1 "$($Theme.ToLower())/"
 
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Dark Free by Jepri Creations" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "$Folder by Jepri Creations" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\appstarting.ani" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\arrow.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\crosshair.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\hand.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\help.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\ibeam.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\no.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\nwpen.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\person.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\pin.cur" -Force
 			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\sizeall.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\sizenesw.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\sizens.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\sizenwse.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\sizewe.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\uparrow.cur" -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\$Folder\wait.ani" -Force
 
 			if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
 			{
 				New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
 			}
 			$Schemes = @(
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\arrow.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\help.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\appstarting.ani",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\wait.ani",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\crosshair.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\ibeam.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\nwpen.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\no.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizens.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizewe.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenwse.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizenesw.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\sizeall.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\uparrow.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\hand.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\person.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Dark Free\pin.cur"
+				"%SystemRoot%\Cursors\$Folder\arrow.cur",
+				"%SystemRoot%\Cursors\$Folder\help.cur",
+				"%SystemRoot%\Cursors\$Folder\appstarting.ani",
+				"%SystemRoot%\Cursors\$Folder\wait.ani",
+				"%SystemRoot%\Cursors\$Folder\crosshair.cur",
+				"%SystemRoot%\Cursors\$Folder\ibeam.cur",
+				"%SystemRoot%\Cursors\$Folder\nwpen.cur",
+				"%SystemRoot%\Cursors\$Folder\no.cur",
+				"%SystemRoot%\Cursors\$Folder\sizens.cur",
+				"%SystemRoot%\Cursors\$Folder\sizewe.cur",
+				"%SystemRoot%\Cursors\$Folder\sizenwse.cur",
+				"%SystemRoot%\Cursors\$Folder\sizenesw.cur",
+				"%SystemRoot%\Cursors\$Folder\sizeall.cur",
+				"%SystemRoot%\Cursors\$Folder\uparrow.cur",
+				"%SystemRoot%\Cursors\$Folder\hand.cur",
+				"%SystemRoot%\Cursors\$Folder\person.cur",
+				"%SystemRoot%\Cursors\$Folder\pin.cur"
 			) -join ","
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Dark Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "$Folder by Jepri Creations" -PropertyType String -Value $Schemes -Force
 
 			Start-Sleep -Seconds 1
 
-			Remove-Item -Path "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Dark Free\Install.inf" -Force -ErrorAction Ignore
-		}
-		"Light"
-		{
-			if (-not (Test-Path -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free"))
-			{
-				New-Item -Path "$env:SystemRoot\Cursors\W11 Cursor Light Free" -ItemType Directory -Force
-			}
-
-			# Extract archive from "light" folder only
-			& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip" -C "$env:SystemRoot\Cursors\W11 Cursor Light Free" --strip-components=1 light/
-
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "(default)" -PropertyType String -Value "W11 Cursor Light Free by Jepri Creations" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name AppStarting -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Arrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Crosshair -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Hand -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Help -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name IBeam -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name No -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name NWPen -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Person -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Pin -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name "Scheme Source" -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeAll -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNESW -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNS -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeNWSE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name SizeWE -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name UpArrow -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur" -Force
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors" -Name Wait -PropertyType ExpandString -Value "%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani" -Force
-
-			if (-not (Test-Path -Path "HKCU:\Control Panel\Cursors\Schemes"))
-			{
-				New-Item -Path "HKCU:\Control Panel\Cursors\Schemes" -Force
-			}
-			$Schemes = @(
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\arrow.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\help.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\appstarting.ani",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\wait.ani",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\crosshair.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\ibeam.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\nwpen.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\no.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizens.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizewe.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenwse.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizenesw.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\sizeall.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\uparrow.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\hand.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\person.cur",
-				"%SystemRoot%\Cursors\W11 Cursor Light Free\pin.cur"
-			) -join ","
-			New-ItemProperty -Path "HKCU:\Control Panel\Cursors\Schemes" -Name "W11 Cursor Light Free by Jepri Creations" -PropertyType String -Value $Schemes -Force
-
-			Start-Sleep -Seconds 1
-
-			Remove-Item -Path "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\W11 Cursor Light Free\Install.inf" -Force -ErrorAction Ignore
+			Remove-Item -Path "$env:SystemRoot\Cursors\w11-cursor-concept-free.zip", "$env:SystemRoot\Cursors\$Folder\Install.inf" -Force -ErrorAction Ignore
 		}
 		"Default"
 		{
@@ -3493,7 +3431,7 @@ function RecentlyAddedStartApps
 	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideRecentlyAddedApps
 
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	if ((Get-Process -Name Start11Srv, StartMenu -ErrorAction Ignore) -or ((Get-Process -Name explorer -ErrorAction Ignore).Modules | Where-Object -FilterScript {$_.ModuleName -like "StartAllBack*.dll"}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -3532,7 +3470,7 @@ function UnpinAllStartTiles
 	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMorePrograms
 	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMorePrograms
 
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	if ((Get-Process -Name Start11Srv, StartMenu -ErrorAction Ignore) -or ((Get-Process -Name explorer -ErrorAction Ignore).Modules | Where-Object -FilterScript {$_.ModuleName -like "StartAllBack*.dll"}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -3613,7 +3551,7 @@ function StartAppsView
 	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name HideCategoryView
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\Explorer -Name HideCategoryView
 
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	if ((Get-Process -Name Start11Srv, StartMenu -ErrorAction Ignore) -or ((Get-Process -Name explorer -ErrorAction Ignore).Modules | Where-Object -FilterScript {$_.ModuleName -like "StartAllBack*.dll"}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -3678,16 +3616,8 @@ function MostUsedStartApps
 	)
 
 	# Remove all policies in order to make changes visible in UI
-	$Parameters = @{
-		Path        = @(
-			"HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer",
-			"HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer"
-		)
-		Name        = @("NoStartMenuMFUprogramsList", "NoInstrumentation")
-		Force       = $true
-		ErrorAction = "Ignore"
-	}
-	Remove-ItemProperty @Parameters
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\Explorer, HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation -Force -ErrorAction Ignore
 	Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer, HKLM:\SOFTWARE\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps -Force -ErrorAction Ignore
 
 	Remove-Policy -Scope User -Path Software\Policies\Microsoft\Windows\Explorer -Name ShowOrHideMostUsedApps
@@ -3697,7 +3627,7 @@ function MostUsedStartApps
 	Remove-Policy -Scope User -Path Software\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation
 	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation
 
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	if ((Get-Process -Name Start11Srv, StartMenu -ErrorAction Ignore) -or ((Get-Process -Name explorer -ErrorAction Ignore).Modules | Where-Object -FilterScript {$_.ModuleName -like "StartAllBack*.dll"}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -3714,7 +3644,7 @@ function MostUsedStartApps
 		}
 		"Show"
 		{
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -Force -ErrorAction Ignore
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -3783,7 +3713,7 @@ function StartRecommendedSection
 	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoStartMenuMFUprogramsList
 	Remove-Policy -Scope Computer -Path SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\Explorer -Name NoInstrumentation
 
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	if ((Get-Process -Name Start11Srv, StartMenu -ErrorAction Ignore) -or ((Get-Process -Name explorer -ErrorAction Ignore).Modules | Where-Object -FilterScript {$_.ModuleName -like "StartAllBack*.dll"}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -3810,7 +3740,7 @@ function StartRecommendedSection
 			# Show recently added apps on Start
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowRecentList -Force -ErrorAction Ignore
 			# Show most used apps on Start
-			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -Force -ErrorAction Ignore
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Start -Name ShowFrequentList -PropertyType DWord -Value 1 -Force
 			# Show recommendations for tips, shortcuts, new apps, and more on Start
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name Start_IrisRecommendations -Force -ErrorAction Ignore
 			# Show recommended files on Start, recent files in File Explorer, and items in jump lists
@@ -3857,7 +3787,7 @@ function StartRecommendationsTips
 		$Show
 	)
 
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	if ((Get-Process -Name Start11Srv, StartMenu -ErrorAction Ignore) -or ((Get-Process -Name explorer -ErrorAction Ignore).Modules | Where-Object -FilterScript {$_.ModuleName -like "StartAllBack*.dll"}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -3917,7 +3847,7 @@ function StartAccountNotifications
 		$Show
 	)
 
-	if (Get-Process -Name Start11Srv, StartAllBackCfg, StartMenu -ErrorAction Ignore)
+	if ((Get-Process -Name Start11Srv, StartMenu -ErrorAction Ignore) -or ((Get-Process -Name explorer -ErrorAction Ignore).Modules | Where-Object -FilterScript {$_.ModuleName -like "StartAllBack*.dll"}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.CustomStartMenuFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -3952,8 +3882,8 @@ function StartAccountNotifications
 	.PARAMETER Install
 	Install OneDrive depending on which installer is triggered
 
-	.PARAMETER Install -AllUsers
-	Install OneDrive for all users to %ProgramFiles% depending on which installer is triggered
+	.PARAMETER AllUsers
+	Install OneDrive for all users to %ProgramFiles% depending on which installer is triggered. Used with the Install parameter
 
 	.EXAMPLE
 	OneDrive -Uninstall
@@ -4066,12 +3996,17 @@ function OneDrive
 
 			Get-Process -Name UserOOBEBroker -ErrorAction Ignore | Stop-Process -Force
 
-			# Unregister the OneDrive shell extension
-			Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force -ErrorAction Ignore | ForEach-Object -Process {
-				Start-Process -FilePath "$env:SystemRoot\System32\regsvr32.exe" -ArgumentList "/u /s `"$($_.FullName)`"" -Wait
-			}
+			# Make sure that the path is the OneDrive folder indeed ("Microsoft OneDrive" or "OneDrive")
+			# If the uninstall string points to e.g. %SystemRoot%\SysWOW64\OneDriveSetup.exe, the path is %SystemRoot%, and it must not be removed
+			if ($OneDriveFolder -and ((Split-Path -Path $OneDriveFolder -Leaf) -match "OneDrive$"))
+			{
+				# Unregister the OneDrive shell extension
+				Get-ChildItem -Path "$OneDriveFolder\*\FileSyncShell64.dll" -Force -ErrorAction Ignore | ForEach-Object -Process {
+					Start-Process -FilePath "$env:SystemRoot\System32\regsvr32.exe" -ArgumentList "/u /s `"$($_.FullName)`"" -Wait
+				}
 
-			Remove-Item -Path $OneDriveFolder -Force -Recurse -ErrorAction Ignore
+				Remove-Item -Path $OneDriveFolder -Force -Recurse -ErrorAction Ignore
+			}
 
 			# We need to wait for a few seconds to let explorer launch, otherwise it will fail to do so
 			Start-Process -FilePath "$env:SystemRoot\explorer.exe"
@@ -4117,11 +4052,11 @@ function OneDrive
 				if ($AllUsers)
 				{
 					# Install OneDrive for all users to %ProgramFiles%
-					& $env:SystemRoot\System32\OneDriveSetup.exe /allusers
+					Start-Process -FilePath "$env:SystemRoot\System32\OneDriveSetup.exe" -ArgumentList "/allusers" -Wait
 				}
 				else
 				{
-					Start-Process -FilePath $env:SystemRoot\System32\OneDriveSetup.exe
+					Start-Process -FilePath "$env:SystemRoot\System32\OneDriveSetup.exe" -Wait
 				}
 			}
 			else
@@ -4151,11 +4086,11 @@ function OneDrive
 					if ($AllUsers)
 					{
 						# Install OneDrive for all users to %ProgramFiles%
-						& "$DownloadsFolder\OneDriveSetup.exe" /allusers
+						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -ArgumentList "/allusers" -Wait
 					}
 					else
 					{
-						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe"
+						Start-Process -FilePath "$DownloadsFolder\OneDriveSetup.exe" -Wait
 					}
 
 					Start-Sleep -Seconds 3
@@ -5383,10 +5318,10 @@ function PowerPlan
 	Network adapters power management
 
 	.PARAMETER Disable
-	Do not allow the computer to turn off the network adapters to save power
+	Do not allow the computer to turn off the active network adapters to save power
 
 	.PARAMETER Enable
-	Allow the computer to turn off the network adapters to save power
+	Allow the computer to turn off the active network adapters to save power
 
 	.EXAMPLE
 	NetworkAdaptersSavePower -Disable
@@ -5396,6 +5331,9 @@ function PowerPlan
 
 	.NOTES
 	Not recommended to turn off for laptops
+
+	.NOTES
+	Only physical network adapters that are currently connected are processed
 
 	.NOTES
 	Machine-wide
@@ -5790,8 +5728,8 @@ IconIndex=-238
 			if (-not $DriveLetters)
 			{
 				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.UserFolderLocationMove, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.UserFolderLocationMove, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+				Write-Verbose -Message ($Localization.OnlyOneDriveFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.OnlyOneDriveFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 
 				return
 			}
@@ -6629,14 +6567,22 @@ function Set-Association
 	$FunctionCall = (@($MyInvocation.MyCommand.Name) + @($Arguments)) -join " "
 
 	$ProgramPath = [System.Environment]::ExpandEnvironmentVariables($ProgramPath)
+	# The whole command to save to shell\open\command if $ProgramPath contains arguments
+	$OpenCommand = $null
 
 	# If $ProgramPath is a path to an executable
 	if ($ProgramPath.Contains(":"))
 	{
-		# Export-Associations saves the whole command, e.g. "C:\Program Files\App\app.exe" "%1", so cut it to the path to the executable
 		$ExeIndex = $ProgramPath.IndexOf(".exe", [System.StringComparison]::OrdinalIgnoreCase)
 		if ($ExeIndex -ge 0)
 		{
+			# Export-Associations saves the whole command, e.g. "C:\Program Files\App\app.exe" --open "%1"
+			# Keep it to save its arguments, and cut $ProgramPath to the path to the executable
+			if ($ProgramPath.Contains("%1"))
+			{
+				$OpenCommand = $ProgramPath
+			}
+
 			$ProgramPath = $ProgramPath.Substring(0, $ExeIndex + 4).Trim().Trim('"')
 		}
 
@@ -6690,21 +6636,18 @@ function Set-Association
 				New-Item -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Force
 			}
 
-			if ($ProgramPath.Contains("%1"))
+			if (-not $OpenCommand)
 			{
-				New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value $ProgramPath -Force
+				$OpenCommand = "`"$ProgramPath`" `"%1`""
 			}
-			else
-			{
-				New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
-			}
+			New-ItemProperty -Path "HKCU:\Software\Classes\$ProgId\shell\open\command" -Name "(Default)" -PropertyType String -Value $OpenCommand -Force
 
 			$FileNameEXE = Split-Path -Path $ProgramPath -Leaf
 			if (-not (Test-Path -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command"))
 			{
 				New-Item -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Force
 			}
-			New-ItemProperty -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Name "(Default)" -PropertyType String -Value "`"$ProgramPath`" `"%1`"" -Force
+			New-ItemProperty -Path "HKCU:\Software\Classes\Applications\$FileNameEXE\shell\open\command" -Name "(Default)" -PropertyType String -Value $OpenCommand -Force
 		}
 
 		if ($Icon)
@@ -7186,7 +7129,7 @@ function Install-VCRedist
 
 			Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Architecture).exe" -ArgumentList "/install /passive /norestart" -Wait
 
-			# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# PowerShell 5.1 (7.7 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 			# https://github.com/PowerShell/PowerShell/issues/21070
 			$Paths = @(
 				"$DownloadsFolder\vc_redist.$($Architecture).exe",
@@ -7207,11 +7150,8 @@ function Install-VCRedist
 	.SYNOPSIS
 	Install the latest .NET Desktop Runtime 10, 11
 
-	.PARAMETER NET10
-	Install the latest .NET Desktop Runtime 10
-
-	.PARAMETER NET11
-	Install the latest .NET Desktop Runtime 11
+	.PARAMETER Runtimes
+	Versions of .NET Desktop Runtime to install: NET10, NET11
 
 	.EXAMPLE
 	Install-DotNetRuntimes -Runtimes NET10, NET11
@@ -7240,7 +7180,7 @@ function Install-DotNetRuntimes
 
 	foreach ($Runtime in $Runtimes)
 	{
-		# Function call string for the current runtime only, e.g. "Install-DotNetRuntimes -Runtimes NET9"
+		# Function call string for the current runtime only, e.g. "Install-DotNetRuntimes -Runtimes NET10"
 		$FunctionCall = "{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime
 
 		switch ($Runtime)
@@ -7313,7 +7253,7 @@ function Install-DotNetRuntimes
 			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
 		}
 
-		# PowerShell 5.1 (7.6 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# PowerShell 5.1 (7.7 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
 		# https://github.com/PowerShell/PowerShell/issues/21070
 		$Paths = @(
 			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log",
@@ -9564,7 +9504,7 @@ function WindowsSandbox
 	Enable DNS-over-HTTPS using OpenDNS
 
 	.PARAMETER Reset
-	Set default ISP's DNS records
+	Set default ISP's DNS servers
 
 	.EXAMPLE
 	DNSoverHTTPS -Cloudflare
@@ -9671,7 +9611,7 @@ function DNSoverHTTPS
 		return
 	}
 
-	# Reset DNS records
+	# Reset DNS servers
 	$ResetDNS = {
 		if ($Adapter)
 		{
@@ -9737,7 +9677,7 @@ function DNSoverHTTPS
 		}
 	}
 
-	# Reset DNS records first
+	# Reset DNS servers first
 	& $ResetDNS
 
 	# Set primary and secondary DNS servers
@@ -10220,7 +10160,7 @@ function ScanRegistryPolicies
 		}
 	}
 
-	# Policy roots, and a few ordinary settings that are also set as policies, e.g. by Win32LongPathSupport
+	# Policy roots, and a few ordinary settings that are also set as policies, e.g. by Win32LongPathsSupport
 	# Other ordinary settings from ADMX files exist by default, and they would turn into policies
 	$Paths = @(
 		"HKLM:\SOFTWARE\Policies",

@@ -58,11 +58,6 @@ if ($MyInvocation.InvocationName -ne ".")
 . $PSScriptRoot\Module\Private\InitialActions.ps1
 InitialActions
 
-if ($Global:Failed)
-{
-	exit
-}
-
 function Sophia
 {
 	[CmdletBinding()]

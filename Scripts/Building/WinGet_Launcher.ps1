@@ -1,38 +1,29 @@
-Write-Verbose -Message "WinGet launcher" -Verbose
-
-# Build Sophia.Script.for.Windows.11.v*_WinGet.exe for WinGet: a self-extracting EXE without WinRAR or 7-Zip
-# The EXE is compiled from Scripts\Launcher\SophiaLauncher.cs and contains the release ZIP archive as an embedded resource
+# Build Sophia.Script.for.Windows.11.v*_WinGet.exe for WinGet
+# The EXE is compiled from Scripts\Building\Launcher\SophiaLauncher.cs and contains the src\Sophia_Script_for_Windows_11 folder as an embedded ZIP archive
 # It extracts the archive to the Downloads folder and opens the extracted folder
+
+Write-Verbose -Message "Building WinGet launcher (SFX like)" -Verbose
 
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
 $Latest_Release_Windows_11 = (Get-Content -Path "Sophia_Script_Releases.json" -Raw | ConvertFrom-Json).Sophia_Script_Windows_11
 
-$Folder   = "Sophia_Script\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11)"
-$Archive  = "Sophia_Script\Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11).zip"
 $Launcher = "Sophia_Script\Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11)_WinGet.exe"
+$Archive  = "$env:TEMP\SophiaLauncher.zip"
+# Sophia_Script_for_Windows_11_v8.x.x
+$Folder   = "$env:TEMP\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11)"
 
-# Sophia.yml: the archive was already built by Build.ps1, so the launcher contains exactly the released archive
-# SignPath_Test.yml: Build.ps1 isn't run, so pack the Windows 11 edition the same way Build.ps1 does
-# The archive contains the Sophia_Script_for_Windows_11_v* folder
-if (-not (Test-Path -Path $Archive))
-{
-	if (Test-Path -Path $Folder)
-	{
-		Remove-Item -Path $Folder -Recurse -Force
-	}
-	New-Item -Path $Folder -ItemType Directory -Force | Out-Null
-	Get-ChildItem -Path "src\Sophia_Script_for_Windows_11" -Force | Copy-Item -Destination $Folder -Recurse -Force
+New-Item -Path "Sophia_Script" -ItemType Directory -Force
 
-	$Parameters = @{
-		Path             = $Folder
-		DestinationPath  = $Archive
-		CompressionLevel = "Fastest"
-		Force            = $true
-	}
-	Compress-Archive @Parameters
+# Copy folder to compress it with name containing script version
+Copy-Item -Path "src\Sophia_Script_for_Windows_11" -Destination $Folder -Recurse -Force
+
+$Parameters = @{
+	Path             = $Folder
+	DestinationPath  = $Archive
+	CompressionLevel = "Fastest"
+	Force            = $true
 }
-
-$CSC = "$env:SystemRoot\Microsoft.NET\Framework64\v4.0.30319\csc.exe"
+Compress-Archive @Parameters
 
 # AssemblyVersion and AssemblyFileVersion require 4 numbers: 8.1.0 -> 8.1.0.0
 $Version = [System.Version]$Latest_Release_Windows_11
@@ -50,9 +41,7 @@ using System.Reflection;
 [assembly: AssemblyFileVersion("$FileVersion")]
 [assembly: AssemblyInformationalVersion("$Latest_Release_Windows_11")]
 "@
-
-$AssemblyInfoPath = "$env:TEMP\SophiaLauncher_AssemblyInfo.cs"
-Set-Content -Path $AssemblyInfoPath -Value $AssemblyInfo -Encoding UTF8 -Force
+Set-Content -Path "$env:TEMP\SophiaLauncher_AssemblyInfo.cs" -Value $AssemblyInfo -Encoding UTF8 -Force
 
 $Arguments = @(
 	"/nologo",
@@ -61,23 +50,20 @@ $Arguments = @(
 	"/optimize+",
 	"/out:$Launcher",
 	# Icon
-	"/win32icon:Scripts\Launcher\WinGet.ico",
-	# Archive is embedded under the "Sophia.zip" name. SophiaLauncher.cs reads it by this name
+	"/win32icon:Scripts\Building\Launcher\WinGet.ico",
+	# Archive is embedded under the "Sophia.zip" name
 	"/resource:$Archive,Sophia.zip",
 	"/reference:System.IO.Compression.dll",
 	"/reference:System.IO.Compression.FileSystem.dll",
 	"/reference:System.Windows.Forms.dll",
-	"Scripts\Launcher\SophiaLauncher.cs",
-	$AssemblyInfoPath
+	"Scripts\Building\Launcher\SophiaLauncher.cs",
+	"$env:TEMP\SophiaLauncher_AssemblyInfo.cs"
 )
-& $CSC @Arguments
+& "$env:SystemRoot\Microsoft.NET\Framework64\v4.0.30319\csc.exe" @Arguments
 
-Remove-Item -Path $AssemblyInfoPath -Force
+Remove-Item -Path "$env:TEMP\SophiaLauncher_AssemblyInfo.cs", $Archive, $Folder -Recurse -Force
 
 # Pass the version to the next workflow steps: file name for upload-artifact and the "version" parameter for SignPath
-if ($env:GITHUB_OUTPUT)
-{
-	Add-Content -Path $env:GITHUB_OUTPUT -Value "version=$Latest_Release_Windows_11"
-}
+Add-Content -Path $env:GITHUB_OUTPUT -Value "version=$Latest_Release_Windows_11"
 
 (Get-Item -Path $Launcher).VersionInfo | Format-List -Property ProductName, ProductVersion, FileVersion, CompanyName, OriginalFilename

@@ -3,7 +3,7 @@
 	Post actions
 
 	.VERSION
-	8.1.0
+	7.1.0
 
 	.DATE
 	31.10.2026
@@ -132,11 +132,7 @@ function Global:PostActions
 	$Global:RegistryPolicies = $null
 
 	Write-Information -MessageData "" -InformationAction Continue
-	Write-Verbose -Message $Localization.AskQuestion -Verbose
-	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-	Write-Verbose -Message "https://t.me/sophianews" -Verbose
-	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+	Show-SupportLinks
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.DonateToastTitle -Verbose

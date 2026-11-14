@@ -66,7 +66,7 @@ foreach ($Token in $Archives.Keys)
 	-replace "Sophia_Script_Windows_11_Arm_PowerShell_5_1",       $JSON.Sophia_Script_Windows_11 `
 	-replace "Sophia_Script_Windows_11_Arm_PowerShell_7",         $JSON.Sophia_Script_Windows_11 `
 	-replace "Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1", $JSON.Sophia_Script_Windows_11_LTSC_2024 `
-	-replace "Sophia_Script_Windows_11_LTSC_2024_PowerShell_7",   $JSON.Sophia_Script_Windows_11_LTSC_2024 `
+	-replace "Sophia_Script_Windows_11_LTSC_2024_PowerShell_7",   $JSON.Sophia_Script_Windows_11_LTSC_2024
 } | Set-Content -Path ReleaseNotesTemplate.md -Encoding utf8 -Force
 
 # https://trstringer.com/github-actions-multiline-strings/

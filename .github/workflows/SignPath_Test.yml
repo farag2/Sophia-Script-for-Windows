@@ -12,19 +12,12 @@ on:
         description: "Draft release tag"
         required: true
 
-# Do not push from several workflows at the same time
-concurrency:
-  group: update-repository-files
-  cancel-in-progress: false
-
 jobs:
   test-signing:
     runs-on: windows-latest
     timeout-minutes: 30
     permissions:
-      # Commit the signed file to Scripts/WinGet and create a draft release
       contents: write
-      # SignPath downloads the unsigned artifact with GITHUB_TOKEN
       actions: read
     env:
       SIGNPATH_SIGNING_POLICY_SLUG: test-signing
@@ -37,7 +30,6 @@ jobs:
         run: |
           . "Scripts\Building\WinGet_Launcher.ps1"
 
-      # upload-artifact wraps the file into a ZIP archive, so the artifact configuration root element is <zip-file>
       - name: Upload unsigned WinGet launcher
         id: upload-unsigned
         uses: actions/upload-artifact@main
@@ -92,8 +84,9 @@ jobs:
       - name: Uploading
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TAG: ${{ inputs.tag }}
         run: |
-          $Tag   = "${{ inputs.tag }}"
+          $Tag   = $env:INPUT_TAG
           $Asset = (Get-Item -Path "Sophia_Script\Sophia*_WinGet.exe").FullName
           $Title = "Test signing $Tag"
           $Notes = "Test-signed WinGet launcher. SignPath signing request: ${{ steps.signpath.outputs.signing-request-web-url }}"

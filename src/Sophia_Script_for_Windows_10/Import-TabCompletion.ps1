@@ -58,11 +58,6 @@ if ($MyInvocation.InvocationName -ne ".")
 . $PSScriptRoot\Module\Private\InitialActions.ps1
 InitialActions
 
-if ($Global:Failed)
-{
-	exit
-}
-
 function Sophia
 {
 	[CmdletBinding()]
@@ -189,5 +184,5 @@ Write-Verbose -Message "Sophia -Functions <tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions temp<tab>" -Verbose
 Write-Verbose -Message "Sophia -Functions 'DiagTrackService -Disable', 'DiagnosticDataLevel -Minimal', Uninstall-UWPApps" -Verbose
 Write-Information -MessageData "" -InformationAction Continue
-Write-Verbose -Message "Sophia -Functions Uninstall-UWPApps, UnpinAllStartTiles" -Verbose
+Write-Verbose -Message "Sophia -Functions Uninstall-UWPApps, 'PinToStart -UnpinAll'" -Verbose
 Write-Verbose -Message "Sophia -Functions `"Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'`"" -Verbose

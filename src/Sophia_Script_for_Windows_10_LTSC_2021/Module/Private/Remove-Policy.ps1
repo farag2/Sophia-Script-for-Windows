@@ -21,7 +21,7 @@
 	https://learn.microsoft.com/previous-versions/windows/desktop/policy/registry-policy-file-format
 
 	.VERSION
-	8.1.0
+	7.1.0
 
 	.DATE
 	31.10.2026

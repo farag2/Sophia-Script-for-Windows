@@ -16,11 +16,12 @@ jobs:
         uses: actions/checkout@main
 
       - name: Get download counts
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          $Token = "${{ secrets.GITHUB_TOKEN }}"
           $Headers = @{
             Accept        = "application/vnd.github+json"
-            Authorization = "Bearer $Token"
+            Authorization = "Bearer $env:GITHUB_TOKEN"
           }
 
           # Count downloads for the first page of the repo
@@ -44,14 +45,6 @@ jobs:
           while ($Pages.Count -gt 0)
 
           $Allpages = ($Releases.assets.download_count | Measure-Object -Sum).Sum
-
-          # https://community.chocolatey.org/packages/sophia
-          $Parameters = @{
-              Uri             = "https://community.chocolatey.org/api/v2/Packages()?`$filter=Id eq 'sophia' and IsLatestVersion"
-              UseBasicParsing = $true
-              Verbose         = $true
-          }
-          $choco = (Invoke-RestMethod @Parameters).properties.DownloadCount."#text"
 
           # https://sourceforge.net/projects/sophia-script-windows.mirror/
           $Parameters = @{

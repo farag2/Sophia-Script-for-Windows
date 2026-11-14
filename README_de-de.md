@@ -138,7 +138,7 @@ href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/
   * Musik
   * Bilder
   * Videos
-* Die kostenlosen Cursor `Windows 11 Cursors Concept v2` (hell und dunkel) von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) im laufenden Betrieb installieren
+* Die kostenlosen Cursor `Windows 11 Cursors Concept` (hell und dunkel) von [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356) im laufenden Betrieb installieren
   * Das Archiv wurde mit der [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml) in den Ordner [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors) heruntergeladen
 * Eine App als Standard für eine bestimmte Dateiendung festlegen, ohne dass das Popup-Fenster `Wie möchten Sie diese Datei öffnen?` angezeigt wird
 * Alle Windows-Dateizuordnungen exportieren und importieren. Um die Zuordnungen wiederherzustellen, müssen zuvor alle Apps aus der exportierten JSON-Datei installiert sein
@@ -156,16 +156,16 @@ href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/
     * `%SystemDrive%\PerfLogs`
     * `%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Temp`
     * `%LOCALAPPDATA%\CrashDumps`
-    * `%SystemDrive%\Recovery`
     * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
-* Neueste Version von Microsoft Visual C++ 2015–2026 x86/x64 installieren
-* Neueste Version von .NET Desktop Runtime 8, 9, 10 x64 installieren
+* Neueste Version von Microsoft Visual C++ 2017–2026 x86/x64 installieren
+* Neueste Version von .NET Desktop Runtime 10, 11 installieren
 * Viele weitere Optimierungen für den Datei-Explorer und das Kontextmenü
 
 ## Inhaltsverzeichnis
 
 * [Hauptfunktionen](#hauptfunktionen)
 * [Herunterladen](#herunterladen)
+* [Code-Signing-Richtlinie](CODE_SIGNING_POLICY.md)
 * [Verwendung](#verwendung)
   * [Bestimmte Funktionen ausführen](#bestimmte-funktionen-ausführen)
 * [Systemanforderungen](#systemanforderungen)
@@ -343,7 +343,7 @@ scoop install sophia-script --no-cache
 # scoop bucket rm versions
 scoop bucket add versions
 # sophia-script-ltsc2019, sophia-script-ltsc2021
-# sophia-script-ltsc2024-ps7.json, sophia-script-ltsc2024
+# sophia-script-ltsc2024-ps7, sophia-script-ltsc2024
 # sophia-script-ps7, sophia-script-win10-ps7
 scoop install sophia-script-win10 --no-cache
 ```
@@ -397,20 +397,24 @@ Sophia -Functions unin<TAB>
 Sophia -Functions uwp<TAB>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
 
+# Windows 11
+Sophia -Functions Uninstall-UWPApps, UnpinAllStartTiles
+
+# Windows 10
 Sophia -Functions Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
 
 ## Systemanforderungen
 
-[Windows-10]: https://support.microsoft.com/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562
-[Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
-[Windows-10-LTSC-2021]: https://support.microsoft.com/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
-[Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
-[Windows-11-25h2]: https://support.microsoft.com/topic/windows-11-version-25h2-update-history-99c7f493-df2a-4832-bd2d-6706baa0dec0
+[Windows-10]: https://support.microsoft.com/servicing/os/windows-10/2022/09/windows-10-update-history
+[Windows-10-LTSC-2019]: https://support.microsoft.com/servicing/os/windows-10/2020/11/windows-10-and-windows-server-2019-update-history
+[Windows-10-LTSC-2021]: https://support.microsoft.com/servicing/os/windows-10/2021/11/windows-10-update-history
+[Windows-11-LTSC-2024]: https://support.microsoft.com/servicing/os/windows-11/2024/09/windows-11-version-24h2-update-history
+[Windows-11-26h2]: https://support.microsoft.com/servicing/os/windows-11/2026/09/windows-11-version-26h2-update-history
 
 |               Version                    |                Build                             |      Edition        |
 |:-----------------------------------------|:------------------------------------------------:|:-------------------:|
-| Windows 11 25H2+                         | [Aktuelle stabile Version][Windows-11-25h2]      | Home/Pro/Enterprise |
+| Windows 11 26H2+                         | [Aktuelle stabile Version][Windows-11-26h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Aktuelle stabile Version][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Aktuelle stabile Version][Windows-11-LTSC-2024] | Enterprise          |
 | Windows 10 21H2 Enterprise LTSC 2021     | [Aktuelle stabile Version][Windows-10-LTSC-2021] | Enterprise          |
@@ -444,8 +448,8 @@ Sophia -Functions Uninstall-UWPApps, "PinToStart -UnpinAll"
 ## Übersetzen
 
 * Führen Sie `$PSUICulture` in PowerShell aus, um Ihre UI-Sprache zu ermitteln
-* Erstellen Sie einen Ordner mit dem Namen der UI-Sprache (z. B. `de-DE`)
-* Legen Sie Ihre lokalisierte Datei `SophiaScript.psd1` in diesem Ordner ab
+* Erstellen Sie im Ordner `Module\Localizations` einen Ordner mit dem Namen der UI-Sprache (z. B. `de-DE`)
+* Legen Sie Ihre lokalisierte Datei `Sophia.psd1` in diesem Ordner ab
 
 ## Medien
 

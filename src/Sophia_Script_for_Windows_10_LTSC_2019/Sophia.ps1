@@ -65,11 +65,6 @@
 . $PSScriptRoot\Module\Private\InitialActions.ps1
 InitialActions
 
-if ($Global:Failed)
-{
-	exit
-}
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Preset configuration starts here                                    #
 # Настройка пресет-файла начинается здесь                             #
@@ -554,12 +549,12 @@ PowerPlan -High
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
 # PowerPlan -Balanced
 
-# Do not allow the computer to turn off the network adapters to save power. Not recommended for laptops
-# Запретить отключение всех сетевых адаптеров для экономии энергии. Не рекомендуется для ноутбуков
+# Do not allow the computer to turn off the active network adapters to save power. Not recommended for laptops
+# Запретить отключение активных сетевых адаптеров для экономии энергии. Не рекомендуется для ноутбуков
 NetworkAdaptersSavePower -Disable
 
-# Allow the computer to turn off the network adapters to save power (default value)
-# Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
+# Allow the computer to turn off the active network adapters to save power (default value)
+# Разрешить отключение активных сетевых адаптеров для экономии энергии (значение по умолчанию)
 # NetworkAdaptersSavePower -Enable
 
 # Override for default input method: English
@@ -673,9 +668,9 @@ ThumbnailCacheRemoval -Disable
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
 Install-VCRedist
 
-# Install the latest .NET Desktop Runtime 8, 9, 10 x64. Internet connection required
-# Установить последнюю версию .NET Desktop Runtime 8, 9, 10 x64. Требуется соединение с интернетом
-Install-DotNetRuntimes -Runtimes NET8, NET9, NET10
+# Install the latest .NET Desktop Runtime 10 and 11 x64. Internet connection required
+# Установить последнюю версию .NET Desktop Runtime 10 и 11 x64. Требуется соединение с интернетом
+Install-DotNetRuntimes -Runtimes NET10, NET11
 
 # Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create RegIdleBackup task in the Task Scheduler to manage subsequent backups
 # Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
@@ -692,11 +687,11 @@ RegistryBackup -Enable
 	A native interactive toast notification pops up every 30 days
 
 	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
-	Задание выполняется каждые 30 дней
+	Каждые 30 дней появляется интерактивное всплывающее уведомление
 #>
 CleanupTask -Register
 
-# Delete  "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+# Delete "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 # Удалить задания "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
@@ -709,7 +704,7 @@ CleanupTask -Register
 #>
 SoftwareDistributionTask -Register
 
-# Delete  "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
+# Delete "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 # Удалить задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
 # SoftwareDistributionTask -Delete
 
@@ -722,7 +717,7 @@ SoftwareDistributionTask -Register
 #>
 TempTask -Register
 
-# Delete  "Temp" scheduled task for cleaning up %TEMP% folder
+# Delete "Temp" scheduled task for cleaning up %TEMP% folder
 # Удалить задание "Temp" по очистке папки %TEMP% из Планировщика заданий
 # TempTask -Delete
 #endregion Scheduled tasks
@@ -741,7 +736,7 @@ NetworkProtection -Enable
 PUAppsDetection -Enable
 
 # Disable detection for potentially unwanted applications (default value)
-# Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
+# Выключить обнаружение потенциально нежелательных приложений (значение по умолчанию)
 # PUAppsDetection -Disable
 
 # Enable sandboxing for Microsoft Defender

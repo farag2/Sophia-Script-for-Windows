@@ -15,7 +15,7 @@ jobs:
   Lint:
     runs-on: windows-latest
     permissions:
-      contents: write
+      contents: read
     steps:
       - name: Checkout repository
         uses: actions/checkout@main

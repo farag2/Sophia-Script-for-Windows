@@ -65,11 +65,6 @@
 . $PSScriptRoot\Module\Private\InitialActions.ps1
 InitialActions
 
-if ($Global:Failed)
-{
-	exit
-}
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # Preset configuration starts here                                    #
 # Настройка пресет-файла начинается здесь                             #
@@ -313,19 +308,19 @@ QuickAccessFrequentFolders -Hide
 # QuickAccessFrequentFolders -Show
 
 # Set taskbar position to the bottom (default value)
-# Установить выравнивание панели задач по центру (значение по умолчанию)
+# Расположить панель задач внизу экрана (значение по умолчанию)
 TaskbarPosition -Bottom
 
 # Set taskbar position to the top
-# Установить выравнивание панели задач по левому краю
+# Расположить панель задач вверху экрана
 # TaskbarPosition -Top
 
 # Set taskbar position to the left
-# Установить выравнивание панели задач по центру
+# Расположить панель задач слева
 # TaskbarPosition -Left
 
 # Set taskbar position to the right
-# Установить выравнивание панели задач по левому краю
+# Расположить панель задач справа
 # TaskbarPosition -Right
 
 # Set taskbar alignment to the center (default value)
@@ -693,12 +688,12 @@ PowerPlan -High
 # Установить схему управления питанием на "Сбалансированная" (значение по умолчанию)
 # PowerPlan -Balanced
 
-# Do not allow the computer to turn off the network adapters to save power. Not recommended for laptops
-# Запретить отключение всех сетевых адаптеров для экономии энергии. Не рекомендуется для ноутбуков
+# Do not allow the computer to turn off the active network adapters to save power. Not recommended for laptops
+# Запретить отключение активных сетевых адаптеров для экономии энергии. Не рекомендуется для ноутбуков
 NetworkAdaptersSavePower -Disable
 
-# Allow the computer to turn off the network adapters to save power (default value)
-# Разрешить отключение всех сетевых адаптеров для экономии энергии (значение по умолчанию)
+# Allow the computer to turn off the active network adapters to save power (default value)
+# Разрешить отключение активных сетевых адаптеров для экономии энергии (значение по умолчанию)
 # NetworkAdaptersSavePower -Enable
 
 # Override for default input method: English
@@ -879,7 +874,7 @@ RegistryBackup -Enable
 	Only if you have a dedicated GPU and WDDM version is 2.7 or higher
 
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
-	Только при наличии внешней видеокарты и WDDM версии 2.7 и выше
+	Только при наличии дискретной видеокарты и WDDM версии 2.7 и выше
 #>
 GPUScheduling -Enable
 
@@ -894,11 +889,11 @@ GPUScheduling -Enable
 	A native interactive toast notification pops up every 30 days
 
 	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
-	Задание выполняется каждые 30 дней
+	Каждые 30 дней появляется интерактивное всплывающее уведомление
 #>
 CleanupTask -Register
 
-# Delete  "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+# Delete "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
 # Удалить задания "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
@@ -911,7 +906,7 @@ CleanupTask -Register
 #>
 SoftwareDistributionTask -Register
 
-# Delete  "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
+# Delete "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
 # Удалить задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
 # SoftwareDistributionTask -Delete
 
@@ -924,7 +919,7 @@ SoftwareDistributionTask -Register
 #>
 TempTask -Register
 
-# Delete  "Temp" scheduled task for cleaning up %TEMP% folder
+# Delete "Temp" scheduled task for cleaning up %TEMP% folder
 # Удалить задание "Temp" по очистке папки %TEMP% из Планировщика заданий
 # TempTask -Delete
 #endregion Scheduled tasks
@@ -943,7 +938,7 @@ NetworkProtection -Enable
 PUAppsDetection -Enable
 
 # Disable detection for potentially unwanted applications (default value)
-# Выключить обнаружение потенциально нежелательных приложений и блокировать их (значение по умолчанию)
+# Выключить обнаружение потенциально нежелательных приложений (значение по умолчанию)
 # PUAppsDetection -Disable
 
 # Enable sandboxing for Microsoft Defender
@@ -1010,8 +1005,8 @@ DNSoverHTTPS -Cloudflare
 # Включить DNS-over-HTTPS, используя DNS от OpenDNS
 # DNSoverHTTPS -OpenDNS
 
-# Set default ISP's DNS records (default value)
-# Установить DNS-записи вашего провайдера (значение по умолчанию)
+# Set default ISP's DNS servers (default value)
+# Установить DNS-серверы вашего провайдера (значение по умолчанию)
 # DNSoverHTTPS -Reset
 
 # Enable Local Security Authority protection to prevent code injection

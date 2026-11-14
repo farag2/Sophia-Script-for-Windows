@@ -104,7 +104,7 @@ namespace SophiaScript
 					}
 
 					// Folder entry
-					if (entryName.EndsWith("/", StringComparison.Ordinal))
+					if (entryName.Length > 0 && entryName[entryName.Length - 1] == '/')
 					{
 						Directory.CreateDirectory(destination);
 						continue;

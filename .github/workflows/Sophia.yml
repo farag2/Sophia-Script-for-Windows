@@ -17,6 +17,22 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@main
 
+      - name: Check release tag
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          # WinGet, Chocolatey, and Gallery workflows build download URLs from the Windows 11 version, so the release tag must be the same
+          # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
+          $Version = (Get-Content -Path "Sophia_Script_Releases.json" -Raw | ConvertFrom-Json).Sophia_Script_Windows_11
+
+          if ($env:INPUT_TAG -ne $Version)
+          {
+              Write-Warning -Message "Release tag $($env:INPUT_TAG) doesn't match the Sophia_Script_Windows_11 version $Version in Sophia_Script_Releases.json."
+
+              # Exit with a non-zero status to fail the job
+              exit 1
+          }
+
       - name: Download Dependencies
         run: |
           . "Scripts\Building\Dependencies.ps1"
@@ -25,10 +41,10 @@ jobs:
         run: |
           . "Scripts\Building\Build.ps1"
 
-      # Sophia.Script.for.Windows.11.v*_WinGet.exe: C# launcher with the Windows 11 release archive inside
-      # It isn't signed yet: signing will be added from SignPath_Test.yml when the release certificate is issued
       - name: WinGet launcher
         run: |
+          # Sophia.Script.for.Windows.11.v*_WinGet.exe is attached to the release and downloaded by Scripts\WinGet\WinGet.ps1
+          # Signing with SignPath will be added here when the release certificate is issued. See SignPath_Test.yml
           . "Scripts\Building\WinGet_Launcher.ps1"
 
       - name: VirusTotal check
@@ -47,8 +63,9 @@ jobs:
       - name: Uploading
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          INPUT_TAG: ${{ inputs.tag }}
         run: |
-          $Tag    = "${{ inputs.tag }}"
+          $Tag    = $env:INPUT_TAG
           $Assets = @((Get-Item -Path "Sophia_Script\Sophia*.zip", "Sophia_Script\Sophia*_WinGet.exe").FullName)
           $Title  = $env:RELEASE_NAME
 

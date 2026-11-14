@@ -21,51 +21,51 @@ if ($PSVersionTable.PSVersion.Major -eq 5)
 	[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
 }
 
-$Parameters = @{
-	Uri             = "https://api.github.com/repos/farag2/Sophia-Script-for-Windows/releases/latest"
-	UseBasicParsing = $true
-	Verbose         = $true
-}
-$LatestGitHubRelease = (Invoke-RestMethod @Parameters).tag_name
+# The release tag and script versions are set by Scripts\Chocolatey.ps1 while packing, as well as the hashes below
+# So the package always downloads the release it was packed for, even if a newer release is published
+$LatestGitHubRelease = "SophiaScriptReleaseTag"
 
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
-$Parameters = @{
-	Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Sophia_Script_Releases.json"
-	UseBasicParsing = $true
-	Verbose         = $true
+$Versions = @{
+	Sophia_Script_Windows_10           = "Version_Sophia_Script_Windows_10"
+	Sophia_Script_Windows_10_LTSC_2019 = "Version_Sophia_Script_Windows_10_LTSC_2019"
+	Sophia_Script_Windows_10_LTSC_2021 = "Version_Sophia_Script_Windows_10_LTSC_2021"
+	Sophia_Script_Windows_11           = "Version_Sophia_Script_Windows_11"
+	Sophia_Script_Windows_11_LTSC_2024 = "Version_Sophia_Script_Windows_11_LTSC_2024"
 }
-$JSON = Invoke-RestMethod @Parameters
 
+# The -match operator is case-insensitive, so both "/PS7" and "/ps7" are accepted
 $packageParameters = $env:chocolateyPackageParameters
 
-switch ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber)
+$BuildNumber = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).BuildNumber
+switch ($BuildNumber)
 {
 	"17763"
 	{
 		# Windows 10 LTSC 2019
-		$LatestRelease = $JSON.Sophia_Script_Windows_10_LTSC_2019
+		$LatestRelease = $Versions.Sophia_Script_Windows_10_LTSC_2019
 		$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2019.v$LatestRelease.zip"
 		$Hash = "Hash_Sophia_Script_Windows_10_LTSC_2019"
 	}
 	"19044"
 	{
 		# Windows 10 LTSC 2021
-		$LatestRelease = $JSON.Sophia_Script_Windows_10_LTSC_2021
+		$LatestRelease = $Versions.Sophia_Script_Windows_10_LTSC_2021
 		$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.LTSC.2021.v$LatestRelease.zip"
 		$Hash = "Hash_Sophia_Script_Windows_10_LTSC_2021"
 	}
 	"19045"
 	{
 		# Windows 10
-		if ($packageParameters -and $packageParameters.Contains("PS7"))
+		if ($packageParameters -match "PS7")
 		{
-			$LatestRelease = $JSON.Sophia_Script_Windows_10
+			$LatestRelease = $Versions.Sophia_Script_Windows_10
 			$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.PowerShell.7.v$LatestRelease.zip"
 			$Hash = "Hash_Sophia_Script_Windows_10_PowerShell_7"
 		}
 		else
 		{
-			$LatestRelease = $JSON.Sophia_Script_Windows_10
+			$LatestRelease = $Versions.Sophia_Script_Windows_10
 			$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.10.v$LatestRelease.zip"
 			$Hash = "Hash_Sophia_Script_Windows_10_PowerShell_5_1"
 		}
@@ -75,35 +75,35 @@ switch ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).B
 		# Windows 11 Enterprise LTSC 2024
 		if ((Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName) -match "LTSC 2024")
 		{
-			if ($packageParameters -and $packageParameters.Contains("PS7"))
+			if ($packageParameters -match "PS7")
 			{
-				$LatestRelease = $JSON.Sophia_Script_Windows_11_LTSC_2024
+				$LatestRelease = $Versions.Sophia_Script_Windows_11_LTSC_2024
 				$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7.v$LatestRelease.zip"
 				$Hash = "Hash_Sophia_Script_Windows_11_LTSC_2024_PowerShell_7"
 			}
 			else
 			{
-				$LatestRelease = $JSON.Sophia_Script_Windows_11_LTSC_2024
+				$LatestRelease = $Versions.Sophia_Script_Windows_11_LTSC_2024
 				$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.LTSC.2024.v$LatestRelease.zip"
 				$Hash = "Hash_Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1"
 			}
 		}
 	}
-	{[int]$_ -ge 26200}
+	{[int]$_ -ge 26300}
 	{
 		# Windows 11
-		if ($packageParameters -and $packageParameters.Contains("PS7"))
+		if ($packageParameters -match "PS7")
 		{
 			# Windows 11 Arm
 			if ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Architecture -eq 12)
 			{
-				$LatestRelease = $JSON.Sophia_Script_Windows_11
+				$LatestRelease = $Versions.Sophia_Script_Windows_11
 				$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.Arm.PowerShell.7.v$LatestRelease.zip"
 				$Hash = "Hash_Sophia_Script_Windows_11_Arm_PowerShell_7"
 			}
 			else
 			{
-				$LatestRelease = $JSON.Sophia_Script_Windows_11
+				$LatestRelease = $Versions.Sophia_Script_Windows_11
 				$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.PowerShell.7.v$LatestRelease.zip"
 				$Hash = "Hash_Sophia_Script_Windows_11_PowerShell_7"
 			}
@@ -113,18 +113,24 @@ switch ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_OperatingSystem).B
 			# Windows 11 Arm
 			if ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Architecture -eq 12)
 			{
-				$LatestRelease = $JSON.Sophia_Script_Windows_11
+				$LatestRelease = $Versions.Sophia_Script_Windows_11
 				$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.Arm.v$LatestRelease.zip"
 				$Hash = "Hash_Sophia_Script_Windows_11_Arm_PowerShell_5_1"
 			}
 			else
 			{
-				$LatestRelease = $JSON.Sophia_Script_Windows_11
+				$LatestRelease = $Versions.Sophia_Script_Windows_11
 				$URL = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$LatestGitHubRelease/Sophia.Script.for.Windows.11.v$LatestRelease.zip"
 				$Hash = "Hash_Sophia_Script_Windows_11_PowerShell_5_1"
 			}
 		}
 	}
+}
+
+# No archive was chosen: Windows build is unsupported, or it is build 26100 which is supported for Windows 11 Enterprise LTSC 2024 only
+if (-not $URL)
+{
+	throw "Sophia Script doesn't support Windows build $BuildNumber. Supported builds: 17763 (Windows 10 LTSC 2019), 19044 (Windows 10 LTSC 2021), 19045 (Windows 10 22H2), 26100 (Windows 11 Enterprise LTSC 2024 only), 26300 and higher (Windows 11)."
 }
 
 Write-Verbose -Message "URL is $URL. Hash is $Hash" -Verbose

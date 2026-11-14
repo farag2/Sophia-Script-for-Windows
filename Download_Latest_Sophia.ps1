@@ -19,11 +19,6 @@ if ($PSVersionTable.PSVersion.Major -eq 5)
 	$Script:ProgressPreference = "SilentlyContinue"
 
 	[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	$Script:CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-	$Script:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-	$Script:CompilerParameters.GenerateInMemory = $true
 }
 
 $ProductName = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName
@@ -59,11 +54,11 @@ switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_OperatingSy
 			$Version = "Sophia_Script_for_Windows_10_PowerShell_7"
 		}
 	}
-	{$_ -gt 19045}
+	26100
 	{
+		# Windows 11 LTSC 2024
 		if ($ProductName -match "LTSC 2024")
 		{
-			# Windows 11 LTSC 2024
 			if ($PSVersionTable.PSVersion.Major -eq 5)
 			{
 				$Version = "Sophia_Script_for_Windows_11_LTSC_2024"
@@ -73,7 +68,10 @@ switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_OperatingSy
 				$Version = "Sophia_Script_for_Windows_11_LTSC_2024_PowerShell_7"
 			}
 		}
-		elseif ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Architecture -eq 12)
+	}
+	{$_ -ge 26300}
+	{
+		if ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Architecture -eq 12)
 		{
 			# Windows 11 Arm
 			if ($PSVersionTable.PSVersion.Major -eq 5)
@@ -125,15 +123,6 @@ Remove-Item -Path "$env:SystemDrive\Sophia_Script_Temp" -Recurse -Force -ErrorAc
 if (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp")
 {
 	Write-Verbose -Message "Cannot delete $env:SystemDrive\Sophia_Script_Temp folder. Check it manually and try again." -Verbose
-
-	# Receive updates for other Microsoft products when you update Windows
-	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-	# Check for updates
-	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-	# Open the "Windows Update" page
-	Start-Process -FilePath "ms-settings:windowsupdate"
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -276,13 +265,13 @@ try
 }
 catch
 {
-	Write-Warning -Message "$($Parameters.Uri) is unreachable. Please check Internet connection or change your DNS records."
+	Write-Warning -Message "$($Parameters.Uri) is unreachable. Please check Internet connection or change your DNS servers."
 	Write-Information -MessageData "" -InformationAction Continue
 
 	$InterfaceIndex = (Find-NetRoute -RemoteIPAddress "1.1.1.1" | Select-Object -First 1).InterfaceIndex
 	$DNS = (Get-NetAdapter -InterfaceIndex $InterfaceIndex | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
 
-	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
+	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS servers"
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
@@ -328,10 +317,10 @@ if (-not (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp\$Version"))
 	throw [System.Management.Automation.PipelineStoppedException]::new()
 }
 
-New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" -ItemType Directory -Force
-
 if ($Version -match "PowerShell_7")
 {
+	New-Item -Path "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" -ItemType Directory -Force
+
 	# Extract Microsoft.Windows.SDK.NET.dll & WinRT.Runtime.dll
 	& "$env:SystemRoot\System32\tar.exe" -xvf "$env:SystemDrive\Sophia_Script_Temp\microsoft.windows.sdk.net.ref.zip" -C "$env:SystemDrive\Sophia_Script_Temp\$Version\Module\Binaries" --strip-components=2 "lib/net9.0/WinRT.Runtime.dll" "lib/net9.0/Microsoft.Windows.SDK.NET.dll"
 }

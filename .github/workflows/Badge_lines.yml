@@ -7,9 +7,6 @@ on:
       - main
     # tags:
     # - '*.*.*'
-  pull_request:
-    branches:
-      - main
 
 jobs:
   badges-lines:

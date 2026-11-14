@@ -19,11 +19,6 @@ if ($PSVersionTable.PSVersion.Major -eq 5)
 	$Script:ProgressPreference = "SilentlyContinue"
 
 	[Net.ServicePointManager]::SecurityProtocol = [Net.ServicePointManager]::SecurityProtocol -bor [Net.SecurityProtocolType]::Tls12
-
-	# https://github.com/PowerShell/PowerShell/issues/21070
-	$Script:CompilerParameters                  = [System.CodeDom.Compiler.CompilerParameters]::new("System.dll")
-	$Script:CompilerParameters.TempFiles        = [System.CodeDom.Compiler.TempFileCollection]::new($env:TEMP, $false)
-	$Script:CompilerParameters.GenerateInMemory = $true
 }
 
 $ProductName = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName
@@ -67,11 +62,11 @@ switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_OperatingSy
 			$Archive = "Sophia.Script.for.Windows.10.PowerShell.7"
 		}
 	}
-	{$_ -gt 19045}
+	26100
 	{
+		# Windows 11 LTSC 2024
 		if ($ProductName -match "LTSC 2024")
 		{
-			# Windows 11 LTSC 2024
 			$JSONKey = "Sophia_Script_Windows_11_LTSC_2024"
 
 			if ($PSVersionTable.PSVersion.Major -eq 5)
@@ -85,7 +80,10 @@ switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_OperatingSy
 				$Archive = "Sophia.Script.for.Windows.11.LTSC.2024.PowerShell.7"
 			}
 		}
-		elseif ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Architecture -eq 12)
+	}
+	{$_ -ge 26300}
+	{
+		if ((Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).Architecture -eq 12)
 		{
 			# Windows 11 Arm
 			$JSONKey = "Sophia_Script_Windows_11"
@@ -146,15 +144,6 @@ if (Test-Path -Path "$env:SystemDrive\Sophia_Script_Temp")
 {
 	Write-Verbose -Message "Cannot delete $env:SystemDrive\Sophia_Script_Temp folder. Check it manually and try again." -Verbose
 
-	# Receive updates for other Microsoft products when you update Windows
-	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
-
-	# Check for updates
-	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-	# Open the "Windows Update" page
-	Start-Process -FilePath "ms-settings:windowsupdate"
-
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
 
@@ -184,13 +173,13 @@ try
 }
 catch
 {
-	Write-Warning -Message "$($Parameters.Uri) is unreachable. Please check Internet connection or change your DNS records."
+	Write-Warning -Message "$($Parameters.Uri) is unreachable. Please check Internet connection or change your DNS servers."
 	Write-Information -MessageData "" -InformationAction Continue
 
 	$InterfaceIndex = (Find-NetRoute -RemoteIPAddress "1.1.1.1" | Select-Object -First 1).InterfaceIndex
 	$DNS = (Get-NetAdapter -InterfaceIndex $InterfaceIndex | Get-DnsClientServerAddress -AddressFamily IPv4).ServerAddresses
 
-	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS records"
+	Write-Warning -Message "You're using $(if ($DNS.Count -gt 1) {$DNS -join ', '} else {$DNS}) DNS servers"
 
 	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose

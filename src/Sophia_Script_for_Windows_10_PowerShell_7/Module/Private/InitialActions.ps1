@@ -22,7 +22,6 @@ function InitialActions
 {
 	Clear-Host
 	$Global:Error.Clear()
-	$Global:Failed = $false
 
 	Set-StrictMode -Version Latest
 
@@ -59,6 +58,7 @@ function InitialActions
 		"$PSScriptRoot\..\Private\Set-KnownFolderPath.ps1",
 		"$PSScriptRoot\..\Private\Set-UserShellFolder.ps1",
 		"$PSScriptRoot\..\Private\Show-Menu.ps1",
+		"$PSScriptRoot\..\Private\Show-SupportLinks.ps1",
 		"$PSScriptRoot\..\Private\WinAPI.ps1",
 		"$PSScriptRoot\..\Private\Write-ExtensionKeys.ps1",
 
@@ -84,12 +84,14 @@ function InitialActions
 		Write-Verbose -Message "In case you have a question, open an issue on GitHub or ask the community." -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
+		Write-Verbose -Message "https://t.me/sophianews" -Verbose
 		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
 
 		exit
 	}
+
+	# All private functions are dot-sourced below, but this one is needed for the checks that go before
+	. "$PSScriptRoot\Show-SupportLinks.ps1"
 
 	# Try to import localizations
 	try
@@ -111,13 +113,7 @@ function InitialActions
 		Write-Verbose -Message "https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_language_modes" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -130,13 +126,7 @@ function InitialActions
 		Write-Warning -Message ($Localization.UnsupportedPowerShell -f $PSVersionTable.PSVersion.Major, $PSVersionTable.PSVersion.Minor, $MandatoryPSVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -197,13 +187,7 @@ function InitialActions
 		# Display available AVs
 		Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -229,13 +213,7 @@ function InitialActions
 			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message $Localization.AskQuestion -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://t.me/sophianews" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = $true
+			Show-SupportLinks
 
 			exit
 		}
@@ -257,13 +235,7 @@ function InitialActions
 		Write-Warning -Message $Localization.PowerShellImportFailed
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -275,13 +247,7 @@ function InitialActions
 		Write-Warning -Message $Localization.UnsupportedWindowsBitness
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -305,16 +271,10 @@ function InitialActions
 	if ($LoginUserName -and ($CurrentUserName -ne $LoginUserName))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.LoggedInUserNotAdmin -f $CurrentUserName, $LoginUserName)
+		Write-Warning -Message ($Localization.LoggedInUserNotAdmin -f $LoginUserName, $CurrentUserName)
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -326,13 +286,7 @@ function InitialActions
 		Write-Warning -Message ($Localization.UnsupportedHost -f $Host.Name.Replace("Host", "").Trim())
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -376,13 +330,7 @@ function InitialActions
 			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message $Localization.AskQuestion -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://t.me/sophianews" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = $true
+			Show-SupportLinks
 
 			exit
 		}
@@ -409,13 +357,7 @@ function InitialActions
 				{
 					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
 
-					Write-Verbose -Message $Localization.AskQuestion -Verbose
-					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-					Write-Verbose -Message "https://t.me/sophianews" -Verbose
-					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-					$Global:Failed = $true
+					Show-SupportLinks
 
 					exit
 				}
@@ -435,13 +377,7 @@ function InitialActions
 			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message $Localization.AskQuestion -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://t.me/sophianews" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = $true
+			Show-SupportLinks
 
 			exit
 		}
@@ -463,13 +399,7 @@ function InitialActions
 			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
-			Write-Verbose -Message $Localization.AskQuestion -Verbose
-			Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-			Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-			Write-Verbose -Message "https://t.me/sophianews" -Verbose
-			Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-			$Global:Failed = $true
+			Show-SupportLinks
 
 			exit
 		}
@@ -494,15 +424,9 @@ function InitialActions
 		Write-Warning -Message $Localization.DisableControlledFolderAccess
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+		Show-SupportLinks
 
 		Start-Process -FilePath "windowsdefender://RansomwareProtection"
-
-		$Global:Failed = $true
 
 		exit
 	}
@@ -530,13 +454,7 @@ function InitialActions
 		Write-Warning -Message $Localization.RebootPending
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-		$Global:Failed = $true
+		Show-SupportLinks
 
 		exit
 	}
@@ -581,19 +499,13 @@ function InitialActions
 		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $WINDOWS_LONG, $DisplayVersion)
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+		Show-SupportLinks
 
 		# Receive updates for other Microsoft products when you update Windows
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
 
 		# Check for updates
 		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-		$Global:Failed = $true
 
 		exit
 	}
@@ -612,8 +524,8 @@ function InitialActions
 	}
 	catch [System.Net.Http.HttpRequestException]
 	{
-		# https://learn.microsoft.com/en-us/windows/release-health/windows10-release-information
-		$LatestSupportedMinorBuild = 7663
+		# https://learn.microsoft.com/en-us/windows/release-health/release-information
+		$LatestSupportedMinorBuild = 7846
 
 		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
 		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
@@ -634,11 +546,7 @@ function InitialActions
 		Write-Warning -Message ($Localization.UpdateWindowsBuild -f $LatestSupportedMajorBuild, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message $Localization.AskQuestion -Verbose
-		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-		Write-Verbose -Message "https://t.me/sophianews" -Verbose
-		Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+		Show-SupportLinks
 
 		# Receive updates for other Microsoft products when you update Windows
 		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
@@ -651,8 +559,6 @@ function InitialActions
 
 		# Open the "Windows Update" page
 		Start-Process -FilePath "ms-settings:windowsupdate"
-
-		$Global:Failed = $true
 
 		exit
 	}
@@ -710,11 +616,7 @@ function InitialActions
 	Write-Information -MessageData "└┘└┘├┘┘└└└┴  └┘└┘ └├┘└  ┘└┘┘   └┴┘└┘└└┴└┘└┴┘┘" -InformationAction Continue
 	Write-Information -MessageData "    ┘              ┘                   " -InformationAction Continue
 
-	Write-Verbose -Message $Localization.AskQuestion -Verbose
-	Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-	Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-	Write-Verbose -Message "https://t.me/sophianews" -Verbose
-	Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
+	Show-SupportLinks
 
 	Write-Information -MessageData "" -InformationAction Continue
 	Write-Verbose -Message $Localization.DonateToastTitle -Verbose
@@ -748,13 +650,7 @@ function InitialActions
 
 					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows#how-to-use" -Verbose
 
-					Write-Verbose -Message $Localization.AskQuestion -Verbose
-					Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
-					Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
-					Write-Verbose -Message "https://t.me/sophianews" -Verbose
-					Write-Verbose -Message "https://discord.gg/sSryhaEv79" -Verbose
-
-					$Global:Failed = $true
+					Show-SupportLinks
 
 					exit
 				}

@@ -46,6 +46,9 @@ $Parameters = @{
 }
 $Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11
 
+# Save the version for the next workflow steps: every step runs in a separate process
+Add-Content -Path $env:GITHUB_ENV -Value "LatestRelease=$Version"
+
 # Get archive hash
 # The WinGet launcher is attached to the release
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/Building/WinGet_Launcher.ps1

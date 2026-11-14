@@ -18,11 +18,6 @@ jobs:
         run: |
           # https://www.powershellgallery.com/packages/SophiaScript
 
-          $Headers = @{
-              Accept        = "application/vnd.github+json"
-              Authorization = "Bearer $env:GITHUB_TOKEN"
-          }
-
           # Get latest version tag for Windows 11
           # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
           $Parameters = @{
@@ -39,7 +34,7 @@ jobs:
               UseBasicParsing = $true
               Verbose         = $true
           }
-          $Request = Invoke-WebRequest @Parameters
+          Invoke-WebRequest @Parameters
 
           $Parameters = @{
               Path            = "$DownloadsFolder\Sophia.Script.for.Windows.11.v$($JSON).zip"
@@ -49,7 +44,7 @@ jobs:
           Expand-Archive @Parameters
 
           $Parameters = @{
-              Path       = "$DownloadsFolder\Sophia_Script_for_Windows_11_v$($JSON)"
+              Path       ="$DownloadsFolder\Sophia_Script_for_Windows_11_v$($JSON)\Module"
               ApiKey     = $env:GALLERY_KEY
               Repository = "PSGallery"
               Verbose    = $true

@@ -38,6 +38,12 @@ finally
 	$Listener.Close()
 }
 
+# Make sure that the redirect is the answer to our request (CSRF protection): the returned state must be the same as the sent one
+if ($ReturnedState -cne $State)
+{
+	throw "The returned state doesn't match the sent one. The authorization code is not used."
+}
+
 $Body = @{
 	grant_type    = "authorization_code"
 	client_id     = $ClientID

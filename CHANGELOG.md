@@ -282,7 +282,7 @@ Fix bugs and Accessibility Scaling UI
 * Simplified `WinPrtScrFolder` function;
 * `RecycleBinDeleteConfirmation` function improved;
   * Closes #504
-* Renamed `Win32LongPathSupport` function into `Win32LongPathsSupport`;
+* Renamed `Win32LongPathsSupport` function into `Win32LongPathsSupport`;
 * Minor improvements.
 
 Thanks to @agadiffe and Ganiest.
@@ -299,7 +299,7 @@ Thanks to @agadiffe and Ganiest.
 
 * Improved localizations and wording;
 * Improve startup checks & updated readmes
-* Changed `Win32LongPathLimit` function name to `Win32LongPathSupport`;
+* Changed `Win32LongPathLimit` function name to `Win32LongPathsSupport`;
 * Simplified `WinPrtScrFolder` function;
 * Removed `FoldersLaunchSeparateProcess` function for Windows 11 only;
 * Added `RestorePreviousFolders` function to restore previous folder windows at logon;

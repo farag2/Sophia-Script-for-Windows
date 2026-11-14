@@ -19,9 +19,9 @@ foreach ($Edition in $Editions.Keys)
 {
 	$Version = $Releases.($Editions[$Edition])
 
-	# Sophia_Script_for_Windows_11_v7.0.0
+	# Sophia_Script_for_Windows_11_v8.x.x
 	$Folder  = "Sophia_Script\$($Edition)_v$Version"
-	# Sophia.Script.for.Windows.11.v7.0.0.zip
+	# Sophia.Script.for.Windows.11.v8.x.x.zip
 	$Archive = "$($Edition.Replace('_', '.')).v$Version.zip"
 
 	Write-Verbose -Message $Archive -Verbose
@@ -31,7 +31,7 @@ foreach ($Edition in $Editions.Keys)
 	# Copy edition to new folder
 	Get-ChildItem -Path "src\$Edition" -Force | Copy-Item -Destination $Folder -Recurse -Force
 
-	# Only PowerShell 7 editions need WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll. PowerShell 5.1 editions have no binaries
+	# PowerShell 7 uses WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll for to build UWP packages list
 	if ($Edition.Contains("PowerShell_7"))
 	{
 		New-Item -Path "$Folder\Module\Binaries" -ItemType Directory -Force

@@ -24,6 +24,8 @@ jobs:
           . "Scripts\WinGet\WinGet.ps1"
 
       - name: Publish to WinGet
+        env:
+          WINGET_PAT: ${{ secrets.WINGET_PAT }}
         run: |
           # %LOCALAPPDATA%\Microsoft\WinGet\Packages
           # Get the latest wingetcreate
@@ -36,4 +38,4 @@ jobs:
           }
           Invoke-WebRequest @Parameters
 
-          .\wingetcreate.exe submit --prtitle "New Version: TeamSophia.SophiaScript version $Version" --token "${{ secrets.WINGET_PAT }}" "Scripts\WinGet\WinGet_Manifests"
+          .\wingetcreate.exe submit --prtitle "New Version: TeamSophia.SophiaScript version $env:LatestRelease" --token $env:WINGET_PAT "Scripts\WinGet\WinGet_Manifests"

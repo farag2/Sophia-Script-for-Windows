@@ -138,7 +138,7 @@ href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/
   * Music
   * Pictures
   * Videos
-* Install the free `Windows 11 Cursors Concept v2` cursors (light and dark) from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-v2-886489356) on the fly
+* Install the free `Windows 11 Cursors Concept` cursors (light and dark) from [Jepri Creations](https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356) on the fly
   * The archive is downloaded to the [Cursors](https://github.com/farag2/Sophia-Script-for-Windows/tree/main/Cursors) folder using the [DeviantArt API](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Cursors.yml)
 * Set a default app for a specific file extension without the `How do you want to open this file?` pop-up
 * Export and import all Windows associations. To restore associations, install all apps listed in the exported JSON file first
@@ -156,17 +156,16 @@ href="https://trendshift.io/repositories/17603"><img src="https://trendshift.io/
     * `%SystemDrive%\PerfLogs`
     * `%SystemRoot%\ServiceProfiles\NetworkService\AppData\Local\Temp`
     * `%LOCALAPPDATA%\CrashDumps`
-    * `%SystemDrive%\Recovery`
     * `%SystemRoot%\System32\config\systemprofile\AppData\Local\tw-*.tmp`
-* Install the latest Microsoft Visual C++ 2015–2026 x86/x64
-* Install the latest .NET Desktop Runtime 8, 9, 10 x64
+* Install the latest Microsoft Visual C++ 2017–2026 x86/x64
+* Install the latest .NET Desktop Runtime 10, 11
 * Many more File Explorer and context menu tweaks
 
 ## Table of Contents
 
 * [Key features](#key-features)
 * [How to download](#how-to-download)
-* [Code signing policy](#code-signing-policy)
+* [Code signing policy](CODE_SIGNING_POLICY.md)
 * [How to use](#how-to-use)
   * [How to run the specific function(s)](#how-to-run-the-specific-functions)
 * [System Requirements](#system-requirements)
@@ -344,7 +343,7 @@ scoop install sophia-script --no-cache
 # scoop bucket rm versions
 scoop bucket add versions
 # sophia-script-ltsc2019, sophia-script-ltsc2021
-# sophia-script-ltsc2024-ps7.json, sophia-script-ltsc2024
+# sophia-script-ltsc2024-ps7, sophia-script-ltsc2024
 # sophia-script-ps7, sophia-script-win10-ps7
 scoop install sophia-script-win10 --no-cache
 ```
@@ -398,20 +397,24 @@ Sophia -Functions unin<TAB>
 Sophia -Functions uwp<TAB>
 Sophia -Functions "DiagTrackService -Disable", "DiagnosticDataLevel -Minimal", Uninstall-UWPApps
 
+# Windows 11
+Sophia -Functions Uninstall-UWPApps, UnpinAllStartTiles
+
+# Windows 10
 Sophia -Functions Uninstall-UWPApps, "PinToStart -UnpinAll"
 ```
 
 ## System Requirements
 
-[Windows-10]: https://support.microsoft.com/topic/windows-10-update-history-8127c2c6-6edf-4fdf-8b9f-0f7be1ef3562
-[Windows-10-LTSC-2019]: https://support.microsoft.com/topic/windows-10-and-windows-server-2019-update-history-725fc2e1-4443-6831-a5ca-51ff5cbcb059
-[Windows-10-LTSC-2021]: https://support.microsoft.com/topic/windows-10-update-history-857b8ccb-71e4-49e5-b3f6-7073197d98fb
-[Windows-11-LTSC-2024]: https://support.microsoft.com/topic/windows-11-version-24h2-update-history-0929c747-1815-4543-8461-0160d16f15e5
-[Windows-11-25h2]: https://support.microsoft.com/topic/windows-11-version-25h2-update-history-99c7f493-df2a-4832-bd2d-6706baa0dec0
+[Windows-10]: https://support.microsoft.com/servicing/os/windows-10/2022/09/windows-10-update-history
+[Windows-10-LTSC-2019]: https://support.microsoft.com/servicing/os/windows-10/2020/11/windows-10-and-windows-server-2019-update-history
+[Windows-10-LTSC-2021]: https://support.microsoft.com/servicing/os/windows-10/2021/11/windows-10-update-history
+[Windows-11-LTSC-2024]: https://support.microsoft.com/servicing/os/windows-11/2024/09/windows-11-version-24h2-update-history
+[Windows-11-26h2]: https://support.microsoft.com/servicing/os/windows-11/2026/09/windows-11-version-26h2-update-history
 
 |               Version                    |                  Build                |      Edition        |
 |:-----------------------------------------|:-------------------------------------:|:-------------------:|
-| Windows 11 25H2+                         | [Latest stable][Windows-11-25h2]      | Home/Pro/Enterprise |
+| Windows 11 26H2+                         | [Latest stable][Windows-11-26h2]      | Home/Pro/Enterprise |
 | Windows 10 x64 22H2                      | [Latest stable][Windows-10]           | Home/Pro/Enterprise |
 | Windows 11 Enterprise LTSC 2024          | [Latest stable][Windows-11-LTSC-2024] | Enterprise          |
 | Windows 10 21H2 Enterprise LTSC 2021     | [Latest stable][Windows-10-LTSC-2021] | Enterprise          |
@@ -445,8 +448,8 @@ Sophia -Functions Uninstall-UWPApps, "PinToStart -UnpinAll"
 ## How to translate
 
 * Run `$PSUICulture` in PowerShell to determine your UI language
-* Create a folder with the UI language name (e.g. `en-US`)
-* Put your localized `SophiaScript.psd1` file into this folder
+* Create a folder with the UI language name (e.g. `en-US`) in the `Module\Localizations` folder
+* Put your localized `Sophia.psd1` file into this folder
 
 ## Media
 

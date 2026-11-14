@@ -16,7 +16,8 @@ $Parameters = @{
 	UseBasicParsing = $true
 	Verbose         = $true
 }
-$assets = (Invoke-RestMethod @Parameters).assets
+$Release = Invoke-RestMethod @Parameters
+$assets  = $Release.assets
 
 # Get SHA256 hash sum of each asset
 $Sophia_Script_Windows_10_PowerShell_5_1           = ($assets | Where-Object -FilterScript {$_.name -eq "Sophia.Script.for.Windows.10.v$($Latest_Release.Sophia_Script_Windows_10).zip"}).digest.Replace("sha256:", "")
@@ -41,7 +42,13 @@ $Sophia_Script_Windows_11_LTSC_2024_PowerShell_7   = ($assets | Where-Object -Fi
 	-replace "Hash_Sophia_Script_Windows_11_Arm_PowerShell_7",         $Sophia_Script_Windows_11_Arm_PowerShell_7 `
 	-replace "Hash_Sophia_Script_Windows_11_PowerShell_7",             $Sophia_Script_Windows_11_PowerShell_7 `
 	-replace "Hash_Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1", $Sophia_Script_Windows_11_LTSC_2024_PowerShell_5_1 `
-	-replace "Hash_Sophia_Script_Windows_11_LTSC_2024_PowerShell_7",   $Sophia_Script_Windows_11_LTSC_2024_PowerShell_7
+	-replace "Hash_Sophia_Script_Windows_11_LTSC_2024_PowerShell_7",   $Sophia_Script_Windows_11_LTSC_2024_PowerShell_7 `
+	-replace "SophiaScriptReleaseTag",                                 $Release.tag_name `
+	-replace "Version_Sophia_Script_Windows_10_LTSC_2019",             $Latest_Release.Sophia_Script_Windows_10_LTSC_2019 `
+	-replace "Version_Sophia_Script_Windows_10_LTSC_2021",             $Latest_Release.Sophia_Script_Windows_10_LTSC_2021 `
+	-replace "Version_Sophia_Script_Windows_11_LTSC_2024",             $Latest_Release.Sophia_Script_Windows_11_LTSC_2024 `
+	-replace "Version_Sophia_Script_Windows_10",                       $Latest_Release.Sophia_Script_Windows_10 `
+	-replace "Version_Sophia_Script_Windows_11",                       $Latest_Release.Sophia_Script_Windows_11
 } | Set-Content -Path "Scripts\Chocolatey\tools\chocolateyinstall.ps1" -Encoding utf8 -Force
 
 # Save latest release tag for sophia.nuspec
