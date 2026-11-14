@@ -26,24 +26,23 @@ foreach ($Edition in $Editions.Keys)
 
 	Write-Verbose -Message $Archive -Verbose
 
-	New-Item -Path "$Folder\Module\Binaries" -ItemType Directory -Force
+	New-Item -Path $Folder -ItemType Directory -Force
 
 	# Copy edition to new folder
 	Get-ChildItem -Path "src\$Edition" -Force | Copy-Item -Destination $Folder -Recurse -Force
 
-	# Add LGPO.exe. PowerShell 7 editions also need WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll
-	$Binaries = @("Sophia_Script\LGPO.exe")
+	# Only PowerShell 7 editions need WinRT.Runtime.dll and Microsoft.Windows.SDK.NET.dll. PowerShell 5.1 editions have no binaries
 	if ($Edition.Contains("PowerShell_7"))
 	{
-		$Binaries += "Sophia_Script\WinRT.Runtime.dll", "Sophia_Script\Microsoft.Windows.SDK.NET.dll"
-	}
+		New-Item -Path "$Folder\Module\Binaries" -ItemType Directory -Force
 
-	$Parameters = @{
-		Path        = $Binaries
-		Destination = "$Folder\Module\Binaries"
-		Force       = $true
+		$Parameters = @{
+			Path        = "Sophia_Script\WinRT.Runtime.dll", "Sophia_Script\Microsoft.Windows.SDK.NET.dll"
+			Destination = "$Folder\Module\Binaries"
+			Force       = $true
+		}
+		Copy-Item @Parameters
 	}
-	Copy-Item @Parameters
 
 	$Parameters = @{
 		Path             = $Folder

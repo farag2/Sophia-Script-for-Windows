@@ -1,0 +1,101 @@
+name: SignPath test signing
+
+# Builds the WinGet launcher for Windows 11 (PowerShell 5.1) and signs it with the SignPath test-signing policy
+# Manual trigger only. Signing will be added to Sophia.yml when the release certificate is issued
+# Nothing is published: no public release, no VirusTotal, no WinGet
+# The signed file is committed to Scripts/WinGet and uploaded to a draft release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: "Draft release tag"
+        required: true
+
+# Do not push from several workflows at the same time
+concurrency:
+  group: update-repository-files
+  cancel-in-progress: false
+
+jobs:
+  test-signing:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    permissions:
+      # Commit the signed file to Scripts/WinGet and create a draft release
+      contents: write
+      # SignPath downloads the unsigned artifact with GITHUB_TOKEN
+      actions: read
+    env:
+      SIGNPATH_SIGNING_POLICY_SLUG: test-signing
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@main
+
+      - name: WinGet launcher
+        id: winget
+        run: |
+          . "Scripts\Building\WinGet_Launcher.ps1"
+
+      # upload-artifact wraps the file into a ZIP archive, so the artifact configuration root element is <zip-file>
+      - name: Upload unsigned WinGet launcher
+        id: upload-unsigned
+        uses: actions/upload-artifact@main
+        with:
+          name: WinGet_unsigned
+          path: Sophia_Script/Sophia.Script.for.Windows.11.v${{ steps.winget.outputs.version }}_WinGet.exe
+
+      # https://docs.signpath.io/trusted-build-systems/github
+      # Artifact configuration: Scripts/SignPath/WinGet.xml
+      - name: Sign WinGet launcher with SignPath (test-signing)
+        id: signpath
+        uses: signpath/github-action-submit-signing-request@main
+        with:
+          api-token: ${{ secrets.SIGNPATH_API_TOKEN }}
+          organization-id: ${{ vars.SIGNPATH_ORGANIZATION_ID }}
+          project-slug: ${{ vars.SIGNPATH_PROJECT_SLUG }}
+          signing-policy-slug: ${{ env.SIGNPATH_SIGNING_POLICY_SLUG }}
+          artifact-configuration-slug: ${{ vars.SIGNPATH_ARTIFACT_CONFIGURATION_SLUG }}
+          github-artifact-id: ${{ steps.upload-unsigned.outputs.artifact-id }}
+          # Used by the artifact configuration for the file name and the product-version restriction. The value must be a JSON string
+          parameters: |
+            version: ${{ toJSON(steps.winget.outputs.version) }}
+          wait-for-completion: true
+          output-artifact-directory: ${{ runner.temp }}/SignPath
+
+      - name: Check signed WinGet launcher
+        env:
+          SIGNED_ARTIFACT_DIRECTORY: ${{ runner.temp }}/SignPath
+        run: |
+          . "Scripts\Building\WinGet_Signed.ps1"
+
+      - name: Commit and push signed WinGet launcher
+        run: |
+          # Save the signed Sophia.Script.for.Windows.11.v*_WinGet.exe to Scripts/WinGet. Previous versions are removed
+          $FileName = "Sophia.Script.for.Windows.11.v${{ steps.winget.outputs.version }}_WinGet.exe"
+
+          git config user.name "${{ github.actor }}"
+          git config user.email "${{ github.actor }}@users.noreply.github.com"
+
+          git rm --quiet --ignore-unmatch "Scripts/WinGet/*_WinGet.exe"
+          Copy-Item -Path "Sophia_Script\$FileName" -Destination "Scripts\WinGet\$FileName" -Force
+
+          git add "Scripts/WinGet/$FileName"
+          git commit -m "Test-signed $FileName"
+          git pull --rebase
+          git push
+
+      - name: Signing request link
+        run: |
+          Add-Content -Path $env:GITHUB_STEP_SUMMARY -Value "SignPath signing request: ${{ steps.signpath.outputs.signing-request-web-url }}"
+
+      - name: Uploading
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          $Tag   = "${{ inputs.tag }}"
+          $Asset = (Get-Item -Path "Sophia_Script\Sophia*_WinGet.exe").FullName
+          $Title = "Test signing $Tag"
+          $Notes = "Test-signed WinGet launcher. SignPath signing request: ${{ steps.signpath.outputs.signing-request-web-url }}"
+
+          gh release create $Tag $Asset --draft --title $Title --notes $Notes

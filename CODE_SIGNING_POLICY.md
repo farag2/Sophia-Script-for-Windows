@@ -6,7 +6,7 @@ Free code signing provided by [SignPath.io](https://about.signpath.io), certific
 
 Only the files built from the source code of this repository by its GitHub Actions workflows are signed:
 
-* `Sophia.Script.for.Windows.11.v*_WinGet.exe` — the self-extracting archive for [WinGet](https://github.com/microsoft/winget-pkgs/tree/master/manifests/t/TeamSophia/SophiaScript).
+* `Sophia.Script.for.Windows.11.v*_WinGet.exe` — the self-extracting launcher for [WinGet](https://github.com/microsoft/winget-pkgs/tree/master/manifests/t/TeamSophia/SophiaScript). It's built from [SophiaLauncher.cs](Scripts/Launcher/SophiaLauncher.cs) and extracts the release archive to the Downloads folder.
 
 Every file is built on a GitHub-hosted runner from the `main` branch by [Sophia.yml](.github/workflows/Sophia.yml). Every release signing request is approved manually.
 

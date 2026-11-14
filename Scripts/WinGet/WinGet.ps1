@@ -47,8 +47,8 @@ $Parameters = @{
 $Version = (Invoke-RestMethod @Parameters).Sophia_Script_Windows_11
 
 # Get archive hash
-# SFX archive isn't attached to release, it's stored in the WinGet folder of the repo
-# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/Building/WinGet_SFX.ps1
+# The WinGet launcher is attached to the release
+# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Scripts/Building/WinGet_Launcher.ps1
 $Parameters = @{
 	Uri             = "https://github.com/farag2/Sophia-Script-for-Windows/releases/download/$($Version)/Sophia.Script.for.Windows.11.v$($Version)_WinGet.exe"
 	UseBasicParsing = $true

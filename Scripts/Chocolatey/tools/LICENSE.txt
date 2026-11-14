@@ -5,6 +5,3 @@ LICENSE
 The MIT License (MIT)
 
 Copyright (c) 2014—2026 Team Sophia
-
-LGPO.exe is developed by Microsoft Corporation
-License: https://www.microsoft.com/en-us/download/details.aspx?id=55319

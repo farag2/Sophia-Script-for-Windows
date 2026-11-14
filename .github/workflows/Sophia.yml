@@ -25,9 +25,11 @@ jobs:
         run: |
           . "Scripts\Building\Build.ps1"
 
-      - name: WinGet SFX
+      # Sophia.Script.for.Windows.11.v*_WinGet.exe: C# launcher with the Windows 11 release archive inside
+      # It isn't signed yet: signing will be added from SignPath_Test.yml when the release certificate is issued
+      - name: WinGet launcher
         run: |
-          . "Scripts\Building\WinGet_SFX.ps1"
+          . "Scripts\Building\WinGet_Launcher.ps1"
 
       - name: VirusTotal check
         env:

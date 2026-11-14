@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+	SignPath artifact configuration for the WinGet launcher of Sophia Script for Windows 11
+	Paste it into SignPath: Project -> Artifact configurations -> Add -> Custom XML
+	https://docs.signpath.io/artifact-configuration/syntax
+	https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/SignPath_Test.yml
+
+	actions/upload-artifact wraps the uploaded file into a ZIP archive, so the root element is <zip-file>
+	The launcher is the only file in that ZIP archive. Only the EXE is signed, the ZIP itself is not
+
+	"version" is passed by the workflow (signpath/github-action-submit-signing-request, "parameters" input)
+	product-name and product-version are file metadata restrictions required by SignPath Foundation:
+	SignPath rejects the file if its ProductName or ProductVersion doesn't match
+	ProductName and ProductVersion are set by Scripts/Building/WinGet_Launcher.ps1 (AssemblyProduct, AssemblyInformationalVersion)
+-->
+<artifact-configuration xmlns="http://signpath.io/artifact-configuration/v1">
+	<parameters>
+		<parameter name="version" required="true" />
+	</parameters>
+	<zip-file>
+		<pe-file path="Sophia.Script.for.Windows.11.v${version}_WinGet.exe" product-name="Sophia Script for Windows" product-version="${version}">
+			<authenticode-sign />
+		</pe-file>
+	</zip-file>
+</artifact-configuration>

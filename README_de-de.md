@@ -315,7 +315,7 @@ choco uninstall sophia --force --yes
 
 ### WinGet
 
-Laden Sie die neueste Version von `Sophia Script for Windows` für Windows 11 und PowerShell 5.1 (SFX-Archiv `sophiascript.exe`) herunter und entpacken Sie sie in den Ordner Downloads.
+Laden Sie die neueste Version von `Sophia Script for Windows` für Windows 11 und PowerShell 5.1 (`sophiascript.exe`) herunter und entpacken Sie sie in den Ordner Downloads.
 
 ```powershell
 $DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"

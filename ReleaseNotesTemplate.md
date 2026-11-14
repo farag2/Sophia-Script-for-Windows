@@ -222,4 +222,4 @@ Diff from vOldVersion
 
 Free code signing provided by [SignPath.io](https://about.signpath.io), certificate by [SignPath Foundation](https://signpath.org).
 
-The WinGet SFX archive is signed. Read the [code signing policy](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/CODE_SIGNING_POLICY.md).
+The WinGet file `Sophia.Script.for.Windows.11.v*_WinGet.exe` is signed. Read the [code signing policy](https://github.com/farag2/Sophia-Script-for-Windows/blob/main/CODE_SIGNING_POLICY.md).
