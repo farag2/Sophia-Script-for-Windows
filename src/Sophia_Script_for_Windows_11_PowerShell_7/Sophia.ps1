@@ -12,24 +12,24 @@
 	(c) 2014—2026 Team Sophia
 
 	.DESCRIPTION
-	Place the "#" char before function if you don't want to run it
-	Remove the "#" char before function if you want to run it
+	Place the "#" character before a function if you don't want to run it
+	Remove the "#" character before a function if you want to run it
 	Every tweak in the preset file has its corresponding function to restore the default settings
 
 	.EXAMPLE Run the whole script
 	.\Sophia.ps1
 
-	.EXAMPLE Download and expand the latest Sophia Script version archive (without running) according to which Windows and PowerShell versions it is run on
+	.EXAMPLE Download and expand the latest Sophia Script archive (without running it) for the Windows and PowerShell versions it is run on
 	iwr script.sophia.team -useb | iex
 
-	.EXAMPLE The command will download and expand the latest Sophia Script archive (without running) from the last commit available according to which Windows and PowerShell versions it is run on
+	.EXAMPLE Download and expand the latest Sophia Script archive (without running it) from the latest commit for the Windows and PowerShell versions it is run on
 	iwr sl.sophia.team -useb | iex
 
 	.NOTES
 	Supports Windows 11 26H2+ Home/Pro/Enterprise
 
 	.NOTES
-	You may dot source Import-TabCompletion.ps1 to call functions if you do not know their names:
+	You can dot-source Import-TabCompletion.ps1 to call functions if you do not know their names:
 		. .\Import-TabCompletion.ps1 (with a dot at the beginning)
 	Read more at https://github.com/farag2/Sophia-Script-for-Windows?tab=readme-ov-file#how-to-run-the-specific-functions
 
@@ -71,7 +71,7 @@ InitialActions
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 #region Protection
-# Enable script logging. The log will be recorded into the script folder. To stop logging, just close the console or type "Stop-Transcript"
+# Enable script logging. The log will be saved to the script folder. To stop logging, just close the console or type "Stop-Transcript"
 # Включить логирование работы скрипта. Лог будет записываться в папку скрипта. Чтобы остановить логирование, закройте консоль или наберите "Stop-Transcript"
 # Logging
 
@@ -83,7 +83,7 @@ CreateRestorePoint
 #region Privacy & Telemetry
 <#
 	Disable the "Connected User Experiences and Telemetry" service (DiagTrack), and block the connection for the Unified Telemetry Client Outbound Traffic
-	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) may prevent you from getting XBOX achievements and affects Feedback Hub
+	Disabling the "Connected User Experiences and Telemetry" service (DiagTrack) may prevent you from getting XBOX achievements and affect Feedback Hub
 
 	Отключить службу "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) и блокировать соединение для исходящего трафика клиента единой телеметрии
 	Отключение службы "Функциональные возможности для подключенных пользователей и телеметрия" (DiagTrack) может привести к тому, что вы больше не сможете получать достижения XBOX, а также влияет на работу Feedback Hub
@@ -134,11 +134,11 @@ SigninInfo -Disable
 # Использовать данные для входа, чтобы автоматически завершить настройку после обновления (значение по умолчанию)
 # SigninInfo -Enable
 
-# Do not let websites provide locally relevant content by accessing language list
+# Do not let websites show me locally relevant content by accessing my language list
 # Не позволять веб-сайтам предоставлять местную информацию за счет доступа к списку языков
 LanguageListAccess -Disable
 
-# Let websites provide locally relevant content by accessing language list (default value)
+# Let websites show me locally relevant content by accessing my language list (default value)
 # Позволить веб-сайтам предоставлять местную информацию за счет доступа к списку языков (значение по умолчанию)
 # LanguageListAccess -Enable
 
@@ -198,21 +198,21 @@ TailoredExperiences -Disable
 # Разрешить корпорации Майкрософт использовать диагностические данные для персонализированных советов, рекламы и рекомендаций (значение по умолчанию)
 # TailoredExperiences -Enable
 
-# Disable Bing search in Start Menu
+# Disable Bing search in the Start menu
 # Отключить в меню "Пуск" поиск через Bing
 BingSearch -Disable
 
-# Enable Bing search in Start Menu (default value)
+# Enable Bing search in the Start menu (default value)
 # Включить поиск через Bing в меню "Пуск" (значение по умолчанию)
 # BingSearch -Enable
 #endregion Privacy & Telemetry
 
 #region UI & Personalization
-# Show "This PC" icon on Desktop
+# Show the "This PC" icon on the desktop
 # Отобразить значок "Этот компьютер" на рабочем столе
 ThisPC -Show
 
-# Hide "This PC" icon on Desktop (default value)
+# Hide the "This PC" icon on the desktop (default value)
 # Скрыть значок "Этот компьютер" на рабочем столе (значение по умолчанию)
 # ThisPC -Hide
 
@@ -264,11 +264,11 @@ FileExplorerCompactMode -Disable
 # Включить компактный вид проводника
 # FileExplorerCompactMode -Enable
 
-# Hide sync provider notification within File Explorer
+# Hide sync provider notifications in File Explorer
 # Не показывать уведомления поставщика синхронизации в проводнике
 OneDriveFileExplorerAd -Hide
 
-# Show sync provider notification within File Explorer (default value)
+# Show sync provider notifications in File Explorer (default value)
 # Показывать уведомления поставщика синхронизации в проводнике (значение по умолчанию)
 # OneDriveFileExplorerAd -Show
 
@@ -288,11 +288,11 @@ FileTransferDialog -Detailed
 # Отображать диалоговое окно передачи файлов в свернутом виде (значение по умолчанию)
 # FileTransferDialog -Compact
 
-# Display the recycle bin files delete confirmation dialog
+# Display the Recycle Bin delete confirmation dialog
 # Запрашивать подтверждение на удаление файлов в корзину
 RecycleBinDeleteConfirmation -Enable
 
-# Do not display the recycle bin files delete confirmation dialog (default value)
+# Do not display the Recycle Bin delete confirmation dialog (default value)
 # Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)
 # RecycleBinDeleteConfirmation -Disable
 
@@ -336,11 +336,11 @@ TaskbarAlignment -Center
 # Установить выравнивание панели задач по левому краю
 # TaskbarAlignment -Left
 
-# Hide widgets icon on the taskbar
+# Hide the Widgets icon on the taskbar
 # Скрыть кнопку "Мини-приложения" с панели задач
 TaskbarWidgets -Hide
 
-# Show widgets icon on the taskbar (default value)
+# Show the Widgets icon on the taskbar (default value)
 # Отобразить кнопку "Мини-приложения" на панели задач (значение по умолчанию)
 # TaskbarWidgets -Show
 
@@ -408,11 +408,11 @@ TaskbarCombine -Always
 # Открепить ярлыки Microsoft Edge, Microsoft Store и Outlook от панели задач
 UnpinTaskbarShortcuts -Shortcuts Edge, Store, Outlook
 
-# Enable end task in taskbar by right click
+# Enable "End task" in the taskbar by right-click
 # Включить завершение задачи на панели задач правой кнопкой мыши
 TaskbarEndTask -Enable
 
-# Disable end task in taskbar by right click (default value)
+# Disable "End task" in the taskbar by right-click (default value)
 # Выключить завершение задачи на панели задач правой кнопкой мыши (значение по умолчанию)
 # TaskbarEndTask -Disable
 
@@ -468,11 +468,11 @@ ShortcutsSuffix -Disable
 # Добавлять "- ярлык" к имени создаваемых ярлыков (значение по умолчанию)
 # ShortcutsSuffix -Enable
 
-# Use the Print screen button to open screen snipping
+# Use the Print screen key to open screen snipping
 # Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
 PrtScnSnippingTool -Enable
 
-# Do not use the Print screen button to open screen snipping (default value)
+# Do not use the Print screen key to open screen snipping (default value)
 # Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)
 # PrtScnSnippingTool -Disable
 
@@ -492,12 +492,12 @@ AeroShaking -Enable
 # При захвате заголовка окна и встряхивании не сворачиваются все остальные окна (значение по умолчанию)
 # AeroShaking -Disable
 
-# Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
+# Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations. An Internet connection is required
 # Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 Install-Cursors -Dark
 
-# Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations. Internet connection required
+# Download and install free light "Windows 11 Cursors Concept" cursors from Jepri Creations. An Internet connection is required
 # Скачать и установить бесплатные светлые курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
 # Install-Cursors -Light
@@ -554,11 +554,11 @@ MostUsedStartApps -Hide
 # Показывать наиболее часто используемые приложения на начальном экране
 # MostUsedStartApps -Show
 
-# Hide Recommended section on Start
+# Hide the Recommended section on Start
 # Скрыть раздел "Рекомендуем" на начальном экране
 StartRecommendedSection -Hide
 
-# Show Recommended section on Start (default value)
+# Show the Recommended section on Start (default value)
 # Показывать раздел "Рекомендуем" на начальном экране (значение по умолчанию)
 # StartRecommendedSection -Show
 
@@ -580,7 +580,7 @@ StartAccountNotifications -Hide
 #endregion UI & Personalization
 
 #region OneDrive
-# Uninstall OneDrive. OneDrive user folder won't be removed if any file found there
+# Uninstall OneDrive. The OneDrive user folder won't be removed if any files are found there
 # Удалить OneDrive. Папка пользователя OneDrive не будет удалена при обнаружении в ней файлов
 # OneDrive -Uninstall
 
@@ -610,19 +610,19 @@ Hibernation -Disable
 # Включить режим гибернации (значение по умолчанию)
 # Hibernation -Enable
 
-# Enable Windows long paths support which is limited to 260 characters by default
+# Enable Windows long path support to lift the 260-character path limit
 # Включить поддержку длинных путей, ограниченных по умолчанию 260 символами
 Win32LongPathsSupport -Enable
 
-# Disable Windows long paths support which is limited to 260 characters by default (default value)
+# Disable Windows long path support, so paths are limited to 260 characters (default value)
 # Отключить поддержку длинных путей, ограниченных по умолчанию 260 символами (значение по умолчанию)
 # Win32LongPathsSupport -Disable
 
-# Display Stop error code when BSoD occurs
+# Display the Stop error code when a BSoD occurs
 # Отображать код Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display Stop error code when BSoD occurs (default value)
+# Do not display the Stop error code when a BSoD occurs (default value)
 # Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
 
@@ -651,15 +651,15 @@ WindowsManageDefaultPrinter -Disable
 # WindowsManageDefaultPrinter -Enable
 
 <#
-	Disable the Windows features using pop-up dialog box
-	If you want to leave "Multimedia settings" element in the advanced settings of Power Options do not disable the "Media Features" feature
+	Disable the Windows features using a pop-up dialog box
+	If you want to keep the "Multimedia settings" element in the advanced settings of Power Options, do not disable the "Media Features" feature
 
 	Отключить компоненты Windows, используя всплывающее диалоговое окно
 	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с мультимедиа"
 #>
 WindowsFeatures -Disable
 
-# Enable the Windows features using pop-up dialog box
+# Enable the Windows features using a pop-up dialog box
 # Включить компоненты Windows, используя всплывающее диалоговое окно
 # WindowsFeatures -Enable
 
@@ -667,7 +667,7 @@ WindowsFeatures -Disable
 # Удалить дополнительные компоненты
 WindowsCapabilities -Uninstall
 
-# Install optional features. Internet connection required
+# Install optional features. An Internet connection is required
 # Установить дополнительные компоненты. Требуется соединение с интернетом
 # WindowsCapabilities -Install
 
@@ -735,15 +735,15 @@ InputMethod -English
 # Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)
 # InputMethod -Default
 
-# Change location of user folders to the root of any drive using the interactive menu. User files or folders won't be moved to a new location
+# Change the location of user folders to the root of any drive using an interactive menu. User files and folders won't be moved to the new location
 # Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение
 Set-UserShellFolderLocation -Root
 
-# Select location of user folders manually using a folder browser dialog. User files or folders won't be moved to a new location
+# Select the location of user folders manually using a folder browser dialog. User files and folders won't be moved to the new location
 # Выбрать папки для расположения пользовательских папок вручную, используя диалог "Обзор папок". Пользовательские файлы и папки не будут перемещены в новое расположение
 # Set-UserShellFolderLocation -Custom
 
-# Change user folders location to default values. User files or folders won't be moved to the new location
+# Change the location of user folders to the default values. User files and folders won't be moved to the new location
 # Изменить расположение пользовательских папок на значения по умолчанию. Пользовательские файлы и папки не будут перемещены в новое расположение
 # Set-UserShellFolderLocation -Default
 
@@ -756,7 +756,7 @@ WinPrtScrFolder -Desktop
 # WinPrtScrFolder -Default
 
 <#
-	Run troubleshooter automatically, then notify me
+	Run troubleshooters automatically, then notify me
 	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
 
 	Автоматически запускать средства устранения неполадок, а затем уведомлять
@@ -765,7 +765,7 @@ WinPrtScrFolder -Desktop
 RecommendedTroubleshooting -Automatically
 
 <#
-	Ask me before running troubleshooter (default value)
+	Ask me before running troubleshooters (default value)
 	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
 
 	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
@@ -846,7 +846,7 @@ RestorePreviousFolders -Disable
 # RestorePreviousFolders -Enable
 
 <#
-	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
+	Register an app, calculate the hash, and associate it with an extension with the "How do you want to open this" pop-up hidden
 	Зарегистрировать приложение, вычислить хэш и ассоциировать его с расширением без всплывающего окна "Каким образом вы хотите открыть этот файл?"
 
 	Set-Association -ProgramPath 'C:\SumatraPDF.exe' -Extension .pdf -Icon '%SystemRoot%\System32\shell32.dll,100'
@@ -855,32 +855,32 @@ RestorePreviousFolders -Disable
 #>
 # Set-Association -ProgramPath '%ProgramFiles%\Notepad++\notepad++.exe' -Extension .txt -Icon '%ProgramFiles%\Notepad++\notepad++.exe,0'
 
-# Export all Windows associations into Application_Associations.json file to script root folder
+# Export all Windows associations to the Application_Associations.json file in the script root folder
 # Экспортировать все ассоциации в Windows в корень папки в виде файла Application_Associations.json
 # Export-Associations
 
 <#
-	Import all Windows associations from an Application_Associations.json file
-	You need to install all apps according to an exported Application_Associations.json file to restore all associations
+	Import all Windows associations from the Application_Associations.json file
+	You need to install all the apps listed in the exported Application_Associations.json file to restore all associations
 
 	Импортировать все ассоциации в Windows из файла Application_Associations.json
 	Вам необходимо установить все приложения согласно экспортированному файлу Application_Associations.json, чтобы восстановить все ассоциации
 #>
 # Import-Associations
 
-# Set Windows Terminal as default terminal app to host the user interface for command-line applications
+# Set Windows Terminal as the default terminal app to host the user interface for command-line applications
 # Установить Windows Terminal как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки
 DefaultTerminalApp -WindowsTerminal
 
-# Set Windows Console Host as default terminal app to host the user interface for command-line applications (default value)
+# Set Windows Console Host as the default terminal app to host the user interface for command-line applications (default value)
 # Установить Windows Console Host как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки (значение по умолчанию)
 # DefaultTerminalApp -ConsoleHost
 
-# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). Internet connection required
+# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). An Internet connection is required
 # Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
 Install-VCRedist
 
-# Install the latest .NET Desktop Runtime 10, 11 x64. Internet connection required
+# Install the latest .NET Desktop Runtime 10, 11 x64. An Internet connection is required
 # Установить последнюю версию .NET Desktop Runtime 10, 11 x64. Требуется соединение с интернетом
 Install-DotNetRuntimes -Runtimes NET10, NET11
 
@@ -892,11 +892,11 @@ PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
 # Не предотвращать создание ярлыков на рабочем столе при обновлении Microsoft Edge (значение по умолчанию)
 # PreventEdgeShortcutCreation -Disable
 
-# Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create RegIdleBackup task in the Task Scheduler to manage subsequent backups
+# Back up the system registry to the %SystemRoot%\System32\config\RegBack folder when the PC restarts and create the RegIdleBackup task in Task Scheduler to manage subsequent backups
 # Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
 RegistryBackup -Enable
 
-# Do not back up the system registry to %SystemRoot%\System32\config\RegBack folder (default value)
+# Do not back up the system registry to the %SystemRoot%\System32\config\RegBack folder (default value)
 # Не создавать копии реестра при перезагрузке ПК (значение по умолчанию)
 # RegistryBackup -Disable
 
@@ -910,19 +910,19 @@ WindowsAI -Disable
 #endregion System
 
 #region WSL
-# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. Internet connection required
+# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. An Internet connection is required
 # Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Требуется соединение с интернетом
 # Install-WSL
 #endregion WSL
 
 #region UWP apps
-# Uninstall UWP apps using pop-up dialog box
+# Uninstall UWP apps using a pop-up dialog box
 # Удалить UWP-приложения, используя всплывающее диалоговое окно
 Uninstall-UWPApps
 
 <#
-	Uninstall UWP apps for all users using pop-up dialog box
-	If the "For All Users" is checked apps packages will not be installed for new users
+	Uninstall UWP apps for all users using a pop-up dialog box
+	If "For All Users" is checked, app packages will not be installed for new users
 
 	Удалить UWP-приложения для всех пользователей, используя всплывающее диалоговое окно
 	Пакеты приложений не будут установлены для новых пользователей, если отмечена галочка "Для всех пользователей"
@@ -933,7 +933,7 @@ Uninstall-UWPApps
 #region Gaming
 <#
 	Disable XBOX Game Bar
-	To prevent popping up the "You'll need a new app to open this ms-gamingoverlay" warning, you need to disable the XBOX Game Bar app, even if you uninstalled it before
+	To prevent the "You'll need a new app to open this ms-gamingoverlay" warning from popping up, you need to disable the XBOX Game Bar app, even if you uninstalled it before
 
 	Отключить XBOX Game Bar
 	Чтобы предотвратить появление предупреждения "Вам понадобится новое приложение, чтобы открыть этот ms-gamingoverlay", вам необходимо отключить приложение XBOX Game Bar, даже если вы удалили его раньше
@@ -954,7 +954,7 @@ XBOXGameTips -Disable
 
 <#
 	Turn on hardware-accelerated GPU scheduling. Restart needed
-	Only if you have a dedicated GPU and WDDM version is 2.7 or higher
+	Only if you have a dedicated GPU and the WDDM version is 2.7 or higher
 
 	Включить планирование графического процессора с аппаратным ускорением. Необходима перезагрузка
 	Только при наличии дискретной видеокарты и WDDM версии 2.7 и выше
@@ -968,7 +968,7 @@ GPUScheduling -Enable
 
 #region Scheduled tasks
 <#
-	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates.
+	Create the "Windows Cleanup" scheduled task for cleaning up unused Windows files and updates.
 	A native interactive toast notification pops up every 30 days
 
 	Создать задание "Windows Cleanup" по очистке неиспользуемых файлов и обновлений Windows в Планировщике заданий.
@@ -976,25 +976,25 @@ GPUScheduling -Enable
 #>
 CleanupTask -Register
 
-# Delete "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+# Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up unused Windows files and updates
 # Удалить задания "Windows Cleanup" и "Windows Cleanup Notification" по очистке неиспользуемых файлов и обновлений Windows из Планировщика заданий
 # CleanupTask -Delete
 
 <#
-	Create "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
-	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
+	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
+	The task will wait until the Windows Update service finishes running. The task runs every 90 days
 
 	Создать задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download в Планировщике заданий
 	Задание будет ждать, пока служба обновлений Windows не закончит работу. Задание выполняется каждые 90 дней
 #>
 SoftwareDistributionTask -Register
 
-# Delete "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
+# Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 # Удалить задание "SoftwareDistribution" по очистке папки %SystemRoot%\SoftwareDistribution\Download из Планировщика заданий
 # SoftwareDistributionTask -Delete
 
 <#
-	Create "Temp" scheduled task for cleaning up %TEMP% folder
+	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
 	Only files older than one day will be deleted. The task runs every 60 days
 
 	Создать задание "Temp" в Планировщике заданий по очистке папки %TEMP%
@@ -1002,7 +1002,7 @@ SoftwareDistributionTask -Register
 #>
 TempTask -Register
 
-# Delete "Temp" scheduled task for cleaning up %TEMP% folder
+# Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
 # Удалить задание "Temp" по очистке папки %TEMP% из Планировщика заданий
 # TempTask -Delete
 #endregion Scheduled tasks
@@ -1016,11 +1016,11 @@ NetworkProtection -Enable
 # Выключить защиту сети в Microsoft Defender Exploit Guard (значение по умолчанию)
 # NetworkProtection -Disable
 
-# Enable detection for potentially unwanted applications and block them
+# Enable detection of potentially unwanted applications and block them
 # Включить обнаружение потенциально нежелательных приложений и блокировать их
 PUAppsDetection -Enable
 
-# Disable detection for potentially unwanted applications (default value)
+# Disable detection of potentially unwanted applications (default value)
 # Выключить обнаружение потенциально нежелательных приложений (значение по умолчанию)
 # PUAppsDetection -Disable
 
@@ -1032,19 +1032,19 @@ DefenderSandbox -Enable
 # Выключить песочницу для Microsoft Defender (значение по умолчанию)
 # DefenderSandbox -Disable
 
-# Enable logging of running processes, including their arguments, and PowerShell scripts, and create custom "Process Creation" view in the Event Viewer
+# Enable logging of running processes, including their arguments, and PowerShell scripts, and create the custom "Process Creation" view in Event Viewer
 # Включить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также создать настраиваемое представление "Создание процесса" в Просмотре событий
 EventViewerCustomView -Enable
 
-# Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from the Event Viewer (default value)
+# Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from Event Viewer (default value)
 # Выключить журналирование запущенных процессов, включая их аргументы, и скриптов PowerShell, а также удалить настраиваемое представление "Создание процесса" из Просмотра событий (значение по умолчанию)
 # EventViewerCustomView -Disable
 
-# Enable apps and files checking within Microsoft Defender SmartScreen (default value)
+# Enable checking of apps and files with Microsoft Defender SmartScreen (default value)
 # Включить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender (значение по умолчанию)
 AppsSmartScreen -Enable
 
-# Disable apps and files checking within Microsoft Defender SmartScreen
+# Disable checking of apps and files with Microsoft Defender SmartScreen
 # Выключить проверку приложений и файлов фильтром SmartScreen в Microsoft Defender
 # AppsSmartScreen -Disable
 
@@ -1126,11 +1126,11 @@ UseStoreOpenWith -Hide
 # Отобразить пункт "Поиск приложения в Microsoft Store" в диалоге "Открыть с помощью" (значение по умолчанию)
 # UseStoreOpenWith -Show
 
-# Open Windows Terminal in context menu as administrator by default
+# Open Windows Terminal from the context menu as administrator by default
 # Открывать Windows Terminal из контекстного меню от имени администратора по умолчанию
 OpenWindowsTerminalAdminContext -Enable
 
-# Do not open Windows Terminal in context menu as administrator by default (default value)
+# Do not open Windows Terminal from the context menu as administrator by default (default value)
 # Не открывать Windows Terminal из контекстного меню от имени администратора по умолчанию (значение по умолчанию)
 # OpenWindowsTerminalAdminContext -Disable
 #endregion Context menu

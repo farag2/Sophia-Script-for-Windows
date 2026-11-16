@@ -9,7 +9,7 @@
 	https://learn.microsoft.com/en-us/windows/win32/api/shlobj_core/nf-shlobj_core-shsetknownfolderpath
 
 	.NOTES
-	User files or folders won't be moved to a new location
+	User files and folders won't be moved to the new location
 #>
 function Global:Set-UserShellFolder
 {

@@ -1293,8 +1293,8 @@ Diff from v6.1.3
 ## Windows 11 21H2 | Windows 10 2004/20H2/21H1/21H2 | Enterprise LTSC 2021 | Enterprise LTSC 2019
 
 * Added the checking whether Defender wasn't disabled;
-* Fixed `XboxGameBar`;
-  * To prevent popping up the "You'll need a new app to open this `ms-gamingoverlay`" warning, you need to disable the `Xbox Game Bar` app, even if you uninstalled it before.
+* Fixed `XBOXGameBar`;
+  * To prevent popping up the "You'll need a new app to open this `ms-gamingoverlay`" warning, you need to disable the `XBOX Game Bar` app, even if you uninstalled it before.
 * Updated descriptions.
 * Check out [SophiApp](https://github.com/Sophia-Community/SophiApp) 1.0.0.23 beta 3 :rocket:
 
@@ -1560,7 +1560,7 @@ Invoke-RestMethod -Uri script.sophi.app | Invoke-Expression
 * @Inestic has re-written the `WSL` functions into one with a `WPF form` with list of supported Linux distributions to install. Microsoft has allowed the supported Windows 10 versions to install Linux distributions with [one command](https://devblogs.microsoft.com/commandline/install-wsl-with-a-single-command-now-available-in-windows-10-version-2004-and-higher/) `wsl --install`;
   * Windows 10 `19041.1151` (Windows 11) build is minimum needed;
   * ![Image](https://i.imgur.com/j2KLZm0.png)
-* The `XboxGameBar` function removed;
+* The `XBOXGameBar` function removed;
 * Descriptions updated;
 * Fixed typos;
 * Minor changes.
@@ -2428,7 +2428,7 @@ Diff from v4.5.3
 * Updated "Turn off Cortana autostarting" section
 * Updated "Create "Process Creation" Event Viewer Custom View" section
   * Closed #37
-* Removed "Uninstall all Xbox related UWP apps from all accounts" section because it's unnecassary
+* Removed "Uninstall all XBOX related UWP apps from all accounts" section because it's unnecassary
 * Closed #36. Removed sections
   * Show accent color on Start, taskbar, and action center
   * Show accent color on the title bars and window borders
@@ -2684,8 +2684,8 @@ DISM.exe /Online /English /Cleanup-Image /StartComponentCleanup /NoRestart
 
 * Improved "Uninstall OneDrive" section;
   * Now it takes into account whether user signed in to OnedDrive;
-* Added Xbox related apps to the exclusion list in "Uninstall all UWP apps from all accounts, except the followings..." section;
-* Added "Uninstall all Xbox related UWP apps from all accounts" section;
+* Added XBOX related apps to the exclusion list in "Uninstall all UWP apps from all accounts, except the followings..." section;
+* Added "Uninstall all XBOX related UWP apps from all accounts" section;
 * Comments;
 * Minor changes.
 

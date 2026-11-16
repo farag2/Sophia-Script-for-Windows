@@ -662,7 +662,7 @@ function SigninInfo
 
 <#
 	.SYNOPSIS
-	The provision to websites a locally relevant content by accessing my language list
+	Websites' access to my language list to show locally relevant content
 
 	.PARAMETER Disable
 	Do not let websites show me locally relevant content by accessing my language list
@@ -1100,13 +1100,13 @@ function TailoredExperiences
 
 <#
 	.SYNOPSIS
-	Bing search in Start Menu
+	Bing search in the Start menu
 
 	.PARAMETER Disable
-	Disable Bing search in Start Menu
+	Disable Bing search in the Start menu
 
 	.PARAMETER Enable
-	Enable Bing search in Start Menu
+	Enable Bing search in the Start menu
 
 	.EXAMPLE
 	BingSearch -Disable
@@ -1161,13 +1161,13 @@ function BingSearch
 
 <#
 	.SYNOPSIS
-	"This PC" icon on Desktop
+	The "This PC" icon on the desktop
 
 	.PARAMETER Show
-	Show "This PC" icon on Desktop
+	Show the "This PC" icon on the desktop
 
 	.PARAMETER Hide
-	Hide "This PC" icon on Desktop
+	Hide the "This PC" icon on the desktop
 
 	.EXAMPLE
 	ThisPC -Show
@@ -1522,13 +1522,13 @@ function FileExplorerCompactMode
 
 <#
 	.SYNOPSIS
-	Sync provider notification in File Explorer
+	Sync provider notifications in File Explorer
 
 	.PARAMETER Hide
-	Hide sync provider notification within File Explorer
+	Hide sync provider notifications in File Explorer
 
 	.PARAMETER Show
-	Show sync provider notification within File Explorer
+	Show sync provider notifications in File Explorer
 
 	.EXAMPLE
 	OneDriveFileExplorerAd -Hide
@@ -1683,13 +1683,13 @@ function FileTransferDialog
 
 <#
 	.SYNOPSIS
-	The recycle bin files delete confirmation dialog
+	The Recycle Bin delete confirmation dialog
 
 	.PARAMETER Enable
-	Display the recycle bin files delete confirmation dialog
+	Display the Recycle Bin delete confirmation dialog
 
 	.PARAMETER Disable
-	Do not display the recycle bin files delete confirmation dialog
+	Do not display the Recycle Bin delete confirmation dialog
 
 	.EXAMPLE
 	RecycleBinDeleteConfirmation -Enable
@@ -2387,13 +2387,13 @@ function TaskbarCombine
 
 <#
 	.SYNOPSIS
-	End task in taskbar by right click
+	"End task" in the taskbar by right-click
 
 	.PARAMETER Enable
-	Enable end task in taskbar by right click
+	Enable "End task" in the taskbar by right-click
 
 	.PARAMETER Disable
-	Disable end task in taskbar by right click
+	Disable "End task" in the taskbar by right-click
 
 	.EXAMPLE
 	TaskbarEndTask -Enable
@@ -2731,7 +2731,7 @@ function JPEGWallpapersQuality
 
 <#
 	.SYNOPSIS
-	The "- Shortcut" suffix adding to the name of the created shortcuts
+	Adding the "- Shortcut" suffix to the names of created shortcuts
 
 	.PARAMETER Disable
 	Do not add the "- Shortcut" suffix to the file name of created shortcuts
@@ -2788,13 +2788,13 @@ function ShortcutsSuffix
 
 <#
 	.SYNOPSIS
-	The Print screen button usage
+	The Print screen key usage
 
 	.PARAMETER Enable
-	Use the Print screen button to open screen snipping
+	Use the Print screen key to open screen snipping
 
 	.PARAMETER Disable
-	Do not use the Print screen button to open screen snipping
+	Do not use the Print screen key to open screen snipping
 
 	.EXAMPLE
 	PrtScnSnippingTool -Enable
@@ -3506,7 +3506,7 @@ function MostUsedStartApps
 	Hide recommended section on Start
 
 	.PARAMETER Show
-	Show recommended section on Start
+	Show the Recommended section on Start
 
 	.EXAMPLE
 	StartRecommendedSection -Hide
@@ -3851,13 +3851,13 @@ function Hibernation
 
 <#
 	.SYNOPSIS
-	Windows 260 character paths support limit
+	The Windows 260-character path limit
 
 	.PARAMETER Enable
-	Enable Windows long paths support which is limited to 260 characters by default
+	Enable Windows long path support to lift the 260-character path limit
 
 	.PARAMETER Disable
-	Disable Windows long paths support which is limited to 260 characters by default
+	Disable Windows long path support, so paths are limited to 260 characters
 
 	.EXAMPLE
 	Win32LongPathsSupport -Enable
@@ -3904,13 +3904,13 @@ function Win32LongPathsSupport
 
 <#
 	.SYNOPSIS
-	Stop error code when BSoD occurs
+	The Stop error code when a BSoD occurs
 
 	.PARAMETER Enable
-	Display Stop error code when BSoD occurs
+	Display the Stop error code when a BSoD occurs
 
 	.PARAMETER Disable
-	Do not display Stop error code when BSoD occurs
+	Do not display the Stop error code when a BSoD occurs
 
 	.EXAMPLE
 	BSoDStopError -Enable
@@ -5167,16 +5167,16 @@ function InputMethod
 
 <#
 	.SYNOPSIS
-	Change user folders location
+	Change the location of user folders
 
 	.PARAMETER Root
-	Change user folders location to the root of any drive using an interactive menu
+	Change the location of user folders to the root of any drive using an interactive menu
 
 	.PARAMETER Custom
-	Select folders for user folders location manually using a folder browser dialog
+	Select the location of user folders manually using a folder browser dialog
 
 	.PARAMETER Default
-	Change user folders location to the default values
+	Change the location of user folders to the default values
 
 	.EXAMPLE
 	Set-UserShellFolderLocation -Root
@@ -5188,7 +5188,7 @@ function InputMethod
 	Set-UserShellFolderLocation -Default
 
 	.NOTES
-	User files or folders won't be moved to a new location
+	User files and folders won't be moved to the new location
 
 	.NOTES
 	Current user
@@ -5516,10 +5516,10 @@ function WinPrtScrFolder
 	Recommended troubleshooter preferences
 
 	.PARAMETER Automatically
-	Run troubleshooter automatically, then notify me
+	Run troubleshooters automatically, then notify me
 
 	.PARAMETER Default
-	Ask me before running troubleshooter
+	Ask me before running troubleshooters
 
 	.EXAMPLE
 	RecommendedTroubleshooting -Automatically
@@ -5601,12 +5601,12 @@ function RecommendedTroubleshooting
 	{
 		"Automatically"
 		{
-			# Run troubleshooter automatically, then notify me
+			# Run troubleshooters automatically, then notify me
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
 		}
 		"Default"
 		{
-			# Ask me before running troubleshooter
+			# Ask me before running troubleshooters
 			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 2 -Force
 		}
 	}
@@ -6095,7 +6095,7 @@ function RestorePreviousFolders
 
 <#
 	.SYNOPSIS
-	Register app, calculate hash, and associate with an extension with the "How do you want to open this" pop-up hidden
+	Register an app, calculate the hash, and associate it with an extension with the "How do you want to open this" pop-up hidden
 
 	.PARAMETER ProgramPath
 	Path to a program to associate an extension with or its ProgId
@@ -6382,10 +6382,10 @@ function Set-Association
 	Export-Associations
 
 	.NOTES
-	Associations will be exported as Application_Associations.json file in script root folder
+	Associations will be exported as the Application_Associations.json file in the script root folder
 
 	.NOTES
-	You need to install all apps according to an exported JSON file to restore all associations
+	You need to install all the apps listed in the exported JSON file to restore all associations
 
 	.NOTES
 	Machine-wide
@@ -6494,7 +6494,7 @@ function Export-Associations
 	Import-Associations
 
 	.NOTES
-	You have to install all apps according to an exported JSON file to restore all associations
+	You need to install all the apps listed in the exported JSON file to restore all associations
 
 	.NOTES
 	Current user
@@ -6894,13 +6894,13 @@ function PreventEdgeShortcutCreation
 
 <#
 	.SYNOPSIS
-	Back up the system registry to %SystemRoot%\System32\config\RegBack folder when PC restarts and create RegIdleBackup task in the Task Scheduler to manage subsequent backups
+	Back up the system registry to the %SystemRoot%\System32\config\RegBack folder when the PC restarts and create the RegIdleBackup task in Task Scheduler to manage subsequent backups
 
 	.PARAMETER Enable
-	Back up the system registry to %SystemRoot%\System32\config\RegBack folder
+	Back up the system registry to the %SystemRoot%\System32\config\RegBack folder
 
 	.PARAMETER Disable
-	Do not back up the system registry to %SystemRoot%\System32\config\RegBack folder
+	Do not back up the system registry to the %SystemRoot%\System32\config\RegBack folder
 
 	.EXAMPLE
 	RegistryBackup -Enable
@@ -7107,7 +7107,7 @@ function Install-WSL
 	GPUScheduling -Disable
 
 	.NOTES
-	Only with a dedicated GPU and WDDM version is 2.7 or higher
+	Only with a dedicated GPU and WDDM version 2.7 or higher
 
 	.NOTES
 	Machine-wide
@@ -7185,13 +7185,13 @@ function GPUScheduling
 
 <#
 	.SYNOPSIS
-	The "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
+	The "Windows Cleanup" scheduled task for cleaning up unused Windows files and updates
 
 	.PARAMETER Register
-	Create "Windows Cleanup" scheduled task for cleaning up Windows unused files and updates
+	Create the "Windows Cleanup" scheduled task for cleaning up unused Windows files and updates
 
 	.PARAMETER Delete
-	Delete "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up Windows unused files and updates
+	Delete the "Windows Cleanup" and "Windows Cleanup Notification" scheduled tasks for cleaning up unused Windows files and updates
 
 	.EXAMPLE
 	CleanupTask -Register
@@ -7333,7 +7333,7 @@ Get-Process -Name cleanmgr, Dism, DismHost -ErrorAction Ignore | Stop-Process -F
 			}
 			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1" -Value $CleanupTaskPS -Encoding UTF8 -Force
 
-			# Create "Windows Cleanup" task
+			# Create the "Windows Cleanup" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\Windows_Cleanup.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
@@ -7497,13 +7497,13 @@ while ([WinAPI.QuietHours]::GetState() -gt 0)
 
 <#
 	.SYNOPSIS
-	The "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
+	The "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Register
-	Create "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
+	Create the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.PARAMETER Delete
-	Delete "SoftwareDistribution" scheduled task for cleaning up %SystemRoot%\SoftwareDistribution\Download folder
+	Delete the "SoftwareDistribution" scheduled task for cleaning up the %SystemRoot%\SoftwareDistribution\Download folder
 
 	.EXAMPLE
 	SoftwareDistributionTask -Register
@@ -7512,7 +7512,7 @@ while ([WinAPI.QuietHours]::GetState() -gt 0)
 	SoftwareDistributionTask -Delete
 
 	.NOTES
-	The task will wait until the Windows Updates service finishes running. The task runs every 90 days
+	The task will wait until the Windows Update service finishes running. The task runs every 90 days
 
 	.NOTES
 	Current user
@@ -7644,7 +7644,7 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 			# Replace here-string double quotes with single ones
 			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1" -Value $SoftwareDistributionTaskPS.Replace('@""', '@"').Replace('""@', '"@') -Encoding UTF8 -Force
 
-			# Create "SoftwareDistribution" task
+			# Create the "SoftwareDistribution" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\SoftwareDistributionTask.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
@@ -7697,13 +7697,13 @@ Get-ChildItem -Path `$env:SystemRoot\SoftwareDistribution\Download -Recurse | Re
 
 <#
 	.SYNOPSIS
-	The "Temp" scheduled task for cleaning up %TEMP% folder
+	The "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.PARAMETER Register
-	Create "Temp" scheduled task for cleaning up %TEMP% folder
+	Create the "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.PARAMETER Delete
-	Delete "Temp" scheduled task for cleaning up %TEMP% folder
+	Delete the "Temp" scheduled task for cleaning up the %TEMP% folder
 
 	.EXAMPLE
 	TempTask -Register
@@ -7860,7 +7860,7 @@ Get-ChildItem -Path "`$env:SystemRoot\System32\config\systemprofile\AppData\Loca
 			# Replace here-string double quotes with single ones
 			Set-Content -Path "$env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1" -Value $TempTaskPS.Replace('@""', '@"').Replace('""@', '"@') -Encoding UTF8 -Force
 
-			# Create "Temp" task
+			# Create the "Temp" task
 			# We use conhost.exe with an undocumented "--headless" argument to suppress console appearing
 			$Action     = New-ScheduledTaskAction -Execute conhost.exe -Argument "--headless powershell.exe -NoProfile -ExecutionPolicy Bypass -File $env:SystemRoot\System32\Tasks\Sophia\TempTask.ps1"
 			$Settings   = New-ScheduledTaskSettingsSet -Compatibility Win8 -StartWhenAvailable
@@ -7976,13 +7976,13 @@ function NetworkProtection
 
 <#
 	.SYNOPSIS
-	Detection for potentially unwanted applications
+	Detection of potentially unwanted applications
 
 	.PARAMETER Enable
-	Enable detection for potentially unwanted applications and block them
+	Enable detection of potentially unwanted applications and block them
 
 	.PARAMETER Disable
-	Disable detection for potentially unwanted applications
+	Disable detection of potentially unwanted applications
 
 	.EXAMPLE
 	PUAppsDetection -Enable
@@ -8099,10 +8099,10 @@ function DefenderSandbox
 	"Process Creation" Event Viewer custom view
 
 	.PARAMETER Enable
-	Enable logging of running processes, including their arguments, and PowerShell scripts, and create custom "Process Creation" view in the Event Viewer
+	Enable logging of running processes, including their arguments, and PowerShell scripts, and create the custom "Process Creation" view in Event Viewer
 
 	.PARAMETER Disable
-	Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from the Event Viewer
+	Disable logging of running processes, including their arguments, and PowerShell scripts, and remove the custom "Process Creation" view from Event Viewer
 
 	.EXAMPLE
 	EventViewerCustomView -Enable
@@ -8143,6 +8143,9 @@ function EventViewerCustomView
 	{
 		"Enable"
 		{
+			# Remove the advanced audit policy file of the Local Group Policy: with it every policy refresh turns off all audit subcategories that are not listed there
+			Remove-Item -Path "$env:SystemRoot\System32\GroupPolicy\Machine\Microsoft\Windows NT\Audit\audit.csv" -Force -ErrorAction Ignore
+
 			# Enable events auditing generated when a process is created (starts)
 			& "$env:SystemRoot\System32\auditpol.exe" /set /subcategory:"{0CCE922B-69AE-11D9-BED3-505054503030}" /success:enable /failure:enable
 
@@ -8230,10 +8233,10 @@ function EventViewerCustomView
 	Microsoft Defender SmartScreen
 
 	.PARAMETER Enable
-	Enable apps and files checking within Microsoft Defender SmartScreen
+	Enable checking of apps and files with Microsoft Defender SmartScreen
 
 	.PARAMETER Disable
-	Disable apps and files checking within Microsoft Defender SmartScreen
+	Disable checking of apps and files with Microsoft Defender SmartScreen
 
 	.EXAMPLE
 	AppsSmartScreen -Enable

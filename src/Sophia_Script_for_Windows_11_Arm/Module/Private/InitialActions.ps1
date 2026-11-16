@@ -80,7 +80,7 @@ function InitialActions
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/releases/latest" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "In case you have a question, open an issue on GitHub or ask the community." -Verbose
+		Write-Verbose -Message "If you have a question, open an issue on GitHub or ask the community." -Verbose
 		Write-Verbose -Message "https://github.com/farag2/Sophia-Script-for-Windows/issues" -Verbose
 		Write-Verbose -Message "https://t.me/sophia_chat" -Verbose
 		Write-Verbose -Message "https://t.me/sophianews" -Verbose
