@@ -2,12 +2,64 @@
 # The EXE is compiled from Scripts\Building\Launcher\SophiaLauncher.cs and contains the src\Sophia_Script_for_Windows_11 folder as an embedded ZIP archive
 # It extracts the archive to the Downloads folder and opens the extracted folder
 
-Write-Verbose -Message "Building WinGet launcher (SFX like)" -Verbose
+# Sophia.yml calls the script twice, and SignPath signs the launcher between the calls
+# . "Scripts\Building\WinGet_Launcher.ps1"         builds the unsigned launcher
+# . "Scripts\Building\WinGet_Launcher.ps1" -Signed checks the launcher signed by SignPath and puts it back instead of the unsigned one
+[CmdletBinding()]
+param
+(
+	[Parameter(Mandatory = $false)]
+	[switch]
+	$Signed
+)
 
 # https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Sophia_Script_Releases.json
 $Latest_Release_Windows_11 = (Get-Content -Path "Sophia_Script_Releases.json" -Raw | ConvertFrom-Json).Sophia_Script_Windows_11
 
-$Launcher = "Sophia_Script\Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11)_WinGet.exe"
+$FileName = "Sophia.Script.for.Windows.11.v$($Latest_Release_Windows_11)_WinGet.exe"
+$Launcher = "Sophia_Script\$FileName"
+
+if ($Signed)
+{
+	Write-Verbose -Message "Signed WinGet launcher" -Verbose
+
+	# The folder where signpath/github-action-submit-signing-request saved the signed artifact
+	# ${{ runner.temp }}/SignPath
+	$SignedFile = Join-Path -Path $env:SIGNED_ARTIFACT_DIRECTORY -ChildPath $FileName
+
+	$Signature = Get-AuthenticodeSignature -FilePath $SignedFile
+	Write-Verbose -Message "Signature status: $($Signature.Status)" -Verbose
+	Write-Verbose -Message "Signer: $($Signature.SignerCertificate.Subject)" -Verbose
+	Write-Verbose -Message "Timestamp: $($Signature.TimeStamperCertificate.Subject)" -Verbose
+
+	# The release certificate is trusted, so the signature must be valid
+	if ($Signature.Status -ne "Valid")
+	{
+		Write-Warning -Message "The signature of $FileName isn't valid: $($Signature.StatusMessage)"
+
+		# Exit with a non-zero status to fail the job
+		exit 1
+	}
+
+	$VersionInfo = (Get-Item -Path $SignedFile).VersionInfo
+	Write-Verbose -Message "ProductName: $($VersionInfo.ProductName), ProductVersion: $($VersionInfo.ProductVersion)" -Verbose
+
+	# Replace the unsigned file. VirusTotal.ps1, ReleaseNotesTemplate.ps1 and the release use files from the Sophia_Script folder
+	$Parameters = @{
+		Path        = $SignedFile
+		Destination = $Launcher
+		Force       = $true
+	}
+	Copy-Item @Parameters
+
+	Write-Verbose -Message "SHA256: $((Get-FileHash -Path $Launcher -Algorithm SHA256).Hash)" -Verbose
+
+	# The launcher is already built
+	return
+}
+
+Write-Verbose -Message "Building WinGet launcher (SFX like)" -Verbose
+
 $Archive  = "$env:TEMP\SophiaLauncher.zip"
 # Sophia_Script_for_Windows_11_v8.x.x
 $Folder   = "$env:TEMP\Sophia_Script_for_Windows_11_v$($Latest_Release_Windows_11)"

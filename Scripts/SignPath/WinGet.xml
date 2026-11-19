@@ -3,7 +3,7 @@
 	SignPath artifact configuration for the WinGet launcher of Sophia Script for Windows 11
 	Paste it into SignPath: Project -> Artifact configurations -> Add -> Custom XML
 	https://docs.signpath.io/artifact-configuration/syntax
-	https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/SignPath_Test.yml
+	https://github.com/farag2/Sophia-Script-for-Windows/blob/main/.github/workflows/Sophia.yml
 
 	actions/upload-artifact wraps the uploaded file into a ZIP archive, so the root element is <zip-file>
 	The launcher is the only file in that ZIP archive. Only the EXE is signed, the ZIP itself is not
