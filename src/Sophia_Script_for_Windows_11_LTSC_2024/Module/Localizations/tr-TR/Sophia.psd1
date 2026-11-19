@@ -74,6 +74,7 @@ EventViewerCustomViewNotification         = "Özel Görünümler\\{0}" özel gö
 ThirdPartyAVInstalled                     = Üçüncü taraf bir antivirüs yüklüdür.
 EnableHardwareVT                          = UEFI'de sanallaştırmayı etkinleştirin.
 ActiveNetworkAdapterNotFound              = Şu anda kullanılan ağ bağdaştırıcısı belirlenemedi: etkin ağ bağlantısı bulunamadı. Bir ağa bağlanın.
+DNSServerNotResponding                    = "{0}" DNS-over-HTTPS sunucusu yanıt vermiyor. Varsayılan DNS sunucuları geri yüklendi.
 ThirdPartyArchiverInstalled               = Üçüncü taraf bir arşivleyici yüklenmiştir.
 RestartWarning                            = Bilgisayarınızı yeniden başlatmayı unutmayın.
 RestorePointVolume                        = Sistem sürücüsündeki geri yükleme noktaları {0} GB yer kaplıyor.

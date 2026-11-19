@@ -75,6 +75,7 @@ EventViewerCustomViewNotification         = 已在事件查看器中创建"自�
 ThirdPartyAVInstalled                     = 已安装第三方杀毒软件。
 EnableHardwareVT                          = 请在 UEFI 中启用虚拟化。
 ActiveNetworkAdapterNotFound              = 无法确定当前使用的网络适配器：未找到活动的网络连接。请连接到网络。
+DNSServerNotResponding                    = "{0}" DNS-over-HTTPS 服务器没有响应。已恢复默认 DNS 服务器。
 ThirdPartyArchiverInstalled               = 已安装第三方归档工具。
 RestartWarning                            = 请务必重新启动您的电脑。
 RestorePointVolume                        = 系统盘的还原点占用了 {0} GB。

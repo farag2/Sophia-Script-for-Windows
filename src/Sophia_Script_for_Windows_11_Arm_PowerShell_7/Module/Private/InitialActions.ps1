@@ -230,7 +230,7 @@ function InitialActions
 			exit
 		}
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
 		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
@@ -620,7 +620,7 @@ function InitialActions
 		$LatestSupportedMinorBuild = $Response.Windows_11_Minor
 		$LatestSupportedMajorBuild = $Response.Windows_11_Major
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information
 		$LatestSupportedMinorBuild = 9974

@@ -85,6 +85,7 @@ ThirdPartyAVInstalled                     = A third-party antivirus is installed
 NoHomeWindowsEditionSupport               = Windows Home edition doesn't support the "{0}" function.
 EnableHardwareVT                          = Enable virtualization in UEFI.
 ActiveNetworkAdapterNotFound              = Couldn't determine the network adapter currently in use: no active network connection was found. Connect to a network.
+DNSServerNotResponding                    = The "{0}" DNS-over-HTTPS server isn't responding. The default DNS servers were restored.
 ThirdPartyArchiverInstalled               = A third-party archiver is installed.
 gpeditNotSupported                        = Windows Home edition doesn't support the Local Group Policy Editor snap-in (gpedit.msc).
 RestartWarning                            = Make sure to restart your PC.

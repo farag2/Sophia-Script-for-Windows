@@ -75,6 +75,7 @@ EventViewerCustomViewNotification         = Die benutzerdefinierte Ansicht "Benu
 ThirdPartyAVInstalled                     = Ein Antivirenprogramm eines Drittanbieters ist installiert.
 EnableHardwareVT                          = Aktivieren Sie die Virtualisierung im UEFI.
 ActiveNetworkAdapterNotFound              = Der derzeit verwendete Netzwerkadapter konnte nicht ermittelt werden: Es wurde keine aktive Netzwerkverbindung gefunden. Stellen Sie eine Verbindung mit einem Netzwerk her.
+DNSServerNotResponding                    = Der DNS-over-HTTPS-Server "{0}" antwortet nicht. Die Standard-DNS-Server wurden wiederhergestellt.
 ThirdPartyArchiverInstalled               = Ein Archivierungsprogramm eines Drittanbieters ist installiert.
 RestartWarning                            = Stellen Sie sicher, dass Sie Ihren PC neu starten.
 RestorePointVolume                        = Die Wiederherstellungspunkte für das Systemlaufwerk belegen {0} GB.

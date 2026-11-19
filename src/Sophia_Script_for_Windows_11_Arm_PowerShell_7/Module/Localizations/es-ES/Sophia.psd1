@@ -86,6 +86,7 @@ ThirdPartyAVInstalled                     = Se ha instalado un antivirus de terc
 NoHomeWindowsEditionSupport               = La edición Windows Home no es compatible con la función "{0}".
 EnableHardwareVT                          = Activa la virtualización en la UEFI.
 ActiveNetworkAdapterNotFound              = No se pudo determinar el adaptador de red en uso: no se encontró ninguna conexión de red activa. Conéctate a una red.
+DNSServerNotResponding                    = El servidor DNS-over-HTTPS "{0}" no responde. Se restauraron los servidores DNS predeterminados.
 ThirdPartyArchiverInstalled               = Se ha instalado un archivador de terceros.
 gpeditNotSupported                        = La edición Windows Home no es compatible con el complemento Editor de directivas de grupo local (gpedit.msc).
 RestartWarning                            = Asegúrate de reiniciar tu PC.

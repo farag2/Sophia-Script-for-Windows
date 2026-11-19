@@ -74,6 +74,7 @@ EventViewerCustomViewNotification         = Az "Egyéni nézetek\\{0}" egyéni n
 ThirdPartyAVInstalled                     = Harmadik féltől származó vírusirtó van telepítve.
 EnableHardwareVT                          = Engedélyezze a virtualizációt az UEFI-ben.
 ActiveNetworkAdapterNotFound              = Nem sikerült meghatározni a jelenleg használt hálózati adaptert: nem található aktív hálózati kapcsolat. Csatlakozzon egy hálózathoz.
+DNSServerNotResponding                    = A(z) "{0}" DNS-over-HTTPS-kiszolgáló nem válaszol. Az alapértelmezett DNS-kiszolgálók vissza lettek állítva.
 ThirdPartyArchiverInstalled               = Harmadik féltől származó tömörítőprogram van telepítve.
 RestartWarning                            = Feltétlenül indítsa újra a számítógépet.
 RestorePointVolume                        = A rendszermeghajtó visszaállítási pontjai {0} GB helyet foglalnak.

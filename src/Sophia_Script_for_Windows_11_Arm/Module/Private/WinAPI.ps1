@@ -155,6 +155,70 @@ namespace WinAPI
 		}
 	}
 
+	// Check whether DNS servers of the given network adapter respond for DNSoverHTTPS function
+	// Resolve-DnsName sends a query via all network adapters, so DNS servers of another adapter may answer instead of the configured ones
+	// DnsQueryEx sends a query via the given network adapter only
+	public class DnsClient
+	{
+		[StructLayout(LayoutKind.Sequential)]
+		private struct DNS_QUERY_REQUEST
+		{
+			public uint Version;
+			[MarshalAs(UnmanagedType.LPWStr)]
+			public string QueryName;
+			public ushort QueryType;
+			public ulong QueryOptions;
+			public IntPtr pDnsServerList;
+			public uint InterfaceIndex;
+			public IntPtr pQueryCompletionCallback;
+			public IntPtr pQueryContext;
+		}
+
+		[StructLayout(LayoutKind.Sequential)]
+		private struct DNS_QUERY_RESULT
+		{
+			public uint Version;
+			public int QueryStatus;
+			public ulong QueryOptions;
+			public IntPtr pQueryRecords;
+			public IntPtr Reserved;
+		}
+
+		// ExactSpelling prevents the legacy DnsQueryExW from being called instead: it always returns ERROR_CALL_NOT_IMPLEMENTED
+		[DllImport("dnsapi.dll", CharSet = CharSet.Unicode, ExactSpelling = true)]
+		private static extern int DnsQueryEx(ref DNS_QUERY_REQUEST pQueryRequest, ref DNS_QUERY_RESULT pQueryResults, IntPtr pCancelHandle);
+
+		[DllImport("dnsapi.dll")]
+		private static extern void DnsRecordListFree(IntPtr pRecordList, int FreeType);
+
+		public static bool Resolve(string name, uint interfaceIndex)
+		{
+			DNS_QUERY_REQUEST request = new DNS_QUERY_REQUEST();
+			// DNS_QUERY_REQUEST_VERSION1
+			request.Version = 1;
+			request.QueryName = name;
+			// DNS_TYPE_A
+			request.QueryType = 1;
+			// DNS_QUERY_BYPASS_CACHE | DNS_QUERY_NO_HOSTS_FILE | DNS_QUERY_NO_NETBT | DNS_QUERY_NO_MULTICAST
+			request.QueryOptions = 0x8 | 0x40 | 0x80 | 0x800;
+			request.InterfaceIndex = interfaceIndex;
+
+			DNS_QUERY_RESULT result = new DNS_QUERY_RESULT();
+			// DNS_QUERY_RESULTS_VERSION1
+			result.Version = 1;
+
+			int status = DnsQueryEx(ref request, ref result, IntPtr.Zero);
+
+			if (result.pQueryRecords != IntPtr.Zero)
+			{
+				// DnsFreeRecordList
+				DnsRecordListFree(result.pQueryRecords, 1);
+			}
+
+			return status == 0;
+		}
+	}
+
 	// Read and write Registry.pol of the local Group Policy object. It replaces LGPO.exe
 	// Registry.pol: the "PReg" signature, version 1, then [key;value;type;size;data] records
 	// Brackets and semicolons are UTF-16LE characters. Key and value name are UTF-16LE strings with a null terminator

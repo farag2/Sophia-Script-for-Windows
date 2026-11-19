@@ -75,6 +75,7 @@ EventViewerCustomViewNotification         = Widok niestandardowy "Widoki niestan
 ThirdPartyAVInstalled                     = Zainstalowano program antywirusowy innej firmy.
 EnableHardwareVT                          = Włącz wirtualizację w UEFI.
 ActiveNetworkAdapterNotFound              = Nie można określić aktualnie używanej karty sieciowej: nie znaleziono aktywnego połączenia sieciowego. Połącz się z siecią.
+DNSServerNotResponding                    = Serwer DNS-over-HTTPS "{0}" nie odpowiada. Przywrócono domyślne serwery DNS.
 ThirdPartyArchiverInstalled               = Zainstalowano archiwizator innej firmy.
 RestartWarning                            = Pamiętaj o ponownym uruchomieniu komputera.
 RestorePointVolume                        = Punkty przywracania dla dysku systemowego zajmują {0} GB.

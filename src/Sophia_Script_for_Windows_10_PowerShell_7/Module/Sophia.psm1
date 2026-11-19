@@ -3432,7 +3432,7 @@ function Install-Cursors
 			}
 			Invoke-WebRequest @Parameters
 		}
-		catch [System.Net.Http.HttpRequestException]
+		catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -4368,7 +4368,7 @@ function OneDrive
 					Get-Process -Name OneDriveSetup -ErrorAction Ignore | Stop-Process -Force
 					Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
 				}
-				catch [System.Net.Http.HttpRequestException]
+				catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -6978,7 +6978,7 @@ function Set-Association
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
 				param ($Path, $ProgHash)
 
-				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force | Out-Null
+				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force
 			} -args $Path, $ProgHash
 		}
 
@@ -7273,7 +7273,7 @@ function Install-VCRedist
 		}
 		$LatestVCRedistVersion = (Invoke-RestMethod @Parameters).version
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7304,7 +7304,7 @@ function Install-VCRedist
 				}
 				Invoke-WebRequest @Parameters
 			}
-			catch [System.Net.Http.HttpRequestException]
+			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7397,7 +7397,7 @@ function Install-DotNetRuntimes
 			}
 			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
 		}
-		catch [System.Net.Http.HttpRequestException]
+		catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
@@ -7421,7 +7421,7 @@ function Install-DotNetRuntimes
 				}
 				Invoke-WebRequest @Parameters
 			}
-			catch [System.Net.Http.HttpRequestException]
+			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
@@ -7662,7 +7662,7 @@ function Install-WSL
 		}
 		$Distributions = Invoke-RestMethod @Parameters
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7768,7 +7768,7 @@ function Install-WSL
 	Start-Process -FilePath "$env:SystemRoot\System32\wsl.exe" -ArgumentList @("--install", "--distribution", $SelectedDistribution.Name) -Wait
 
 	# Receive updates for other Microsoft products when you update Windows
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force | Out-Null
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
 
 	# Check for updates
 	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
@@ -8192,7 +8192,7 @@ function Install-HEVC
 		}
 		$HEVC_version = Invoke-WebRequest @Parameters
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -8216,7 +8216,7 @@ function Install-HEVC
 			}
 			Invoke-WebRequest @Parameters
 		}
-		catch [System.Net.Http.HttpRequestException]
+		catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose

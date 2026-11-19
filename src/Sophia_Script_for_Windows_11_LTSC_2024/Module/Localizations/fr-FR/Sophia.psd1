@@ -74,6 +74,7 @@ EventViewerCustomViewNotification         = L'affichage personnalisé "Affichage
 ThirdPartyAVInstalled                     = Un antivirus tiers est installé.
 EnableHardwareVT                          = Activez la virtualisation dans l'UEFI.
 ActiveNetworkAdapterNotFound              = Impossible de déterminer la carte réseau actuellement utilisée : aucune connexion réseau active n'a été trouvée. Connectez-vous à un réseau.
+DNSServerNotResponding                    = Le serveur DNS-over-HTTPS "{0}" ne répond pas. Les serveurs DNS par défaut ont été rétablis.
 ThirdPartyArchiverInstalled               = Un programme d'archivage tiers est installé.
 RestartWarning                            = Assurez-vous de redémarrer votre PC.
 RestorePointVolume                        = Les points de restauration du lecteur système occupent {0} Go.

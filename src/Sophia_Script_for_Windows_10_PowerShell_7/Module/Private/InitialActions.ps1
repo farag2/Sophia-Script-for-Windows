@@ -218,7 +218,7 @@ function InitialActions
 			exit
 		}
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
 		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
@@ -522,7 +522,7 @@ function InitialActions
 		}
 		$LatestSupportedMinorBuild = (Invoke-RestMethod @Parameters).Windows_10_Minor
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		# https://learn.microsoft.com/en-us/windows/release-health/release-information
 		$LatestSupportedMinorBuild = 7846

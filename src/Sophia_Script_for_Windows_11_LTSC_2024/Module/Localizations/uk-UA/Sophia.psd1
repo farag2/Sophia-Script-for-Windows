@@ -74,6 +74,7 @@ EventViewerCustomViewNotification         = Настроюване поданн�
 ThirdPartyAVInstalled                     = Встановлено сторонній антивірус.
 EnableHardwareVT                          = Увімкніть віртуалізацію в UEFI.
 ActiveNetworkAdapterNotFound              = Не вдалося визначити мережевий адаптер, що використовується: активне мережеве підключення не знайдено. Підключіться до мережі.
+DNSServerNotResponding                    = Сервер DNS-over-HTTPS "{0}" не відповідає. Відновлено DNS-сервери за замовчуванням.
 ThirdPartyArchiverInstalled               = Встановлено сторонній архіватор.
 RestartWarning                            = Обов'язково перезавантажте ваш ПК.
 RestorePointVolume                        = Точки відновлення на системному диску займають {0} ГБ.

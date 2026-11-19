@@ -6181,7 +6181,7 @@ function Set-Association
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
 				param ($Path, $ProgHash)
 
-				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force | Out-Null
+				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force
 			} -args $Path, $ProgHash
 		}
 
@@ -6971,7 +6971,7 @@ function Install-WSL
 	Start-Process -FilePath "$env:SystemRoot\System32\wsl.exe" -ArgumentList @("--install", "--distribution", $SelectedDistribution.Name) -Wait
 
 	# Receive updates for other Microsoft products when you update Windows
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force | Out-Null
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
 
 	# Check for updates
 	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan

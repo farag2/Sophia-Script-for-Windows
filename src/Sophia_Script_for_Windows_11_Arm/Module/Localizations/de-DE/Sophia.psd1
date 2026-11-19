@@ -85,6 +85,7 @@ ThirdPartyAVInstalled                     = Ein Antivirenprogramm eines Drittanb
 NoHomeWindowsEditionSupport               = Die Windows Home Edition unterstützt die Funktion "{0}" nicht.
 EnableHardwareVT                          = Aktivieren Sie die Virtualisierung im UEFI.
 ActiveNetworkAdapterNotFound              = Der derzeit verwendete Netzwerkadapter konnte nicht ermittelt werden: Es wurde keine aktive Netzwerkverbindung gefunden. Stellen Sie eine Verbindung mit einem Netzwerk her.
+DNSServerNotResponding                    = Der DNS-over-HTTPS-Server "{0}" antwortet nicht. Die Standard-DNS-Server wurden wiederhergestellt.
 ThirdPartyArchiverInstalled               = Ein Archivierungsprogramm eines Drittanbieters ist installiert.
 gpeditNotSupported                        = Die Windows Home Edition unterstützt das Snap-In "Lokaler Gruppenrichtlinien-Editor" (gpedit.msc) nicht.
 RestartWarning                            = Stellen Sie sicher, dass Sie Ihren PC neu starten.

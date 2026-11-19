@@ -85,6 +85,7 @@ ThirdPartyAVInstalled                     = Üçüncü taraf bir antivirüs yük
 NoHomeWindowsEditionSupport               = Windows Home sürümü "{0}" işlevini desteklemiyor.
 EnableHardwareVT                          = UEFI'de sanallaştırmayı etkinleştirin.
 ActiveNetworkAdapterNotFound              = Şu anda kullanılan ağ bağdaştırıcısı belirlenemedi: etkin ağ bağlantısı bulunamadı. Bir ağa bağlanın.
+DNSServerNotResponding                    = "{0}" DNS-over-HTTPS sunucusu yanıt vermiyor. Varsayılan DNS sunucuları geri yüklendi.
 ThirdPartyArchiverInstalled               = Üçüncü taraf bir arşivleyici yüklenmiştir.
 gpeditNotSupported                        = Windows Home sürümü, Yerel Grup İlkesi Düzenleyicisi ek bileşenini (gpedit.msc) desteklemez.
 RestartWarning                            = Bilgisayarınızı yeniden başlatmayı unutmayın.

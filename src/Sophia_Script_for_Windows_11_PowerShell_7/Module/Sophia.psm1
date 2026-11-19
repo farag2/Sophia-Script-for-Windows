@@ -3168,7 +3168,7 @@ function Install-Cursors
 			}
 			Invoke-WebRequest @Parameters
 		}
-		catch [System.Net.Http.HttpRequestException]
+		catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -4098,7 +4098,7 @@ function OneDrive
 					Get-Process -Name OneDriveSetup -ErrorAction Ignore | Stop-Process -Force
 					Remove-Item -Path "$DownloadsFolder\OneDriveSetup.exe" -Force
 				}
-				catch [System.Net.Http.HttpRequestException]
+				catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 				{
 					Write-Information -MessageData "" -InformationAction Continue
 					Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -6704,7 +6704,7 @@ function Set-Association
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
 				param ($Path, $ProgHash)
 
-				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force | Out-Null
+				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force
 			} -args $Path, $ProgHash
 		}
 
@@ -7083,7 +7083,7 @@ function Install-VCRedist
 		}
 		$LatestVCRedistVersion = (Invoke-RestMethod @Parameters).version
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7114,7 +7114,7 @@ function Install-VCRedist
 				}
 				Invoke-WebRequest @Parameters
 			}
-			catch [System.Net.Http.HttpRequestException]
+			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7207,7 +7207,7 @@ function Install-DotNetRuntimes
 			}
 			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
 		}
-		catch [System.Net.Http.HttpRequestException]
+		catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
@@ -7231,7 +7231,7 @@ function Install-DotNetRuntimes
 				}
 				Invoke-WebRequest @Parameters
 			}
-			catch [System.Net.Http.HttpRequestException]
+			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 			{
 				Write-Information -MessageData "" -InformationAction Continue
 				Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
@@ -7554,7 +7554,7 @@ function Install-WSL
 		}
 		$Distributions = Invoke-RestMethod @Parameters
 	}
-	catch [System.Net.Http.HttpRequestException]
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -7660,7 +7660,7 @@ function Install-WSL
 	Start-Process -FilePath "$env:SystemRoot\System32\wsl.exe" -ArgumentList @("--install", "--distribution", $SelectedDistribution.Name) -Wait
 
 	# Receive updates for other Microsoft products when you update Windows
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force | Out-Null
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
 
 	# Check for updates
 	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
@@ -9507,9 +9507,6 @@ function WindowsSandbox
 	.PARAMETER Quad9
 	Enable DNS-over-HTTPS using Quad9 DNS
 
-	.PARAMETER ComssOne
-	Enable DNS-over-HTTPS using Comss.one DNS
-
 	.PARAMETER AdGuard
 	Enable DNS-over-HTTPS using AdGuard DNS
 
@@ -9527,9 +9524,6 @@ function WindowsSandbox
 
 	.EXAMPLE
 	DNSoverHTTPS -Quad9
-
-	.EXAMPLE
-	DNSoverHTTPS -ComssOne
 
 	.EXAMPLE
 	DNSoverHTTPS -AdGuard
@@ -9571,13 +9565,6 @@ function DNSoverHTTPS
 		)]
 		[switch]
 		$Quad9,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "ComssOne"
-		)]
-		[switch]
-		$ComssOne,
 
 		[Parameter(
 			Mandatory = $true,
@@ -9667,13 +9654,6 @@ function DNSoverHTTPS
 			$SecondaryDNS = "149.112.112.112"
 			$Query        = "https://dns.quad9.net/dns-query"
 		}
-		# https://www.comss.ru/page.php?id=7315
-		"ComssOne"
-		{
-			$PrimaryDNS   = "83.220.169.155"
-			$SecondaryDNS = "212.109.195.93"
-			$Query        = "https://dns.comss.one/dns-query"
-		}
 		# https://adguard-dns.io/public-dns.html
 		"AdGuard"
 		{
@@ -9692,6 +9672,10 @@ function DNSoverHTTPS
 
 	# Reset DNS servers first
 	& $ResetDNS
+
+	# Check whether default DNS servers respond via the current network adapter
+	# If they don't, there is no Internet connection: the new DNS servers cannot be checked, and there is nothing to roll back to, so they are set without any check
+	$DefaultDNSResponds = [WinAPI.DnsClient]::Resolve("dns.msftncsi.com", $Adapter.InterfaceIndex)
 
 	# Set primary and secondary DNS servers
 	$Adapter | Set-DnsClientServerAddress -ServerAddresses $PrimaryDNS, $SecondaryDNS
@@ -9712,6 +9696,36 @@ function DNSoverHTTPS
 
 	Clear-DnsClientCache
 	Register-DnsClient
+
+	# Default DNS servers responded, so the new ones must respond too
+	if ($DefaultDNSResponds)
+	{
+		$NewDNSResponds = $false
+
+		# The second attempt prevents a rollback because of a single lost query
+		foreach ($Attempt in 1..2)
+		{
+			if ([WinAPI.DnsClient]::Resolve("dns.msftncsi.com", $Adapter.InterfaceIndex))
+			{
+				$NewDNSResponds = $true
+
+				break
+			}
+		}
+
+		if (-not $NewDNSResponds)
+		{
+			# The DNS-over-HTTPS server isn't available, e.g. it was withdrawn from the user's country, so roll back to default DNS servers
+			& $ResetDNS
+
+			Clear-DnsClientCache
+			Register-DnsClient
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.DNSServerNotResponding -f $PSCmdlet.ParameterSetName) -Verbose
+			Write-Error -Message ($Localization.DNSServerNotResponding -f $PSCmdlet.ParameterSetName) -ErrorAction SilentlyContinue
+		}
+	}
 }
 
 <#

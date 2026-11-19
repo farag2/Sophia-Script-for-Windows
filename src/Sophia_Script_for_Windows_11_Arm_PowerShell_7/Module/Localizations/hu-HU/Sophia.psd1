@@ -86,6 +86,7 @@ ThirdPartyAVInstalled                     = Harmadik féltől származó vírusi
 NoHomeWindowsEditionSupport               = A Windows Home Edition nem támogatja a "{0}" funkciót.
 EnableHardwareVT                          = Engedélyezze a virtualizációt az UEFI-ben.
 ActiveNetworkAdapterNotFound              = Nem sikerült meghatározni a jelenleg használt hálózati adaptert: nem található aktív hálózati kapcsolat. Csatlakozzon egy hálózathoz.
+DNSServerNotResponding                    = A(z) "{0}" DNS-over-HTTPS-kiszolgáló nem válaszol. Az alapértelmezett DNS-kiszolgálók vissza lettek állítva.
 ThirdPartyArchiverInstalled               = Harmadik féltől származó tömörítőprogram van telepítve.
 gpeditNotSupported                        = A Windows Home Edition nem támogatja a Helyi csoportházirend-szerkesztő beépülő modult (gpedit.msc).
 RestartWarning                            = Feltétlenül indítsa újra a számítógépet.

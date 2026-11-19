@@ -86,6 +86,7 @@ ThirdPartyAVInstalled                     = Un antivirus tiers est installé.
 NoHomeWindowsEditionSupport               = L'édition Windows Famille ne prend pas en charge la fonction "{0}".
 EnableHardwareVT                          = Activez la virtualisation dans l'UEFI.
 ActiveNetworkAdapterNotFound              = Impossible de déterminer la carte réseau actuellement utilisée : aucune connexion réseau active n'a été trouvée. Connectez-vous à un réseau.
+DNSServerNotResponding                    = Le serveur DNS-over-HTTPS "{0}" ne répond pas. Les serveurs DNS par défaut ont été rétablis.
 ThirdPartyArchiverInstalled               = Un programme d'archivage tiers est installé.
 gpeditNotSupported                        = L'édition Windows Famille ne prend pas en charge le composant logiciel enfichable Éditeur de stratégie de groupe locale (gpedit.msc).
 RestartWarning                            = Assurez-vous de redémarrer votre PC.

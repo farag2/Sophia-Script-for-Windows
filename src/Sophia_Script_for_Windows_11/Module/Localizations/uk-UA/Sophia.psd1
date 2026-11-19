@@ -85,6 +85,7 @@ ThirdPartyAVInstalled                     = Встановлено сторон�
 NoHomeWindowsEditionSupport               = Редакція Windows Домашня не підтримує функцію "{0}".
 EnableHardwareVT                          = Увімкніть віртуалізацію в UEFI.
 ActiveNetworkAdapterNotFound              = Не вдалося визначити мережевий адаптер, що використовується: активне мережеве підключення не знайдено. Підключіться до мережі.
+DNSServerNotResponding                    = Сервер DNS-over-HTTPS "{0}" не відповідає. Відновлено DNS-сервери за замовчуванням.
 ThirdPartyArchiverInstalled               = Встановлено сторонній архіватор.
 gpeditNotSupported                        = Редакція Windows Домашня не підтримує оснащення Редактора локальної групової політики (gpedit.msc).
 RestartWarning                            = Обов'язково перезавантажте ваш ПК.

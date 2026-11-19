@@ -74,6 +74,7 @@ EventViewerCustomViewNotification         = The "Custom Views\\{0}" custom view 
 ThirdPartyAVInstalled                     = A third-party antivirus is installed.
 EnableHardwareVT                          = Enable virtualization in UEFI.
 ActiveNetworkAdapterNotFound              = Couldn't determine the network adapter currently in use: no active network connection was found. Connect to a network.
+DNSServerNotResponding                    = The "{0}" DNS-over-HTTPS server isn't responding. The default DNS servers were restored.
 ThirdPartyArchiverInstalled               = A third-party archiver is installed.
 RestartWarning                            = Make sure to restart your PC.
 RestorePointVolume                        = Restore points for the system drive take up {0} GB.

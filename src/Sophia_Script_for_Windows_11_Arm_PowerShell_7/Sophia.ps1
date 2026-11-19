@@ -1072,10 +1072,6 @@ DNSoverHTTPS -Cloudflare
 # Включить DNS-over-HTTPS, используя DNS от Quad9
 # DNSoverHTTPS -Quad9
 
-# Enable DNS-over-HTTPS using Comss.one DNS
-# Включить DNS-over-HTTPS, используя DNS от Comss.one
-# DNSoverHTTPS -ComssOne
-
 # Enable DNS-over-HTTPS using AdGuard DNS
 # Включить DNS-over-HTTPS, используя DNS от AdGuard
 # DNSoverHTTPS -AdGuard

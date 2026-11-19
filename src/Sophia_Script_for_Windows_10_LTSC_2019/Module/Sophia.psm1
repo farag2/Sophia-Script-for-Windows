@@ -5180,7 +5180,7 @@ function Set-Association
 			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
 				param ($Path, $ProgHash)
 
-				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force | Out-Null
+				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force
 			} -args $Path, $ProgHash
 		}
 
