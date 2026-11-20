@@ -355,6 +355,107 @@ function ErrorReporting
 
 <#
 	.SYNOPSIS
+	Recommended troubleshooter preferences
+
+	.PARAMETER Automatically
+	Run troubleshooters automatically, then notify me
+
+	.PARAMETER Default
+	Ask me before running troubleshooters
+
+	.EXAMPLE
+	RecommendedTroubleshooting -Automatically
+
+	.EXAMPLE
+	RecommendedTroubleshooting -Default
+
+	.NOTES
+	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
+
+	.NOTES
+	Machine-wide
+#>
+function RecommendedTroubleshooting
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Automatically"
+		)]
+		[switch]
+		$Automatically,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default
+	)
+
+	if (-not (Get-Service -Name WerSvc -ErrorAction Ignore))
+	{
+		$WerSvc = [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\wersvc.dll,-100")
+
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message (($Localization.WindowsComponentStabilityDisrupted -f $WerSvc), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.WindowsComponentStabilityDisrupted -f $WerSvc), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
+	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry
+
+	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection))
+	{
+		New-Item -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Force
+	}
+	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
+	{
+		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
+	}
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
+
+	# Turn on Windows Error Reporting
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
+	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Force -ErrorAction Ignore
+	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled
+	Remove-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled
+	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport
+
+	Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Enable-ScheduledTask
+	Get-Service -Name WerSvc | Set-Service -StartupType Manual -PassThru
+	Get-Service -Name WerSvc | Start-Service -PassThru
+	Enable-WindowsErrorReporting
+
+
+	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
+	{
+		New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Automatically"
+		{
+			# Run troubleshooters automatically, then notify me
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
+		}
+		"Default"
+		{
+			# Ask me before running troubleshooters
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 2 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	The feedback frequency
 
 	.PARAMETER Never
@@ -1440,7 +1541,7 @@ function MergeConflicts
 	Open File Explorer to "This PC"
 
 	.PARAMETER QuickAccess
-	Open File Explorer to Quick access
+	Open File Explorer to "Home"
 
 	.EXAMPLE
 	OpenFileExplorerTo -ThisPC
@@ -1587,60 +1688,6 @@ function OneDriveFileExplorerAd
 
 <#
 	.SYNOPSIS
-	Windows snapping
-
-	.PARAMETER Disable
-	When I snap a window, do not show what I can snap next to it
-
-	.PARAMETER Enable
-	When I snap a window, show what I can snap next to it
-
-	.EXAMPLE
-	SnapAssist -Disable
-
-	.EXAMPLE
-	SnapAssist -Enable
-
-	.NOTES
-	Current user
-#>
-function SnapAssist
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable
-	)
-
-	# Property type is string
-	New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WindowArrangementActive -PropertyType String -Value 1 -Force
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Disable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
-		}
-		"Enable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 1 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	The file transfer dialog box mode
 
 	.PARAMETER Detailed
@@ -1757,13 +1804,13 @@ function RecycleBinDeleteConfirmation
 
 <#
 	.SYNOPSIS
-	Recently used files in Quick access
+	Recently used files in File Explorer Home
 
 	.PARAMETER Hide
-	Hide recently used files in Quick access
+	Hide recently used files in File Explorer Home
 
 	.PARAMETER Show
-	Show recently used files in Quick access
+	Show recently used files in File Explorer Home
 
 	.EXAMPLE
 	QuickAccessRecentFiles -Hide
@@ -1858,6 +1905,122 @@ function QuickAccessFrequentFolders
 		"Show"
 		{
 			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer -Name ShowFrequent -PropertyType DWord -Value 1 -Force
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Files and folders grouping in the Downloads folder
+
+	.PARAMETER None
+	Do not group files and folders in the Downloads folder
+
+	.PARAMETER Default
+	Group files and folders by date modified in the Downloads folder
+
+	.EXAMPLE
+	FolderGroupBy -None
+
+	.EXAMPLE
+	FolderGroupBy -Default
+
+	.NOTES
+	Current user
+#>
+function FolderGroupBy
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "None"
+		)]
+		[switch]
+		$None,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"None"
+		{
+			# Clear any Common Dialog views
+			Remove-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\*\Shell\{885A186E-A440-4ADA-812B-DB871B942259}" -Recurse -Force -ErrorAction Ignore
+
+			# https://learn.microsoft.com/en-us/windows/win32/properties/props-system-null
+			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}"))
+			{
+				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Force
+			}
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name ColumnList -PropertyType String -Value "System.Null" -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name GroupBy -PropertyType String -Value "System.Null" -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name LogicalViewMode -PropertyType DWord -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Name -PropertyType String -Value NoName -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Order -PropertyType DWord -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name PrimaryProperty -PropertyType String -Value "System.ItemNameDisplay" -Force
+			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name SortByList -PropertyType String -Value "prop:System.ItemNameDisplay" -Force
+		}
+		"Default"
+		{
+			Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}" -Recurse -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Expand to current folder in navigation pane
+
+	.PARAMETER Disable
+	Do not expand to open folder on navigation pane
+
+	.PARAMETER Enable
+	Expand to open folder on navigation pane
+
+	.EXAMPLE
+	NavigationPaneExpand -Disable
+
+	.EXAMPLE
+	NavigationPaneExpand -Enable
+
+	.NOTES
+	Current user
+#>
+function NavigationPaneExpand
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -PropertyType DWord -Value 0 -Force
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -2877,102 +3040,54 @@ function ShortcutsSuffix
 
 <#
 	.SYNOPSIS
-	The Print screen key usage
-
-	.PARAMETER Enable
-	Use the Print screen key to open screen snipping
+	Windows snapping
 
 	.PARAMETER Disable
-	Do not use the Print screen key to open screen snipping
+	When I snap a window, do not show what I can snap next to it
+
+	.PARAMETER Enable
+	When I snap a window, show what I can snap next to it
 
 	.EXAMPLE
-	PrtScnSnippingTool -Enable
+	SnapAssist -Disable
 
 	.EXAMPLE
-	PrtScnSnippingTool -Disable
+	SnapAssist -Enable
 
 	.NOTES
 	Current user
 #>
-function PrtScnSnippingTool
+function SnapAssist
 {
 	param
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
 			ParameterSetName = "Disable"
 		)]
 		[switch]
-		$Disable
-	)
+		$Disable,
 
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 1 -Force
-		}
-		"Disable"
-		{
-			New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 0 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	A different input method for each app window
-
-	.PARAMETER Enable
-	Let me use a different input method for each app window
-
-	.PARAMETER Disable
-	Do not use a different input method for each app window
-
-	.EXAMPLE
-	AppsLanguageSwitch -Enable
-
-	.EXAMPLE
-	AppsLanguageSwitch -Disable
-
-	.NOTES
-	Current user
-#>
-function AppsLanguageSwitch
-{
-	param
-	(
 		[Parameter(
 			Mandatory = $true,
 			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
+		$Enable
 	)
+
+	# Property type is string
+	New-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WindowArrangementActive -PropertyType String -Value 1 -Force
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Enable"
-		{
-			Set-WinLanguageBarOption -UseLegacySwitchMode
-		}
 		"Disable"
 		{
-			Set-WinLanguageBarOption
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 0 -Force
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name SnapAssist -PropertyType DWord -Value 1 -Force
 		}
 	}
 }
@@ -3214,122 +3329,6 @@ function Install-Cursors
 
 <#
 	.SYNOPSIS
-	Files and folders grouping in the Downloads folder
-
-	.PARAMETER None
-	Do not group files and folders in the Downloads folder
-
-	.PARAMETER Default
-	Group files and folders by date modified in the Downloads folder
-
-	.EXAMPLE
-	FolderGroupBy -None
-
-	.EXAMPLE
-	FolderGroupBy -Default
-
-	.NOTES
-	Current user
-#>
-function FolderGroupBy
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "None"
-		)]
-		[switch]
-		$None,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"None"
-		{
-			# Clear any Common Dialog views
-			Remove-Item -Path "HKCU:\Software\Classes\Local Settings\Software\Microsoft\Windows\Shell\Bags\*\Shell\{885A186E-A440-4ADA-812B-DB871B942259}" -Recurse -Force -ErrorAction Ignore
-
-			# https://learn.microsoft.com/en-us/windows/win32/properties/props-system-null
-			if (-not (Test-Path -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}"))
-			{
-				New-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Force
-			}
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name ColumnList -PropertyType String -Value "System.Null" -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name GroupBy -PropertyType String -Value "System.Null" -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name LogicalViewMode -PropertyType DWord -Value 1 -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Name -PropertyType String -Value NoName -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name Order -PropertyType DWord -Value 0 -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name PrimaryProperty -PropertyType String -Value "System.ItemNameDisplay" -Force
-			New-ItemProperty -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}\TopViews\{00000000-0000-0000-0000-000000000000}" -Name SortByList -PropertyType String -Value "prop:System.ItemNameDisplay" -Force
-		}
-		"Default"
-		{
-			Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\FolderTypes\{885a186e-a440-4ada-812b-db871b942259}" -Recurse -Force -ErrorAction Ignore
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Expand to current folder in navigation pane
-
-	.PARAMETER Disable
-	Do not expand to open folder on navigation pane
-
-	.PARAMETER Enable
-	Expand to open folder on navigation pane
-
-	.EXAMPLE
-	NavigationPaneExpand -Disable
-
-	.EXAMPLE
-	NavigationPaneExpand -Enable
-
-	.NOTES
-	Current user
-#>
-function NavigationPaneExpand
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Disable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -PropertyType DWord -Value 0 -Force
-		}
-		"Enable"
-		{
-			New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced -Name NavPaneExpandToCurrentFolder -PropertyType DWord -Value 1 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Recently added apps on Start
 
 	.PARAMETER Hide
@@ -3395,7 +3394,7 @@ function RecentlyAddedStartApps
 
 <#
 	.SYNOPSIS
-	Unpin all Start tiles
+	Unpin all apps from Start
 
 	.EXAMPLE
 	UnpinAllStartTiles
@@ -4057,7 +4056,428 @@ function OneDrive
 }
 #endregion OneDrive
 
+#region WSL
+
+<#
+	.SYNOPSIS
+	Install Windows Subsystem for Linux (WSL) and a Linux distribution selected in a pop-up form
+
+	.EXAMPLE
+	Install-WSL
+
+	.NOTES
+	The "Receive updates for other Microsoft products" setting will be enabled automatically to receive kernel updates
+
+	.NOTES
+	Machine-wide
+#>
+function Install-WSL
+{
+	try
+	{
+		# https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json
+		$Parameters = @{
+			Uri                      = "https://raw.githubusercontent.com/microsoft/WSL/refs/heads/master/distributions/DistributionInfo.json"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 5
+			Verbose                  = $true
+		}
+		$Distributions = Invoke-RestMethod @Parameters
+	}
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	# ModernDistributions is an object of distribution families, each containing an array of distributions. ForEach-Object unrolls the arrays into a flat list
+	# Some distributions don't have an Arm64 image, so only distributions with Arm64Url are kept
+	$Distributions = $Distributions.ModernDistributions.PSObject.Properties | ForEach-Object -Process {$_.Value} | Where-Object -FilterScript {$_.Arm64Url}
+
+	# Distributions already installed for the current user
+	$InstalledDistributions = @(Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Lxss -ErrorAction Ignore | ForEach-Object -Process {$_.GetValue("DistributionName")})
+
+	Add-Type -AssemblyName PresentationCore, PresentationFramework
+
+	[xml]$XAML = @'
+<Window
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	Width="300" Height="600" MinWidth="300" MinHeight="400"
+	WindowStartupLocation="CenterScreen" Topmost="True"
+	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
+	<Window.Resources>
+		<Style TargetType="RadioButton">
+			<Setter Property="VerticalContentAlignment" Value="Center"/>
+		</Style>
+	</Window.Resources>
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="*"/>
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+			<StackPanel Name="PanelDistributions" Margin="16,8"/>
+		</ScrollViewer>
+		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
+			<Button Name="ButtonInstall" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
+		</Border>
+	</Grid>
+</Window>
+'@
+
+	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
+
+	$PanelDistributions = $Form.FindName("PanelDistributions")
+	$ButtonInstall      = $Form.FindName("ButtonInstall")
+
+	$Form.Title            = "WSL"
+	$ButtonInstall.Content = $Localization.Install
+
+	# The button is enabled only when a distribution is selected
+	$UpdateState = {
+		$ButtonInstall.IsEnabled = [bool]($PanelDistributions.Children | Where-Object -FilterScript {$_.IsChecked})
+	}
+
+	foreach ($Distribution in $Distributions)
+	{
+		$TextBlockFriendlyName = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockFriendlyName.Text = $Distribution.FriendlyName
+
+		$TextBlockName = New-Object -TypeName System.Windows.Controls.TextBlock
+		$TextBlockName.Text = $Distribution.Name
+		$TextBlockName.FontSize = 12
+		$TextBlockName.Foreground = "#808080"
+
+		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
+		$StackPanel.Margin = "6,0,0,0"
+		$StackPanel.Children.Add($TextBlockFriendlyName) | Out-Null
+		$StackPanel.Children.Add($TextBlockName) | Out-Null
+
+		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
+		$RadioButton.Margin = "0,4"
+		$RadioButton.Content = $StackPanel
+		$RadioButton.Tag = $Distribution
+		# Already installed distributions are shown but cannot be selected
+		$RadioButton.IsEnabled = $Distribution.Name -notin $InstalledDistributions
+		$RadioButton.Add_Checked($UpdateState)
+
+		$PanelDistributions.Children.Add($RadioButton) | Out-Null
+	}
+
+	$ButtonInstall.Add_Click({$Form.DialogResult = $true})
+
+	# Force move the WPF form to the foreground
+	$Form.Add_Loaded({$Form.Activate()})
+
+	$Form.ShowDialog() | Out-Null
+
+	# Emulate sending the Backspace key to prevent the console window from freezing
+	Send-ConsoleBackspace
+
+	# The window was closed without choosing a distribution
+	if (-not $Form.DialogResult)
+	{
+		return
+	}
+
+	$SelectedDistribution = ($PanelDistributions.Children | Where-Object -FilterScript {$_.IsChecked}).Tag
+
+	Write-Verbose -Message $SelectedDistribution.FriendlyName -Verbose
+
+	Start-Process -FilePath "$env:SystemRoot\System32\wsl.exe" -ArgumentList @("--install", "--distribution", $SelectedDistribution.Name) -Wait
+
+	# Receive updates for other Microsoft products when you update Windows
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
+
+	# Check for updates
+	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
+}
+#endregion WSL
+
 #region System
+
+<#
+	.SYNOPSIS
+	Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)
+
+	.EXAMPLE
+	Install-VCRedist
+
+	.LINK
+	https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
+
+	.NOTES
+	Machine-wide
+#>
+function Install-VCRedist
+{
+	# Get latest Visual C++ Redistributable Packages build version
+	# https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
+	try
+	{
+		$Parameters = @{
+			Uri                      = "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 5
+			Verbose                  = $true
+		}
+		$LatestVCRedistVersion = (Invoke-RestMethod @Parameters).version
+	}
+	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+	foreach ($Architecture in @("x64", "x86"))
+	{
+		# Get the installed vc_redist with the highest version
+		$CurrentVCRedist = Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe" -ErrorAction Ignore |
+			Sort-Object -Property {[System.Version]$_.VersionInfo.FileVersion} -Descending | Select-Object -First 1
+
+		# Proceed if redistributable is not installed or the installed build is lower than the available one
+		if ((-not $CurrentVCRedist) -or ([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCRedist.VersionInfo.FileVersion))
+		{
+			try
+			{
+				$Parameters = @{
+					Uri                      = "https://aka.ms/vc14/vc_redist.$($Architecture).exe"
+					OutFile                  = "$DownloadsFolder\vc_redist.$($Architecture).exe"
+					UseBasicParsing          = $true
+					ConnectionTimeoutSeconds = 5
+					Verbose                  = $true
+				}
+				Invoke-WebRequest @Parameters
+			}
+			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Architecture) $LatestVCRedistVersion") -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Architecture).exe" -ArgumentList "/install /passive /norestart" -Wait
+
+			# PowerShell 5.1 (7.7 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+			# https://github.com/PowerShell/PowerShell/issues/21070
+			$Paths = @(
+				"$DownloadsFolder\vc_redist.$($Architecture).exe",
+				"$env:TEMP\dd_vcredist_*.log"
+			)
+			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+		}
+		else
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion") -Verbose
+			Write-Error -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion") -ErrorAction SilentlyContinue
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	Install the latest .NET Desktop Runtime 10, 11
+
+	.PARAMETER Runtimes
+	Versions of .NET Desktop Runtime to install: NET10, NET11
+
+	.EXAMPLE
+	Install-DotNetRuntimes -Runtimes NET10, NET11
+
+	.LINK
+	https://dotnet.microsoft.com/en-us/download/dotnet
+
+	.NOTES
+	Machine-wide
+#>
+function Install-DotNetRuntimes
+{
+	[CmdletBinding()]
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Runtimes"
+		)]
+		[ValidateSet("NET10", "NET11")]
+		[string[]]
+		$Runtimes
+	)
+
+	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
+
+	foreach ($Runtime in $Runtimes)
+	{
+		# Function call string for the current runtime only, e.g. "Install-DotNetRuntimes -Runtimes NET10"
+		$FunctionCall = "{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime
+
+		switch ($Runtime)
+		{
+			"NET10"
+			{
+				$NET = "10.0"
+			}
+			"NET11"
+			{
+				$NET = "11.0"
+			}
+		}
+
+		try
+		{
+			# Get latest build version
+			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
+			$Parameters = @{
+				Uri                      = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"
+				UseBasicParsing          = $true
+				ConnectionTimeoutSeconds = 5
+				Verbose                  = $true
+			}
+			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
+		}
+		catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
+
+			continue
+		}
+
+		# Check whether .NET installed
+		if (-not (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"))
+		{
+			try
+			{
+				# Downloading .NET Desktop Runtime
+				$Parameters = @{
+					Uri                      = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
+					OutFile                  = "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
+					UseBasicParsing          = $true
+					ConnectionTimeoutSeconds = 5
+					Verbose                  = $true
+				}
+				Invoke-WebRequest @Parameters
+			}
+			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
+				Write-Error -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
+
+				continue
+			}
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message ($Localization.InstallingApplication -f ".NET $LatestNETVersion") -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
+
+			Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
+		}
+		else
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f $FunctionCall) -join " ") -Verbose
+			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
+		}
+
+		# PowerShell 5.1 (7.7 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
+		# https://github.com/PowerShell/PowerShell/issues/21070
+		$Paths = @(
+			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log",
+			"$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
+		)
+		Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
+	}
+}
+
+<#
+	.SYNOPSIS
+	Windows Sandbox
+
+	.PARAMETER Disable
+	Disable Windows Sandbox
+
+	.PARAMETER Enable
+	Enable Windows Sandbox
+
+	.EXAMPLE
+	WindowsSandbox -Enable
+
+	.EXAMPLE
+	WindowsSandbox -Disable
+
+	.NOTES
+	Machine-wide
+#>
+function WindowsSandbox
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	$EditionID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID
+	if (($EditionID -notmatch "Professional") -and ($EditionID -notmatch "Enterprise") -and ($EditionID -notmatch "Education"))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message (($Localization.NoHomeWindowsEditionSupport -f $MyInvocation.Line.Trim()), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+		Write-Error -Message (($Localization.NoHomeWindowsEditionSupport -f $MyInvocation.Line.Trim()), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+		return
+	}
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			# Check whether x86 virtualization is enabled in the firmware
+			$VirtualizationEnabled = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem).HypervisorPresent
+			if (-not $VirtualizationEnabled)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+				Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+				return
+			}
+
+			Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart -Verbose
+		}
+		"Disable"
+		{
+			Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart -Verbose
+		}
+	}
+}
 
 <#
 	.SYNOPSIS
@@ -4135,60 +4555,6 @@ function StorageSense
 
 <#
 	.SYNOPSIS
-	Hibernation
-
-	.PARAMETER Disable
-	Disable hibernation
-
-	.PARAMETER Enable
-	Enable hibernation
-
-	.EXAMPLE
-	Hibernation -Enable
-
-	.EXAMPLE
-	Hibernation -Disable
-
-	.NOTES
-	Not recommended to turn off for laptops
-
-	.NOTES
-	Machine-wide
-#>
-function Hibernation
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Disable"
-		{
-			& "$env:SystemRoot\System32\powercfg.exe" /HIBERNATE OFF
-		}
-		"Enable"
-		{
-			& "$env:SystemRoot\System32\powercfg.exe" /HIBERNATE ON
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	The Windows 260-character path limit
 
 	.PARAMETER Enable
@@ -4242,13 +4608,13 @@ function Win32LongPathsSupport
 
 <#
 	.SYNOPSIS
-	The Stop error code when a BSoD occurs
+	The Stop error parameters when a BSoD occurs
 
 	.PARAMETER Enable
-	Display the Stop error code when a BSoD occurs
+	Display the Stop error parameters when a BSoD occurs
 
 	.PARAMETER Disable
-	Do not display the Stop error code when a BSoD occurs
+	Do not display the Stop error parameters when a BSoD occurs
 
 	.EXAMPLE
 	BSoDStopError -Enable
@@ -4287,68 +4653,6 @@ function BSoDStopError
 		"Disable"
 		{
 			New-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\CrashControl -Name DisplayParameters -PropertyType DWord -Value 0 -Force
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	The User Account Control (UAC) behavior
-
-	.PARAMETER Never
-	Never notify
-
-	.PARAMETER Default
-	Notify me only when apps try to make changes to my computer
-
-	.EXAMPLE
-	AdminApprovalMode -Never
-
-	.EXAMPLE
-	AdminApprovalMode -Default
-
-	.NOTES
-	Machine-wide
-#>
-function AdminApprovalMode
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Never"
-		)]
-		[switch]
-		$Never,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Default"
-		)]
-		[switch]
-		$Default
-	)
-
-	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name FilterAdministratorToken -Force -ErrorAction Ignore
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorUser -PropertyType DWord -Value 3 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableInstallerDetection -PropertyType DWord -Value 1 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ValidateAdminCodeSignatures -PropertyType DWord -Value 0 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableSecureUIAPaths -PropertyType DWord -Value 1 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -PropertyType DWord -Value 1 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name PromptOnSecureDesktop -PropertyType DWord -Value 1 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableVirtualization -PropertyType DWord -Value 1 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableUIADesktopToggle -PropertyType DWord -Value 1 -Force
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Never"
-		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -PropertyType DWord -Value 0 -Force
-		}
-		"Default"
-		{
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -PropertyType DWord -Value 5 -Force
 		}
 	}
 }
@@ -5197,6 +5501,60 @@ function WindowsLatestUpdate
 
 <#
 	.SYNOPSIS
+	Hibernation
+
+	.PARAMETER Disable
+	Disable hibernation
+
+	.PARAMETER Enable
+	Enable hibernation
+
+	.EXAMPLE
+	Hibernation -Enable
+
+	.EXAMPLE
+	Hibernation -Disable
+
+	.NOTES
+	Not recommended to turn off for laptops
+
+	.NOTES
+	Machine-wide
+#>
+function Hibernation
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			& "$env:SystemRoot\System32\powercfg.exe" /HIBERNATE OFF
+		}
+		"Enable"
+		{
+			& "$env:SystemRoot\System32\powercfg.exe" /HIBERNATE ON
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
 	Power plan
 
 	.PARAMETER High
@@ -5460,7 +5818,7 @@ function NetworkAdaptersSavePower
 	Override for default input method
 
 	.PARAMETER English
-	Override for default input method: English
+	Override for default input method: English (United States)
 
 	.PARAMETER Default
 	Override for default input method: use language list
@@ -5502,6 +5860,57 @@ function InputMethod
 		"Default"
 		{
 			Remove-ItemProperty -Path "HKCU:\Control Panel\International\User Profile" -Name InputMethodOverride -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	A different input method for each app window
+
+	.PARAMETER Enable
+	Let me use a different input method for each app window
+
+	.PARAMETER Disable
+	Do not use a different input method for each app window
+
+	.EXAMPLE
+	AppsLanguageSwitch -Enable
+
+	.EXAMPLE
+	AppsLanguageSwitch -Disable
+
+	.NOTES
+	Current user
+#>
+function AppsLanguageSwitch
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Enable"
+		{
+			Set-WinLanguageBarOption -UseLegacySwitchMode
+		}
+		"Disable"
+		{
+			Set-WinLanguageBarOption
 		}
 	}
 }
@@ -5866,101 +6275,51 @@ function WinPrtScrFolder
 
 <#
 	.SYNOPSIS
-	Recommended troubleshooter preferences
+	The Print screen key usage
 
-	.PARAMETER Automatically
-	Run troubleshooters automatically, then notify me
+	.PARAMETER Enable
+	Use the Print screen key to open screen snipping
 
-	.PARAMETER Default
-	Ask me before running troubleshooters
-
-	.EXAMPLE
-	RecommendedTroubleshooting -Automatically
+	.PARAMETER Disable
+	Do not use the Print screen key to open screen snipping
 
 	.EXAMPLE
-	RecommendedTroubleshooting -Default
+	PrtScnSnippingTool -Enable
+
+	.EXAMPLE
+	PrtScnSnippingTool -Disable
 
 	.NOTES
-	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
-
-	.NOTES
-	Machine-wide
+	Current user
 #>
-function RecommendedTroubleshooting
+function PrtScnSnippingTool
 {
 	param
 	(
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Automatically"
+			ParameterSetName = "Enable"
 		)]
 		[switch]
-		$Automatically,
+		$Enable,
 
 		[Parameter(
 			Mandatory = $true,
-			ParameterSetName = "Default"
+			ParameterSetName = "Disable"
 		)]
 		[switch]
-		$Default
+		$Disable
 	)
-
-	if (-not (Get-Service -Name WerSvc -ErrorAction Ignore))
-	{
-		$WerSvc = [WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\wersvc.dll,-100")
-
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.WindowsComponentStabilityDisrupted -f $WerSvc), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.WindowsComponentStabilityDisrupted -f $WerSvc), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	# Remove all policies in order to make changes visible in UI
-	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry
-
-	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection))
-	{
-		New-Item -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Force
-	}
-	if (-not (Test-Path -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack))
-	{
-		New-Item -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Force
-	}
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name MaxTelemetryAllowed -PropertyType DWord -Value 3 -Force
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection -Name AllowTelemetry -PropertyType DWord -Value 3 -Force
-	New-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Diagnostics\DiagTrack -Name ShowedToastAtLevel -PropertyType DWord -Value 3 -Force
-
-	# Turn on Windows Error Reporting
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting", "HKCU:\Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled -Force -ErrorAction Ignore
-	Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport -Force -ErrorAction Ignore
-	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled
-	Remove-Policy -Scope User -Path "Software\Policies\Microsoft\Windows\Windows Error Reporting" -Name Disabled
-	Remove-Policy -Scope Computer -Path "SOFTWARE\Policies\Microsoft\PCHealth\ErrorReporting" -Name DoReport
-
-	Get-ScheduledTask -TaskName QueueReporting -ErrorAction Ignore | Enable-ScheduledTask
-	Get-Service -Name WerSvc | Set-Service -StartupType Manual -PassThru
-	Get-Service -Name WerSvc | Start-Service -PassThru
-	Enable-WindowsErrorReporting
-
-
-	if (-not (Test-Path -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation))
-	{
-		New-Item -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Force
-	}
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Automatically"
+		"Enable"
 		{
-			# Run troubleshooters automatically, then notify me
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 3 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 1 -Force
 		}
-		"Default"
+		"Disable"
 		{
-			# Ask me before running troubleshooters
-			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsMitigation -Name UserPreference -PropertyType DWord -Value 2 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Keyboard" -Name PrintScreenKeyForSnippingEnabled -PropertyType DWord -Value 0 -Force
 		}
 	}
 }
@@ -6998,213 +7357,6 @@ function DefaultTerminalApp
 
 <#
 	.SYNOPSIS
-	Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64)
-
-	.EXAMPLE
-	Install-VCRedist
-
-	.LINK
-	https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist
-
-	.NOTES
-	Machine-wide
-#>
-function Install-VCRedist
-{
-	# Get latest Visual C++ Redistributable Packages build version
-	# https://github.com/ScoopInstaller/Extras/blob/master/bucket/vcredist2022.json
-	try
-	{
-		$Parameters = @{
-			Uri                      = "https://raw.githubusercontent.com/ScoopInstaller/Extras/refs/heads/master/bucket/vcredist2022.json"
-			UseBasicParsing          = $true
-			ConnectionTimeoutSeconds = 5
-			Verbose                  = $true
-		}
-		$LatestVCRedistVersion = (Invoke-RestMethod @Parameters).version
-	}
-	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
-	foreach ($Architecture in @("x64", "x86"))
-	{
-		# Get the installed vc_redist with the highest version
-		$CurrentVCRedist = Get-Item -Path "$env:ProgramData\Package Cache\*\vc_redist.$($Architecture).exe" -ErrorAction Ignore |
-			Sort-Object -Property {[System.Version]$_.VersionInfo.FileVersion} -Descending | Select-Object -First 1
-
-		# Proceed if redistributable is not installed or the installed build is lower than the available one
-		if ((-not $CurrentVCRedist) -or ([System.Version]$LatestVCRedistVersion -gt [System.Version]$CurrentVCRedist.VersionInfo.FileVersion))
-		{
-			try
-			{
-				$Parameters = @{
-					Uri                      = "https://aka.ms/vc14/vc_redist.$($Architecture).exe"
-					OutFile                  = "$DownloadsFolder\vc_redist.$($Architecture).exe"
-					UseBasicParsing          = $true
-					ConnectionTimeoutSeconds = 5
-					Verbose                  = $true
-				}
-				Invoke-WebRequest @Parameters
-			}
-			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-				return
-			}
-
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.InstallingApplication -f "Visual C++ Redistributable $($Architecture) $LatestVCRedistVersion") -Verbose
-			Write-Information -MessageData "" -InformationAction Continue
-
-			Start-Process -FilePath "$DownloadsFolder\vc_redist.$($Architecture).exe" -ArgumentList "/install /passive /norestart" -Wait
-
-			# PowerShell 5.1 (7.7 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-			# https://github.com/PowerShell/PowerShell/issues/21070
-			$Paths = @(
-				"$DownloadsFolder\vc_redist.$($Architecture).exe",
-				"$env:TEMP\dd_vcredist_*.log"
-			)
-			Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
-		}
-		else
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion") -Verbose
-			Write-Error -Message ($Localization.PackageIsInstalled -f "Microsoft Visual C++ Redistributable Packages 2017-2026 $($Architecture) $LatestVCRedistVersion") -ErrorAction SilentlyContinue
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Install the latest .NET Desktop Runtime 10, 11
-
-	.PARAMETER Runtimes
-	Versions of .NET Desktop Runtime to install: NET10, NET11
-
-	.EXAMPLE
-	Install-DotNetRuntimes -Runtimes NET10, NET11
-
-	.LINK
-	https://dotnet.microsoft.com/en-us/download/dotnet
-
-	.NOTES
-	Machine-wide
-#>
-function Install-DotNetRuntimes
-{
-	[CmdletBinding()]
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Runtimes"
-		)]
-		[ValidateSet("NET10", "NET11")]
-		[string[]]
-		$Runtimes
-	)
-
-	$DownloadsFolder = Get-ItemPropertyValue -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Explorer\User Shell Folders" -Name "{374DE290-123F-4565-9164-39C4925E467B}"
-
-	foreach ($Runtime in $Runtimes)
-	{
-		# Function call string for the current runtime only, e.g. "Install-DotNetRuntimes -Runtimes NET10"
-		$FunctionCall = "{0} -{1} {2}" -f $MyInvocation.MyCommand.Name, $MyInvocation.BoundParameters.Keys.Trim(), $Runtime
-
-		switch ($Runtime)
-		{
-			"NET10"
-			{
-				$NET = "10.0"
-			}
-			"NET11"
-			{
-				$NET = "11.0"
-			}
-		}
-
-		try
-		{
-			# Get latest build version
-			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
-			$Parameters = @{
-				Uri                      = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"
-				UseBasicParsing          = $true
-				ConnectionTimeoutSeconds = 5
-				Verbose                  = $true
-			}
-			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
-		}
-		catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
-			Write-Error -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
-
-			continue
-		}
-
-		# Check whether .NET installed
-		if (-not (Test-Path -Path "$env:ProgramData\Package Cache\*\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"))
-		{
-			try
-			{
-				# Downloading .NET Desktop Runtime
-				$Parameters = @{
-					Uri                      = "https://builds.dotnet.microsoft.com/dotnet/WindowsDesktop/$LatestNETVersion/windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
-					OutFile                  = "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
-					UseBasicParsing          = $true
-					ConnectionTimeoutSeconds = 5
-					Verbose                  = $true
-				}
-				Invoke-WebRequest @Parameters
-			}
-			catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f $Parameters.Uri), ($Localization.RestartFunction -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
-
-				continue
-			}
-
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message ($Localization.InstallingApplication -f ".NET $LatestNETVersion") -Verbose
-			Write-Information -MessageData "" -InformationAction Continue
-
-			Start-Process -FilePath "$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe" -ArgumentList "/install /passive /norestart" -Wait
-		}
-		else
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f $FunctionCall) -join " ") -Verbose
-			Write-Error -Message (($Localization.PackageIsInstalled -f ".NET $LatestNETVersion"), ($Localization.FunctionSkipped -f $FunctionCall) -join " ") -ErrorAction SilentlyContinue
-		}
-
-		# PowerShell 5.1 (7.7 too) interprets 8.3 file name literally, if an environment variable contains a non-Latin word
-		# https://github.com/PowerShell/PowerShell/issues/21070
-		$Paths = @(
-			"$env:TEMP\Microsoft_Windows_Desktop_Runtime*.log",
-			"$DownloadsFolder\windowsdesktop-runtime-$LatestNETVersion-win-arm64.exe"
-		)
-		Get-ChildItem -Path $Paths -Force -ErrorAction Ignore | Remove-Item -Force -ErrorAction Ignore
-	}
-}
-
-<#
-	.SYNOPSIS
 	Desktop shortcut creation upon Microsoft Edge update
 
 	.PARAMETER Channels
@@ -7465,148 +7617,6 @@ function WindowsAI
 	}
 }
 #endregion System
-
-#region WSL
-
-<#
-	.SYNOPSIS
-	Install Windows Subsystem for Linux (WSL) and a Linux distribution selected in a pop-up form
-
-	.EXAMPLE
-	Install-WSL
-
-	.NOTES
-	The "Receive updates for other Microsoft products" setting will be enabled automatically to receive kernel updates
-
-	.NOTES
-	Machine-wide
-#>
-function Install-WSL
-{
-	try
-	{
-		# https://github.com/microsoft/WSL/blob/master/distributions/DistributionInfo.json
-		$Parameters = @{
-			Uri                      = "https://raw.githubusercontent.com/microsoft/WSL/refs/heads/master/distributions/DistributionInfo.json"
-			UseBasicParsing          = $true
-			ConnectionTimeoutSeconds = 5
-			Verbose                  = $true
-		}
-		$Distributions = Invoke-RestMethod @Parameters
-	}
-	catch [System.Net.Http.HttpRequestException], [System.Threading.Tasks.TaskCanceledException]
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	# ModernDistributions is an object of distribution families, each containing an array of distributions. ForEach-Object unrolls the arrays into a flat list
-	# Some distributions don't have an Arm64 image, so only distributions with Arm64Url are kept
-	$Distributions = $Distributions.ModernDistributions.PSObject.Properties | ForEach-Object -Process {$_.Value} | Where-Object -FilterScript {$_.Arm64Url}
-
-	# Distributions already installed for the current user
-	$InstalledDistributions = @(Get-ChildItem -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Lxss -ErrorAction Ignore | ForEach-Object -Process {$_.GetValue("DistributionName")})
-
-	Add-Type -AssemblyName PresentationCore, PresentationFramework
-
-	[xml]$XAML = @'
-<Window
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Width="300" Height="600" MinWidth="300" MinHeight="400"
-	WindowStartupLocation="CenterScreen" Topmost="True"
-	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
-	<Window.Resources>
-		<Style TargetType="RadioButton">
-			<Setter Property="VerticalContentAlignment" Value="Center"/>
-		</Style>
-	</Window.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-			<StackPanel Name="PanelDistributions" Margin="16,8"/>
-		</ScrollViewer>
-		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
-			<Button Name="ButtonInstall" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
-		</Border>
-	</Grid>
-</Window>
-'@
-
-	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-
-	$PanelDistributions = $Form.FindName("PanelDistributions")
-	$ButtonInstall      = $Form.FindName("ButtonInstall")
-
-	$Form.Title            = "WSL"
-	$ButtonInstall.Content = $Localization.Install
-
-	# The button is enabled only when a distribution is selected
-	$UpdateState = {
-		$ButtonInstall.IsEnabled = [bool]($PanelDistributions.Children | Where-Object -FilterScript {$_.IsChecked})
-	}
-
-	foreach ($Distribution in $Distributions)
-	{
-		$TextBlockFriendlyName = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlockFriendlyName.Text = $Distribution.FriendlyName
-
-		$TextBlockName = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlockName.Text = $Distribution.Name
-		$TextBlockName.FontSize = 12
-		$TextBlockName.Foreground = "#808080"
-
-		$StackPanel = New-Object -TypeName System.Windows.Controls.StackPanel
-		$StackPanel.Margin = "6,0,0,0"
-		$StackPanel.Children.Add($TextBlockFriendlyName) | Out-Null
-		$StackPanel.Children.Add($TextBlockName) | Out-Null
-
-		$RadioButton = New-Object -TypeName System.Windows.Controls.RadioButton
-		$RadioButton.Margin = "0,4"
-		$RadioButton.Content = $StackPanel
-		$RadioButton.Tag = $Distribution
-		# Already installed distributions are shown but cannot be selected
-		$RadioButton.IsEnabled = $Distribution.Name -notin $InstalledDistributions
-		$RadioButton.Add_Checked($UpdateState)
-
-		$PanelDistributions.Children.Add($RadioButton) | Out-Null
-	}
-
-	$ButtonInstall.Add_Click({$Form.DialogResult = $true})
-
-	# Force move the WPF form to the foreground
-	$Form.Add_Loaded({$Form.Activate()})
-
-	$Form.ShowDialog() | Out-Null
-
-	# Emulate sending the Backspace key to prevent the console window from freezing
-	Send-ConsoleBackspace
-
-	# The window was closed without choosing a distribution
-	if (-not $Form.DialogResult)
-	{
-		return
-	}
-
-	$SelectedDistribution = ($PanelDistributions.Children | Where-Object -FilterScript {$_.IsChecked}).Tag
-
-	Write-Verbose -Message $SelectedDistribution.FriendlyName -Verbose
-
-	Start-Process -FilePath "$env:SystemRoot\System32\wsl.exe" -ArgumentList @("--install", "--distribution", $SelectedDistribution.Name) -Wait
-
-	# Receive updates for other Microsoft products when you update Windows
-	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
-
-	# Check for updates
-	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-}
-#endregion WSL
 
 #region UWP apps
 
@@ -9365,78 +9375,6 @@ function SaveZoneInformation
 
 <#
 	.SYNOPSIS
-	Windows Sandbox
-
-	.PARAMETER Disable
-	Disable Windows Sandbox
-
-	.PARAMETER Enable
-	Enable Windows Sandbox
-
-	.EXAMPLE
-	WindowsSandbox -Enable
-
-	.EXAMPLE
-	WindowsSandbox -Disable
-
-	.NOTES
-	Machine-wide
-#>
-function WindowsSandbox
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable
-	)
-
-	$EditionID = (Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion").EditionID
-	if (($EditionID -notmatch "Professional") -and ($EditionID -notmatch "Enterprise") -and ($EditionID -notmatch "Education"))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message (($Localization.NoHomeWindowsEditionSupport -f $MyInvocation.Line.Trim()), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message (($Localization.NoHomeWindowsEditionSupport -f $MyInvocation.Line.Trim()), ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			# Check whether x86 virtualization is enabled in the firmware
-			$VirtualizationEnabled = (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_Processor).VirtualizationFirmwareEnabled -or (Get-CimInstance -Namespace root/CIMV2 -ClassName CIM_ComputerSystem).HypervisorPresent
-			if (-not $VirtualizationEnabled)
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message ($Localization.EnableHardwareVT, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-				return
-			}
-
-			Enable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -All -Online -NoRestart -Verbose
-		}
-		"Disable"
-		{
-			Disable-WindowsOptionalFeature -FeatureName Containers-DisposableClientVM -Online -NoRestart -Verbose
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
 	Configure DNS using DNS-over-HTTPS
 
 	.PARAMETER Cloudflare
@@ -9735,6 +9673,68 @@ function LocalSecurityAuthority
 		"Disable"
 		{
 			Remove-ItemProperty -Path HKLM:\SYSTEM\CurrentControlSet\Control\Lsa -Name RunAsPPL, RunAsPPLBoot -Force -ErrorAction Ignore
+		}
+	}
+}
+
+<#
+	.SYNOPSIS
+	The User Account Control (UAC) behavior
+
+	.PARAMETER Never
+	Never notify
+
+	.PARAMETER Default
+	Notify me only when apps try to make changes to my computer
+
+	.EXAMPLE
+	AdminApprovalMode -Never
+
+	.EXAMPLE
+	AdminApprovalMode -Default
+
+	.NOTES
+	Machine-wide
+#>
+function AdminApprovalMode
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Never"
+		)]
+		[switch]
+		$Never,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Default"
+		)]
+		[switch]
+		$Default
+	)
+
+	# Remove all policies in order to make changes visible in UI
+	Remove-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name FilterAdministratorToken -Force -ErrorAction Ignore
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorUser -PropertyType DWord -Value 3 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableInstallerDetection -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ValidateAdminCodeSignatures -PropertyType DWord -Value 0 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableSecureUIAPaths -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableLUA -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name PromptOnSecureDesktop -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableVirtualization -PropertyType DWord -Value 1 -Force
+	New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name EnableUIADesktopToggle -PropertyType DWord -Value 1 -Force
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Never"
+		{
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -PropertyType DWord -Value 0 -Force
+		}
+		"Default"
+		{
+			New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\System -Name ConsentPromptBehaviorAdmin -PropertyType DWord -Value 5 -Force
 		}
 	}
 }

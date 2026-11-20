@@ -252,6 +252,22 @@ QuickAccessFrequentFolders -Hide
 # Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
 
+# Do not group files and folders in the Downloads folder
+# Не группировать файлы и папки в папке Загрузки
+FolderGroupBy -None
+
+# Group files and folders by date modified in the Downloads folder (default value)
+# Группировать файлы и папки по дате изменения в папке Загрузки (значение по умолчанию)
+# FolderGroupBy -Default
+
+# Do not expand to open folder on navigation pane (default value)
+# Не разворачивать до открытой папки область навигации (значение по умолчанию)
+NavigationPaneExpand -Disable
+
+# Expand to open folder on navigation pane
+# Развернуть до открытой папки область навигации
+# NavigationPaneExpand -Enable
+
 # Hide the search on the taskbar
 # Скрыть поле или значок поиска на панели задач
 TaskbarSearch -Hide
@@ -368,22 +384,6 @@ ShortcutsSuffix -Disable
 # Добавлять "- ярлык" к имени создаваемых ярлыков (значение по умолчанию)
 # ShortcutsSuffix -Enable
 
-# Use the Print screen key to open screen snipping
-# Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
-PrtScnSnippingTool -Enable
-
-# Do not use the Print screen key to open screen snipping (default value)
-# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)
-# PrtScnSnippingTool -Disable
-
-# Let me use a different input method for each app window
-# Позволить выбирать метод ввода для каждого окна
-AppsLanguageSwitch -Enable
-
-# Do not use a different input method for each app window (default value)
-# Не использовать метод ввода для каждого окна (значение по умолчанию)
-# AppsLanguageSwitch -Disable
-
 # Download and install free dark "Windows 11 Cursors Concept" cursors from Jepri Creations. An Internet connection is required
 # Скачать и установить бесплатные темные курсоры "Windows 11 Cursors Concept" от Jepri Creations. Требуется соединение с интернетом
 # https://www.deviantart.com/jepricreations/art/Windows-11-Cursors-Concept-886489356
@@ -397,22 +397,6 @@ Install-Cursors -Dark
 # Set default cursors
 # Установить курсоры по умолчанию
 # Install-Cursors -Default
-
-# Do not group files and folders in the Downloads folder
-# Не группировать файлы и папки в папке Загрузки
-FolderGroupBy -None
-
-# Group files and folders by date modified in the Downloads folder (default value)
-# Группировать файлы и папки по дате изменения в папке Загрузки (значение по умолчанию)
-# FolderGroupBy -Default
-
-# Do not expand to open folder on navigation pane (default value)
-# Не разворачивать до открытой папки область навигации (значение по умолчанию)
-NavigationPaneExpand -Disable
-
-# Expand to open folder on navigation pane
-# Развернуть до открытой папки область навигации
-# NavigationPaneExpand -Enable
 
 # Hide recently added apps on Start
 # Скрывать недавно добавленные приложения в меню "Пуск"
@@ -440,6 +424,22 @@ AppSuggestions -Hide
 #endregion UI & Personalization
 
 #region System
+# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). An Internet connection is required
+# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
+Install-VCRedist
+
+# Install the latest .NET Desktop Runtime 10 and 11 x64. An Internet connection is required
+# Установить последнюю версию .NET Desktop Runtime 10 и 11 x64. Требуется соединение с интернетом
+Install-DotNetRuntimes -Runtimes NET10, NET11
+
+# Enable Windows Sandbox. Restart needed
+# Включить Windows Sandbox. Необходима перезагрузка
+# WindowsSandbox -Enable
+
+# Disable Windows Sandbox (default value). Restart needed
+# Выключить Windows Sandbox (значение по умолчанию). Необходима перезагрузка
+# WindowsSandbox -Disable
+
 # Turn on Storage Sense
 # Включить Контроль памяти
 StorageSense -Enable
@@ -447,14 +447,6 @@ StorageSense -Enable
 # Turn off Storage Sense (default value)
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
-
-# Disable hibernation. Not recommended for laptops
-# Отключить режим гибернации. Не рекомендуется для ноутбуков
-Hibernation -Disable
-
-# Enable hibernation (default value)
-# Включить режим гибернации (значение по умолчанию)
-# Hibernation -Enable
 
 # Enable Windows long path support to lift the 260-character path limit
 # Включить поддержку длинных путей, ограниченных по умолчанию 260 символами
@@ -464,21 +456,13 @@ Win32LongPathsSupport -Enable
 # Отключить поддержку длинных путей, ограниченных по умолчанию 260 символами (значение по умолчанию)
 # Win32LongPathsSupport -Disable
 
-# Display the Stop error code when a BSoD occurs
-# Отображать код Stop-ошибки при появлении BSoD
+# Display the Stop error parameters when a BSoD occurs
+# Отображать параметры Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display the Stop error code when a BSoD occurs (default value)
-# Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
+# Do not display the Stop error parameters when a BSoD occurs (default value)
+# Не отображать параметры Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
-
-# Choose when to be notified about changes to your computer: never notify
-# Настройка уведомления об изменении параметров компьютера: никогда не уведомлять
-AdminApprovalMode -Never
-
-# Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
-# Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
-# AdminApprovalMode -Default
 
 # Turn off Delivery Optimization
 # Выключить оптимизацию доставки
@@ -541,6 +525,14 @@ ActiveHours -Automatically
 # Вручную изменять период активности для этого устройства (значение по умолчанию)
 # ActiveHours -Manually
 
+# Disable hibernation. Not recommended for laptops
+# Отключить режим гибернации. Не рекомендуется для ноутбуков
+Hibernation -Disable
+
+# Enable hibernation (default value)
+# Включить режим гибернации (значение по умолчанию)
+# Hibernation -Enable
+
 # Set power plan to "High performance". Not recommended for laptops
 # Установить схему управления питанием на "Высокая производительность". Не рекомендуется для ноутбуков
 PowerPlan -High
@@ -557,13 +549,21 @@ NetworkAdaptersSavePower -Disable
 # Разрешить отключение активных сетевых адаптеров для экономии энергии (значение по умолчанию)
 # NetworkAdaptersSavePower -Enable
 
-# Override for default input method: English
-# Переопределить метод ввода по умолчанию: английский
+# Override for default input method: English (United States)
+# Переопределить метод ввода по умолчанию: английский (США)
 InputMethod -English
 
 # Override for default input method: use language list (default value)
 # Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)
 # InputMethod -Default
+
+# Let me use a different input method for each app window
+# Позволить выбирать метод ввода для каждого окна
+AppsLanguageSwitch -Enable
+
+# Do not use a different input method for each app window (default value)
+# Не использовать метод ввода для каждого окна (значение по умолчанию)
+# AppsLanguageSwitch -Disable
 
 # Change the location of user folders to the root of any drive using an interactive menu. User files and folders won't be moved to the new location
 # Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение
@@ -584,6 +584,14 @@ WinPrtScrFolder -Desktop
 # Save screenshots in the Pictures folder when pressing Windows+PrtScr or using Windows+Shift+S (default value)
 # Сохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
+
+# Use the Print screen key to open screen snipping
+# Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
+PrtScnSnippingTool -Enable
+
+# Do not use the Print screen key to open screen snipping (default value)
+# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)
+# PrtScnSnippingTool -Disable
 
 # Launch folder windows in a separate process
 # Запускать окна с папками в отдельном процессе
@@ -609,12 +617,12 @@ NumLock -Enable
 # Выключить Num Lock при загрузке (значение по умолчанию)
 # NumLock -Disable
 
-# Disable Caps Lock
-# Выключить Caps Lock
+# Disable Caps Lock. Restart needed
+# Выключить Caps Lock. Необходима перезагрузка
 # CapsLock -Disable
 
-# Enable Caps Lock (default value)
-# Включить Caps Lock (значение по умолчанию)
+# Enable Caps Lock (default value). Restart needed
+# Включить Caps Lock (значение по умолчанию). Необходима перезагрузка
 # CapsLock -Enable
 
 # Turn off pressing the Shift key 5 times to turn on Sticky keys
@@ -663,14 +671,6 @@ ThumbnailCacheRemoval -Disable
 	Вам необходимо установить все приложения согласно экспортированному файлу Application_Associations.json, чтобы восстановить все ассоциации
 #>
 # Import-Associations
-
-# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). An Internet connection is required
-# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
-Install-VCRedist
-
-# Install the latest .NET Desktop Runtime 10 and 11 x64. An Internet connection is required
-# Установить последнюю версию .NET Desktop Runtime 10 и 11 x64. Требуется соединение с интернетом
-Install-DotNetRuntimes -Runtimes NET10, NET11
 
 # Back up the system registry to the %SystemRoot%\System32\config\RegBack folder when the PC restarts and create the RegIdleBackup task in Task Scheduler to manage subsequent backups
 # Создавать копии реестра при перезагрузке ПК и задание RegIdleBackup в Планировщике для управления последующими резервными копиями
@@ -739,12 +739,12 @@ PUAppsDetection -Enable
 # Выключить обнаружение потенциально нежелательных приложений (значение по умолчанию)
 # PUAppsDetection -Disable
 
-# Enable sandboxing for Microsoft Defender
-# Включить песочницу для Microsoft Defender
+# Enable sandboxing for Microsoft Defender. Restart needed
+# Включить песочницу для Microsoft Defender. Необходима перезагрузка
 DefenderSandbox -Enable
 
-# Disable sandboxing for Microsoft Defender (default value)
-# Выключить песочницу для Microsoft Defender (значение по умолчанию)
+# Disable sandboxing for Microsoft Defender (default value). Restart needed
+# Выключить песочницу для Microsoft Defender (значение по умолчанию). Необходима перезагрузка
 # DefenderSandbox -Disable
 
 # Enable logging of running processes, including their arguments, and PowerShell scripts, and create the custom "Process Creation" view in Event Viewer
@@ -771,13 +771,13 @@ SaveZoneInformation -Disable
 # Включить отметку Диспетчером вложений файлов, скачанных из интернета, как небезопасных (значение по умолчанию)
 # SaveZoneInformation -Enable
 
-# Enable Windows Sandbox
-# Включить Windows Sandbox
-# WindowsSandbox -Enable
+# Choose when to be notified about changes to your computer: never notify
+# Настройка уведомления об изменении параметров компьютера: никогда не уведомлять
+AdminApprovalMode -Never
 
-# Disable Windows Sandbox (default value)
-# Выключить Windows Sandbox (значение по умолчанию)
-# WindowsSandbox -Disable
+# Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
+# Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
+# AdminApprovalMode -Default
 #endregion Microsoft Defender & Security
 
 #region Context menu

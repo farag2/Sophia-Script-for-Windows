@@ -110,6 +110,24 @@ ErrorReporting -Disable
 # Включить отчеты об ошибках Windows (значение по умолчанию)
 # ErrorReporting -Enable
 
+<#
+	Run troubleshooters automatically, then notify me
+	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
+
+	Автоматически запускать средства устранения неполадок, а затем уведомлять
+	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
+#>
+RecommendedTroubleshooting -Automatically
+
+<#
+	Ask me before running troubleshooters (default value)
+	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
+
+	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
+	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
+#>
+# RecommendedTroubleshooting -Default
+
 # Change the feedback frequency to "Never"
 # Изменить частоту формирования отзывов на "Никогда"
 FeedbackFrequency -Never
@@ -252,8 +270,8 @@ MergeConflicts -Show
 # Открывать проводник для "Этот компьютер"
 OpenFileExplorerTo -ThisPC
 
-# Open File Explorer to Quick access (default value)
-# Открывать проводник для "Быстрый доступ" (значение по умолчанию)
+# Open File Explorer to "Home" (default value)
+# Открывать проводник для "Главная" (значение по умолчанию)
 # OpenFileExplorerTo -QuickAccess
 
 # Disable File Explorer compact mode (default value)
@@ -272,14 +290,6 @@ OneDriveFileExplorerAd -Hide
 # Показывать уведомления поставщика синхронизации в проводнике (значение по умолчанию)
 # OneDriveFileExplorerAd -Show
 
-# When I snap a window, do not show what I can snap next to it
-# При прикреплении окна не показывать, что можно прикрепить рядом с ним
-SnapAssist -Disable
-
-# When I snap a window, show what I can snap next to it (default value)
-# При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)
-# SnapAssist -Enable
-
 # Show the file transfer dialog box in the detailed mode
 # Отображать диалоговое окно передачи файлов в развернутом виде
 FileTransferDialog -Detailed
@@ -296,12 +306,12 @@ RecycleBinDeleteConfirmation -Enable
 # Не запрашивать подтверждение на удаление файлов в корзину (значение по умолчанию)
 # RecycleBinDeleteConfirmation -Disable
 
-# Hide recently used files in Quick access
-# Скрыть недавно использовавшиеся файлы на панели быстрого доступа
+# Hide recently used files in File Explorer Home
+# Скрыть недавно использовавшиеся файлы в разделе "Главная" проводника
 QuickAccessRecentFiles -Hide
 
-# Show recently used files in Quick access (default value)
-# Показать недавно использовавшиеся файлы на панели быстрого доступа (значение по умолчанию)
+# Show recently used files in File Explorer Home (default value)
+# Показать недавно использовавшиеся файлы в разделе "Главная" проводника (значение по умолчанию)
 # QuickAccessRecentFiles -Show
 
 # Hide frequently used folders in Quick access
@@ -311,6 +321,22 @@ QuickAccessFrequentFolders -Hide
 # Show frequently used folders in Quick access (default value)
 # Показать часто используемые папки на панели быстрого доступа (значение по умолчанию)
 # QuickAccessFrequentFolders -Show
+
+# Do not group files and folders in the Downloads folder
+# Не группировать файлы и папки в папке Загрузки
+FolderGroupBy -None
+
+# Group files and folders by date modified in the Downloads folder (default value)
+# Группировать файлы и папки по дате изменения в папке Загрузки (значение по умолчанию)
+# FolderGroupBy -Default
+
+# Do not expand to open folder on navigation pane (default value)
+# Не разворачивать до открытой папки область навигации (значение по умолчанию)
+NavigationPaneExpand -Disable
+
+# Expand to open folder on navigation pane
+# Развернуть до открытой папки область навигации
+# NavigationPaneExpand -Enable
 
 # Set taskbar position to the bottom (default value)
 # Расположить панель задач внизу экрана (значение по умолчанию)
@@ -468,21 +494,13 @@ ShortcutsSuffix -Disable
 # Добавлять "- ярлык" к имени создаваемых ярлыков (значение по умолчанию)
 # ShortcutsSuffix -Enable
 
-# Use the Print screen key to open screen snipping
-# Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
-PrtScnSnippingTool -Enable
+# When I snap a window, do not show what I can snap next to it
+# При прикреплении окна не показывать, что можно прикрепить рядом с ним
+SnapAssist -Disable
 
-# Do not use the Print screen key to open screen snipping (default value)
-# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)
-# PrtScnSnippingTool -Disable
-
-# Let me use a different input method for each app window
-# Позволить выбирать метод ввода для каждого окна
-AppsLanguageSwitch -Enable
-
-# Do not use a different input method for each app window (default value)
-# Не использовать метод ввода для каждого окна (значение по умолчанию)
-# AppsLanguageSwitch -Disable
+# When I snap a window, show what I can snap next to it (default value)
+# При прикреплении окна показывать, что можно прикрепить рядом с ним (значение по умолчанию)
+# SnapAssist -Enable
 
 # When I grab a window's title bar and shake it, minimize all other windows
 # При захвате заголовка окна и встряхивании сворачиваются все остальные окна
@@ -506,22 +524,6 @@ Install-Cursors -Dark
 # Установить курсоры по умолчанию
 # Install-Cursors -Default
 
-# Do not group files and folders in the Downloads folder
-# Не группировать файлы и папки в папке Загрузки
-FolderGroupBy -None
-
-# Group files and folders by date modified in the Downloads folder (default value)
-# Группировать файлы и папки по дате изменения в папке Загрузки (значение по умолчанию)
-# FolderGroupBy -Default
-
-# Do not expand to open folder on navigation pane (default value)
-# Не разворачивать до открытой папки область навигации (значение по умолчанию)
-NavigationPaneExpand -Disable
-
-# Expand to open folder on navigation pane
-# Развернуть до открытой папки область навигации
-# NavigationPaneExpand -Enable
-
 # Hide recently added apps on Start
 # Не показывать недавно добавленные приложения на начальном экране
 RecentlyAddedStartApps -Hide
@@ -530,7 +532,7 @@ RecentlyAddedStartApps -Hide
 # Показывать недавно добавленные приложения на начальном экране (значение по умолчанию)
 # RecentlyAddedStartApps -Show
 
-# Unpin all Start tiles
+# Unpin all apps from Start
 # Открепить все ярлыки от начального экрана
 # UnpinAllStartTiles
 
@@ -593,7 +595,29 @@ StartAccountNotifications -Hide
 # OneDrive -Install -AllUsers
 #endregion OneDrive
 
+#region WSL
+# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. An Internet connection is required
+# Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Требуется соединение с интернетом
+# Install-WSL
+#endregion WSL
+
 #region System
+# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). An Internet connection is required
+# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
+Install-VCRedist
+
+# Install the latest .NET Desktop Runtime 10, 11 x64. An Internet connection is required
+# Установить последнюю версию .NET Desktop Runtime 10, 11 x64. Требуется соединение с интернетом
+Install-DotNetRuntimes -Runtimes NET10, NET11
+
+# Enable Windows Sandbox. Restart needed
+# Включить Windows Sandbox. Необходима перезагрузка
+# WindowsSandbox -Enable
+
+# Disable Windows Sandbox (default value). Restart needed
+# Выключить Windows Sandbox (значение по умолчанию). Необходима перезагрузка
+# WindowsSandbox -Disable
+
 # Turn on Storage Sense
 # Включить Контроль памяти
 StorageSense -Enable
@@ -601,14 +625,6 @@ StorageSense -Enable
 # Turn off Storage Sense (default value)
 # Выключить Контроль памяти (значение по умолчанию)
 # StorageSense -Disable
-
-# Disable hibernation. Not recommended for laptops
-# Отключить режим гибернации. Не рекомендуется для ноутбуков
-Hibernation -Disable
-
-# Enable hibernation (default value)
-# Включить режим гибернации (значение по умолчанию)
-# Hibernation -Enable
 
 # Enable Windows long path support to lift the 260-character path limit
 # Включить поддержку длинных путей, ограниченных по умолчанию 260 символами
@@ -618,21 +634,13 @@ Win32LongPathsSupport -Enable
 # Отключить поддержку длинных путей, ограниченных по умолчанию 260 символами (значение по умолчанию)
 # Win32LongPathsSupport -Disable
 
-# Display the Stop error code when a BSoD occurs
-# Отображать код Stop-ошибки при появлении BSoD
+# Display the Stop error parameters when a BSoD occurs
+# Отображать параметры Stop-ошибки при появлении BSoD
 BSoDStopError -Enable
 
-# Do not display the Stop error code when a BSoD occurs (default value)
-# Не отображать код Stop-ошибки при появлении BSoD (значение по умолчанию)
+# Do not display the Stop error parameters when a BSoD occurs (default value)
+# Не отображать параметры Stop-ошибки при появлении BSoD (значение по умолчанию)
 # BSoDStopError -Disable
-
-# Choose when to be notified about changes to your computer: never notify
-# Настройка уведомления об изменении параметров компьютера: никогда не уведомлять
-AdminApprovalMode -Never
-
-# Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
-# Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
-# AdminApprovalMode -Default
 
 # Turn off Delivery Optimization
 # Выключить оптимизацию доставки
@@ -711,6 +719,14 @@ WindowsLatestUpdate -Disable
 # Получать последние обновления, как только они будут доступны
 # WindowsLatestUpdate -Enable
 
+# Disable hibernation. Not recommended for laptops
+# Отключить режим гибернации. Не рекомендуется для ноутбуков
+Hibernation -Disable
+
+# Enable hibernation (default value)
+# Включить режим гибернации (значение по умолчанию)
+# Hibernation -Enable
+
 # Set power plan to "High performance". Not recommended for laptops
 # Установить схему управления питанием на "Высокая производительность". Не рекомендуется для ноутбуков
 PowerPlan -High
@@ -727,13 +743,21 @@ NetworkAdaptersSavePower -Disable
 # Разрешить отключение активных сетевых адаптеров для экономии энергии (значение по умолчанию)
 # NetworkAdaptersSavePower -Enable
 
-# Override for default input method: English
-# Переопределить метод ввода по умолчанию: английский
+# Override for default input method: English (United States)
+# Переопределить метод ввода по умолчанию: английский (США)
 InputMethod -English
 
 # Override for default input method: use language list (default value)
 # Переопределить метод ввода по умолчанию: использовать список языков (значение по умолчанию)
 # InputMethod -Default
+
+# Let me use a different input method for each app window
+# Позволить выбирать метод ввода для каждого окна
+AppsLanguageSwitch -Enable
+
+# Do not use a different input method for each app window (default value)
+# Не использовать метод ввода для каждого окна (значение по умолчанию)
+# AppsLanguageSwitch -Disable
 
 # Change the location of user folders to the root of any drive using an interactive menu. User files and folders won't be moved to the new location
 # Изменить расположение пользовательских папок в корень любого диска на выбор с помощью интерактивного меню. Пользовательские файлы и папки не будут перемещены в новое расположение
@@ -755,23 +779,13 @@ WinPrtScrFolder -Desktop
 # Сохранять скриншоты по нажатию Windows+PrtScr или Windows+Shift+S в папку "Изображения" (значение по умолчанию)
 # WinPrtScrFolder -Default
 
-<#
-	Run troubleshooters automatically, then notify me
-	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
+# Use the Print screen key to open screen snipping
+# Использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана
+PrtScnSnippingTool -Enable
 
-	Автоматически запускать средства устранения неполадок, а затем уведомлять
-	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
-#>
-RecommendedTroubleshooting -Automatically
-
-<#
-	Ask me before running troubleshooters (default value)
-	For this feature to work, the diagnostic data level will be set to "Optional diagnostic data", and Windows Error Reporting will be turned on
-
-	Спрашивать перед запуском средств устранения неполадок (значение по умолчанию)
-	Чтобы заработала данная функция, уровень сбора диагностических данных ОС будет установлен на "Необязательные диагностические данные" и включится создание отчетов об ошибках Windows
-#>
-# RecommendedTroubleshooting -Default
+# Do not use the Print screen key to open screen snipping (default value)
+# Не использовать кнопку PRINT SCREEN, чтобы запустить функцию создания фрагмента экрана (значение по умолчанию)
+# PrtScnSnippingTool -Disable
 
 # Disable and delete reserved storage after the next update installation
 # Отключить и удалить зарезервированное хранилище после следующей установки обновлений
@@ -797,12 +811,12 @@ NumLock -Enable
 # Выключить Num Lock при загрузке (значение по умолчанию)
 # NumLock -Disable
 
-# Disable Caps Lock
-# Выключить Caps Lock
+# Disable Caps Lock. Restart needed
+# Выключить Caps Lock. Необходима перезагрузка
 # CapsLock -Disable
 
-# Enable Caps Lock (default value)
-# Включить Caps Lock (значение по умолчанию)
+# Enable Caps Lock (default value). Restart needed
+# Включить Caps Lock (значение по умолчанию). Необходима перезагрузка
 # CapsLock -Enable
 
 # Turn off pressing the Shift key 5 times to turn on Sticky keys
@@ -876,14 +890,6 @@ DefaultTerminalApp -WindowsTerminal
 # Установить Windows Console Host как приложение терминала по умолчанию для размещения пользовательского интерфейса для приложений командной строки (значение по умолчанию)
 # DefaultTerminalApp -ConsoleHost
 
-# Install the latest Microsoft Visual C++ Redistributable Packages 2017–2026 (x86/x64). An Internet connection is required
-# Установить последнюю версию распространяемых пакетов Microsoft Visual C++ 2017–2026 (x86/x64). Требуется соединение с интернетом
-Install-VCRedist
-
-# Install the latest .NET Desktop Runtime 10, 11 x64. An Internet connection is required
-# Установить последнюю версию .NET Desktop Runtime 10, 11 x64. Требуется соединение с интернетом
-Install-DotNetRuntimes -Runtimes NET10, NET11
-
 # List Microsoft Edge channels to prevent desktop shortcut creation upon its update
 # Перечислите каналы Microsoft Edge для предотвращения создания ярлыков на рабочем столе после его обновления
 PreventEdgeShortcutCreation -Channels Stable, Beta, Dev, Canary
@@ -908,12 +914,6 @@ WindowsAI -Disable
 # Включить функции, связанные с ИИ Windows (значение по умолчанию)
 # WindowsAI -Enable
 #endregion System
-
-#region WSL
-# Enable Windows Subsystem for Linux (WSL), install the latest WSL Linux kernel version, and a Linux distribution using a pop-up form. An Internet connection is required
-# Установить подсистему Windows для Linux (WSL), последний пакет обновления ядра Linux и дистрибутив Linux, используя всплывающую форму. Требуется соединение с интернетом
-# Install-WSL
-#endregion WSL
 
 #region UWP apps
 # Uninstall UWP apps using a pop-up dialog box
@@ -1024,12 +1024,12 @@ PUAppsDetection -Enable
 # Выключить обнаружение потенциально нежелательных приложений (значение по умолчанию)
 # PUAppsDetection -Disable
 
-# Enable sandboxing for Microsoft Defender
-# Включить песочницу для Microsoft Defender
+# Enable sandboxing for Microsoft Defender. Restart needed
+# Включить песочницу для Microsoft Defender. Необходима перезагрузка
 DefenderSandbox -Enable
 
-# Disable sandboxing for Microsoft Defender (default value)
-# Выключить песочницу для Microsoft Defender (значение по умолчанию)
+# Disable sandboxing for Microsoft Defender (default value). Restart needed
+# Выключить песочницу для Microsoft Defender (значение по умолчанию). Необходима перезагрузка
 # DefenderSandbox -Disable
 
 # Enable logging of running processes, including their arguments, and PowerShell scripts, and create the custom "Process Creation" view in Event Viewer
@@ -1056,14 +1056,6 @@ SaveZoneInformation -Disable
 # Включить отметку Диспетчером вложений файлов, скачанных из интернета, как небезопасных (значение по умолчанию)
 # SaveZoneInformation -Enable
 
-# Enable Windows Sandbox
-# Включить Windows Sandbox
-# WindowsSandbox -Enable
-
-# Disable Windows Sandbox (default value)
-# Выключить Windows Sandbox (значение по умолчанию)
-# WindowsSandbox -Disable
-
 # Enable DNS-over-HTTPS using Cloudflare DNS
 # Включить DNS-over-HTTPS, используя DNS от Cloudflare
 DNSoverHTTPS -Cloudflare
@@ -1088,13 +1080,21 @@ DNSoverHTTPS -Cloudflare
 # Установить DNS-серверы вашего провайдера (значение по умолчанию)
 # DNSoverHTTPS -Reset
 
-# Enable Local Security Authority protection to prevent code injection
-# Включить защиту локальной системы безопасности, чтобы предотвратить внедрение кода
+# Enable Local Security Authority protection to prevent code injection. Restart needed
+# Включить защиту локальной системы безопасности, чтобы предотвратить внедрение кода. Необходима перезагрузка
 # LocalSecurityAuthority -Enable
 
-# Disable Local Security Authority protection (default value)
-# Выключить защиту локальной системы безопасности (значение по умолчанию)
+# Disable Local Security Authority protection (default value). Restart needed
+# Выключить защиту локальной системы безопасности (значение по умолчанию). Необходима перезагрузка
 # LocalSecurityAuthority -Disable
+
+# Choose when to be notified about changes to your computer: never notify
+# Настройка уведомления об изменении параметров компьютера: никогда не уведомлять
+AdminApprovalMode -Never
+
+# Choose when to be notified about changes to your computer: notify me only when apps try to make changes to my computer (default value)
+# Настройка уведомления об изменении параметров компьютера: уведомлять меня только при попытках приложений внести изменения в компьютер (значение по умолчанию)
+# AdminApprovalMode -Default
 #endregion Microsoft Defender & Security
 
 #region Context menu
