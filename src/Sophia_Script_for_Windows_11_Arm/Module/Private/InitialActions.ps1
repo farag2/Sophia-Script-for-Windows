@@ -180,7 +180,7 @@ function InitialActions
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $Component), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11arm64" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		# Display available AVs
@@ -314,7 +314,7 @@ function InitialActions
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.HarmfulTweakerFound -f $Tweaker), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows11arm64" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks
@@ -361,7 +361,7 @@ function InitialActions
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.UWPComponentsMissing -f $_), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows11arm64" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks
@@ -383,7 +383,7 @@ function InitialActions
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.DefenderComponentsMissing -f $_), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows11arm64" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks

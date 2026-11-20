@@ -80,7 +80,7 @@ function CreateRestorePoint
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $Component), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11arm64" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Show-SupportLinks
@@ -315,7 +315,7 @@ function ErrorReporting
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $([WinAPI.GetStrings]::GetIndirectString("@%SystemRoot%\System32\wersvc.dll,-100"))), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
 
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows11arm64" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		Show-SupportLinks

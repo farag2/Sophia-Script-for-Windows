@@ -129,7 +129,9 @@ function Global:PostActions
 	Write-Warning -Message $Localization.RestartWarning
 
 	Write-Information -MessageData "" -InformationAction Continue
-	# Get how much space restore points on the system drive take up in GB
+	# Get how much space shadow copies on the system drive take up in GB
+	# The shadow storage is shared by all shadow copies of the volume: restore points, system images, and snapshots of backup software
+	# The size of restore points alone isn't available
 	$DeviceID = (Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_Volume | Where-Object -FilterScript {$_.BootVolume}).DeviceID
 	$ShadowStorage = Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_ShadowStorage | Where-Object -FilterScript {$_.Volume.DeviceID -eq $DeviceID}
 	# There's no shadow storage, if System Protection has never been enabled

@@ -179,8 +179,6 @@ function InitialActions
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $Component), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-		Write-Information -MessageData "" -InformationAction Continue
 
 		# Display available AVs
 		Get-CimInstance -Namespace root/SecurityCenter2 -ClassName AntiVirusProduct -ErrorAction Ignore
@@ -309,8 +307,6 @@ function InitialActions
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.HarmfulTweakerFound -f $Tweaker), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
-			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks
 
@@ -361,8 +357,6 @@ function InitialActions
 		{
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.DefenderComponentsMissing -f $_), $Localization.ReinstallWindows -join " ")
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks

@@ -180,7 +180,7 @@ function InitialActions
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Warning -Message (($Localization.WindowsComponentStabilityDisrupted -f $Component), $Localization.ReinstallWindows -join " ")
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+		Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
 
 		# Display available AVs
@@ -310,7 +310,7 @@ function InitialActions
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.HarmfulTweakerFound -f $Tweaker), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks
@@ -357,7 +357,7 @@ function InitialActions
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.UWPComponentsMissing -f $_), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks
@@ -379,7 +379,7 @@ function InitialActions
 			Write-Information -MessageData "" -InformationAction Continue
 			Write-Warning -Message (($Localization.DefenderComponentsMissing -f $_), $Localization.ReinstallWindows -join " ")
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message "https://massgrave.dev/genuine-installation-media" -Verbose
+			Write-Verbose -Message "https://www.microsoft.com/software-download/windows10" -Verbose
 			Write-Information -MessageData "" -InformationAction Continue
 
 			Show-SupportLinks
@@ -558,7 +558,6 @@ function InitialActions
 		Write-Verbose -Message "https://support.microsoft.com/windows/windows-10-support-has-ended-on-october-14-2025-2ca8b313-1946-43d3-b55c-2b95b107f281" -Verbose
 		Write-Verbose -Message "https://learn.microsoft.com/lifecycle/faq/extended-security-updates" -Verbose
 		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message "https://massgrave.dev/windows10_eol" -Verbose
 		Write-Verbose -Message "https://github.com/abbodi1406/ConsumerESU" -Verbose
 
 		do
@@ -569,7 +568,6 @@ function InitialActions
 			{
 				$Yes
 				{
-					Start-Process -FilePath "https://massgrave.dev/windows10_eol"
 					Start-Process -FilePath "https://github.com/abbodi1406/ConsumerESU"
 				}
 				$No
