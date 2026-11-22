@@ -314,37 +314,6 @@ function InitialActions
 		}
 	}
 
-	# Check whether third-party entries were added to the hosts file
-	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
-	if ($HostsEntries)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
-
-		do
-		{
-			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-			switch ($Choice)
-			{
-				$Yes
-				{
-					continue
-				}
-				$No
-				{
-					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
-
-					Show-SupportLinks
-
-					exit
-				}
-				$KeyboardArrows {}
-			}
-		}
-		until ($Choice -ne $KeyboardArrows)
-	}
-
 	# Check whether Windows Feature Experience Pack was removed
 	if (-not (Get-AppxPackage -Name MicrosoftWindows.Client.CBS))
 	{
@@ -431,35 +400,6 @@ function InitialActions
 		exit
 	}
 
-	# Check whether BitLocker drive encryption is off, despite drive is encrypted
-	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
-	{
-		Clear-Host
-
-		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
-		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
-		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
-
-		do
-		{
-			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-			switch ($Choice)
-			{
-				$Yes
-				{
-					Disable-BitLocker -MountPoint $env:SystemDrive
-				}
-				$No
-				{
-					continue
-				}
-				$KeyboardArrows {}
-			}
-		}
-		until ($Choice -ne $KeyboardArrows)
-	}
-
 	# Windows 10 Enterprise LTSC 2021
 	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
 	if (-not (($WINDOWS_LONG -match "Windows 10") -and ($WINDOWS_LONG -match "LTSC")))
@@ -530,6 +470,77 @@ function InitialActions
 		Start-Process -FilePath "ms-settings:windowsupdate"
 
 		exit
+	}
+
+	# Check whether third-party entries were added to the hosts file
+	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
+	if ($HostsEntries)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
+
+		do
+		{
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+			switch ($Choice)
+			{
+				$Yes
+				{
+					continue
+				}
+				$No
+				{
+					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
+
+					Show-SupportLinks
+
+					exit
+				}
+				$KeyboardArrows {}
+			}
+		}
+		until ($Choice -ne $KeyboardArrows)
+	}
+
+	# Check whether BitLocker drive encryption is off, despite drive is encrypted
+	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
+	{
+		Clear-Host
+
+		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
+		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
+		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
+
+		do
+		{
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+			switch ($Choice)
+			{
+				$Yes
+				{
+					try
+					{
+						Disable-BitLocker -MountPoint $env:SystemDrive -ErrorAction Stop
+					}
+					catch
+					{
+						# Windows cannot decrypt a drive whose size was changed until the PC is restarted
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Warning -Message $_.Exception.Message
+						Write-Warning -Message $Localization.RestartWarning
+						Write-Error -Message $_.Exception.Message -ErrorAction SilentlyContinue
+					}
+				}
+				$No
+				{
+					continue
+				}
+				$KeyboardArrows {}
+			}
+		}
+		until ($Choice -ne $KeyboardArrows)
 	}
 
 	# If you do not use old applications, there's no need to force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1

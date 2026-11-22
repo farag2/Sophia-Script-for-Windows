@@ -336,37 +336,6 @@ function InitialActions
 		}
 	}
 
-	# Check whether third-party entries were added to the hosts file
-	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
-	if ($HostsEntries)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
-
-		do
-		{
-			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-			switch ($Choice)
-			{
-				$Yes
-				{
-					continue
-				}
-				$No
-				{
-					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
-
-					Show-SupportLinks
-
-					exit
-				}
-				$KeyboardArrows {}
-			}
-		}
-		until ($Choice -ne $KeyboardArrows)
-	}
-
 	# Check whether the Microsoft Store or Windows Feature Experience Pack was removed
 	@("Microsoft.WindowsStore", "MicrosoftWindows.Client.CBS") | ForEach-Object -Process {
 		if (-not (Get-AppxPackage -Name $_))
@@ -457,100 +426,6 @@ function InitialActions
 		Show-SupportLinks
 
 		exit
-	}
-
-	# Check whether BitLocker drive encryption is off, despite drive is encrypted
-	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
-	{
-		Clear-Host
-
-		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
-		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
-		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
-
-		do
-		{
-			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-			switch ($Choice)
-			{
-				$Yes
-				{
-					Disable-BitLocker -MountPoint $env:SystemDrive
-				}
-				$No
-				{
-					continue
-				}
-				$KeyboardArrows {}
-			}
-		}
-		until ($Choice -ne $KeyboardArrows)
-	}
-
-	# Check whether Secure Boot is enabled and UEFI has the latest certificates installed
-	try
-	{
-		$SecureBootEnabled = Confirm-SecureBootUEFI
-	}
-	catch
-	{
-		$SecureBootEnabled = $false
-	}
-
-	if ($SecureBootEnabled)
-	{
-		try
-		{
-			$DbContainsCA2023 = [System.Text.Encoding]::ASCII.GetString((Get-SecureBootUEFI -Name db -ErrorAction Stop).Bytes) -match "Windows UEFI CA 2023"
-		}
-		catch
-		{
-			$DbContainsCA2023 = $false
-		}
-
-		if (-not $DbContainsCA2023)
-		{
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message $Localization.UpdateUEFICertificates -Verbose
-			Write-Error -Message $Localization.UpdateUEFICertificates -ErrorAction SilentlyContinue
-
-			Write-Information -MessageData "" -InformationAction Continue
-			Write-Warning -Message "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"
-			Write-Warning -Message "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787"
-
-			do
-			{
-				$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-				switch ($Choice)
-				{
-					$Yes
-					{
-						Write-Information -MessageData "" -InformationAction Continue
-						Write-Error -Message "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324" -ErrorAction SilentlyContinue
-						Write-Error -Message "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787" -ErrorAction SilentlyContinue
-
-						Start-Process -FilePath "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"
-						Start-Process -FilePath "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787"
-					}
-					$No
-					{
-						continue
-					}
-					$KeyboardArrows {}
-				}
-			}
-			until ($Choice -ne $KeyboardArrows)
-		}
-	}
-	else
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.EnableSecureBoot -Verbose
-		Write-Error -Message $Localization.EnableSecureBoot -ErrorAction SilentlyContinue
-		Write-Verbose -Message "https://support.microsoft.com/en-us/windows/security/devicesecurity/windows-11-and-secure-boot" -Verbose
-		Write-Error -Message "https://support.microsoft.com/en-us/windows/security/devicesecurity/windows-11-and-secure-boot" -ErrorAction SilentlyContinue
 	}
 
 	# Windows 11 Pro
@@ -659,6 +534,142 @@ function InitialActions
 		Start-Process -FilePath "ms-settings:windowsupdate"
 
 		exit
+	}
+
+	# Check whether third-party entries were added to the hosts file
+	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
+	if ($HostsEntries)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
+
+		do
+		{
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+			switch ($Choice)
+			{
+				$Yes
+				{
+					continue
+				}
+				$No
+				{
+					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
+
+					Show-SupportLinks
+
+					exit
+				}
+				$KeyboardArrows {}
+			}
+		}
+		until ($Choice -ne $KeyboardArrows)
+	}
+
+	# Check whether BitLocker drive encryption is off, despite drive is encrypted
+	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
+	{
+		Clear-Host
+
+		Write-Warning -Message $Localization.SystemDriveEncryptedBitLockerDisabled
+		Write-Verbose -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -Verbose
+		Write-Error -Message "https://www.neowin.net/guides/how-to-remove-bitlocker-drive-encryption-in-windows-11/" -ErrorAction SilentlyContinue
+
+		do
+		{
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+			switch ($Choice)
+			{
+				$Yes
+				{
+					try
+					{
+						Disable-BitLocker -MountPoint $env:SystemDrive -ErrorAction Stop
+					}
+					catch
+					{
+						# Windows cannot decrypt a drive whose size was changed until the PC is restarted
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Warning -Message $_.Exception.Message
+						Write-Warning -Message $Localization.RestartWarning
+						Write-Error -Message $_.Exception.Message -ErrorAction SilentlyContinue
+					}
+				}
+				$No
+				{
+					continue
+				}
+				$KeyboardArrows {}
+			}
+		}
+		until ($Choice -ne $KeyboardArrows)
+	}
+
+	# Check whether Secure Boot is enabled and UEFI has the latest certificates installed
+	try
+	{
+		$SecureBootEnabled = Confirm-SecureBootUEFI
+	}
+	catch
+	{
+		$SecureBootEnabled = $false
+	}
+
+	if ($SecureBootEnabled)
+	{
+		try
+		{
+			$DbContainsCA2023 = [System.Text.Encoding]::ASCII.GetString((Get-SecureBootUEFI -Name db -ErrorAction Stop).Bytes) -match "Windows UEFI CA 2023"
+		}
+		catch
+		{
+			$DbContainsCA2023 = $false
+		}
+
+		if (-not $DbContainsCA2023)
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message $Localization.UpdateUEFICertificates -Verbose
+			Write-Error -Message $Localization.UpdateUEFICertificates -ErrorAction SilentlyContinue
+
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Warning -Message "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"
+			Write-Warning -Message "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787"
+
+			do
+			{
+				$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+				switch ($Choice)
+				{
+					$Yes
+					{
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Error -Message "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324" -ErrorAction SilentlyContinue
+						Write-Error -Message "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787" -ErrorAction SilentlyContinue
+
+						Start-Process -FilePath "https://techcommunity.microsoft.com/blog/windows-itpro-blog/updating-microsoft-secure-boot-keys/4055324"
+						Start-Process -FilePath "https://techcommunity.microsoft.com/blog/hardware-dev-center/signing-with-the-new-2023-microsoft-uefi-certificates-what-submitters-need-to-kn/4455787"
+					}
+					$No
+					{
+						continue
+					}
+					$KeyboardArrows {}
+				}
+			}
+			until ($Choice -ne $KeyboardArrows)
+		}
+	}
+	else
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.EnableSecureBoot -Verbose
+		Write-Error -Message $Localization.EnableSecureBoot -ErrorAction SilentlyContinue
+		Write-Verbose -Message "https://support.microsoft.com/en-us/windows/security/devicesecurity/windows-11-and-secure-boot" -Verbose
+		Write-Error -Message "https://support.microsoft.com/en-us/windows/security/devicesecurity/windows-11-and-secure-boot" -ErrorAction SilentlyContinue
 	}
 
 	# If you do not use old applications, there's no need to force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1

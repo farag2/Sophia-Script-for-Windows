@@ -99,6 +99,7 @@ RestartFunction                           = Пожалуйста, повторн
 NoConnectionEstablished                   = Невозможно установить соединение с {0}.
 Run                                       = Запустить
 FunctionSkipped                           = Функция "{0}" пропущена.
+LinkedFunctionsChanged                    = Функция "{0}" также изменила параметры следующих функций: {1}.
 DonateToastTitle                          = Будем рады пожертвованиям! ♥
 DotSourceFunction                         = Пожалуйста, запустите скрипт через дот-сорсинг (с точкой в начале):\n. .\\Import-TabCompletion.ps1
 '@

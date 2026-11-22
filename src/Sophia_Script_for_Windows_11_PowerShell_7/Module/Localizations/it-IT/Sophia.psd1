@@ -101,6 +101,7 @@ RestartFunction                           = Esegui nuovamente la funzione "{0}".
 NoConnectionEstablished                   = Non è stato possibile stabilire una connessione con {0}.
 Run                                       = Esegui
 FunctionSkipped                           = Funzione "{0}" saltata.
+LinkedFunctionsChanged                    = La funzione "{0}" ha modificato anche le impostazioni delle seguenti funzioni: {1}.
 DonateToastTitle                          = Le donazioni sono benvenute! ❤
 DotSourceFunction                         = Esegui lo script tramite dot-sourcing (con un punto all'inizio):\n. .\\Import-TabCompletion.ps1
 '@

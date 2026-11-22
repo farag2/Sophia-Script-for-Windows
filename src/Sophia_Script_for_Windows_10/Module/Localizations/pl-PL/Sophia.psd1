@@ -99,6 +99,7 @@ RestartFunction                           = Uruchom ponownie funkcję "{0}".
 NoConnectionEstablished                   = Nie można nawiązać połączenia z {0}.
 Run                                       = Uruchom
 FunctionSkipped                           = Funkcja "{0}" pominięta.
+LinkedFunctionsChanged                    = Funkcja "{0}" zmieniła również ustawienia następujących funkcji: {1}.
 DonateToastTitle                          = Darowizny są mile widziane! ♥
 DotSourceFunction                         = Uruchom skrypt za pomocą dot-sourcingu (z kropką na początku):\n. .\\Import-TabCompletion.ps1
 '@

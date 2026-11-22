@@ -318,37 +318,6 @@ function InitialActions
 		}
 	}
 
-	# Check whether third-party entries were added to the hosts file
-	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
-	if ($HostsEntries)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
-
-		do
-		{
-			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
-
-			switch ($Choice)
-			{
-				$Yes
-				{
-					continue
-				}
-				$No
-				{
-					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
-
-					Show-SupportLinks
-
-					exit
-				}
-				$KeyboardArrows {}
-			}
-		}
-		until ($Choice -ne $KeyboardArrows)
-	}
-
 	# Check whether Windows Feature Experience Pack was removed
 	if (-not (Get-AppxPackage -Name MicrosoftWindows.Client.CBS))
 	{
@@ -435,6 +404,109 @@ function InitialActions
 		exit
 	}
 
+	# Windows 11 Enterprise LTSC 2024
+	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+	if (-not (($WINDOWS_LONG -match "Windows 11") -and ($WINDOWS_LONG -match "LTSC")))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		# e.g. 24H2
+		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
+
+		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $WINDOWS_LONG, $DisplayVersion)
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Show-SupportLinks
+
+		# Receive updates for other Microsoft products when you update Windows
+		New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
+
+		# Check for updates
+		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
+
+		exit
+	}
+
+	# Check whether Windows build is the latest one
+	try
+	{
+		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Windows_Builds.json
+		$Parameters = @{
+			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Windows_Builds.json"
+			UseBasicParsing = $true
+			TimeoutSec      = 5
+			Verbose         = $true
+		}
+		$LatestSupportedMinorBuild = (Invoke-RestMethod @Parameters).Windows_11_LTSC_2024_Minor
+	}
+	catch [System.Net.WebException]
+	{
+		# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information
+		$LatestSupportedMinorBuild = 9974
+
+		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
+		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
+	}
+
+	# Windows 11 Enterprise LTSC 2024
+	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
+	# Check Windows major and minor build versions
+	$LatestSupportedMajorBuild = 26100
+	$CurrentVersion            = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
+	$DisplayVersion            = $CurrentVersion.DisplayVersion
+	$CurrentBuild              = [int]$CurrentVersion.CurrentBuild
+	$UBR                       = [int]$CurrentVersion.UBR
+
+	if (($CurrentBuild -ne $LatestSupportedMajorBuild) -or ($UBR -lt $LatestSupportedMinorBuild))
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Warning -Message ($Localization.UpdateWindowsBuild -f $LatestSupportedMajorBuild, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
+		Write-Information -MessageData "" -InformationAction Continue
+
+		Show-SupportLinks
+
+		# Receive updates for other Microsoft products when you update Windows
+		New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
+
+		# Check for updates
+		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
+
+		# Open the "Windows Update" page
+		Start-Process -FilePath "ms-settings:windowsupdate"
+
+		exit
+	}
+
+	# Check whether third-party entries were added to the hosts file
+	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
+	if ($HostsEntries)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
+
+		do
+		{
+			$Choice = Show-Menu -Menu @($Yes, $No) -Default 2
+
+			switch ($Choice)
+			{
+				$Yes
+				{
+					continue
+				}
+				$No
+				{
+					Invoke-Item -Path "$env:SystemRoot\System32\drivers\etc"
+
+					Show-SupportLinks
+
+					exit
+				}
+				$KeyboardArrows {}
+			}
+		}
+		until ($Choice -ne $KeyboardArrows)
+	}
+
 	# Check whether BitLocker drive encryption is off, despite drive is encrypted
 	if (Get-BitLockerVolume -MountPoint $env:SystemDrive | Where-Object -FilterScript {($_.ProtectionStatus -eq "Off") -and ($_.VolumeStatus -eq "FullyEncrypted")})
 	{
@@ -452,7 +524,18 @@ function InitialActions
 			{
 				$Yes
 				{
-					Disable-BitLocker -MountPoint $env:SystemDrive
+					try
+					{
+						Disable-BitLocker -MountPoint $env:SystemDrive -ErrorAction Stop
+					}
+					catch
+					{
+						# Windows cannot decrypt a drive whose size was changed until the PC is restarted
+						Write-Information -MessageData "" -InformationAction Continue
+						Write-Warning -Message $_.Exception.Message
+						Write-Warning -Message $Localization.RestartWarning
+						Write-Error -Message $_.Exception.Message -ErrorAction SilentlyContinue
+					}
 				}
 				$No
 				{
@@ -527,78 +610,6 @@ function InitialActions
 		Write-Error -Message $Localization.EnableSecureBoot -ErrorAction SilentlyContinue
 		Write-Verbose -Message "https://support.microsoft.com/en-us/windows/security/devicesecurity/windows-11-and-secure-boot" -Verbose
 		Write-Error -Message "https://support.microsoft.com/en-us/windows/security/devicesecurity/windows-11-and-secure-boot" -ErrorAction SilentlyContinue
-	}
-
-	# Windows 11 Enterprise LTSC 2024
-	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	if (-not (($WINDOWS_LONG -match "Windows 11") -and ($WINDOWS_LONG -match "LTSC")))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		# e.g. 24H2
-		$DisplayVersion = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name DisplayVersion
-
-		Write-Warning -Message ($Localization.WrongSophiaScriptVersion -f $WINDOWS_LONG, $DisplayVersion)
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Show-SupportLinks
-
-		# Receive updates for other Microsoft products when you update Windows
-		New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
-
-		# Check for updates
-		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-		exit
-	}
-
-	# Check whether Windows build is the latest one
-	try
-	{
-		# https://github.com/farag2/Sophia-Script-for-Windows/blob/main/Windows_Builds.json
-		$Parameters = @{
-			Uri             = "https://raw.githubusercontent.com/farag2/Sophia-Script-for-Windows/main/Windows_Builds.json"
-			UseBasicParsing = $true
-			TimeoutSec      = 5
-			Verbose         = $true
-		}
-		$LatestSupportedMinorBuild = (Invoke-RestMethod @Parameters).Windows_11_LTSC_2024_Minor
-	}
-	catch [System.Net.WebException]
-	{
-		# https://learn.microsoft.com/en-us/windows/release-health/windows11-release-information
-		$LatestSupportedMinorBuild = 9974
-
-		Write-Warning -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)")
-		Write-Error -Message ($Localization.NoConnectionEstablished -f "$($Parameters.Uri)") -ErrorAction SilentlyContinue
-	}
-
-	# Windows 11 Enterprise LTSC 2024
-	$WINDOWS_LONG = [WinAPI.Winbrand]::BrandingFormatString("%WINDOWS_LONG%")
-	# Check Windows major and minor build versions
-	$LatestSupportedMajorBuild = 26100
-	$CurrentVersion            = Get-ItemProperty -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion"
-	$DisplayVersion            = $CurrentVersion.DisplayVersion
-	$CurrentBuild              = [int]$CurrentVersion.CurrentBuild
-	$UBR                       = [int]$CurrentVersion.UBR
-
-	if (($CurrentBuild -ne $LatestSupportedMajorBuild) -or ($UBR -lt $LatestSupportedMinorBuild))
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Warning -Message ($Localization.UpdateWindowsBuild -f $LatestSupportedMajorBuild, $LatestSupportedMinorBuild, $WINDOWS_LONG, $DisplayVersion, $CurrentBuild, $UBR)
-		Write-Information -MessageData "" -InformationAction Continue
-
-		Show-SupportLinks
-
-		# Receive updates for other Microsoft products when you update Windows
-		New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
-
-		# Check for updates
-		& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
-
-		# Open the "Windows Update" page
-		Start-Process -FilePath "ms-settings:windowsupdate"
-
-		exit
 	}
 
 	# If you do not use old applications, there's no need to force old applications based on legacy .NET Framework 2.0, 3.0, or 3.5 to use .NET Framework 4.8.1

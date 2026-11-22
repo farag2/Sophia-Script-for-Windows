@@ -100,6 +100,7 @@ RestartFunction                           = 请重新运行"{0}"函数。
 NoConnectionEstablished                   = 无法与 {0} 建立连接。
 Run                                       = 运行
 FunctionSkipped                           = 跳过函数"{0}"。
+LinkedFunctionsChanged                    = "{0}"函数还更改了以下函数的设置：{1}。
 DonateToastTitle                          = 欢迎捐赠！ ❤
 DotSourceFunction                         = 请以点源方式运行该脚本（开头加一个点）：\n. .\\Import-TabCompletion.ps1
 '@

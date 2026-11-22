@@ -100,6 +100,7 @@ RestartFunction                           = Lütfen "{0}" işlevini yeniden çal
 NoConnectionEstablished                   = {0} ile bağlantı kurulamadı.
 Run                                       = Çalıştır
 FunctionSkipped                           = "{0}" işlevi atlandı.
+LinkedFunctionsChanged                    = "{0}" işlevi aşağıdaki işlevlerin ayarlarını da değiştirdi: {1}.
 DonateToastTitle                          = Bağışlarınızı bekliyoruz! ♥
 DotSourceFunction                         = Lütfen komut dosyasını dot-sourcing ile çalıştırın (başında bir nokta ile):\n. .\\Import-TabCompletion.ps1
 '@

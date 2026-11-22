@@ -386,6 +386,23 @@ function RecommendedTroubleshooting
 		return
 	}
 
+	# The function sets the diagnostic data level and turns on Windows Error Reporting: tell if that changes what other functions have set
+	$ChangedFunctions = @()
+	if ([Microsoft.Win32.Registry]::GetValue("HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Policies\DataCollection", "MaxTelemetryAllowed", $null) -eq 1)
+	{
+		$ChangedFunctions += "DiagnosticDataLevel"
+	}
+	if ((Get-Service -Name WerSvc).StartType -eq "Disabled")
+	{
+		$ChangedFunctions += "ErrorReporting"
+	}
+	if ($ChangedFunctions)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.LinkedFunctionsChanged -f $MyInvocation.Line.Trim(), ($ChangedFunctions -join ", ")) -Verbose
+		Write-Error -Message ($Localization.LinkedFunctionsChanged -f $MyInvocation.Line.Trim(), ($ChangedFunctions -join ", ")) -ErrorAction SilentlyContinue
+	}
+
 	# Remove all policies in order to make changes visible in UI
 	Remove-ItemProperty -Path HKLM:\SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry -Force -ErrorAction Ignore
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\DataCollection -Name AllowTelemetry
@@ -2302,6 +2319,19 @@ function SearchHighlights
 		}
 		"Show"
 		{
+			# Search highlights need the web search: tell if it was turned off
+			$ChangedFunctions = @()
+			if ([Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Policies\Microsoft\Windows\Explorer", "DisableSearchBoxSuggestions", $null) -eq 1)
+			{
+				$ChangedFunctions += "BingSearch"
+			}
+			if ($ChangedFunctions)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.LinkedFunctionsChanged -f $MyInvocation.Line.Trim(), ($ChangedFunctions -join ", ")) -Verbose
+				Write-Error -Message ($Localization.LinkedFunctionsChanged -f $MyInvocation.Line.Trim(), ($ChangedFunctions -join ", ")) -ErrorAction SilentlyContinue
+			}
+
 			# Enable "Ask Copilot" and "Find results in Web" in Windows Search in order to enable Search Highlights
 			Remove-ItemProperty -Path HKCU:\Software\Microsoft\Windows\CurrentVersion\Search -Name BingSearchEnabled -Force -ErrorAction Ignore
 			Remove-ItemProperty -Path HKCU:\Software\Policies\Microsoft\Windows\Explorer -Name DisableSearchBoxSuggestions -Force -ErrorAction Ignore
@@ -3565,6 +3595,38 @@ function StartRecommendedSection
 		return
 	}
 
+	# The Recommended section is made of the lists that other functions show or hide: tell which of their choices are changed
+	$ShowRecentList = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Start", "ShowRecentList", $null)
+	$ShowFrequentList = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Start", "ShowFrequentList", $null)
+	$IrisRecommendations = [Microsoft.Win32.Registry]::GetValue("HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Explorer\Advanced", "Start_IrisRecommendations", $null)
+	$ChangedFunctions = @()
+	if ($Hide)
+	{
+		# Most used apps are shown only if that was turned on
+		if ($ShowFrequentList -eq 1)
+		{
+			$ChangedFunctions += "MostUsedStartApps"
+		}
+	}
+	else
+	{
+		# Recently added apps and recommendations are hidden only if that was turned off
+		if ($ShowRecentList -eq 0)
+		{
+			$ChangedFunctions += "RecentlyAddedStartApps"
+		}
+		if ($IrisRecommendations -eq 0)
+		{
+			$ChangedFunctions += "StartRecommendationsTips"
+		}
+	}
+	if ($ChangedFunctions)
+	{
+		Write-Information -MessageData "" -InformationAction Continue
+		Write-Verbose -Message ($Localization.LinkedFunctionsChanged -f $MyInvocation.Line.Trim(), ($ChangedFunctions -join ", ")) -Verbose
+		Write-Error -Message ($Localization.LinkedFunctionsChanged -f $MyInvocation.Line.Trim(), ($ChangedFunctions -join ", ")) -ErrorAction SilentlyContinue
+	}
+
 	switch ($PSCmdlet.ParameterSetName)
 	{
 		"Hide"
@@ -4000,12 +4062,12 @@ function Install-DotNetRuntimes
 			# Get latest build version
 			# https://github.com/dotnet/core/blob/main/release-notes/releases-index.json
 			$Parameters = @{
-				Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/$NET/releases.json"
+				Uri             = "https://builds.dotnet.microsoft.com/dotnet/release-metadata/releases-index.json"
 				UseBasicParsing = $true
 				TimeoutSec      = 5
 				Verbose         = $true
 			}
-			$LatestNETVersion = (Invoke-RestMethod @Parameters)."latest-release"
+			$LatestNETVersion = ((Invoke-RestMethod @Parameters)."releases-index" | Where-Object -FilterScript {$_."channel-version" -eq $NET})."latest-release"
 		}
 		catch [System.Net.WebException]
 		{
@@ -5192,6 +5254,14 @@ function Hibernation
 		"Enable"
 		{
 			& "$env:SystemRoot\System32\powercfg.exe" /HIBERNATE ON
+
+			# powercfg fails if the firmware of the device does not support hibernation, and tells the reason itself
+			if ($LASTEXITCODE -ne 0)
+			{
+				Write-Information -MessageData "" -InformationAction Continue
+				Write-Verbose -Message ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -Verbose
+				Write-Error -Message ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -ErrorAction SilentlyContinue
+			}
 		}
 	}
 }
@@ -5315,8 +5385,9 @@ function NetworkAdaptersSavePower
 	Remove-Policy -Scope Computer -Path SOFTWARE\Policies\Microsoft\Windows\AppPrivacy -Name LetAppsAccessLocation
 
 	# Check whether adapters have AllowComputerToTurnOffDevice property to manage
-	$PhysicalAdapters = Get-NetAdapter -Physical | Where-Object -FilterScript {$_.Status -eq "Up"}
-	$Adapters = $PhysicalAdapters | Get-NetAdapterPowerManagement | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
+	# All physical adapters are taken: the setting of an adapter that is not connected can be changed too
+	$PhysicalAdapters = Get-NetAdapter -Physical
+	$Adapters = $PhysicalAdapters | Get-NetAdapterPowerManagement -ErrorAction Ignore | Where-Object -FilterScript {$_.AllowComputerToTurnOffDevice -ne "Unsupported"}
 	if (-not $Adapters)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
@@ -5327,12 +5398,14 @@ function NetworkAdaptersSavePower
 	}
 
 	$AdapterNames = @($Adapters.Name)
+	# Only the connected adapters lose a connection when they restart, so only they are waited for
+	$ConnectedAdapterNames = @($PhysicalAdapters | Where-Object -FilterScript {($_.Name -in $AdapterNames) -and ($_.Status -eq "Up")} | ForEach-Object -Process {$_.Name})
 	$SSID = $null
 	$ProfileName = $null
 
 	# Wi-Fi adapters whose power management will be changed
 	# https://learn.microsoft.com/en-us/previous-versions/windows/desktop/legacy/hh968170(v=vs.85)
-	$WiFiAdapters = @($PhysicalAdapters | Where-Object -FilterScript {($_.Name -in $AdapterNames) -and ($_.NdisPhysicalMedium -eq 9)})
+	$WiFiAdapters = @($PhysicalAdapters | Where-Object -FilterScript {($_.Name -in $ConnectedAdapterNames) -and ($_.NdisPhysicalMedium -eq 9)})
 
 	# Check whether PC is currently connected to a Wi-Fi network
 	if ($WiFiAdapters.Count -gt 0)
@@ -5395,6 +5468,12 @@ function NetworkAdaptersSavePower
 		}
 	}
 
+	# Nothing was connected, so there is no connection to wait for
+	if ($ConnectedAdapterNames.Count -eq 0)
+	{
+		return
+	}
+
 	Write-Information -MessageData "" -InformationAction Continue
 	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
@@ -5408,9 +5487,9 @@ function NetworkAdaptersSavePower
 		Start-Sleep -Milliseconds 500
 
 		# An adapter may disappear while its driver is reloading, so count only adapters that are up
-		$UpAdapters = @(Get-NetAdapter -Physical -Name $AdapterNames -ErrorAction Ignore | Where-Object -FilterScript {$_.Status -eq "Up"})
+		$UpAdapters = @(Get-NetAdapter -Physical -Name $ConnectedAdapterNames -ErrorAction Ignore | Where-Object -FilterScript {$_.Status -eq "Up"})
 	}
-	while (($UpAdapters.Count -eq $AdapterNames.Count) -and ($Timer.Elapsed.TotalSeconds -lt 10))
+	while (($UpAdapters.Count -eq $ConnectedAdapterNames.Count) -and ($Timer.Elapsed.TotalSeconds -lt 10))
 
 	# Wait until Internet access is restored, or until adapters are up if there was no Internet access before. 60 seconds at most
 	# Otherwise functions below will indicate that there is no Internet connection
@@ -5424,8 +5503,8 @@ function NetworkAdaptersSavePower
 		}
 		else
 		{
-			$UpAdapters = @(Get-NetAdapter -Physical -Name $AdapterNames -ErrorAction Ignore | Where-Object -FilterScript {$_.Status -eq "Up"})
-			$IsReady = $UpAdapters.Count -eq $AdapterNames.Count
+			$UpAdapters = @(Get-NetAdapter -Physical -Name $ConnectedAdapterNames -ErrorAction Ignore | Where-Object -FilterScript {$_.Status -eq "Up"})
+			$IsReady = $UpAdapters.Count -eq $ConnectedAdapterNames.Count
 		}
 
 		if ($IsReady)
@@ -8970,6 +9049,20 @@ function ScanRegistryPolicies
 			Path  = "SOFTWARE\Policies\Microsoft\TPM"
 			Name  = "OSManagedAuthLevel"
 			Value = "5"
+		},
+		# Windows default
+		@{
+			Scope = "Computer"
+			Path  = "SOFTWARE\Policies\Microsoft\Windows\EnhancedStorageDevices"
+			Name  = "TCGSecurityActivationDisabled"
+			Value = "0"
+		},
+		# Windows default
+		@{
+			Scope = "Computer"
+			Path  = "SOFTWARE\Policies\Microsoft\Windows\Network Connections"
+			Name  = "NC_PersonalFirewallConfig"
+			Value = "0"
 		},
 		# Microsoft Edge "IE to Edge" browser helper object
 		@{

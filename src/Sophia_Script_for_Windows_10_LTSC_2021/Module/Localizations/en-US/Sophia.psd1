@@ -86,6 +86,7 @@ RestartFunction                           = Please rerun the "{0}" function.
 NoConnectionEstablished                   = Connection could not be established with {0}.
 Run                                       = Run
 FunctionSkipped                           = The "{0}" function was skipped.
+LinkedFunctionsChanged                    = The "{0}" function also changed the settings of the following functions: {1}.
 DonateToastTitle                          = Donations welcome! ♥
 DotSourceFunction                         = Please dot-source the script (with a dot at the beginning):\n. .\\Import-TabCompletion.ps1
 '@
