@@ -665,25 +665,22 @@ WindowsManageDefaultPrinter -Disable
 # WindowsManageDefaultPrinter -Enable
 
 <#
-	Disable the Windows features using a pop-up dialog box
-	If you want to keep the "Multimedia settings" element in the advanced settings of Power Options, do not disable the "Media Features" feature
+	Uninstall optional features and Windows features using a pop-up dialog box. The missing ones can be installed in the same window
+	If you want to keep the "Multimedia settings" element in the advanced settings of Power Options, do not uninstall "Media Features" and "Windows Media Player"
 
-	Отключить компоненты Windows, используя всплывающее диалоговое окно
-	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не отключайте "Компоненты для работы с мультимедиа"
+	Удалить дополнительные компоненты и компоненты Windows, используя всплывающее диалоговое окно. В этом же окне можно установить отсутствующие
+	Если вы хотите оставить параметр "Параметры мультимедиа" в дополнительных параметрах схемы управления питанием, не удаляйте "Компоненты для работы с мультимедиа" и "Проигрыватель Windows Media"
 #>
-WindowsFeatures -Disable
+OptionalFeatures -Uninstall
 
-# Enable the Windows features using a pop-up dialog box
-# Включить компоненты Windows, используя всплывающее диалоговое окно
-# WindowsFeatures -Enable
+<#
+	Install optional features and Windows features using a pop-up dialog box. The installed ones can be uninstalled in the same window
+	An Internet connection is required to install optional features
 
-# Uninstall optional features
-# Удалить дополнительные компоненты
-WindowsCapabilities -Uninstall
-
-# Install optional features. An Internet connection is required
-# Установить дополнительные компоненты. Требуется соединение с интернетом
-# WindowsCapabilities -Install
+	Установить дополнительные компоненты и компоненты Windows, используя всплывающее диалоговое окно. В этом же окне можно удалить установленные
+	Для установки дополнительных компонентов требуется соединение с интернетом
+#>
+# OptionalFeatures -Install
 
 # Get updates for other apps and services together with Windows updates
 # Получать обновления для других приложений и служб с обновлениями Windows

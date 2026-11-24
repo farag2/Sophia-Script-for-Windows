@@ -63,6 +63,7 @@ function InitialActions
 		"$PSScriptRoot\..\Private\Show-SupportLinks.ps1",
 		"$PSScriptRoot\..\Private\WinAPI.ps1",
 		"$PSScriptRoot\..\Private\Write-ExtensionKeys.ps1",
+		"$PSScriptRoot\..\Private\Write-UserChoice.ps1",
 
 		"$PSScriptRoot\..\Sophia.psm1",
 		"$PSScriptRoot\..\SophiaScript.psd1",

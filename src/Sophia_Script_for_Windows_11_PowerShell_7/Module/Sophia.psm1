@@ -4889,223 +4889,27 @@ function WindowsManageDefaultPrinter
 
 <#
 	.SYNOPSIS
-	Windows features
-
-	.PARAMETER Disable
-	Disable Windows features
-
-	.PARAMETER Enable
-	Enable Windows features
-
-	.EXAMPLE
-	WindowsFeatures -Disable
-
-	.EXAMPLE
-	WindowsFeatures -Enable
-
-	.NOTES
-	Machine-wide
-#>
-function WindowsFeatures
-{
-	param
-	(
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Disable"
-		)]
-		[switch]
-		$Disable,
-
-		[Parameter(
-			Mandatory = $true,
-			ParameterSetName = "Enable"
-		)]
-		[switch]
-		$Enable
-	)
-
-	# The following optional features will be displayed with their checkboxes checked
-	[string[]]$CheckedFeatures = @(
-		# Legacy Components
-		"LegacyComponents",
-
-		# Microsoft XPS Document Writer
-		"Printing-XPSServices-Features",
-
-		# Recall
-		"Recall",
-
-		# Media Features
-		# If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
-		"MediaPlayback"
-	)
-
-	switch ($PSCmdlet.ParameterSetName)
-	{
-		"Enable"
-		{
-			$State      = @("Disabled", "DisablePending")
-			$ButtonText = $Localization.Enable
-		}
-		"Disable"
-		{
-			$State      = @("Enabled", "EnablePending")
-			$ButtonText = $Localization.Disable
-		}
-	}
-
-	Write-Information -MessageData "" -InformationAction Continue
-	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
-	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
-
-	$Features = @(Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.State -in $State) -and ($_.FeatureName -in $CheckedFeatures)} | ForEach-Object -Process {
-		Get-WindowsOptionalFeature -Online -FeatureName $_.FeatureName
-	} | Sort-Object -Property DisplayName)
-
-	if ($Features.Count -eq 0)
-	{
-		Write-Information -MessageData "" -InformationAction Continue
-		Write-Verbose -Message ($Localization.NoWindowsFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-		Write-Error -Message ($Localization.NoWindowsFeaturesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-		return
-	}
-
-	Add-Type -AssemblyName PresentationCore, PresentationFramework
-
-[xml]$XAML = @'
-<Window
-	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Width="450" Height="350" MinWidth="450" MinHeight="350"
-	WindowStartupLocation="CenterScreen" Topmost="True"
-	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
-	<Window.Resources>
-		<Style TargetType="CheckBox">
-			<Setter Property="VerticalContentAlignment" Value="Center"/>
-		</Style>
-	</Window.Resources>
-	<Grid>
-		<Grid.RowDefinitions>
-			<RowDefinition Height="*"/>
-			<RowDefinition Height="Auto"/>
-		</Grid.RowDefinitions>
-		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-			<StackPanel Name="PanelFeatures" Margin="16,8"/>
-		</ScrollViewer>
-		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
-			<Button Name="ButtonApply" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
-		</Border>
-	</Grid>
-</Window>
-'@
-
-	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
-
-	$PanelFeatures = $Form.FindName("PanelFeatures")
-	$ButtonApply   = $Form.FindName("ButtonApply")
-
-	$Form.Title          = $Localization.WindowsFeaturesTitle
-	$ButtonApply.Content = $ButtonText
-
-	# The button is enabled only when at least one feature is checked
-	$UpdateState = {
-		$ButtonApply.IsEnabled = [bool]($PanelFeatures.Children | Where-Object -FilterScript {$_.IsChecked})
-	}
-
-	foreach ($Feature in $Features)
-	{
-		$TextBlockDisplayName      = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlockDisplayName.Text = $Feature.DisplayName
-
-		$TextBlockFeatureName      = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlockFeatureName.Text = $Feature.FeatureName
-		$TextBlockFeatureName.FontSize = 12
-		$TextBlockFeatureName.Foreground = "#808080"
-
-		$StackPanel        = New-Object -TypeName System.Windows.Controls.StackPanel
-		$StackPanel.Margin = "6,0,0,0"
-		$StackPanel.Children.Add($TextBlockDisplayName) | Out-Null
-		$StackPanel.Children.Add($TextBlockFeatureName) | Out-Null
-
-		$CheckBox           = New-Object -TypeName System.Windows.Controls.CheckBox
-		$CheckBox.Margin    = "0,4"
-		$CheckBox.Content   = $StackPanel
-		$CheckBox.ToolTip   = $Feature.Description
-		# Only features from $CheckedFeatures are displayed
-		$CheckBox.IsChecked = $true
-		$CheckBox.Tag       = $Feature
-		$CheckBox.Add_Click($UpdateState)
-
-		$PanelFeatures.Children.Add($CheckBox) | Out-Null
-	}
-
-	& $UpdateState
-
-	$ButtonApply.Add_Click({$Form.DialogResult = $true})
-
-	$Form.ShowDialog() | Out-Null
-
-	# Emulate sending the Backspace key to prevent the console window from freezing
-	Send-ConsoleBackspace
-
-	if (-not $Form.DialogResult)
-	{
-		return
-	}
-
-	$SelectedFeatures = $PanelFeatures.Children | Where-Object -FilterScript {$_.IsChecked}
-
-	foreach ($CheckBox in $SelectedFeatures)
-	{
-		Write-Verbose -Message $CheckBox.Tag.DisplayName -Verbose
-
-		switch ($PSCmdlet.ParameterSetName)
-		{
-			"Enable"
-			{
-				$Parameters = @{
-					Online        = $true
-					FeatureName   = $CheckBox.Tag.FeatureName
-					All           = $true
-					NoRestart     = $true
-				}
-				Enable-WindowsOptionalFeature @Parameters
-			}
-			"Disable"
-			{
-				$Parameters = @{
-					Online        = $true
-					FeatureName   = $CheckBox.Tag.FeatureName
-					NoRestart     = $true
-				}
-				Disable-WindowsOptionalFeature @Parameters
-			}
-		}
-	}
-}
-
-<#
-	.SYNOPSIS
-	Install or uninstall Windows capabilities
+	Optional features and Windows features
 
 	.PARAMETER Uninstall
-	Uninstall Windows capabilities
+	Uninstall optional features and Windows features
 
 	.PARAMETER Install
-	Install Windows capabilities
+	Install optional features and Windows features
 
 	.EXAMPLE
-	WindowsCapabilities -Uninstall
+	OptionalFeatures -Uninstall
 
 	.EXAMPLE
-	WindowsCapabilities -Install
+	OptionalFeatures -Install
+
+	.NOTES
+	The parameter only defines which checkboxes are checked by default: installed and missing features are displayed in the same window
 
 	.NOTES
 	Machine-wide
 #>
-function WindowsCapabilities
+function OptionalFeatures
 {
 	param
 	(
@@ -5124,7 +4928,23 @@ function WindowsCapabilities
 		$Install
 	)
 
-	# The following capabilities will be displayed with their checkboxes checked
+	# The following Windows features will be displayed
+	[string[]]$CheckedFeatures = @(
+		# Legacy Components
+		"LegacyComponents",
+
+		# Microsoft XPS Document Writer
+		"Printing-XPSServices-Features",
+
+		# Recall
+		"Recall",
+
+		# Media Features
+		# If you want to leave "Multimedia settings" in the advanced settings of Power Options do not disable this feature
+		"MediaPlayback"
+	)
+
+	# The following capabilities will be displayed
 	[string[]]$CheckedCapabilities = @(
 		# Steps Recorder
 		"App.StepsRecorder*",
@@ -5144,52 +4964,15 @@ function WindowsCapabilities
 
 	switch ($PSCmdlet.ParameterSetName)
 	{
-		"Install"
-		{
-			# Any HTTP response, even an error status, means the server is reachable. Only a connection failure means it isn't
-			$Parameters = @{
-				Uri                      = "https://fe3cr.delivery.mp.microsoft.com/ClientWebService/client.asmx"
-				Method                   = "Head"
-				UseBasicParsing          = $true
-				ConnectionTimeoutSeconds = 5
-				Verbose                  = $true
-			}
-			try
-			{
-				Invoke-WebRequest @Parameters
-
-				$IsReachable = $true
-			}
-			catch
-			{
-				# WebException in PowerShell 5.1 and HttpResponseException in PowerShell 7 have the Response property when the server responded
-				$IsReachable = ($_.Exception.PSObject.Properties.Name -contains "Response") -and ($null -ne $_.Exception.Response)
-
-				# The web service answers HEAD with "(400) Bad Request", which only means it's reachable, so remove this record from the list
-				if ($IsReachable)
-				{
-					$Global:Error.RemoveAt(0)
-				}
-			}
-
-			if (-not $IsReachable)
-			{
-				Write-Information -MessageData "" -InformationAction Continue
-				Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-				Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
-
-				return
-			}
-
-			$State           = "NotPresent"
-			$ButtonText      = $Localization.Install
-			$OperationFailed = $Localization.WindowsCapabilitiesInstallFailed
-		}
 		"Uninstall"
 		{
-			$State           = "Installed"
-			$ButtonText      = $Localization.Uninstall
-			$OperationFailed = $Localization.WindowsCapabilitiesUninstallFailed
+			# Installed features will be displayed with their checkboxes checked
+			$CheckInstalled = $true
+		}
+		"Install"
+		{
+			# Missing features will be displayed with their checkboxes checked
+			$CheckInstalled = $false
 		}
 	}
 
@@ -5197,16 +4980,40 @@ function WindowsCapabilities
 	# Extract localized "Please wait..." string from %SystemRoot%\System32\shell32.dll
 	Write-Verbose -Message ([WinAPI.GetStrings]::GetString(12612)) -Verbose
 
+	# Get-WindowsOptionalFeature without -FeatureName doesn't return DisplayName and Description, so query each found feature separately
+	$Features = Get-WindowsOptionalFeature -Online | Where-Object -FilterScript {($_.FeatureName -in $CheckedFeatures) -and ($_.State -in @("Enabled", "EnablePending", "Disabled", "DisablePending"))} | ForEach-Object -Process {
+		$Feature = Get-WindowsOptionalFeature -Online -FeatureName $_.FeatureName
+
+		[PSCustomObject]@{
+			Type        = "Feature"
+			Name        = $Feature.FeatureName
+			DisplayName = $Feature.DisplayName
+			Description = $Feature.Description
+			IsInstalled = $Feature.State -in @("Enabled", "EnablePending")
+		}
+	}
+
 	# Get-WindowsCapability without -Name doesn't return DisplayName and Description, so query each found capability separately
-	$WindowsCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {$_.State -eq $State}
-	$Capabilities = @($(foreach ($Pattern in $CheckedCapabilities)
+	$WindowsCapabilities = Get-WindowsCapability -Online | Where-Object -FilterScript {$_.State -in @("Installed", "NotPresent")}
+	$Capabilities = foreach ($Pattern in $CheckedCapabilities)
 	{
 		$WindowsCapabilities | Where-Object -FilterScript {$_.Name -like $Pattern} | ForEach-Object -Process {
-			Get-WindowsCapability -Online -Name $_.Name
-		}
-	}) | Sort-Object -Property DisplayName)
+			$Capability = Get-WindowsCapability -Online -Name $_.Name
 
-	if ($Capabilities.Count -eq 0)
+			[PSCustomObject]@{
+				Type        = "Capability"
+				Name        = $Capability.Name
+				DisplayName = $Capability.DisplayName
+				Description = $Capability.Description
+				IsInstalled = $Capability.State -eq "Installed"
+			}
+		}
+	}
+
+	$Items = @(@($Features) + @($Capabilities) | Sort-Object -Property DisplayName)
+
+	# Nothing to uninstall for -Uninstall or nothing to install for -Install
+	if (-not ($Items | Where-Object -FilterScript {$_.IsInstalled -eq $CheckInstalled}))
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message ($Localization.NoWindowsCapabilitiesFound, ($Localization.FunctionSkipped -f $MyInvocation.Line.Trim()) -join " ") -Verbose
@@ -5221,7 +5028,7 @@ function WindowsCapabilities
 <Window
 	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-	Width="550" Height="250" MinWidth="550" MinHeight="250"
+	Width="550" Height="500" MinWidth="550" MinHeight="350"
 	WindowStartupLocation="CenterScreen" Topmost="True"
 	FontFamily="Segoe UI" FontSize="14" Background="#F3F3F3">
 	<Window.Resources>
@@ -5235,7 +5042,16 @@ function WindowsCapabilities
 			<RowDefinition Height="Auto"/>
 		</Grid.RowDefinitions>
 		<ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
-			<StackPanel Name="PanelCapabilities" Margin="16,8"/>
+			<StackPanel Margin="16,8">
+				<StackPanel Name="GroupUninstall" Margin="0,0,0,8">
+					<TextBlock Name="TextBlockUninstall" FontWeight="SemiBold" Margin="0,4"/>
+					<StackPanel Name="PanelUninstall"/>
+				</StackPanel>
+				<StackPanel Name="GroupInstall">
+					<TextBlock Name="TextBlockInstall" FontWeight="SemiBold" Margin="0,4"/>
+					<StackPanel Name="PanelInstall"/>
+				</StackPanel>
+			</StackPanel>
 		</ScrollViewer>
 		<Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E0E0E0" BorderThickness="0,1,0,0" Padding="16,12">
 			<Button Name="ButtonApply" HorizontalAlignment="Right" Padding="24,6" IsEnabled="False"/>
@@ -5246,24 +5062,31 @@ function WindowsCapabilities
 
 	$Form = [System.Windows.Markup.XamlReader]::Load((New-Object -TypeName System.Xml.XmlNodeReader -ArgumentList $XAML))
 
-	$PanelCapabilities = $Form.FindName("PanelCapabilities")
-	$ButtonApply       = $Form.FindName("ButtonApply")
+	$GroupUninstall     = $Form.FindName("GroupUninstall")
+	$TextBlockUninstall = $Form.FindName("TextBlockUninstall")
+	$PanelUninstall     = $Form.FindName("PanelUninstall")
+	$GroupInstall       = $Form.FindName("GroupInstall")
+	$TextBlockInstall   = $Form.FindName("TextBlockInstall")
+	$PanelInstall       = $Form.FindName("PanelInstall")
+	$ButtonApply        = $Form.FindName("ButtonApply")
 
-	$Form.Title          = $Localization.WindowsCapabilitiesTitle
-	$ButtonApply.Content = $ButtonText
+	$Form.Title              = $Localization.WindowsCapabilitiesTitle
+	$TextBlockUninstall.Text = $Localization.Uninstall
+	$TextBlockInstall.Text   = $Localization.Install
+	$ButtonApply.Content     = $Localization.Apply
 
-	# The button is enabled only when at least one capability is checked
+	# The button is enabled only when at least one feature is checked in any group
 	$UpdateState = {
-		$ButtonApply.IsEnabled = [bool]($PanelCapabilities.Children | Where-Object -FilterScript {$_.IsChecked})
+		$ButtonApply.IsEnabled = [bool](@($PanelUninstall.Children) + @($PanelInstall.Children) | Where-Object -FilterScript {$_.IsChecked})
 	}
 
-	foreach ($Capability in $Capabilities)
+	foreach ($Item in $Items)
 	{
 		$TextBlockDisplayName = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlockDisplayName.Text = $Capability.DisplayName
+		$TextBlockDisplayName.Text = $Item.DisplayName
 
 		$TextBlockName = New-Object -TypeName System.Windows.Controls.TextBlock
-		$TextBlockName.Text = $Capability.Name
+		$TextBlockName.Text = $Item.Name
 		$TextBlockName.FontSize = 12
 		$TextBlockName.Foreground = "#808080"
 
@@ -5275,13 +5098,31 @@ function WindowsCapabilities
 		$CheckBox = New-Object -TypeName System.Windows.Controls.CheckBox
 		$CheckBox.Margin = "0,4"
 		$CheckBox.Content = $StackPanel
-		# Localized capability description in the tooltip
-		$CheckBox.ToolTip = $Capability.Description
-		$CheckBox.IsChecked = $true
-		$CheckBox.Tag = $Capability
+		# Localized feature description in the tooltip
+		$CheckBox.ToolTip = $Item.Description
+		# A checked checkbox means that the feature will be uninstalled in the first group or installed in the second one
+		$CheckBox.IsChecked = $Item.IsInstalled -eq $CheckInstalled
+		$CheckBox.Tag = $Item
 		$CheckBox.Add_Click($UpdateState)
 
-		$PanelCapabilities.Children.Add($CheckBox) | Out-Null
+		if ($Item.IsInstalled)
+		{
+			$PanelUninstall.Children.Add($CheckBox) | Out-Null
+		}
+		else
+		{
+			$PanelInstall.Children.Add($CheckBox) | Out-Null
+		}
+	}
+
+	# Hide a group if it has no features
+	if ($PanelUninstall.Children.Count -eq 0)
+	{
+		$GroupUninstall.Visibility = "Collapsed"
+	}
+	if ($PanelInstall.Children.Count -eq 0)
+	{
+		$GroupInstall.Visibility = "Collapsed"
 	}
 
 	& $UpdateState
@@ -5302,36 +5143,108 @@ function WindowsCapabilities
 		return
 	}
 
-	$SelectedCapabilities = $PanelCapabilities.Children | Where-Object -FilterScript {$_.IsChecked}
-	foreach ($CheckBox in $SelectedCapabilities)
-	{
-		Write-Verbose -Message $CheckBox.Tag.DisplayName -Verbose
+	$SelectedItems = @(@($PanelUninstall.Children) + @($PanelInstall.Children) | Where-Object -FilterScript {$_.IsChecked} | ForEach-Object -Process {$_.Tag})
 
+	# Only capabilities are downloaded from Windows Update, so the connection is checked only if any of them is going to be installed
+	if ($SelectedItems | Where-Object -FilterScript {($_.Type -eq "Capability") -and (-not $_.IsInstalled)})
+	{
+		# Any HTTP response, even an error status, means the server is reachable. Only a connection failure means it isn't
 		$Parameters = @{
-			Online      = $true
-			Name        = $CheckBox.Tag.Name
-			ErrorAction = "Stop"
+			Uri                      = "https://fe3cr.delivery.mp.microsoft.com/ClientWebService/client.asmx"
+			Method                   = "Head"
+			UseBasicParsing          = $true
+			ConnectionTimeoutSeconds = 5
+			Verbose                  = $true
 		}
+		try
+		{
+			Invoke-WebRequest @Parameters
+
+			$IsReachable = $true
+		}
+		catch
+		{
+			# WebException in PowerShell 5.1 and HttpResponseException in PowerShell 7 have the Response property when the server responded
+			$IsReachable = ($_.Exception.PSObject.Properties.Name -contains "Response") -and ($null -ne $_.Exception.Response)
+
+			# The web service answers HEAD with "(400) Bad Request", which only means it's reachable, so remove this record from the list
+			if ($IsReachable)
+			{
+				$Global:Error.RemoveAt(0)
+			}
+		}
+
+		if (-not $IsReachable)
+		{
+			Write-Information -MessageData "" -InformationAction Continue
+			Write-Verbose -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($Localization.NoConnectionEstablished -f "$($Parameters.Uri)"), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+
+			# Everything else doesn't need an Internet connection, so only installing capabilities is skipped
+			$SelectedItems = @($SelectedItems | Where-Object -FilterScript {($_.Type -ne "Capability") -or $_.IsInstalled})
+		}
+	}
+
+	foreach ($Item in $SelectedItems)
+	{
+		Write-Verbose -Message $Item.DisplayName -Verbose
 
 		try
 		{
-			switch ($PSCmdlet.ParameterSetName)
+			switch ($Item.Type)
 			{
-				"Install"
+				"Feature"
 				{
-					Add-WindowsCapability @Parameters
+					$Parameters = @{
+						Online      = $true
+						FeatureName = $Item.Name
+						NoRestart   = $true
+						ErrorAction = "Stop"
+					}
+
+					if ($Item.IsInstalled)
+					{
+						Disable-WindowsOptionalFeature @Parameters
+					}
+					else
+					{
+						# Enable all parent features too
+						Enable-WindowsOptionalFeature @Parameters -All
+					}
 				}
-				"Uninstall"
+				"Capability"
 				{
-					Remove-WindowsCapability @Parameters
+					$Parameters = @{
+						Online      = $true
+						Name        = $Item.Name
+						ErrorAction = "Stop"
+					}
+
+					if ($Item.IsInstalled)
+					{
+						Remove-WindowsCapability @Parameters
+					}
+					else
+					{
+						Add-WindowsCapability @Parameters
+					}
 				}
 			}
 		}
 		catch
 		{
+			if ($Item.IsInstalled)
+			{
+				$OperationFailed = $Localization.WindowsCapabilitiesUninstallFailed
+			}
+			else
+			{
+				$OperationFailed = $Localization.WindowsCapabilitiesInstallFailed
+			}
+
 			Write-Information -MessageData "" -InformationAction Continue
-			Write-Verbose -Message (($OperationFailed -f $CheckBox.Tag.DisplayName, $_.Exception.Message), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
-			Write-Error -Message (($OperationFailed -f $CheckBox.Tag.DisplayName, $_.Exception.Message), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
+			Write-Verbose -Message (($OperationFailed -f $Item.DisplayName, $_.Exception.Message), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -Verbose
+			Write-Error -Message (($OperationFailed -f $Item.DisplayName, $_.Exception.Message), ($Localization.RestartFunction -f $MyInvocation.Line.Trim()) -join " ") -ErrorAction SilentlyContinue
 		}
 	}
 }
@@ -7015,7 +6928,8 @@ function Set-Association
 		{
 			# Export-Associations saves the whole command, e.g. "C:\Program Files\App\app.exe" --open "%1"
 			# Keep it to save its arguments, and cut $ProgramPath to the path to the executable
-			if ($ProgramPath.Contains("%1"))
+			# A command gets the file as %1, %L or %*
+			if ($ProgramPath.Substring($ExeIndex + 4) -match "%[1L*]")
 			{
 				$OpenCommand = $ProgramPath
 			}
@@ -7118,31 +7032,9 @@ function Set-Association
 			[string]$Associations = "UrlAssociations"
 
 			$SubKey = "Software\Microsoft\Windows\Shell\Associations\UrlAssociations\$Extension\UserChoice"
-			$Path   = "HKCU:\$SubKey"
 
-			# The hash is derived from the key's last write time truncated to minutes, so ProgId and Hash have to be written within the same minute
-			if ((Get-Date).Second -ge 50)
-			{
-				Start-Sleep -Seconds (60 - (Get-Date).Second)
-			}
-
-			# Microsoft has blocked write access to UserChoice key with KB5034765 release, so we have to write values with a copy of powershell.exe to bypass UCPD driver restrictions
-			# UCPD driver tracks all executables to block the access to the registry so all registry records will be made within powershell_temp.exe in this function just in case
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
-				param ($Path, $ProgId)
-
-				Remove-Item -Path $Path -Force -ErrorAction Ignore
-				New-Item -Path $Path -Force
-				New-ItemProperty -Path $Path -Name ProgId -PropertyType String -Value $ProgId -Force
-			} -args $Path, $ProgId
-
-			$ProgHash = Get-Hash -ProgId $ProgId -Extension $Extension -SubKey $SubKey
-
-			& "$env:SystemRoot\System32\WindowsPowerShell\v1.0\powershell_temp.exe" -NoProfile -Command {
-				param ($Path, $ProgHash)
-
-				New-ItemProperty -Path $Path -Name Hash -PropertyType String -Value $ProgHash -Force
-			} -args $Path, $ProgHash
+			# Write the UserChoice key with its hash
+			Write-UserChoice -SubKey $SubKey -ProgId $ProgId -Extension $Extension
 		}
 
 		# If there is a ProgId extension, overwrite it to the configured value by default
@@ -7389,23 +7281,36 @@ function Import-Associations
 
 	$AppxProgIds = @(Get-ChildItem -Path "Registry::HKEY_CLASSES_ROOT\Local Settings\Software\Microsoft\Windows\CurrentVersion\AppModel\PackageRepository\Extensions\ProgIDs" -Name -ErrorAction Ignore)
 
-	foreach ($Item in $JSON)
+	# Set-Association adds UserChoice keys to the queue instead of writing them one by one
+	# All keys are written by a single powershell_temp.exe launch at the end, so hundreds of associations take seconds, not minutes
+	$Global:UserChoiceQueue = [System.Collections.Generic.List[hashtable]]::new()
+
+	try
 	{
-		Write-Information -MessageData "" -InformationAction Continue
-
-		# UWP apps and ProgIds exported without a program path are set by ProgId
-		if (($AppxProgIds -contains $Item.ProgId) -or (-not $Item.ProgramPath))
+		foreach ($Item in $JSON)
 		{
-			Write-Verbose -Message ($Item.ProgId, $Item.Extension -join " | ") -Verbose
+			Write-Information -MessageData "" -InformationAction Continue
 
-			Set-Association -ProgramPath $Item.ProgId -Extension $Item.Extension
-		}
-		else
-		{
-			Write-Verbose -Message ($Item.ProgramPath, $Item.Extension, $Item.Icon -join " | ") -Verbose
+			# UWP apps, ProgIds exported without a program path, and ProgIds registered on this PC are set by ProgId
+			# An app registers its ProgIds by itself when it is installed, so they keep their own command, icon and name
+			# The exported command is needed only for a ProgId that doesn't exist here, e.g. the one Set-Association created on another PC
+			if (($AppxProgIds -contains $Item.ProgId) -or (-not $Item.ProgramPath) -or (Test-Path -Path "Registry::HKEY_CLASSES_ROOT\$($Item.ProgId)"))
+			{
+				Write-Verbose -Message ($Item.ProgId, $Item.Extension -join " | ") -Verbose
 
-			Set-Association -ProgramPath $Item.ProgramPath -Extension $Item.Extension -Icon $Item.Icon
+				Set-Association -ProgramPath $Item.ProgId -Extension $Item.Extension
+			}
+			else
+			{
+				Write-Verbose -Message ($Item.ProgramPath, $Item.Extension, $Item.Icon -join " | ") -Verbose
+
+				Set-Association -ProgramPath $Item.ProgramPath -Extension $Item.Extension -Icon $Item.Icon
+			}
 		}
+	}
+	finally
+	{
+		Write-UserChoice -Flush
 	}
 }
 
