@@ -537,12 +537,26 @@ function InitialActions
 		exit
 	}
 
-	# Check whether third-party entries were added to the hosts file
-	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | Where-Object -FilterScript {$_.Trim() -and (-not $_.Trim().StartsWith("#"))}
+	# Check whether the hosts file has entries for Microsoft or GitHub sites: Windows Update, Microsoft Store, and downloads may not work because of them
+	# Any other entry, added by an antivirus or by the user, is left alone
+	$WatchedDomains = @(
+		"microsoft.com", "windowsupdate.com", "windows.com", "windows.net", "live.com", "msftconnecttest.com", "msftncsi.com",
+		"aka.ms", "sfx.ms", "visualstudio.com", "xboxlive.com", "msedge.net", "azureedge.net",
+		"github.com", "githubusercontent.com"
+	)
+	$HostsEntries = Get-Content -Path "$env:SystemRoot\System32\drivers\etc\hosts" -Force | ForEach-Object -Process {
+		# A line is an address and the names it is given to. What stands after "#" is a comment
+		($_ -split "#")[0].Trim() -split "\s+" | Select-Object -Skip 1
+	} | Where-Object -FilterScript {
+		$HostName = $_
+		$WatchedDomains | Where-Object -FilterScript {($HostName -eq $_) -or ($HostName -like "*.$_")}
+	} | Select-Object -Unique
 	if ($HostsEntries)
 	{
 		Write-Information -MessageData "" -InformationAction Continue
 		Write-Verbose -Message $Localization.HostsEntriesFound -Verbose
+		# Show the hosts that were found
+		Write-Verbose -Message ($HostsEntries -join ", ") -Verbose
 
 		do
 		{

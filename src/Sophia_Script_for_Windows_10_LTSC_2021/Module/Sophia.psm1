@@ -6115,6 +6115,66 @@ function StickyShift
 
 <#
 	.SYNOPSIS
+	Mouse acceleration ("Enhance pointer precision")
+
+	.PARAMETER Disable
+	Turn off mouse acceleration: the pointer moves the same distance however fast the mouse is moved
+
+	.PARAMETER Enable
+	Turn on mouse acceleration (default value)
+
+	.EXAMPLE
+	MouseAcceleration -Disable
+
+	.EXAMPLE
+	MouseAcceleration -Enable
+
+	.NOTES
+	Current user
+#>
+function MouseAcceleration
+{
+	param
+	(
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Disable"
+		)]
+		[switch]
+		$Disable,
+
+		[Parameter(
+			Mandatory = $true,
+			ParameterSetName = "Enable"
+		)]
+		[switch]
+		$Enable
+	)
+
+	switch ($PSCmdlet.ParameterSetName)
+	{
+		"Disable"
+		{
+			New-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name MouseSpeed -PropertyType String -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name MouseThreshold1 -PropertyType String -Value 0 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name MouseThreshold2 -PropertyType String -Value 0 -Force
+
+			# Apply the new values at once, without signing out
+			[void][WinAPI.Mouse]::SetAcceleration($false)
+		}
+		"Enable"
+		{
+			New-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name MouseSpeed -PropertyType String -Value 1 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name MouseThreshold1 -PropertyType String -Value 6 -Force
+			New-ItemProperty -Path "HKCU:\Control Panel\Mouse" -Name MouseThreshold2 -PropertyType String -Value 10 -Force
+
+			# Apply the new values at once, without signing out
+			[void][WinAPI.Mouse]::SetAcceleration($true)
+		}
+	}
+}
+<#
+	.SYNOPSIS
 	AutoPlay for all media and devices
 
 	.PARAMETER Disable

@@ -112,6 +112,19 @@ namespace WinAPI
 		public static extern bool SystemParametersInfo(uint uiAction, uint uiParam, IntPtr pvParam, uint fWinIni);
 	}
 
+	// Turn mouse acceleration on or off at once for MouseAcceleration function
+	public class Mouse
+	{
+		[DllImport("user32.dll", EntryPoint = "SystemParametersInfo", SetLastError = true)]
+		private static extern bool SystemParametersInfo(uint uiAction, uint uiParam, int[] pvParam, uint fWinIni);
+
+		public static bool SetAcceleration(bool enable)
+		{
+			// SPI_SETMOUSE takes two thresholds and the acceleration. SPIF_UPDATEINIFILE | SPIF_SENDCHANGE
+			int[] mouse = enable ? new int[] { 6, 10, 1 } : new int[] { 0, 0, 0 };
+			return SystemParametersInfo(0x0004, 0, mouse, 0x01 | 0x02);
+		}
+	}
 	// Simulate pressing F5 to refresh Desktop and refresh desktop icons, environment variables, taskbar
 	public class UpdateEnvironment
 	{

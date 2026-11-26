@@ -793,6 +793,13 @@ StickyShift -Disable
 # Включить залипание клавиши Shift после 5 нажатий (значение по умолчанию)
 # StickyShift -Enable
 
+# Turn off mouse acceleration ("Enhance pointer precision"): the pointer moves the same distance however fast the mouse is moved
+# Отключить ускорение мыши ("Повышенная точность установки указателя"): указатель проходит одно и то же расстояние при любой скорости движения мыши
+# MouseAcceleration -Disable
+
+# Turn on mouse acceleration ("Enhance pointer precision") (default value)
+# Включить ускорение мыши ("Повышенная точность установки указателя") (значение по умолчанию)
+# MouseAcceleration -Enable
 # Don't use AutoPlay for all media and devices
 # Не использовать автозапуск для всех носителей и устройств
 Autoplay -Disable
