@@ -23,8 +23,9 @@ if ($PSVersionTable.PSVersion.Major -eq 5)
 
 $ProductName = Get-ItemPropertyValue -Path "HKLM:\SOFTWARE\Microsoft\Windows NT\CurrentVersion" -Name ProductName
 $Version     = $null
+$BuildNumber = [int](Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_OperatingSystem).BuildNumber
 
-switch ([int](Get-CimInstance -Namespace root/CIMV2 -ClassName Win32_OperatingSystem).BuildNumber)
+switch ($BuildNumber)
 {
 	17763
 	{
@@ -123,7 +124,17 @@ if (-not $Version)
 	Write-Verbose -Message "Your Windows version is not supported. Update your Windows and try again." -Verbose
 
 	# Receive updates for other Microsoft products when you update Windows
-	(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+	# Windows 11 builds start from 22000: both Windows 10 and Windows 11 have the 10.0 version, so the build number is the only way to tell them apart
+	if ($BuildNumber -ge 22000)
+	{
+		# Windows 11
+		New-ItemProperty -Path HKLM:\SOFTWARE\Microsoft\WindowsUpdate\UX\Settings -Name AllowMUUpdateService -PropertyType DWord -Value 1 -Force
+	}
+	else
+	{
+		# Windows 10
+		(New-Object -ComObject Microsoft.Update.ServiceManager).AddService2("7971f918-a847-4430-9279-4a52d1efe18d", 7, "")
+	}
 
 	# Check for updates
 	& "$env:SystemRoot\System32\UsoClient.exe" StartInteractiveScan
